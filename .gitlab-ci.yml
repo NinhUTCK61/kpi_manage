@@ -1,0 +1,83 @@
+
+include: 
+  - local: '/.gitlab/templates/post-job.yml'
+  - local: '/.gitlab/templates/validation.yml'
+
+stages:
+  - check-convention
+  - build
+  - deploy
+
+.setup-env: &setup-env
+  - echo "Setup .env file"
+  # Check if not .env file exists
+  - if [ ! -f .env ]; then cp .env.example .env; fi
+  # Set .env variables
+  - |
+    for var in DATABASE_URL NEXTAUTH_SECRET NEXTAUTH_URL GITHUB_CLIENT_ID GITHUB_SECRET; do
+      if [ -z "$var" ]; then
+        echo "$var is not set"
+        exit 1
+      fi
+        if grep -q "$var=" .env; then
+          sed -i "s/$var=.*/$var=${!var}/" .env
+        else
+          echo "$var=${!var}" >> .env
+        fi
+    done
+
+.check-convention: # temporarily disable convention check
+  stage: check-convention
+  image: node:alpine
+  cache: 
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+  before_script:
+    - |
+      if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+      elif [ -f package-lock.json ]; then npm ci; \
+      elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+      else echo "Lockfile not found." && exit 1; \
+      fi
+    - apk add git
+  script:
+    - npx eslint src/**/*.{ts,tsx}
+    - npx prettier --config .prettierrc.json --write '**/*.tsx'
+    - git diff --exit-code
+  
+  
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - name: docker:dind
+  before_script:
+    - !reference [.generate-env, before_script]
+    - *setup-env
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
+  only:
+    - develop
+
+deploy-stg:
+  stage: deploy
+  environment: staging
+  tags:
+    - shell
+  before_script:
+   - !reference [deploy-stg, before_script]
+  script: 
+    - ssh $USERNAME@$HOST
+      "export CI_JOB_TOKEN=$CI_JOB_TOKEN;
+       export CI_REGISTRY=$CI_REGISTRY;
+       export CI_REGISTRY_IMAGE=$CI_REGISTRY_IMAGE;
+       export APP_NAME=$APP_NAME;
+       export PORT=$PORT;
+       export CI_REGISTRY_IMAGE=$CI_REGISTRY_IMAGE;
+       bash -s" < cd.sh
+  only:
+    - develop
