@@ -8,6 +8,10 @@ stages:
   - build
   - deploy
 
+variables:
+  DOCKER_IMAGE_STG: $CI_REGISTRY_IMAGE/stg   
+  DOCKER_IMAGE_PRD: $CI_REGISTRY_IMAGE/prd 
+
 .setup-env: &setup-env
   - echo "Setup .env file"
   # Check if not .env file exists
@@ -15,15 +19,16 @@ stages:
   # Set .env variables
   - |
     for var in DATABASE_URL NEXTAUTH_SECRET NEXTAUTH_URL GITHUB_CLIENT_ID GITHUB_SECRET; do
-      if [ -z "$var" ]; then
+      if [ -z "$(eval echo \$$var)" ]; then
         echo "$var is not set"
         exit 1
       fi
-        if grep -q "$var=" .env; then
-          sed -i "s/$var=.*/$var=${!var}/" .env
-        else
-          echo "$var=${!var}" >> .env
-        fi
+
+      if grep -q "$var=" .env; then
+        sed -i "s~$var=.*~$var=$(eval echo \$$var)~" .env
+      else
+        echo "$var=$(eval echo \$$var)" >> .env
+      fi
     done
 
 .check-convention: # temporarily disable convention check
@@ -48,9 +53,10 @@ stages:
   
   
 
-build:
+build-stg:
   stage: build
   image: docker:latest
+  environment: staging
   services:
     - name: docker:dind
   before_script:
@@ -58,8 +64,8 @@ build:
     - *setup-env
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY_IMAGE:latest .
-    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker build -t $DOCKER_IMAGE_STG:latest .
+    - docker push $DOCKER_IMAGE_STG:latest
   only:
     - develop
 
@@ -69,15 +75,14 @@ deploy-stg:
   tags:
     - shell
   before_script:
-   - !reference [deploy-stg, before_script]
+    - !reference [.required-variable, before_script]
   script: 
     - ssh $USERNAME@$HOST
       "export CI_JOB_TOKEN=$CI_JOB_TOKEN;
        export CI_REGISTRY=$CI_REGISTRY;
-       export CI_REGISTRY_IMAGE=$CI_REGISTRY_IMAGE;
+       export CI_REGISTRY_IMAGE=$DOCKER_IMAGE_STG;
        export APP_NAME=$APP_NAME;
        export PORT=$PORT;
-       export CI_REGISTRY_IMAGE=$CI_REGISTRY_IMAGE;
        bash -s" < cd.sh
   only:
     - develop
