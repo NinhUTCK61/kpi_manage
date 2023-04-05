@@ -114,6 +114,7 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  secret: env.NEXTAUTH_SECRET,
   session: { strategy: 'jwt' },
 }
 
