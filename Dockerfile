@@ -35,6 +35,8 @@ RUN \
     else echo "Lockfile not found." && exit 1; \
     fi
 
+RUN yarn prisma migrate deploy
+
 ##### RUNNER
 
 FROM node:18-alpine3.16 AS runner
