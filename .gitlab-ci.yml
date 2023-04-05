@@ -32,8 +32,6 @@ variables:
     - npx prettier --config .prettierrc.json --write '**/*.tsx'
     - git diff --exit-code
   
-  
-
 build-stg:
   stage: build
   image: docker:latest
