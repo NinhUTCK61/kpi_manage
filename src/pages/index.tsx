@@ -1,3 +1,4 @@
+import { Layout } from '@/components/Layout/Layout'
 import { type NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -24,11 +25,13 @@ const AuthShowcase: React.FC = () => {
 
   return (
     <div>
-      <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
-      <p>{sessionData && JSON.stringify(sessionData)}</p>
-      <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
-        {sessionData ? 'Sign out' : 'Sign in'}
-      </button>
+      <Layout title="Kpi master">
+        <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
+        <p>{sessionData && JSON.stringify(sessionData)}</p>
+        <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
+          {sessionData ? 'Sign out' : 'Sign in'}
+        </button>
+      </Layout>
     </div>
   )
 }
