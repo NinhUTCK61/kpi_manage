@@ -1,10 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 
 export const authRouter = createTRPCRouter({
   login: publicProcedure
@@ -14,8 +10,8 @@ export const authRouter = createTRPCRouter({
         where: {
           email: input.email,
         },
-      });
+      })
 
-      return user;
+      return user
     }),
-});
+})
