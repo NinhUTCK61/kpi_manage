@@ -129,9 +129,9 @@ const defaultTheme: Theme = createTheme({
       fontWeight: 400,
     },
     button: {
-      fontFamily: ['Inter', 'sans-serif'].join(', '),
+      fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
     },
-    fontFamily: ['Inter', 'sans-serif'].join(', '),
+    fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
   },
   components: {
     MuiButton: {

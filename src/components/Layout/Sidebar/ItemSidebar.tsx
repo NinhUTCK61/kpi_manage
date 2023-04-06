@@ -4,7 +4,7 @@ import {
   ListItemText as MuiListItemText,
   styled,
 } from '@mui/material'
-import Image, { StaticImageData } from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import { useRouter } from 'next/router'
 
 type StyleListItemButtonType = {
@@ -40,7 +40,7 @@ const StyleListItemButton = styled(MuiListItemButton)<StyleListItemButtonType>(
   ({ theme, active }) => ({
     backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
     borderRadius: '6px',
-    padding: `8px 14px`,
+    padding: `8px 12px`,
   }),
 )
 
@@ -56,6 +56,7 @@ const ListItemText = styled(MuiListItemText)({
     fontWeight: 600,
     fontStyle: 'normal',
   },
+  margin: 0,
 })
 
 export { ListItemButton, ListItemIcon, ListItemText }

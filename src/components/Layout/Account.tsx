@@ -33,7 +33,7 @@ const Account = () => {
       <Tooltip title="Account settings" sx={{ pl: 1 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Avatar>H</Avatar>
-          <Typography>Name of user</Typography>
+          <Typography variant="body2">Name of user</Typography>
           <IconButton
             onClick={handleClick}
             size="small"
