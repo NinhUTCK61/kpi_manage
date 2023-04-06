@@ -10,8 +10,12 @@ import { Account } from '../Account'
 
 const HEIGHT_HEADER = 61
 
+type SearchType = {
+  search: string
+}
+
 const Header = () => {
-  const { control } = useForm<{ search: string }>({
+  const { control } = useForm<SearchType>({
     defaultValues: {
       search: '',
     },
