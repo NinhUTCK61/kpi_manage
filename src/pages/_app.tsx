@@ -6,15 +6,17 @@ import { type AppType } from 'next/app'
 
 import { defaultTheme } from '@/common/theme'
 import '@/styles/globals.css'
+import { useRouter } from 'next/router'
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const router = useRouter()
   return (
     <SessionProvider session={session}>
       <ThemeProvider theme={defaultTheme}>
-        <Component {...pageProps} />
+        <Component key={router.asPath} {...pageProps} />
       </ThemeProvider>
     </SessionProvider>
   )

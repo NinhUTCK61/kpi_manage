@@ -14,6 +14,7 @@ const green = {
 const base = {
   black: '#071327',
   white: '#FFFFFF',
+  contrastText: '#222222',
 }
 
 const blueGrey = {
@@ -149,7 +150,7 @@ const customPrimary = {
   900: '#1B015F',
   800: '#2B0B81',
   700: '#3E19A3',
-  0o0: '#A0A0A0',
+  0o0: '#F3EEFF',
 }
 
 export {

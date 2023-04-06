@@ -43,36 +43,17 @@ declare module '@mui/material/styles' {
     customPrimary: typeof customPrimary
     blue: typeof blue
   }
-
-  interface TypographyVariants {
-    h21: React.CSSProperties
-    h43: React.CSSProperties
-  }
-
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions {
-    h21?: React.CSSProperties
-    h43?: React.CSSProperties
-  }
-}
-
-// Update the Typography's variant prop options
-declare module '@mui/material/Typography' {
-  interface TypographyPropsVariantOverrides {
-    h21: true
-    h43: true
-  }
 }
 
 const defaultTheme: Theme = createTheme({
   palette: {
     common: {
-      white: '#fff',
+      white: base.white,
     },
     primary: {
       main: blue[600],
       light: green[300],
-      contrastText: '#222222',
+      contrastText: base.contrastText,
     },
     grey: {
       900: grey[900],
@@ -91,7 +72,7 @@ const defaultTheme: Theme = createTheme({
       dark: blue[700],
     },
     background: {
-      default: '#fff',
+      default: base.contrastText,
     },
     text: {
       primary: blue[600],
@@ -127,7 +108,6 @@ const defaultTheme: Theme = createTheme({
     h4: {
       fontSize: 23,
       lineHeight: '30px',
-      fontWeight: 'bold',
     },
     body1: {
       fontSize: 17,
@@ -153,7 +133,50 @@ const defaultTheme: Theme = createTheme({
     },
     fontFamily: ['Inter', 'sans-serif'].join(', '),
   },
-  components: {},
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          color: base.white,
+          fontWeight: 600,
+          fontSize: 15,
+          lineHeight: '22px',
+          backgroundColor: customPrimary[700],
+          ':hover': {
+            backgroundColor: customPrimary[800],
+          },
+          ':focus': {
+            backgroundColor: customPrimary[900],
+          },
+          ':disabled': {
+            backgroundColor: customPrimary[0],
+            color: base.white,
+          },
+        },
+
+        outlined: {
+          color: customPrimary[700],
+          border: `1px solid ${customPrimary[700]}`,
+          fontWeight: 600,
+          fontSize: 15,
+          lineHeight: '22px',
+          backgroundColor: base.white,
+          ':hover': {
+            color: customPrimary[800],
+            border: `1px solid ${customPrimary[800]}`,
+          },
+          ':focus': {
+            color: customPrimary[900],
+            border: `1px solid ${customPrimary[900]}`,
+          },
+          ':disabled': {
+            color: customPrimary[0],
+            border: `1px solid ${customPrimary[0]}`,
+          },
+        },
+      },
+    },
+  },
 })
 
 export { defaultTheme }
