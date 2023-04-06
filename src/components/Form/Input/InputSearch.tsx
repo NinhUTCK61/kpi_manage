@@ -43,13 +43,19 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
   '&:hover fieldset': {
     borderColor: `${theme.palette.blue[400]} !important`,
   },
-  borderRadius: theme.spacing(0.5),
+  paddingLeft: 16,
+  borderRadius: theme.spacing(1),
   color: theme.palette.common.black,
   fontWeight: 400,
   gap: 8,
   backgroundColor: theme.palette.greyScale[100],
   '& .MuiOutlinedInput-input': {
-    padding: theme.spacing(1, 1.5),
+    padding: theme.spacing(1, 1.75, 1, 0),
+  },
+  height: 38,
+  width: 366,
+  '& .MuiInputAdornment-positionStart': {
+    marginRight: 0,
   },
 }))
 
