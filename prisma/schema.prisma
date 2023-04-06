@@ -44,15 +44,15 @@ model Session {
 }
 
 model User {
-    id                    String    @id @default(cuid())
-    name                  String?
-    email                 String?   @unique
-    emailVerified         DateTime? @map("email_verified")
-    image                 String?
-    accounts              Account[]
-    sessions              Session[]
-    password              String?
-    forgot_password_token String?
+    id            String         @id @default(cuid())
+    name          String?
+    email         String?        @unique
+    emailVerified DateTime?      @map("email_verified")
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    password      String?
+    PasswordReset PasswordReset?
 }
 
 model VerificationToken {
@@ -61,4 +61,16 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model PasswordReset {
+    id         Int      @id @default(autoincrement())
+    user_id    String   @unique
+    token      String   @unique
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+    @@unique([user_id, token])
 }
