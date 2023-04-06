@@ -12,6 +12,8 @@ import UseCase from '@/assets/imgs/use_case.png'
 import { useMemo } from 'react'
 import { ListItemButton } from './ItemSidebar'
 
+const SIDE_BAR_WIDTH = 250
+
 const Sidebar = () => {
   const menus = useMemo(
     () => [
@@ -32,6 +34,7 @@ const Sidebar = () => {
       sx={{
         marginTop: `${HEIGHT_HEADER}px`,
         borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
+        width: SIDE_BAR_WIDTH,
       }}
     >
       <List

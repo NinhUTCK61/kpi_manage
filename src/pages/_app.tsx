@@ -8,7 +8,6 @@ import { defaultTheme } from '@/common/theme'
 import createEmotionCache from '@/libs/config/createEmotionCache'
 import '@/styles/globals.css'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
-import { useRouter } from 'next/router'
 
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
@@ -19,12 +18,11 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
   Component,
   pageProps: { session, emotionCache = clientSideEmotionCache, ...pageProps },
 }) => {
-  const router = useRouter()
   return (
     <CacheProvider value={emotionCache}>
       <SessionProvider session={session}>
         <ThemeProvider theme={defaultTheme}>
-          <Component key={router.asPath} {...pageProps} />
+          <Component {...pageProps} />
         </ThemeProvider>
       </SessionProvider>
     </CacheProvider>

@@ -8,7 +8,11 @@ import { useForm } from 'react-hook-form'
 import { InputSearch } from '../../Form/Input'
 import { Account } from '../Account'
 
-const HEIGHT_HEADER = 61
+const HEIGHT_HEADER = 60
+
+const MuiImage = styled(Image)({
+  cursor: 'pointer',
+})
 
 type SearchType = {
   search: string
@@ -27,7 +31,7 @@ const Header = () => {
     <AppBar elevation={0}>
       <StackContainer>
         <Stack direction="row" spacing={19.75} alignItems="center">
-          <Image src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
+          <MuiImage src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
 
           <InputSearch
             name="search"
@@ -35,9 +39,7 @@ const Header = () => {
             placeholder="Search"
             startAdornment={
               <InputAdornment position="start">
-                <>
-                  <Image src={SearchIcon} alt="search-icon" />
-                </>
+                <Image src={SearchIcon} alt="search-icon" />
               </InputAdornment>
             }
           />

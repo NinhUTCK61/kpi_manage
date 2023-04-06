@@ -1,4 +1,4 @@
-import { OutlinedInput, styled } from '@mui/material'
+import { InputBase, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import type { InputProps } from './Input'
@@ -34,19 +34,10 @@ function InputSearch<T extends FieldValues>({
   )
 }
 
-const InputStyled = styled(OutlinedInput)(({ theme }) => ({
-  '&.MuiOutlinedInput-root': {
-    '&.Mui-focused fieldset': {
-      borderColor: theme.palette.blue[300],
-    },
-  },
-  '&:hover fieldset': {
-    borderColor: `${theme.palette.blue[400]} !important`,
-  },
-  paddingLeft: 16,
+const InputStyled = styled(InputBase)(({ theme }) => ({
+  paddingLeft: theme.spacing(2),
   borderRadius: theme.spacing(1),
   color: theme.palette.common.black,
-  fontWeight: 400,
   gap: 8,
   backgroundColor: theme.palette.greyScale[100],
   '& .MuiOutlinedInput-input': {
@@ -57,6 +48,7 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
   '& .MuiInputAdornment-positionStart': {
     marginRight: 0,
   },
+  fontSize: 14,
 }))
 
 export { InputSearch }

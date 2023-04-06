@@ -1,37 +1,19 @@
 import { Layout } from '@/components/Layout/Layout'
 import { type NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import Head from 'next/head'
 
 const Home: NextPage = () => {
+  const { data: sessionData } = useSession()
+
   return (
-    <>
-      <Head>
-        <title>KPI Master</title>
-        <meta name="description" content="kpi master" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        <AuthShowcase />
-      </main>
-    </>
+    <Layout title="KPI Master">
+      <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
+      <p>{sessionData && JSON.stringify(sessionData)}</p>
+      <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
+        {sessionData ? 'Sign out' : 'Sign in'}
+      </button>
+    </Layout>
   )
 }
 
 export default Home
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession()
-
-  return (
-    <div>
-      <Layout title="Kpi master">
-        <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
-        <p>{sessionData && JSON.stringify(sessionData)}</p>
-        <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
-          {sessionData ? 'Sign out' : 'Sign in'}
-        </button>
-      </Layout>
-    </div>
-  )
-}
