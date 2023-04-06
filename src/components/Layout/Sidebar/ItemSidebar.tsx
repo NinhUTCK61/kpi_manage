@@ -41,6 +41,7 @@ const StyleListItemButton = styled(MuiListItemButton)<StyleListItemButtonType>(
     backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
     borderRadius: '6px',
     padding: `8px 12px`,
+    marginBottom: theme.spacing(1),
   }),
 )
 

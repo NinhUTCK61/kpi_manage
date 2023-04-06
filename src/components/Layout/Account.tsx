@@ -1,5 +1,5 @@
 import ArrownDownIcon from '@/assets/imgs/arrow_down.png'
-import NotiIcon from '@/assets/imgs/noti.png'
+import NotificationIcon from '@/assets/imgs/noti.png'
 import Logout from '@mui/icons-material/Logout'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
@@ -29,8 +29,14 @@ const Account = () => {
   }
   return (
     <>
-      <Image src={NotiIcon} alt="notification-icon" height={20} width={20} />
-      <Tooltip title="Account settings" sx={{ pl: 1 }}>
+      <Image
+        src={NotificationIcon}
+        alt="notification-icon"
+        height={20}
+        width={20}
+        style={{ margin: '18px ' }}
+      />
+      <Tooltip title="Account settings">
         <Stack direction="row" alignItems="center" spacing={1}>
           <Avatar>H</Avatar>
           <Typography variant="body2">Name of user</Typography>
@@ -106,7 +112,7 @@ const Avatar = styled(MuiAvatar)({
 })
 
 const IconButton = styled(MuiIconButton)({
-  marginLeft: 18,
+  padding: 0,
 })
 
 const Menu = styled(MuiMenu)({

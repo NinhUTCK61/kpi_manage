@@ -19,7 +19,7 @@ const Sidebar = () => {
       { title: 'Favorite', icon: FavoriteIcon, href: '/favorite' },
       { title: 'Organization chart', icon: OrganizationIcon, href: '/organization' },
       { title: 'Reporting', icon: ReportingIcon, href: '/reporting' },
-      { title: 'consultation', icon: ConsultationIcon, href: '/consultation' },
+      { title: 'Consultation', icon: ConsultationIcon, href: '/consultation' },
       { title: 'Knowledge Blog', icon: KnowledgeIcon, href: '/knowledge' },
       { title: 'FAQ', icon: FAQIcon, href: '/faq' },
       { title: 'Use case', icon: UseCase, href: '/use_case' },

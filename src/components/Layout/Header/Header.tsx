@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <AppBar elevation={0}>
       <StackContainer>
-        <Stack direction="row" spacing={20} alignItems="center">
+        <Stack direction="row" spacing={19.75} alignItems="center">
           <Image src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
 
           <InputSearch
@@ -42,9 +42,9 @@ const Header = () => {
             }
           />
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" alignItems="center">
           <Image src={English} alt="english" height={20} width={20} />
-          <Typography variant="body2" mr={3}>
+          <Typography ml={0.75} variant="body2">
             English
           </Typography>
           <Account />
