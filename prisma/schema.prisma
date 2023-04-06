@@ -16,6 +16,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator zod {
+  provider = "yarn zod-prisma-types"
+}
+
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())

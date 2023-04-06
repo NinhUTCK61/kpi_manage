@@ -99,7 +99,9 @@ export const authOptions: NextAuthOptions = {
           return null
         }
       },
-    }),
+    },
+
+    ),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_SECRET,

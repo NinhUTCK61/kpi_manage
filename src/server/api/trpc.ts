@@ -68,6 +68,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+<<<<<<< HEAD
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -82,6 +83,26 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     };
   },
 });
+=======
+import { OpenApiMeta } from 'trpc-openapi';
+
+const t = initTRPC
+  .meta<OpenApiMeta>()
+  .context<typeof createTRPCContext>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      };
+    },
+  });
+>>>>>>> aa64b1b (feat(km-3):update database)
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
