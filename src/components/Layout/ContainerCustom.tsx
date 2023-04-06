@@ -1,5 +1,4 @@
-import { Stack } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Stack, styled } from '@mui/material'
 
 const ContainerCustom = styled(Stack)({
   paddingLeft: '100px',

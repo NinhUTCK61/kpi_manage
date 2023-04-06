@@ -1,8 +1,7 @@
-import { Stack } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { Header, HEIGHT_HEADER } from './Header'
+import { HEIGHT_HEADER, Header } from './Header'
 import { Sidebar } from './Sidebar'
 
 type LayoutType = {

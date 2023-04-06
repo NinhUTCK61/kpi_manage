@@ -1,5 +1,5 @@
-import type { Theme } from '@mui/material/styles'
-import { createTheme } from '@mui/material/styles'
+import type { Theme } from '@mui/material'
+import { createTheme } from '@mui/material'
 
 import {
   base,
@@ -16,7 +16,7 @@ import {
   yellow,
 } from './colors'
 
-declare module '@mui/material/styles' {
+declare module '@mui/material' {
   //add color
   interface Palette {
     blueGrey: typeof blueGrey

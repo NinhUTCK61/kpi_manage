@@ -1,5 +1,4 @@
-import { OutlinedInput } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { OutlinedInput, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import type { InputProps } from './Input'

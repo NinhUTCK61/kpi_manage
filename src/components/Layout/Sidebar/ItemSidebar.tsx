@@ -1,26 +1,26 @@
 import {
-  ListItemButton as _ListItemButton,
-  ListItemIcon as _ListItemIcon,
-  ListItemText as _ListItemText,
+  ListItemButton as MuiListItemButton,
+  ListItemIcon as MuiListItemIcon,
+  ListItemText as MuiListItemText,
+  styled,
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 
 type ListItemButtonType = {
   active?: number
 }
 
-const ListItemButton = styled(_ListItemButton)<ListItemButtonType>(({ theme, active }) => ({
+const ListItemButton = styled(MuiListItemButton)<ListItemButtonType>(({ theme, active }) => ({
   backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
   borderRadius: '6px',
   padding: `8px 14px`,
 }))
 
-const ListItemIcon = styled(_ListItemIcon)({
+const ListItemIcon = styled(MuiListItemIcon)({
   minWidth: 20,
   marginRight: '14px',
 })
 
-const ListItemText = styled(_ListItemText)({
+const ListItemText = styled(MuiListItemText)({
   '.MuiListItemText-primary': {
     fontSize: 16,
     lineHeight: '24px',
