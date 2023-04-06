@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import English from '@/assets/imgs/english.png'
 import LogoHeader from '@/assets/imgs/logo_header.png'
 import SearchIcon from '@/assets/imgs/search.png'
-import { AppBar as _Appbar, InputAdornment, Stack, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { InputAdornment, AppBar as MuiAppBar, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { InputSearch } from '../../Form/Input'
 import { Account } from '../Account'
+
 const HEIGHT_HEADER = 61
 
 const Header = () => {
@@ -25,6 +24,7 @@ const Header = () => {
       <StackContainer>
         <Stack direction="row" spacing={20} alignItems="center">
           <Image src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
+
           <InputSearch
             name="search"
             control={control}
@@ -50,7 +50,7 @@ const Header = () => {
   )
 }
 
-const AppBar = styled(_Appbar)(({ theme }) => ({
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
   height: HEIGHT_HEADER,
   backgroundColor: theme.palette.common.white,
   borderBottom: `1px solid ${theme.palette.greyScale[200]}`,
