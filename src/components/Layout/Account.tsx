@@ -4,14 +4,15 @@ import Logout from '@mui/icons-material/Logout'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
 import {
-  Avatar,
   Divider,
-  IconButton,
   ListItemIcon,
-  Menu,
   MenuItem,
+  Avatar as MuiAvatar,
+  IconButton as MuiIconButton,
+  Menu as MuiMenu,
   Tooltip,
   Typography,
+  styled,
 } from '@mui/material'
 import { Stack } from '@mui/system'
 import Image from 'next/image'
@@ -31,7 +32,7 @@ const Account = () => {
       <Image src={NotiIcon} alt="notification-icon" height={20} width={20} />
       <Tooltip title="Account settings" sx={{ pl: 1 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Avatar sx={{ width: 28, height: 28 }}>H</Avatar>
+          <Avatar>H</Avatar>
           <Typography>Name of user</Typography>
           <IconButton
             onClick={handleClick}
@@ -53,29 +54,6 @@ const Account = () => {
         onClick={handleClose}
         PaperProps={{
           elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
@@ -121,5 +99,40 @@ const Account = () => {
     </>
   )
 }
+
+const Avatar = styled(MuiAvatar)({
+  width: 28,
+  height: 28,
+})
+
+const IconButton = styled(MuiIconButton)({
+  marginLeft: 18,
+})
+
+const Menu = styled(MuiMenu)({
+  '.MuiMenu-paper': {
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    mt: 1.5,
+    '& .MuiAvatar-root': {
+      width: 32,
+      height: 32,
+      ml: -0.5,
+      mr: 1,
+    },
+    '&:before': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      right: 14,
+      width: 10,
+      height: 10,
+      bgcolor: 'background.paper',
+      transform: 'translateY(-50%) rotate(45deg)',
+      zIndex: 0,
+    },
+  },
+})
 
 export { Account }
