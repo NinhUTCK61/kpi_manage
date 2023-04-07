@@ -58,6 +58,8 @@ export const JsonNullValueInputSchema = z.enum(['JsonNull',]);
 
 export const NodeScalarFieldEnumSchema = z.enum(['id','level','child_no','slug','input_title','input_value','is_formula','value2number','title_style','input_value_style','bg_color','x','y','unit','templateId','parent_node_id']);
 
+export const PasswordResetScalarFieldEnumSchema = z.enum(['id','user_id','token','created_at','updated_at']);
+
 export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const SessionScalarFieldEnumSchema = z.enum(['id','sessionToken','userId','expires']);
@@ -215,6 +217,20 @@ export const VerificationTokenSchema = z.object({
 export type VerificationToken = z.infer<typeof VerificationTokenSchema>
 
 /////////////////////////////////////////
+// PASSWORD RESET SCHEMA
+/////////////////////////////////////////
+
+export const PasswordResetSchema = z.object({
+  id: z.number().int(),
+  user_id: z.string(),
+  token: z.string(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
+})
+
+export type PasswordReset = z.infer<typeof PasswordResetSchema>
+
+/////////////////////////////////////////
 // SELECT & INCLUDE
 /////////////////////////////////////////
 
@@ -274,6 +290,7 @@ export const UserIncludeSchema: z.ZodType<Prisma.UserInclude> = z.object({
   sessions: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
   userTemplate: z.union([z.boolean(),z.lazy(() => UserTemplateFindManyArgsSchema)]).optional(),
   comment: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
+  PasswordReset: z.union([z.boolean(),z.lazy(() => PasswordResetArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -305,6 +322,7 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   sessions: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
   userTemplate: z.union([z.boolean(),z.lazy(() => UserTemplateFindManyArgsSchema)]).optional(),
   comment: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
+  PasswordReset: z.union([z.boolean(),z.lazy(() => PasswordResetArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -453,6 +471,27 @@ export const VerificationTokenSelectSchema: z.ZodType<Prisma.VerificationTokenSe
   expires: z.boolean().optional(),
 }).strict()
 
+// PASSWORD RESET
+//------------------------------------------------------
+
+export const PasswordResetIncludeSchema: z.ZodType<Prisma.PasswordResetInclude> = z.object({
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+export const PasswordResetArgsSchema: z.ZodType<Prisma.PasswordResetArgs> = z.object({
+  select: z.lazy(() => PasswordResetSelectSchema).optional(),
+  include: z.lazy(() => PasswordResetIncludeSchema).optional(),
+}).strict();
+
+export const PasswordResetSelectSchema: z.ZodType<Prisma.PasswordResetSelect> = z.object({
+  id: z.boolean().optional(),
+  user_id: z.boolean().optional(),
+  token: z.boolean().optional(),
+  created_at: z.boolean().optional(),
+  updated_at: z.boolean().optional(),
+  user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
 
 /////////////////////////////////////////
 // INPUT TYPES
@@ -594,7 +633,8 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   accounts: z.lazy(() => AccountListRelationFilterSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateListRelationFilterSchema).optional(),
-  comment: z.lazy(() => CommentListRelationFilterSchema).optional()
+  comment: z.lazy(() => CommentListRelationFilterSchema).optional(),
+  PasswordReset: z.union([ z.lazy(() => PasswordResetRelationFilterSchema),z.lazy(() => PasswordResetWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z.object({
@@ -608,7 +648,8 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   accounts: z.lazy(() => AccountOrderByRelationAggregateInputSchema).optional(),
   sessions: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateOrderByRelationAggregateInputSchema).optional(),
-  comment: z.lazy(() => CommentOrderByRelationAggregateInputSchema).optional()
+  comment: z.lazy(() => CommentOrderByRelationAggregateInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetOrderByWithRelationInputSchema).optional()
 }).strict();
 
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> = z.object({
@@ -961,6 +1002,58 @@ export const VerificationTokenScalarWhereWithAggregatesInputSchema: z.ZodType<Pr
   expires: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
+export const PasswordResetWhereInputSchema: z.ZodType<Prisma.PasswordResetWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => PasswordResetWhereInputSchema),z.lazy(() => PasswordResetWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => PasswordResetWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => PasswordResetWhereInputSchema),z.lazy(() => PasswordResetWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  user_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  token: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  user: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
+}).strict();
+
+export const PasswordResetOrderByWithRelationInputSchema: z.ZodType<Prisma.PasswordResetOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  user_id: z.lazy(() => SortOrderSchema).optional(),
+  token: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  user: z.lazy(() => UserOrderByWithRelationInputSchema).optional()
+}).strict();
+
+export const PasswordResetWhereUniqueInputSchema: z.ZodType<Prisma.PasswordResetWhereUniqueInput> = z.object({
+  id: z.number().int().optional(),
+  user_id: z.string().optional(),
+  token: z.string().optional(),
+  user_id_token: z.lazy(() => PasswordResetUser_idTokenCompoundUniqueInputSchema).optional()
+}).strict();
+
+export const PasswordResetOrderByWithAggregationInputSchema: z.ZodType<Prisma.PasswordResetOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  user_id: z.lazy(() => SortOrderSchema).optional(),
+  token: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => PasswordResetCountOrderByAggregateInputSchema).optional(),
+  _avg: z.lazy(() => PasswordResetAvgOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => PasswordResetMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => PasswordResetMinOrderByAggregateInputSchema).optional(),
+  _sum: z.lazy(() => PasswordResetSumOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const PasswordResetScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.PasswordResetScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => PasswordResetScalarWhereWithAggregatesInputSchema),z.lazy(() => PasswordResetScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => PasswordResetScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => PasswordResetScalarWhereWithAggregatesInputSchema),z.lazy(() => PasswordResetScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  user_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  token: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
 export const AccountCreateInputSchema: z.ZodType<Prisma.AccountCreateInput> = z.object({
   id: z.string().cuid().optional(),
   type: z.string(),
@@ -1124,7 +1217,8 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreateInput> = z.object({
@@ -1138,7 +1232,8 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object({
@@ -1152,7 +1247,8 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdateInput> = z.object({
@@ -1166,7 +1262,8 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = z.object({
@@ -1608,6 +1705,58 @@ export const VerificationTokenUncheckedUpdateManyInputSchema: z.ZodType<Prisma.V
   expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
+export const PasswordResetCreateInputSchema: z.ZodType<Prisma.PasswordResetCreateInput> = z.object({
+  token: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  user: z.lazy(() => UserCreateNestedOneWithoutPasswordResetInputSchema)
+}).strict();
+
+export const PasswordResetUncheckedCreateInputSchema: z.ZodType<Prisma.PasswordResetUncheckedCreateInput> = z.object({
+  id: z.number().int().optional(),
+  user_id: z.string(),
+  token: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const PasswordResetUpdateInputSchema: z.ZodType<Prisma.PasswordResetUpdateInput> = z.object({
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  user: z.lazy(() => UserUpdateOneRequiredWithoutPasswordResetNestedInputSchema).optional()
+}).strict();
+
+export const PasswordResetUncheckedUpdateInputSchema: z.ZodType<Prisma.PasswordResetUncheckedUpdateInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  user_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const PasswordResetCreateManyInputSchema: z.ZodType<Prisma.PasswordResetCreateManyInput> = z.object({
+  id: z.number().int().optional(),
+  user_id: z.string(),
+  token: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const PasswordResetUpdateManyMutationInputSchema: z.ZodType<Prisma.PasswordResetUpdateManyMutationInput> = z.object({
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const PasswordResetUncheckedUpdateManyInputSchema: z.ZodType<Prisma.PasswordResetUncheckedUpdateManyInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  user_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -1843,6 +1992,11 @@ export const CommentListRelationFilterSchema: z.ZodType<Prisma.CommentListRelati
   every: z.lazy(() => CommentWhereInputSchema).optional(),
   some: z.lazy(() => CommentWhereInputSchema).optional(),
   none: z.lazy(() => CommentWhereInputSchema).optional()
+}).strict();
+
+export const PasswordResetRelationFilterSchema: z.ZodType<Prisma.PasswordResetRelationFilter> = z.object({
+  is: z.lazy(() => PasswordResetWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => PasswordResetWhereInputSchema).optional().nullable()
 }).strict();
 
 export const AccountOrderByRelationAggregateInputSchema: z.ZodType<Prisma.AccountOrderByRelationAggregateInput> = z.object({
@@ -2197,6 +2351,70 @@ export const VerificationTokenMinOrderByAggregateInputSchema: z.ZodType<Prisma.V
   expires: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
+export const IntFilterSchema: z.ZodType<Prisma.IntFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntFilterSchema) ]).optional(),
+}).strict();
+
+export const PasswordResetUser_idTokenCompoundUniqueInputSchema: z.ZodType<Prisma.PasswordResetUser_idTokenCompoundUniqueInput> = z.object({
+  user_id: z.string(),
+  token: z.string()
+}).strict();
+
+export const PasswordResetCountOrderByAggregateInputSchema: z.ZodType<Prisma.PasswordResetCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  user_id: z.lazy(() => SortOrderSchema).optional(),
+  token: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const PasswordResetAvgOrderByAggregateInputSchema: z.ZodType<Prisma.PasswordResetAvgOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const PasswordResetMaxOrderByAggregateInputSchema: z.ZodType<Prisma.PasswordResetMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  user_id: z.lazy(() => SortOrderSchema).optional(),
+  token: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const PasswordResetMinOrderByAggregateInputSchema: z.ZodType<Prisma.PasswordResetMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  user_id: z.lazy(() => SortOrderSchema).optional(),
+  token: z.lazy(() => SortOrderSchema).optional(),
+  created_at: z.lazy(() => SortOrderSchema).optional(),
+  updated_at: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const PasswordResetSumOrderByAggregateInputSchema: z.ZodType<Prisma.PasswordResetSumOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const IntWithAggregatesFilterSchema: z.ZodType<Prisma.IntWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedIntFilterSchema).optional(),
+  _max: z.lazy(() => NestedIntFilterSchema).optional()
+}).strict();
+
 export const UserCreateNestedOneWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutAccountsInput> = z.object({
   create: z.union([ z.lazy(() => UserCreateWithoutAccountsInputSchema),z.lazy(() => UserUncheckedCreateWithoutAccountsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutAccountsInputSchema).optional(),
@@ -2273,6 +2491,12 @@ export const CommentCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.Com
   connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const PasswordResetCreateNestedOneWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetCreateNestedOneWithoutUserInput> = z.object({
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => PasswordResetCreateOrConnectWithoutUserInputSchema).optional(),
+  connect: z.lazy(() => PasswordResetWhereUniqueInputSchema).optional()
+}).strict();
+
 export const AccountUncheckedCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.AccountUncheckedCreateNestedManyWithoutUserInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -2299,6 +2523,12 @@ export const CommentUncheckedCreateNestedManyWithoutUserInputSchema: z.ZodType<P
   connectOrCreate: z.union([ z.lazy(() => CommentCreateOrConnectWithoutUserInputSchema),z.lazy(() => CommentCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
   createMany: z.lazy(() => CommentCreateManyUserInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUncheckedCreateNestedOneWithoutUserInput> = z.object({
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => PasswordResetCreateOrConnectWithoutUserInputSchema).optional(),
+  connect: z.lazy(() => PasswordResetWhereUniqueInputSchema).optional()
 }).strict();
 
 export const NullableDateTimeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.NullableDateTimeFieldUpdateOperationsInput> = z.object({
@@ -2361,6 +2591,16 @@ export const CommentUpdateManyWithoutUserNestedInputSchema: z.ZodType<Prisma.Com
   deleteMany: z.union([ z.lazy(() => CommentScalarWhereInputSchema),z.lazy(() => CommentScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
+export const PasswordResetUpdateOneWithoutUserNestedInputSchema: z.ZodType<Prisma.PasswordResetUpdateOneWithoutUserNestedInput> = z.object({
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => PasswordResetCreateOrConnectWithoutUserInputSchema).optional(),
+  upsert: z.lazy(() => PasswordResetUpsertWithoutUserInputSchema).optional(),
+  disconnect: z.boolean().optional(),
+  delete: z.boolean().optional(),
+  connect: z.lazy(() => PasswordResetWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => PasswordResetUpdateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedUpdateWithoutUserInputSchema) ]).optional(),
+}).strict();
+
 export const AccountUncheckedUpdateManyWithoutUserNestedInputSchema: z.ZodType<Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -2415,6 +2655,16 @@ export const CommentUncheckedUpdateManyWithoutUserNestedInputSchema: z.ZodType<P
   update: z.union([ z.lazy(() => CommentUpdateWithWhereUniqueWithoutUserInputSchema),z.lazy(() => CommentUpdateWithWhereUniqueWithoutUserInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => CommentUpdateManyWithWhereWithoutUserInputSchema),z.lazy(() => CommentUpdateManyWithWhereWithoutUserInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => CommentScalarWhereInputSchema),z.lazy(() => CommentScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema: z.ZodType<Prisma.PasswordResetUncheckedUpdateOneWithoutUserNestedInput> = z.object({
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => PasswordResetCreateOrConnectWithoutUserInputSchema).optional(),
+  upsert: z.lazy(() => PasswordResetUpsertWithoutUserInputSchema).optional(),
+  disconnect: z.boolean().optional(),
+  delete: z.boolean().optional(),
+  connect: z.lazy(() => PasswordResetWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => PasswordResetUpdateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedUpdateWithoutUserInputSchema) ]).optional(),
 }).strict();
 
 export const UserCreateNestedOneWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutCommentInput> = z.object({
@@ -2679,6 +2929,28 @@ export const NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema: z.ZodTyp
   update: z.union([ z.lazy(() => NodeUpdateWithoutParent_nodeInputSchema),z.lazy(() => NodeUncheckedUpdateWithoutParent_nodeInputSchema) ]).optional(),
 }).strict();
 
+export const UserCreateNestedOneWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutPasswordResetInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedCreateWithoutPasswordResetInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutPasswordResetInputSchema).optional(),
+  connect: z.lazy(() => UserWhereUniqueInputSchema).optional()
+}).strict();
+
+export const UserUpdateOneRequiredWithoutPasswordResetNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutPasswordResetNestedInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedCreateWithoutPasswordResetInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutPasswordResetInputSchema).optional(),
+  upsert: z.lazy(() => UserUpsertWithoutPasswordResetInputSchema).optional(),
+  connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => UserUpdateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedUpdateWithoutPasswordResetInputSchema) ]).optional(),
+}).strict();
+
+export const IntFieldUpdateOperationsInputSchema: z.ZodType<Prisma.IntFieldUpdateOperationsInput> = z.object({
+  set: z.number().optional(),
+  increment: z.number().optional(),
+  decrement: z.number().optional(),
+  multiply: z.number().optional(),
+  divide: z.number().optional()
+}).strict();
+
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -2896,6 +3168,22 @@ export const NestedJsonFilterSchema: z.ZodType<Prisma.NestedJsonFilter> = z.obje
   not: z.union([ InputJsonValue,z.lazy(() => JsonNullValueFilterSchema) ]).optional(),
 }).strict();
 
+export const NestedIntWithAggregatesFilterSchema: z.ZodType<Prisma.NestedIntWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedIntWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedIntFilterSchema).optional(),
+  _max: z.lazy(() => NestedIntFilterSchema).optional()
+}).strict();
+
 export const UserCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateWithoutAccountsInput> = z.object({
   id: z.string().optional(),
   name: z.string().optional().nullable(),
@@ -2906,7 +3194,8 @@ export const UserCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateWi
   forgot_password_token: z.string().optional().nullable(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutAccountsInput> = z.object({
@@ -2919,7 +3208,8 @@ export const UserUncheckedCreateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   forgot_password_token: z.string().optional().nullable(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutAccountsInput> = z.object({
@@ -2942,7 +3232,8 @@ export const UserUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUpdateWi
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutAccountsInput> = z.object({
@@ -2955,7 +3246,8 @@ export const UserUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateWithoutSessionsInput> = z.object({
@@ -2968,7 +3260,8 @@ export const UserCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateWi
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutSessionsInput> = z.object({
@@ -2981,7 +3274,8 @@ export const UserUncheckedCreateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutSessionsInput> = z.object({
@@ -3004,7 +3298,8 @@ export const UserUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUpdateWi
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutSessionsInput> = z.object({
@@ -3017,7 +3312,8 @@ export const UserUncheckedUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const AccountCreateWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateWithoutUserInput> = z.object({
@@ -3140,6 +3436,24 @@ export const CommentCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.CommentC
   skipDuplicates: z.boolean().optional()
 }).strict();
 
+export const PasswordResetCreateWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetCreateWithoutUserInput> = z.object({
+  token: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const PasswordResetUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUncheckedCreateWithoutUserInput> = z.object({
+  id: z.number().optional(),
+  token: z.string(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional()
+}).strict();
+
+export const PasswordResetCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetCreateOrConnectWithoutUserInput> = z.object({
+  where: z.lazy(() => PasswordResetWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]),
+}).strict();
+
 export const AccountUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.AccountUpsertWithWhereUniqueWithoutUserInput> = z.object({
   where: z.lazy(() => AccountWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => AccountUpdateWithoutUserInputSchema),z.lazy(() => AccountUncheckedUpdateWithoutUserInputSchema) ]),
@@ -3259,6 +3573,24 @@ export const CommentScalarWhereInputSchema: z.ZodType<Prisma.CommentScalarWhereI
   y: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
 }).strict();
 
+export const PasswordResetUpsertWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUpsertWithoutUserInput> = z.object({
+  update: z.union([ z.lazy(() => PasswordResetUpdateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedUpdateWithoutUserInputSchema) ]),
+  create: z.union([ z.lazy(() => PasswordResetCreateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedCreateWithoutUserInputSchema) ]),
+}).strict();
+
+export const PasswordResetUpdateWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUpdateWithoutUserInput> = z.object({
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const PasswordResetUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUncheckedUpdateWithoutUserInput> = z.object({
+  id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
 export const UserCreateWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateWithoutCommentInput> = z.object({
   id: z.string().optional(),
   name: z.string().optional().nullable(),
@@ -3269,7 +3601,8 @@ export const UserCreateWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateWit
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
-  userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional()
+  userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutCommentInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutCommentInput> = z.object({
@@ -3282,7 +3615,8 @@ export const UserUncheckedCreateWithoutCommentInputSchema: z.ZodType<Prisma.User
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutCommentInput> = z.object({
@@ -3360,7 +3694,8 @@ export const UserUpdateWithoutCommentInputSchema: z.ZodType<Prisma.UserUpdateWit
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
-  userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional()
+  userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutCommentInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutCommentInput> = z.object({
@@ -3373,7 +3708,8 @@ export const UserUncheckedUpdateWithoutCommentInputSchema: z.ZodType<Prisma.User
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const CommentUpsertWithWhereUniqueWithoutRep_to_commentInputSchema: z.ZodType<Prisma.CommentUpsertWithWhereUniqueWithoutRep_to_commentInput> = z.object({
@@ -3456,7 +3792,8 @@ export const UserCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserCrea
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutUserTemplateInput> = z.object({
@@ -3469,7 +3806,8 @@ export const UserUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma
   forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutUserTemplateInput> = z.object({
@@ -3521,7 +3859,8 @@ export const UserUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserUpda
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutUserTemplateInput> = z.object({
@@ -3534,7 +3873,8 @@ export const UserUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma
   forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  PasswordReset: z.lazy(() => PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const UserTemplateCreateWithoutTemplateInputSchema: z.ZodType<Prisma.UserTemplateCreateWithoutTemplateInput> = z.object({
@@ -3897,6 +4237,72 @@ export const NodeUncheckedUpdateWithoutNode_childInputSchema: z.ZodType<Prisma.N
   unit: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   templateId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parent_node_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const UserCreateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserCreateWithoutPasswordResetInput> = z.object({
+  id: z.string().optional(),
+  name: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
+  emailVerified: z.coerce.date().optional().nullable(),
+  image: z.string().optional().nullable(),
+  password: z.string().optional().nullable(),
+  forgot_password_token: z.string().optional().nullable(),
+  accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
+  userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
+  comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional()
+}).strict();
+
+export const UserUncheckedCreateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutPasswordResetInput> = z.object({
+  id: z.string().optional(),
+  name: z.string().optional().nullable(),
+  email: z.string().optional().nullable(),
+  emailVerified: z.coerce.date().optional().nullable(),
+  image: z.string().optional().nullable(),
+  password: z.string().optional().nullable(),
+  forgot_password_token: z.string().optional().nullable(),
+  accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+}).strict();
+
+export const UserCreateOrConnectWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutPasswordResetInput> = z.object({
+  where: z.lazy(() => UserWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => UserCreateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedCreateWithoutPasswordResetInputSchema) ]),
+}).strict();
+
+export const UserUpsertWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserUpsertWithoutPasswordResetInput> = z.object({
+  update: z.union([ z.lazy(() => UserUpdateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedUpdateWithoutPasswordResetInputSchema) ]),
+  create: z.union([ z.lazy(() => UserCreateWithoutPasswordResetInputSchema),z.lazy(() => UserUncheckedCreateWithoutPasswordResetInputSchema) ]),
+}).strict();
+
+export const UserUpdateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserUpdateWithoutPasswordResetInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  email: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
+  userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
+  comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional()
+}).strict();
+
+export const UserUncheckedUpdateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutPasswordResetInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  email: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 
 export const AccountCreateManyUserInputSchema: z.ZodType<Prisma.AccountCreateManyUserInput> = z.object({
@@ -4694,6 +5100,68 @@ export const VerificationTokenFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.Veri
   where: VerificationTokenWhereUniqueInputSchema,
 }).strict()
 
+export const PasswordResetFindFirstArgsSchema: z.ZodType<Prisma.PasswordResetFindFirstArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereInputSchema.optional(),
+  orderBy: z.union([ PasswordResetOrderByWithRelationInputSchema.array(),PasswordResetOrderByWithRelationInputSchema ]).optional(),
+  cursor: PasswordResetWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: PasswordResetScalarFieldEnumSchema.array().optional(),
+}).strict()
+
+export const PasswordResetFindFirstOrThrowArgsSchema: z.ZodType<Prisma.PasswordResetFindFirstOrThrowArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereInputSchema.optional(),
+  orderBy: z.union([ PasswordResetOrderByWithRelationInputSchema.array(),PasswordResetOrderByWithRelationInputSchema ]).optional(),
+  cursor: PasswordResetWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: PasswordResetScalarFieldEnumSchema.array().optional(),
+}).strict()
+
+export const PasswordResetFindManyArgsSchema: z.ZodType<Prisma.PasswordResetFindManyArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereInputSchema.optional(),
+  orderBy: z.union([ PasswordResetOrderByWithRelationInputSchema.array(),PasswordResetOrderByWithRelationInputSchema ]).optional(),
+  cursor: PasswordResetWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: PasswordResetScalarFieldEnumSchema.array().optional(),
+}).strict()
+
+export const PasswordResetAggregateArgsSchema: z.ZodType<Prisma.PasswordResetAggregateArgs> = z.object({
+  where: PasswordResetWhereInputSchema.optional(),
+  orderBy: z.union([ PasswordResetOrderByWithRelationInputSchema.array(),PasswordResetOrderByWithRelationInputSchema ]).optional(),
+  cursor: PasswordResetWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const PasswordResetGroupByArgsSchema: z.ZodType<Prisma.PasswordResetGroupByArgs> = z.object({
+  where: PasswordResetWhereInputSchema.optional(),
+  orderBy: z.union([ PasswordResetOrderByWithAggregationInputSchema.array(),PasswordResetOrderByWithAggregationInputSchema ]).optional(),
+  by: PasswordResetScalarFieldEnumSchema.array(),
+  having: PasswordResetScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const PasswordResetFindUniqueArgsSchema: z.ZodType<Prisma.PasswordResetFindUniqueArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereUniqueInputSchema,
+}).strict()
+
+export const PasswordResetFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.PasswordResetFindUniqueOrThrowArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereUniqueInputSchema,
+}).strict()
+
 export const AccountCreateArgsSchema: z.ZodType<Prisma.AccountCreateArgs> = z.object({
   select: AccountSelectSchema.optional(),
   include: AccountIncludeSchema.optional(),
@@ -5016,4 +5484,45 @@ export const VerificationTokenUpdateManyArgsSchema: z.ZodType<Prisma.Verificatio
 
 export const VerificationTokenDeleteManyArgsSchema: z.ZodType<Prisma.VerificationTokenDeleteManyArgs> = z.object({
   where: VerificationTokenWhereInputSchema.optional(),
+}).strict()
+
+export const PasswordResetCreateArgsSchema: z.ZodType<Prisma.PasswordResetCreateArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  data: z.union([ PasswordResetCreateInputSchema,PasswordResetUncheckedCreateInputSchema ]),
+}).strict()
+
+export const PasswordResetUpsertArgsSchema: z.ZodType<Prisma.PasswordResetUpsertArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereUniqueInputSchema,
+  create: z.union([ PasswordResetCreateInputSchema,PasswordResetUncheckedCreateInputSchema ]),
+  update: z.union([ PasswordResetUpdateInputSchema,PasswordResetUncheckedUpdateInputSchema ]),
+}).strict()
+
+export const PasswordResetCreateManyArgsSchema: z.ZodType<Prisma.PasswordResetCreateManyArgs> = z.object({
+  data: z.union([ PasswordResetCreateManyInputSchema,PasswordResetCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict()
+
+export const PasswordResetDeleteArgsSchema: z.ZodType<Prisma.PasswordResetDeleteArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  where: PasswordResetWhereUniqueInputSchema,
+}).strict()
+
+export const PasswordResetUpdateArgsSchema: z.ZodType<Prisma.PasswordResetUpdateArgs> = z.object({
+  select: PasswordResetSelectSchema.optional(),
+  include: PasswordResetIncludeSchema.optional(),
+  data: z.union([ PasswordResetUpdateInputSchema,PasswordResetUncheckedUpdateInputSchema ]),
+  where: PasswordResetWhereUniqueInputSchema,
+}).strict()
+
+export const PasswordResetUpdateManyArgsSchema: z.ZodType<Prisma.PasswordResetUpdateManyArgs> = z.object({
+  data: z.union([ PasswordResetUpdateManyMutationInputSchema,PasswordResetUncheckedUpdateManyInputSchema ]),
+  where: PasswordResetWhereInputSchema.optional(),
+}).strict()
+
+export const PasswordResetDeleteManyArgsSchema: z.ZodType<Prisma.PasswordResetDeleteManyArgs> = z.object({
+  where: PasswordResetWhereInputSchema.optional(),
 }).strict()
