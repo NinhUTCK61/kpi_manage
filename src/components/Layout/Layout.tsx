@@ -2,7 +2,6 @@ import { Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
 import { HEIGHT_HEADER, Header } from './Header'
-import { Sidebar } from './Sidebar'
 
 type LayoutType = {
   title?: string
@@ -19,7 +18,7 @@ const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
       </Head>
       <Header />
       <Stack direction="row">
-        <Sidebar />
+        {/* <Sidebar /> */}
         <ContentPage>{children}</ContentPage>
       </Stack>
     </>

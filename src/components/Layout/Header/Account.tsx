@@ -37,11 +37,10 @@ const Account = () => {
         style={{ margin: '18px ' }}
       />
       <Tooltip title="Account settings">
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <StackName direction="row" spacing={1} onClick={handleClick}>
           <Avatar>H</Avatar>
           <Typography variant="body2">Name of user</Typography>
           <IconButton
-            onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
             aria-controls={open ? 'account-menu' : undefined}
@@ -50,7 +49,7 @@ const Account = () => {
           >
             <Image src={ArrownDownIcon} alt="down" />
           </IconButton>
-        </Stack>
+        </StackName>
       </Tooltip>
       <Menu
         anchorEl={anchorEl}
@@ -139,6 +138,11 @@ const Menu = styled(MuiMenu)({
       zIndex: 0,
     },
   },
+})
+
+const StackName = styled(Stack)({
+  alignItems: 'center',
+  cursor: 'pointer',
 })
 
 export { Account }

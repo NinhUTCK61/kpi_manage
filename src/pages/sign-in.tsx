@@ -4,28 +4,32 @@ import Logo from '@/assets/imgs/logo_login.png'
 import { CheckBox } from '@/components/Form/CheckBox'
 import { Input } from '@/components/Form/Input'
 import { ContainerCustom, Layout } from '@/components/Layout'
-import { LoginSchema } from '@/schema'
+import { LoginSchema, type SignInType } from '@/schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography, styled } from '@mui/material'
 import { Stack } from '@mui/system'
-import type { NextPage } from 'next'
+import type { GetStaticProps, GetStaticPropsContext, NextPage } from 'next'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Login: NextPage = () => {
   const router = useRouter()
 
   const { callbackUrl = '/' } = router.query
-
-  const { control } = useForm<z.infer<typeof LoginSchema>>({
+  const { control } = useForm<SignInType>({
     defaultValues: {
       email: '',
       password: '',
     },
+    resolver: zodResolver(LoginSchema),
   })
+
+  const { t } = useTranslation()
 
   const [remember, setRemember] = useState<boolean>(true)
 
@@ -97,7 +101,7 @@ const Login: NextPage = () => {
                 Welcome back! Please enter your details.
               </Typography>
             </Stack>
-            <StackInput spacing={2}>
+            <Stack width="100%" spacing={2}>
               <Input
                 control={control}
                 name="email"
@@ -107,7 +111,7 @@ const Login: NextPage = () => {
               />
               <Input
                 control={control}
-                name="email"
+                name="password"
                 label="Password"
                 fullWidth
                 placeholder="Enter your password"
@@ -133,11 +137,10 @@ const Login: NextPage = () => {
                   Don’t have an account?
                 </Typography>
                 <TextColor variant="body2" fontWeight={400}>
-                  {' '}
                   Sign up
                 </TextColor>
               </Stack>
-            </StackInput>
+            </Stack>
           </Stack>
         </ContainerCustom>
       </Layout>
@@ -145,9 +148,18 @@ const Login: NextPage = () => {
   )
 }
 
-const StackInput = styled(Stack)({
-  width: '100%',
-})
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'common',
+      ])),
+      // Will be passed to the page component as props
+    },
+  }
+}
+
 
 const TextColor = styled(Typography)(({ theme }) => ({
   color: theme.palette.customPrimary[500],
@@ -156,3 +168,4 @@ const TextColor = styled(Typography)(({ theme }) => ({
 }))
 
 export default Login
+
