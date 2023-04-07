@@ -9,7 +9,6 @@ import createEmotionCache from '@/libs/config/createEmotionCache'
 import '@/styles/globals.css'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
 import { appWithTranslation } from 'next-i18next'
-import { config} from '../../next-i18next.config.js'
 
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
@@ -31,4 +30,6 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
   )
 }
 
-export default api.withTRPC(appWithTranslation(MyApp, config.i18n))
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export default api.withTRPC(appWithTranslation(MyApp))

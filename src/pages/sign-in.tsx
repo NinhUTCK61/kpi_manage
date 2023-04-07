@@ -8,14 +8,14 @@ import { LoginSchema, type SignInType } from '@/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography, styled } from '@mui/material'
 import { Stack } from '@mui/system'
-import type { GetStaticProps, GetStaticPropsContext, NextPage } from 'next'
+import type { GetStaticPropsContext, NextPage } from 'next'
 import { signIn } from 'next-auth/react'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Login: NextPage = () => {
   const router = useRouter()
@@ -67,6 +67,7 @@ const Login: NextPage = () => {
   return (
     <>
       <Layout title="Login">
+        <Typography>{t('language')}</Typography>
         <ContainerCustom direction="row" justifyContent="center" pt={10}>
           <Stack
             alignSelf="center"
@@ -149,17 +150,13 @@ const Login: NextPage = () => {
 }
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
-
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        'common',
-      ])),
+      ...(await serverSideTranslations(locale, ['common'])),
       // Will be passed to the page component as props
     },
   }
 }
-
 
 const TextColor = styled(Typography)(({ theme }) => ({
   color: theme.palette.customPrimary[500],
@@ -168,4 +165,3 @@ const TextColor = styled(Typography)(({ theme }) => ({
 }))
 
 export default Login
-

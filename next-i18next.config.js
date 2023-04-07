@@ -1,15 +1,23 @@
-const path= require('path')
+// @ts-check
 
-/** @type {import("next-i18next").UserConfig} */
-
-const config = {
+/**
+ * @type {import('next-i18next').UserConfig}
+ */
+module.exports = {
+  // https://www.i18next.com/overview/configuration-options#logging
   i18n: {
-    locales: ["en", "jp"],
-    defaultLocale: "en",
+    defaultLocale: 'en',
+    locales: ['en', 'jp'],
   },
-  localePath: path.resolve("./public/locales"),
-};
+  /** To avoid issues when deploying to some paas (vercel...) */
 
-exports.module = {
-  config
-};
+
+
+  /**
+   * @link https://github.com/i18next/next-i18next#6-advanced-configuration
+   */
+  // saveMissing: false,
+  // strictMode: true,
+  // serializeConfig: false,
+  // react: { useSuspense: false }
+}
