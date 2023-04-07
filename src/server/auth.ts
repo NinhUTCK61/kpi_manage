@@ -76,7 +76,7 @@ export const authOptions: NextAuthOptions = {
         // (i.e., the request IP address)
         try {
           const { email, password } = await LoginSchema.parseAsync(credentials)
-
+          console.log(email, password)
           const user = await prisma.user.findFirst({
             where: { email },
           })
@@ -117,6 +117,9 @@ export const authOptions: NextAuthOptions = {
      */
   ],
   session: { strategy: 'jwt' },
+  pages: {
+    signIn: '/sign-in'
+  }
 }
 
 /**
