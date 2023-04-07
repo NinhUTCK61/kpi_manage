@@ -1,15 +1,14 @@
 import English from '@/assets/imgs/english.png'
 import { MenuItem, Menu as MuiMenu, Stack, Typography, alpha, styled } from '@mui/material'
-import Image from 'next/image'
-import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const Language: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const router = useRouter()
-  
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -30,7 +29,7 @@ const Language: React.FC = () => {
         direction="row"
         alignItems="center"
         aria-controls={open ? 'account-menu' : undefined}
-        aria-haspopup="true" 
+        aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
