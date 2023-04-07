@@ -1,33 +1,31 @@
 import nodemailer from 'nodemailer'
 
-export function sendMail(email: string, token: string) {
+export async function sendMail(email: string, token: string) {
   const transporter = nodemailer.createTransport({
-    host: process.env.NEXTAUTH_HOST,
+    host: process.env.EMAIL_SERVER_HOST,
     pool: true,
-    port: Number(process.env.NEXTAUTH_PORT),
+    port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : 2525,
     secure: false, // upgrade later with STARTTLS
     auth: {
-      user: 'thinh221201@gmail.com',
-      pass: '8EE605E900E4886567381CC68EC0AAF9C511',
+      user: process.env.EMAIL_SERVER_USER,
+      pass: process.env.EMAIL_SERVER_PASSWORD,
     },
   })
 
   const mailOptions = {
-    from: 'thinh.reply.local@gmail.com',
+    from: process.env.EMAIL_FROM,
     to: `${email}`,
     name: 'Name',
     email: 'Email',
     subject: 'Password Reset',
-    html: `<a href="${process.env.NEXTAUTH_URL}'/'${token}">Link password</a>`,
+    html: `<h1><a href="${process.env.NEXTAUTH_URL}/change-password/${token}">${token}</a></h1>`,
   }
 
-  const send = transporter.sendMail(mailOptions, function (error, info) {
+  await transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      return error
+      console.log(error)
     } else {
       console.log('Email sent: ' + info.response)
     }
   })
-
-  return send
 }

@@ -45,6 +45,7 @@ export const authRouter = createTRPCRouter({
           }
         } else if (user?.PasswordReset || user?.PasswordReset?.token === null) {
           const send = sendMail(input.email, token)
+
           if (send !== undefined) {
             await prisma.passwordReset.update({
               where: {
