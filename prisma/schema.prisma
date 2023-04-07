@@ -48,18 +48,17 @@ model Session {
 }
 
 model User {
-  id                    String         @id @default(cuid())
-  name                  String?
-  email                 String?        @unique
-  emailVerified         DateTime?      @map("email_verified")
-  image                 String?
-  accounts              Account[]
-  sessions              Session[]
-  password              String?
-  forgot_password_token String?
-  userTemplate          UserTemplate[]
-  comment               Comment[]
-  PasswordReset         PasswordReset?
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?      @map("email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  password      String?
+  userTemplate  UserTemplate[]
+  comment       Comment[]
+  PasswordReset PasswordReset?
 }
 
 model Comment {

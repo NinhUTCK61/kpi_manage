@@ -1,6 +1,3 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "forgot_password_token" TEXT;
-
 -- CreateTable
 CREATE TABLE "Comment" (
     "id" TEXT NOT NULL,

@@ -70,7 +70,7 @@ export const TemplateScalarFieldEnumSchema = z.enum(['id','root_note_id','name',
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','image','password','forgot_password_token']);
+export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','image','password']);
 
 export const UserTemplateScalarFieldEnumSchema = z.enum(['id','userId','template_id','is_owner','is_favorite','can_edit','created_at','updated_at']);
 
@@ -124,7 +124,6 @@ export const UserSchema = z.object({
   emailVerified: z.coerce.date().nullable(),
   image: z.string().nullable(),
   password: z.string().nullable(),
-  forgot_password_token: z.string().nullable(),
 })
 
 export type User = z.infer<typeof UserSchema>
@@ -317,7 +316,6 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   emailVerified: z.boolean().optional(),
   image: z.boolean().optional(),
   password: z.boolean().optional(),
-  forgot_password_token: z.boolean().optional(),
   accounts: z.union([z.boolean(),z.lazy(() => AccountFindManyArgsSchema)]).optional(),
   sessions: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
   userTemplate: z.union([z.boolean(),z.lazy(() => UserTemplateFindManyArgsSchema)]).optional(),
@@ -629,7 +627,6 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   emailVerified: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   image: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   password: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
-  forgot_password_token: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   accounts: z.lazy(() => AccountListRelationFilterSchema).optional(),
   sessions: z.lazy(() => SessionListRelationFilterSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateListRelationFilterSchema).optional(),
@@ -644,7 +641,6 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
-  forgot_password_token: z.lazy(() => SortOrderSchema).optional(),
   accounts: z.lazy(() => AccountOrderByRelationAggregateInputSchema).optional(),
   sessions: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateOrderByRelationAggregateInputSchema).optional(),
@@ -664,7 +660,6 @@ export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderBy
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
-  forgot_password_token: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => UserMinOrderByAggregateInputSchema).optional()
@@ -680,7 +675,6 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScal
   emailVerified: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   image: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   password: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
-  forgot_password_token: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
 }).strict();
 
 export const CommentWhereInputSchema: z.ZodType<Prisma.CommentWhereInput> = z.object({
@@ -1213,7 +1207,6 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -1228,7 +1221,6 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -1243,7 +1235,6 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -1258,7 +1249,6 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -1272,8 +1262,7 @@ export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = 
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
-  password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable()
+  password: z.string().optional().nullable()
 }).strict();
 
 export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyMutationInput> = z.object({
@@ -1283,7 +1272,6 @@ export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyM
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyInput> = z.object({
@@ -1293,7 +1281,6 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedU
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const CommentCreateInputSchema: z.ZodType<Prisma.CommentCreateInput> = z.object({
@@ -2021,8 +2008,7 @@ export const UserCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserCountOrd
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
-  password: z.lazy(() => SortOrderSchema).optional(),
-  forgot_password_token: z.lazy(() => SortOrderSchema).optional()
+  password: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = z.object({
@@ -2031,8 +2017,7 @@ export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderBy
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
-  password: z.lazy(() => SortOrderSchema).optional(),
-  forgot_password_token: z.lazy(() => SortOrderSchema).optional()
+  password: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderByAggregateInput> = z.object({
@@ -2041,8 +2026,7 @@ export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderBy
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
-  password: z.lazy(() => SortOrderSchema).optional(),
-  forgot_password_token: z.lazy(() => SortOrderSchema).optional()
+  password: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DateTimeNullableWithAggregatesFilterSchema: z.ZodType<Prisma.DateTimeNullableWithAggregatesFilter> = z.object({
@@ -3191,7 +3175,6 @@ export const UserCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateWi
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3205,7 +3188,6 @@ export const UserUncheckedCreateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3229,7 +3211,6 @@ export const UserUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUpdateWi
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3243,7 +3224,6 @@ export const UserUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3257,7 +3237,6 @@ export const UserCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateWi
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3271,7 +3250,6 @@ export const UserUncheckedCreateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3295,7 +3273,6 @@ export const UserUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUpdateWi
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3309,7 +3286,6 @@ export const UserUncheckedUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3598,7 +3574,6 @@ export const UserCreateWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateWit
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3612,7 +3587,6 @@ export const UserUncheckedCreateWithoutCommentInputSchema: z.ZodType<Prisma.User
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3691,7 +3665,6 @@ export const UserUpdateWithoutCommentInputSchema: z.ZodType<Prisma.UserUpdateWit
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3705,7 +3678,6 @@ export const UserUncheckedUpdateWithoutCommentInputSchema: z.ZodType<Prisma.User
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3789,7 +3761,6 @@ export const UserCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserCrea
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3803,7 +3774,6 @@ export const UserUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3856,7 +3826,6 @@ export const UserUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserUpda
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3870,7 +3839,6 @@ export const UserUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   comment: z.lazy(() => CommentUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -4246,7 +4214,6 @@ export const UserCreateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserCre
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -4260,7 +4227,6 @@ export const UserUncheckedCreateWithoutPasswordResetInputSchema: z.ZodType<Prism
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
   password: z.string().optional().nullable(),
-  forgot_password_token: z.string().optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -4284,7 +4250,6 @@ export const UserUpdateWithoutPasswordResetInputSchema: z.ZodType<Prisma.UserUpd
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -4298,7 +4263,6 @@ export const UserUncheckedUpdateWithoutPasswordResetInputSchema: z.ZodType<Prism
   emailVerified: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   image: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   password: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  forgot_password_token: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
