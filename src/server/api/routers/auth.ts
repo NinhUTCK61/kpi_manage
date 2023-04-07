@@ -1,5 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
-import nodemailer from 'nodemailer'
+import { sendMail } from '@/utils/sendmail'
+import { TRPCError } from '@trpc/server'
+import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 export const authRouter = createTRPCRouter({
@@ -11,39 +13,61 @@ export const authRouter = createTRPCRouter({
           email: input.email,
         },
       })
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_SERVER_HOST,
-        pool: true,
-        port: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT, 10) : 2525,
-        secure: false, // upgrade later with STARTTLS
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      })
       return user
     }),
   forgotPassword: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string() }))
+    .input(z.object({ email: z.string().email() }))
     .mutation(async ({ input, ctx: { prisma } }) => {
       const user = await prisma.user.findUnique({
         where: {
           email: input.email,
         },
+        include: {
+          PasswordReset: true,
+        },
       })
-      console.log(user)
-      // if (user) {
-      //   const token = nanoid()
-      //   senMail(input.email, token)
-      //   await prisma.passwordReset.create({
-      //     where: {
-      //       email: input.email
-      //     }
-      //     data: {
-
-      //     }
-      //   })
-      // }
+      const token = nanoid()
+      if (user) {
+        if (user?.PasswordReset === null) {
+          const send = sendMail(input.email, token)
+          if (send !== undefined) {
+            await prisma.passwordReset.create({
+              data: {
+                user_id: user.id,
+                token: token,
+              },
+            })
+          } else {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Send mail fail!',
+            })
+          }
+        } else if (user?.PasswordReset || user?.PasswordReset?.token === null) {
+          const send = sendMail(input.email, token)
+          if (send !== undefined) {
+            await prisma.passwordReset.update({
+              where: {
+                user_id: user?.id,
+              },
+              data: {
+                token: token,
+              },
+            })
+          } else {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Send mail fail!',
+            })
+          }
+        }
+      } else {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found!',
+        })
+      }
+      return user
     }),
   signUp: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/sign-up' } })
