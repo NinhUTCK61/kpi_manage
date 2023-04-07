@@ -34,8 +34,10 @@
     "react-hook-form": "^7.43.9",
     "sharp": "^0.32.0",
     "superjson": "1.12.2",
-    "zod": "^3.21.4",
-    "zustand": "^4.3.7"
+    "zustand": "^4.3.7",
+    "trpc-openapi": "^1.1.2",
+    "zod": "3.21.1",
+    "zod-prisma-types": "^2.5.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",
