@@ -31,8 +31,19 @@ export const authRouter = createTRPCRouter({
           email: input.email,
         },
       })
+      console.log(user)
+      // if (user) {
+      //   const token = nanoid()
+      //   senMail(input.email, token)
+      //   await prisma.passwordReset.create({
+      //     where: {
+      //       email: input.email
+      //     }
+      //     data: {
 
-      return user
+      //     }
+      //   })
+      // }
     }),
   signUp: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/sign-up' } })

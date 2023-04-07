@@ -12,6 +12,7 @@ const Home: NextPage = () => {
       <button onClick={sessionData ? () => void signOut() : () => void signIn()}>
         {sessionData ? 'Sign out' : 'Sign in'}
       </button>
+      <button></button>
     </Layout>
   )
 }
