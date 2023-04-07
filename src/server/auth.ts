@@ -99,9 +99,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
       },
-    },
-
-    ),
+    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_SECRET,
@@ -116,7 +114,6 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-  secret: env.NEXTAUTH_SECRET,
   session: { strategy: 'jwt' },
 }
 
