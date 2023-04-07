@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
-import { sendMail } from '@/utils/sendmail'
+import MailUtils from '@/utils/mail'
 import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
@@ -17,16 +17,14 @@ export const authRouter = createTRPCRouter({
     }),
   forgotPassword: publicProcedure
     .input(z.object({ email: z.string().email() }))
+    .output(z.string())
     .mutation(async ({ input, ctx: { prisma } }) => {
       const user = await prisma.user.findUnique({
         where: {
           email: input.email,
         },
-        include: {
-          PasswordReset: true,
-        },
       })
-      const token = nanoid()
+
       if (!user) {
         throw new TRPCError({
           code: 'NOT_FOUND',
@@ -34,34 +32,32 @@ export const authRouter = createTRPCRouter({
         })
       }
 
-      const send = sendMail(input.email, token)
-      const hasToken = user.PasswordReset && user.PasswordReset.token !== null
-      if (send === undefined) {
+      const token = nanoid()
+      const mailUtil = MailUtils.getInstance()
+
+      await prisma.passwordReset.upsert({
+        where: {
+          user_id: user.id,
+        },
+        update: {
+          token,
+        },
+        create: {
+          user_id: user.id,
+          token,
+        },
+      })
+
+      try {
+        await mailUtil.sendPasswordResetMail(user.email as string, token)
+      } catch (error) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Send mail fail!',
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Send mail failed!',
         })
       }
 
-      if (hasToken) {
-        await prisma.passwordReset.update({
-          where: {
-            user_id: user.id,
-          },
-          data: {
-            token,
-          },
-        })
-      } else {
-        await prisma.passwordReset.create({
-          data: {
-            user_id: user.id,
-            token,
-          },
-        })
-      }
-
-      return user
+      return 'ok!'
     }),
   signUp: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/sign-up' } })
