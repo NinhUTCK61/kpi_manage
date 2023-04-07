@@ -4,6 +4,7 @@ import Logo from '@/assets/imgs/logo_login.png'
 import { CheckBox } from '@/components/Form/CheckBox'
 import { Input } from '@/components/Form/Input'
 import { ContainerCustom, Layout } from '@/components/Layout'
+import { LoginSchema } from '@/schema'
 import { Button, Typography, styled } from '@mui/material'
 import { Stack } from '@mui/system'
 import type { NextPage } from 'next'
@@ -12,16 +13,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-
-type FormProps = {
-  email: string
-  password: string
-}
+import { z } from 'zod'
 
 const Login: NextPage = () => {
   const router = useRouter()
-  const { callBackIrl = '/' } = router.query
-  const { control } = useForm<FormProps>({
+
+  const { callbackUrl = '/' } = router.query
+
+  const { control } = useForm<z.infer<typeof LoginSchema>>({
     defaultValues: {
       email: '',
       password: '',
@@ -41,8 +40,25 @@ const Login: NextPage = () => {
   const redirectSignUp = () => {
     router.push('/sign-up')
   }
-  const email = 'h222ieu@gmail.com'
-  const password = 'hieu@gmail.com'
+  const email = 'trungnh@solashi.com'
+  const password = 'trung9937'
+
+  const handleSignIn = async () => {
+    const res = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+      language: 'en',
+    })
+
+    if (res?.ok) {
+      router.push(callbackUrl as string)
+    } else {
+      // TODO: set Alert Error
+      const error = res?.error
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -103,13 +119,7 @@ const Login: NextPage = () => {
                 </TextColor>
               </Stack>
 
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={async () => {
-                  await signIn('credentials', { email, callBackIrl, redirect: false })
-                }}
-              >
+              <Button fullWidth variant="contained" onClick={handleSignIn}>
                 Log in
               </Button>
               <Stack
