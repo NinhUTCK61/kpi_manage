@@ -27,47 +27,40 @@ export const authRouter = createTRPCRouter({
         },
       })
       const token = nanoid()
-      if (user) {
-        if (user?.PasswordReset === null) {
-          const send = sendMail(input.email, token)
-          if (send !== undefined) {
-            await prisma.passwordReset.create({
-              data: {
-                user_id: user.id,
-                token: token,
-              },
-            })
-          } else {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message: 'Send mail fail!',
-            })
-          }
-        } else if (user?.PasswordReset || user?.PasswordReset?.token === null) {
-          const send = sendMail(input.email, token)
-
-          if (send !== undefined) {
-            await prisma.passwordReset.update({
-              where: {
-                user_id: user?.id,
-              },
-              data: {
-                token: token,
-              },
-            })
-          } else {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message: 'Send mail fail!',
-            })
-          }
-        }
-      } else {
+      if (!user) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'User not found!',
         })
       }
+
+      const send = sendMail(input.email, token)
+      const hasToken = user.PasswordReset && user.PasswordReset.token !== null
+      if (send === undefined) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Send mail fail!',
+        })
+      }
+
+      if (hasToken) {
+        await prisma.passwordReset.update({
+          where: {
+            user_id: user.id,
+          },
+          data: {
+            token,
+          },
+        })
+      } else {
+        await prisma.passwordReset.create({
+          data: {
+            user_id: user.id,
+            token,
+          },
+        })
+      }
+
       return user
     }),
   signUp: publicProcedure
@@ -78,9 +71,8 @@ export const authRouter = createTRPCRouter({
         where: {
           email: input.email,
         },
-      });
+      })
 
-      return user;
-    })
-});
-
+      return user
+    }),
+})
