@@ -18,11 +18,11 @@ const Language: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const { t, i18n } = useTranslation('common')
-  const changLanguage = () => {
+  const { t } = useTranslation('common')
+  const changLanguage = (locale: string) => {
     const { pathname, asPath, query } = router
 
-    router.push({ pathname, query }, asPath, { locale: 'jp' })
+    router.push({ pathname, query }, asPath, { locale })
   }
   return (
     <>
@@ -51,13 +51,13 @@ const Language: React.FC = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => changLanguage('en')}>
           <Image src={English} alt="english" height={20} width={20} />
           <Typography ml={0.75} variant="body2">
             English
           </Typography>
         </MenuItem>
-        <MenuItem onClick={changLanguage}>
+        <MenuItem onClick={() => changLanguage('jp')}>
           <Image src={English} alt="english" height={20} width={20} />
           <Typography ml={0.75} variant="body2">
             Japan
