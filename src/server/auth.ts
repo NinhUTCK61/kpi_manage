@@ -86,7 +86,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error('User not found.')
           }
 
-          if (user) {
+          if (user && user.password) {
             const isValidPassword = await verify(user.password, password)
             if (!isValidPassword) {
               // TODO: must return i18n message
@@ -96,7 +96,6 @@ export const authOptions: NextAuthOptions = {
             return user
           }
         } catch (error) {
-          console.log(error)
           // TODO: must return i18n message
           throw new Error('Email or password is incorrect.')
         }
@@ -118,8 +117,8 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: 'jwt' },
   pages: {
-    signIn: '/sign-in'
-  }
+    signIn: '/sign-in',
+  },
 }
 
 /**

@@ -30,6 +30,4 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 export default api.withTRPC(appWithTranslation(MyApp))
