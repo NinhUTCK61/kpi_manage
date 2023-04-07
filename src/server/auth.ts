@@ -5,7 +5,7 @@ import { env } from '@/env.mjs'
 import { LoginSchema } from '@/schema'
 import { prisma } from '@/server/db'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { consola } from 'consola'
+import { verify } from 'argon2'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 
@@ -37,20 +37,13 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt({ token, user, account, profile }) {
-      consola.info('jwt:token', token)
-      consola.info('jwt:account', account)
-      consola.info('jwt:user', user)
-      consola.info('jwt:profile', profile)
+    jwt({ token, user }) {
       if (user) {
         token.id = user.id
       }
       return token
     },
-    session({ session, user, token }) {
-      consola.info('session:user', user)
-      consola.info('session:token', token)
-      consola.info('session:session', session)
+    session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
         // session.user.role = user.role; <-- put other properties on the session here
@@ -68,7 +61,7 @@ export const authOptions: NextAuthOptions = {
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         email: {
-          label: 'Username',
+          label: 'email',
           type: 'text',
           placeholder: 'user@kpi-master.jp',
         },
@@ -88,15 +81,24 @@ export const authOptions: NextAuthOptions = {
             where: { email },
           })
 
-          if (!user) return null
+          if (!user) {
+            // TODO: must return i18n message
+            throw new Error('User not found.')
+          }
 
-          // const isValidPassword = await verify(result.password, password);
-          // if (!isValidPassword) return null;
+          if (user) {
+            const isValidPassword = await verify(user.password, password)
+            if (!isValidPassword) {
+              // TODO: must return i18n message
+              throw new Error('Email or password is incorrect.')
+            }
 
-          return user
+            return user
+          }
         } catch (error) {
           console.log(error)
-          return null
+          // TODO: must return i18n message
+          throw new Error('Email or password is incorrect.')
         }
       },
     }),
