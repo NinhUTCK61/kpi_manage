@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
+
   return (
     <Layout title="KPI Master">
       <p>{sessionData && <span>Logged in as {sessionData.user?.name}</span>}</p>
