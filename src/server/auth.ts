@@ -6,7 +6,7 @@ import { LoginSchema } from '@/schema'
 import { prisma } from '@/server/db'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { verify } from 'argon2'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 
 /**
@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      authorize: (async (credentials) => {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
@@ -99,7 +99,7 @@ export const authOptions: NextAuthOptions = {
           // TODO: must return i18n message
           throw new Error('Email or password is incorrect.')
         }
-      },
+      }) as CredentialsConfig['authorize'],
     }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
