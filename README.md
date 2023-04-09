@@ -1,28 +1,40 @@
-# Create T3 App
+# KPI Master
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Tech stack
 
-## What's next? How do I make an app with this?
+- tRPC
+- Next.js
+- Prisma (PostgreSQL)
+- MUI
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Getting started
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+1. Setup local environment variables
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+   - Copy `.env.local.example` to `.env.local`
+   - Fill in the values
 
-## Learn More
+2. Install dependencies
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+   ```bash
+    yarn
+   ```
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+3. Start the development server
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+   ```bash
+    yarn dev
+   ```
 
-## How do I deploy this?
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## Deployment
+
+**Deployment guide** : coming soon...
+
+- Staging: [https://staging.kpi-master.com](https://staging.kpi-master.com)
+- Production: [https://kpi-master.com](https://kpi-master.com)
+
+### tRPC Playground
+
+The tRPC playground is deployed to Vercel and can be found at [http://localhost:3000/api/playground](http://localhost:3000/api/playground).
