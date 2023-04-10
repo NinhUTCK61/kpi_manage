@@ -2,8 +2,8 @@ import { prisma } from '@/server/db'
 import MailUtils from '@/utils/mail'
 import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
+import * as argon2 from 'argon2'
 import { nanoid } from 'nanoid'
-
 class AuthService {
   model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
 
@@ -50,6 +50,31 @@ class AuthService {
     }
 
     return 'ok!'
+  }
+
+  async signUp(email: string, password: string, name: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    })
+
+    const hash = await argon2.hash(password)
+    if (user && typeof user !== null) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Email already exists!',
+      })
+    } else {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password: hash,
+          name,
+        },
+      })
+      return user
+    }
   }
 }
 
