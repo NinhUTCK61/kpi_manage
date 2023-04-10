@@ -1,3 +1,4 @@
+import { ForgotPasswordSchema } from '@/schema'
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -8,7 +9,7 @@ const authService = new AuthService()
 export const authRouter = createTRPCRouter({
   forgotPassword: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/forgot-password' } })
-    .input(z.object({ email: z.string().email() }))
+    .input(ForgotPasswordSchema)
     .output(z.string())
     .mutation(({ input }) => {
       return authService.forgotPassword(input.email)
