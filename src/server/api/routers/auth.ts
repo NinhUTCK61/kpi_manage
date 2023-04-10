@@ -1,4 +1,5 @@
 import { ForgotPasswordSchema } from '@/schema'
+import { SignUpSchema } from '@/schema'
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -16,7 +17,7 @@ export const authRouter = createTRPCRouter({
     }),
   signUp: publicProcedure
     .meta({ openapi: { method: 'POST', path: '/sign-up' } })
-    .input(z.object({ email: z.string().email(), password: z.string(), name: z.string() }))
+    .input(SignUpSchema)
     .output(UserSchema || z.string())
     .mutation(({ input }) => {
       return authService.signUp(input.email, input.password, input.name)
