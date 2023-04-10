@@ -6,5 +6,6 @@ const Alert = styled(MuiAlert)(({ theme }) => ({
   '& .MuiAlert-message': {
     padding: 0,
   },
+  backgroundColor: theme.palette.red[0],
 }))
 export { Alert }

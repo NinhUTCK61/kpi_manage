@@ -1,5 +1,6 @@
-import { AlertColor, AlertTitle, Snackbar, SnackbarProps, Typography } from '@mui/material'
+import { AlertColor, AlertTitle, SnackbarProps, Typography } from '@mui/material'
 import { Alert } from './Alert'
+import { Snackbar } from './Snackbar'
 
 type ToastTypes = {
   state: StateToast
@@ -22,10 +23,6 @@ const Toast: React.FC<ToastTypes> = ({
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
       onClose={handleClose}
-      sx={{
-        border: (theme) => `1px solid ${theme.palette.red[600]}`,
-        borderRadius: 2,
-      }}
     >
       <Alert onClose={handleClose} severity={type}>
         <AlertTitle color="red.600" sx={{ fontWeight: 600 }}>
