@@ -52,7 +52,7 @@ class AuthService {
     return 'ok!'
   }
 
-  async signUp(email: string, password: string) {
+  async signUp(email: string, password: string, name: string) {
     const user = await prisma.user.findUnique({
       where: {
         email: email,
@@ -60,7 +60,6 @@ class AuthService {
     })
 
     const hash = await argon2.hash(password)
-
     if (user && typeof user !== null) {
       throw new TRPCError({
         code: 'CONFLICT',
@@ -69,8 +68,9 @@ class AuthService {
     } else {
       const user = await prisma.user.create({
         data: {
-          email: email,
+          email,
           password: hash,
+          name,
         },
       })
       return user
