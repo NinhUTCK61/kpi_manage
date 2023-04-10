@@ -15,6 +15,7 @@ import {
   styled,
 } from '@mui/material'
 import { Stack } from '@mui/system'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -27,6 +28,9 @@ const Account = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const { data: sessionData } = useSession()
+
   return (
     <>
       <Image
@@ -39,7 +43,7 @@ const Account = () => {
       <Tooltip title="Account settings">
         <StackName direction="row" spacing={1} onClick={handleClick}>
           <Avatar>H</Avatar>
-          <Typography variant="body2">Name of user</Typography>
+          <Typography variant="body2">{sessionData?.user?.name}</Typography>
           <IconButton
             size="small"
             sx={{ ml: 2 }}
@@ -58,7 +62,7 @@ const Account = () => {
         onClose={handleClose}
         onClick={handleClose}
         PaperProps={{
-          elevation: 0,
+          elevation: 3,
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
@@ -92,7 +96,7 @@ const Account = () => {
             Settings
           </Typography>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => signOut()}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
@@ -117,7 +121,6 @@ const IconButton = styled(MuiIconButton)({
 const Menu = styled(MuiMenu)({
   '.MuiMenu-paper': {
     overflow: 'visible',
-    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
     mt: 1.5,
     '& .MuiAvatar-root': {
       width: 32,

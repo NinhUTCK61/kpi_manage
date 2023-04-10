@@ -1,9 +1,9 @@
 import banner1 from '@/assets/imgs/banner_login_1.png'
 import bannerChild from '@/assets/imgs/child_banner_login_1.png'
 import Logo from '@/assets/imgs/logo_login.png'
-import { CheckBox } from '@/components/Form/CheckBox'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
+import { StateToast, Toast } from '@/components/Toast'
 import { LoginSchema, type SignInType } from '@/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
@@ -33,12 +33,6 @@ const Login: NextPage = () => {
     i18n: { language },
   } = useTranslation('sign_in')
 
-  const [remember, setRemember] = useState<boolean>(true)
-
-  const handleRemember = () => {
-    setRemember((pre) => !pre)
-  }
-
   const redirectForgot = () => {
     router.push('/forgot-password')
   }
@@ -60,7 +54,12 @@ const Login: NextPage = () => {
     } else {
       // TODO: set Alert Error
       const error = res?.error as string
-      console.log(t(error))
+      setState({
+        open: true,
+        title: 'Login failed',
+        description: t(error),
+        type: 'error',
+      })
     }
   }
 
@@ -70,14 +69,26 @@ const Login: NextPage = () => {
     } catch (error) {}
   }
 
+  const [state, setState] = useState<StateToast>({
+    open: false,
+    title: '',
+    description: '',
+    type: 'info',
+  })
+
+  const handleClose = () => {
+    setState({ ...state, open: false })
+  }
+
   return (
     <>
       <LayoutUnAuth title="Login">
         <Stack direction="row" justifyContent="center" pt={10}>
           <Stack
-            alignSelf="center"
+            alignItems="center"
             sx={{ marginRight: '155px', display: { xs: 'none', md: 'flex' } }}
             spacing={5.25}
+            justifyContent="center"
           >
             <Image src={banner1} alt="banner1" />
             <Image src={bannerChild} alt="banner-child" />
@@ -91,7 +102,6 @@ const Login: NextPage = () => {
                 alt="logo"
                 style={{
                   marginBottom: '12px',
-                  filter: 'drop-shadow(0px 2px 40px rgba(17, 17, 17, 0.08));',
                 }}
               />
               <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
@@ -123,9 +133,8 @@ const Login: NextPage = () => {
                 fullWidth
                 placeholder="Enter your password"
               />
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <CheckBox value={remember} label="Remember login" onClick={handleRemember} />
-                <TextColor variant="body2" onClick={redirectForgot}>
+              <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
+                <TextColor variant="body2" onClick={redirectForgot} mr={1.75}>
                   Forgot password?
                 </TextColor>
               </Stack>
@@ -150,6 +159,7 @@ const Login: NextPage = () => {
             </Stack>
           </Stack>
         </Stack>
+        <Toast state={state} handleClose={handleClose} />
       </LayoutUnAuth>
     </>
   )
