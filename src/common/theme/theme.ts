@@ -136,6 +136,10 @@ const defaultTheme: Theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
+        root: {
+          paddingTop: 12,
+          paddingBottom: 12,
+        },
         contained: {
           color: base.white,
           fontWeight: 600,
@@ -173,6 +177,17 @@ const defaultTheme: Theme = createTheme({
             color: customPrimary[0],
             border: `1px solid ${customPrimary[0]}`,
           },
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          marginBottom: '6px',
+          fontWeight: 400,
+          fontSize: 15,
+          lineHeight: '22px',
+          color: coolGrey[900],
         },
       },
     },

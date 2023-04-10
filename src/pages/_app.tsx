@@ -8,6 +8,7 @@ import { defaultTheme } from '@/common/theme'
 import createEmotionCache from '@/libs/config/createEmotionCache'
 import '@/styles/globals.css'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
+import { appWithTranslation } from 'next-i18next'
 
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
@@ -29,4 +30,4 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
   )
 }
 
-export default api.withTRPC(MyApp)
+export default api.withTRPC(appWithTranslation(MyApp))

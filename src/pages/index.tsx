@@ -1,6 +1,15 @@
 import { Layout } from '@/components/Layout/Layout'
-import { type NextPage } from 'next'
+import { GetStaticPropsContext, type NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common'])),
+    },
+  }
+}
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()

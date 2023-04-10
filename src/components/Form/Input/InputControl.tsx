@@ -1,7 +1,9 @@
 import type { FormControlProps } from '@mui/material'
-import { Box, FormControl, FormHelperText, FormLabel } from '@mui/material'
+import { Box, FormControl } from '@mui/material'
 import { memo } from 'react'
 import type { FieldError } from 'react-hook-form'
+import { FormHelperText } from './FormHelperText'
+import { FormLabel } from './FormLabel'
 
 export type AddControlProps = {
   helperText?: string | JSX.Element
@@ -23,7 +25,7 @@ function RawInputControl({
   return (
     <FormControl fullWidth={fullWidth} error={!!fieldError} {...props}>
       {label && (
-        <FormLabel sx={{ marginBottom: '6px', fontWeight: 400, fontSize: 15, lineHeight: '22px' }}>
+        <FormLabel>
           {required ? (
             <>
               {label}
