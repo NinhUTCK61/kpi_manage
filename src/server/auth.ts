@@ -76,28 +76,27 @@ export const authOptions: NextAuthOptions = {
         // (i.e., the request IP address)
         try {
           const { email, password } = await LoginSchema.parseAsync(credentials)
-          console.log(email, password)
           const user = await prisma.user.findFirst({
             where: { email },
           })
 
           if (!user) {
             // TODO: must return i18n message
-            throw new Error('User not found.')
+            throw new Error('not_found')
           }
 
           if (user && user.password) {
             const isValidPassword = await verify(user.password, password)
             if (!isValidPassword) {
               // TODO: must return i18n message
-              throw new Error('Email or password is incorrect.')
+              throw new Error('incorrect')
             }
 
             return user
           }
         } catch (error) {
           // TODO: must return i18n message
-          throw new Error('Email or password is incorrect.')
+          throw new Error('incorrect')
         }
       }) as CredentialsConfig['authorize'],
     }),
