@@ -9,7 +9,7 @@ const authService = new AuthService()
 export const authRouter = createTRPCRouter({
   forgotPassword: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/forgot-password' } })
-    .input(z.object({ email: z.string().email() }))
+    .input(ForgotPasswordSchema)
     .output(z.string())
     .mutation(({ input }) => {
       return authService.forgotPassword(input.email)
