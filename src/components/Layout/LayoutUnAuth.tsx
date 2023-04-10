@@ -2,7 +2,6 @@ import { Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
 import { HEIGHT_HEADER, Header } from './Header'
-import { Sidebar } from './Sidebar'
 
 type LayoutType = {
   title?: string
@@ -10,7 +9,7 @@ type LayoutType = {
   children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
+const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) => {
   return (
     <>
       <Head>
@@ -19,20 +18,22 @@ const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
       </Head>
       <Header />
       <Stack direction="row">
-        <Sidebar />
+        {/* <Sidebar /> */}
         <ContentPage>{children}</ContentPage>
       </Stack>
     </>
   )
 }
 
-export { Layout }
+export { LayoutUnAuth }
 
-const ContentPage = styled('div')({
+const ContentPage = styled('div')(({ theme }) => ({
   marginTop: `${HEIGHT_HEADER}px`,
   minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
   overflow: 'hidden',
-})
+  paddingLeft: theme.spacing(12.5),
+  paddingRight: theme.spacing(12.5),
+}))

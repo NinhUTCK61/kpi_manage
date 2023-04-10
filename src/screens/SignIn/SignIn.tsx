@@ -3,7 +3,7 @@ import bannerChild from '@/assets/imgs/child_banner_login_1.png'
 import Logo from '@/assets/imgs/logo_login.png'
 import { CheckBox } from '@/components/Form/CheckBox'
 import { Input } from '@/components/Form/Input'
-import { ContainerCustom, Layout } from '@/components/Layout'
+import { LayoutUnAuth } from '@/components/Layout'
 import { LoginSchema, type SignInType } from '@/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
@@ -14,20 +14,24 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { TextColor } from './TextColor'
 
 const Login: NextPage = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
-  const { control } = useForm<SignInType>({
+  const { control, handleSubmit } = useForm<SignInType>({
     defaultValues: {
       email: '',
       password: '',
     },
     resolver: zodResolver(LoginSchema),
   })
-  const { t } = useTranslation()
+
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('sign_in')
 
   const [remember, setRemember] = useState<boolean>(true)
 
@@ -43,30 +47,33 @@ const Login: NextPage = () => {
     router.push('/sign-up')
   }
 
-  const email = 'trungnh@solashi.com'
-  const password = 'trung9937'
-
-  const handleSignIn = async () => {
+  const handleSignIn = async (email: string, password: string) => {
     const res = await signIn('credentials', {
       email,
       password,
       redirect: false,
-      language: 'en',
+      language: language,
     })
 
     if (res?.ok) {
       router.push(callbackUrl as string)
     } else {
       // TODO: set Alert Error
-      const error = res?.error
-      console.log(error)
+      const error = res?.error as string
+      console.log(t(error))
     }
+  }
+
+  const onSubmit: SubmitHandler<SignInType> = async (data) => {
+    try {
+      await handleSignIn(data.email, data.password)
+    } catch (error) {}
   }
 
   return (
     <>
-      <Layout title="Login">
-        <ContainerCustom direction="row" justifyContent="center" pt={10}>
+      <LayoutUnAuth title="Login">
+        <Stack direction="row" justifyContent="center" pt={10}>
           <Stack
             alignSelf="center"
             sx={{ marginRight: '155px', display: { xs: 'none', md: 'flex' } }}
@@ -112,6 +119,7 @@ const Login: NextPage = () => {
                 control={control}
                 name="password"
                 label="Password"
+                type="password"
                 fullWidth
                 placeholder="Enter your password"
               />
@@ -122,7 +130,7 @@ const Login: NextPage = () => {
                 </TextColor>
               </Stack>
 
-              <Button fullWidth variant="contained" onClick={handleSignIn}>
+              <Button fullWidth variant="contained" onClick={handleSubmit(onSubmit)}>
                 Log in
               </Button>
               <Stack
@@ -141,8 +149,8 @@ const Login: NextPage = () => {
               </Stack>
             </Stack>
           </Stack>
-        </ContainerCustom>
-      </Layout>
+        </Stack>
+      </LayoutUnAuth>
     </>
   )
 }
