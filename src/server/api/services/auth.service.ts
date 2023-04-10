@@ -52,13 +52,15 @@ class AuthService {
     return 'ok!'
   }
 
-  async signUp(email: string, password: string): Promise<any> {
+  async signUp(email: string, password: string) {
     const user = await prisma.user.findUnique({
       where: {
         email: email,
       },
     })
+
     const hash = await argon2.hash(password)
+
     if (user && typeof user !== null) {
       throw new TRPCError({
         code: 'CONFLICT',
