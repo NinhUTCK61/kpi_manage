@@ -1,7 +1,7 @@
 import { Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { HEIGHT_HEADER, Header } from './Header'
+import { HEIGHT_HEADER, HeaderUnAuth } from './Header'
 
 type LayoutType = {
   title?: string
@@ -16,9 +16,8 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
         <title>{title || 'KPI master'}</title>
         <meta name="description" content={description} />
       </Head>
-      <Header />
+      <HeaderUnAuth />
       <Stack direction="row">
-        {/* <Sidebar /> */}
         <ContentPage>{children}</ContentPage>
       </Stack>
     </>
