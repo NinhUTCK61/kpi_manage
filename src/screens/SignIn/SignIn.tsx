@@ -1,6 +1,5 @@
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
-import { StateToast, Toast } from '@/components/Toast'
 import { LoginSchema, type SignInType } from '@/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
@@ -10,11 +9,11 @@ import { signIn } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { enqueueSnackbar } from 'notistack'
 import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
 import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
-import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from './Image'
 import { TextColor } from './TextColor'
@@ -22,6 +21,7 @@ import { TextColor } from './TextColor'
 const Login: NextPage = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
+
   const { control, handleSubmit } = useForm<SignInType>({
     defaultValues: {
       email: '',
@@ -43,7 +43,8 @@ const Login: NextPage = () => {
     router.push('/sign-up')
   }
 
-  const handleSignIn = async (email: string, password: string) => {
+  const onSubmit: SubmitHandler<SignInType> = async (data) => {
+    const { email, password } = data
     const res = await signIn('credentials', {
       email,
       password,
@@ -54,32 +55,10 @@ const Login: NextPage = () => {
     if (res?.ok) {
       router.push(callbackUrl as string)
     } else {
-      // TODO: set Alert Error
       const error = res?.error as string
-      setState({
-        open: true,
-        title: 'Login failed',
-        description: t(error),
-        type: 'error',
-      })
+      const description = t(error)
+      enqueueSnackbar('Login failed!', { variant: 'error', description })
     }
-  }
-
-  const onSubmit: SubmitHandler<SignInType> = async (data) => {
-    try {
-      await handleSignIn(data.email, data.password)
-    } catch (error) {}
-  }
-
-  const [state, setState] = useState<StateToast>({
-    open: false,
-    title: '',
-    description: '',
-    type: 'info',
-  })
-
-  const handleClose = () => {
-    setState({ ...state, open: false })
   }
 
   return (
@@ -95,12 +74,14 @@ const Login: NextPage = () => {
             <video autoPlay loop muted height={362} width={635}>
               <source src="/assets/videos/banner.mp4" type="video/mp4" />
             </video>
+
             <Stack direction="row" spacing={5}>
               <Image src={Hand1} alt="hand 1" />
               <Image src={Hand2} alt="hand 2" />
               <Image src={Hand3} alt="hand 3" />
             </Stack>
           </Stack>
+
           <Stack
             sx={{ width: 450, height: '100%', alignItems: 'center', justifyContent: 'flex-start' }}
           >
@@ -109,6 +90,7 @@ const Login: NextPage = () => {
               <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
                 Log in to your account
               </Typography>
+
               <Typography
                 variant="body1"
                 sx={{
@@ -119,6 +101,7 @@ const Login: NextPage = () => {
                 Welcome back! Please enter your details.
               </Typography>
             </Stack>
+
             <Stack width="100%" spacing={2}>
               <Input
                 control={control}
@@ -127,6 +110,7 @@ const Login: NextPage = () => {
                 fullWidth
                 placeholder="Enter your email"
               />
+
               <Input
                 control={control}
                 name="password"
@@ -135,6 +119,7 @@ const Login: NextPage = () => {
                 fullWidth
                 placeholder="Enter your password"
               />
+
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
                 <TextColor variant="body2" onClick={redirectForgot} mr={1.75}>
                   Forgot password?
@@ -144,6 +129,7 @@ const Login: NextPage = () => {
               <Button fullWidth variant="contained" onClick={handleSubmit(onSubmit)}>
                 Log in
               </Button>
+
               <Stack
                 py={1.5}
                 spacing={0.5}
@@ -161,7 +147,6 @@ const Login: NextPage = () => {
             </Stack>
           </Stack>
         </Stack>
-        <Toast state={state} handleClose={handleClose} />
       </LayoutUnAuth>
     </>
   )

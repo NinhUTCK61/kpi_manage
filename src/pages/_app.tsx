@@ -5,10 +5,12 @@ import { SessionProvider } from 'next-auth/react'
 import type { AppProps, AppType } from 'next/app'
 
 import { defaultTheme } from '@/common/theme'
+import { customComponents, defaultAnchor } from '@/components/Snackbar'
 import createEmotionCache from '@/libs/config/createEmotionCache'
 import '@/styles/globals.css'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
 import { appWithTranslation } from 'next-i18next'
+import { SnackbarProvider } from 'notistack'
 
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
@@ -23,7 +25,9 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
     <CacheProvider value={emotionCache}>
       <SessionProvider session={session}>
         <ThemeProvider theme={defaultTheme}>
-          <Component {...pageProps} />
+          <SnackbarProvider anchorOrigin={defaultAnchor} Components={customComponents}>
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </ThemeProvider>
       </SessionProvider>
     </CacheProvider>

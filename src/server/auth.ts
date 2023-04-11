@@ -93,6 +93,8 @@ export const authOptions: NextAuthOptions = {
             }
 
             return user
+          } else {
+            throw new Error('incorrect')
           }
         } catch (error) {
           // TODO: must return i18n message

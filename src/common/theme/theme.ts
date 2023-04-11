@@ -29,6 +29,7 @@ declare module '@mui/material' {
     greyScale: typeof greyScale
     customPrimary: typeof customPrimary
     blue: typeof blue
+    green: typeof green
   }
 
   interface PaletteOptions {
@@ -42,6 +43,7 @@ declare module '@mui/material' {
     greyScale: typeof greyScale
     customPrimary: typeof customPrimary
     blue: typeof blue
+    green: typeof green
   }
 }
 
@@ -78,16 +80,17 @@ const defaultTheme: Theme = createTheme({
       primary: blue[600],
       secondary: grey[600],
     },
-    base: base,
-    blueGrey: blueGrey,
-    coolGrey: coolGrey,
-    trueGrey: trueGrey,
-    emerald: emerald,
-    yellow: yellow,
-    red: red,
-    greyScale: greyScale,
-    customPrimary: customPrimary,
-    blue: blue,
+    base,
+    blueGrey,
+    coolGrey,
+    trueGrey,
+    emerald,
+    yellow,
+    red,
+    greyScale,
+    customPrimary,
+    blue,
+    green,
   },
   typography: {
     h1: {
