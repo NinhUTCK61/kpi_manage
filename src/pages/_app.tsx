@@ -1,15 +1,13 @@
-import { api } from '@/utils/api'
-import { ThemeProvider } from '@mui/material'
-import { type Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
-import type { AppProps, AppType } from 'next/app'
-
 import { defaultTheme } from '@/common/theme'
 import { customComponents, defaultAnchor } from '@/components/Snackbar'
 import createEmotionCache from '@/libs/config/createEmotionCache'
-import '@/styles/globals.css'
+import { api } from '@/utils/api'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
+import { ThemeProvider } from '@mui/material'
+import { type Session } from 'next-auth'
+import { SessionProvider } from 'next-auth/react'
 import { appWithTranslation } from 'next-i18next'
+import type { AppProps, AppType } from 'next/app'
 import { SnackbarProvider } from 'notistack'
 
 const clientSideEmotionCache = createEmotionCache()

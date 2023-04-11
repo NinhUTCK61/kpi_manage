@@ -1,6 +1,6 @@
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
-import { LoginSchema, type SignInType } from '@/schema'
+import { LoginSchema, type SignInType } from '@/libs/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
@@ -130,17 +130,16 @@ const Login: NextPage = () => {
                 Log in
               </Button>
 
-              <Stack
-                py={1.5}
-                spacing={0.5}
-                justifyContent="center"
-                direction="row"
-                onClick={redirectSignUp}
-              >
+              <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
                 <Typography variant="body2" color="greyScale.600" fontWeight={400}>
                   Don’t have an account?
                 </Typography>
-                <TextColor variant="body2" fontWeight={400}>
+                <TextColor
+                  variant="body2"
+                  sx={{ cursor: 'pointer' }}
+                  onClick={redirectSignUp}
+                  fontWeight={400}
+                >
                   Sign up
                 </TextColor>
               </Stack>

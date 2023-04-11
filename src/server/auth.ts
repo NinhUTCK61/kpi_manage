@@ -2,7 +2,7 @@ import { type GetServerSidePropsContext } from 'next'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
 
 import { env } from '@/env.mjs'
-import { LoginSchema } from '@/schema'
+import { LoginSchema } from '@/libs/schema'
 import { prisma } from '@/server/db'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { verify } from 'argon2'

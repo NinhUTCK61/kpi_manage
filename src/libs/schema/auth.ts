@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import { NonEmptyString } from './utils'
 
 export const LoginSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: NonEmptyString,
 })
 
 export const ForgotPasswordSchema = z.object({
