@@ -25,7 +25,7 @@ const ForgotPassword: NextPage = () => {
 
   const handleForgotPassword = async (email: string) => {
     await mutation.mutate({ email })
-    if (!mutation.error) router.push('/reset-password-success')
+    if (mutation.isSuccess) router.push('/reset-password-success')
   }
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async (data) => {
