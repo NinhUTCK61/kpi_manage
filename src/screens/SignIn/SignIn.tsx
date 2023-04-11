@@ -10,10 +10,13 @@ import { signIn } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import bannerChild from 'public/assets/imgs/child_banner_login_1.png'
-import Logo from 'public/assets/imgs/logo_login.png'
+import Hand1 from 'public/assets/svgs/hand1.svg'
+import Hand2 from 'public/assets/svgs/hand2.svg'
+import Hand3 from 'public/assets/svgs/hand3.svg'
+import Logo from 'public/assets/svgs/logo.svg'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { CustomImage } from './Image'
 import { TextColor } from './TextColor'
 
 const Login: NextPage = () => {
@@ -92,19 +95,17 @@ const Login: NextPage = () => {
             <video autoPlay loop muted height={362} width={635}>
               <source src="/assets/videos/banner.mp4" type="video/mp4" />
             </video>
-            <Image src={bannerChild} alt="banner-child" />
+            <Stack direction="row" spacing={5}>
+              <Image src={Hand1} alt="hand 1" />
+              <Image src={Hand2} alt="hand 2" />
+              <Image src={Hand3} alt="hand 3" />
+            </Stack>
           </Stack>
           <Stack
             sx={{ width: 450, height: '100%', alignItems: 'center', justifyContent: 'flex-start' }}
           >
             <Stack alignItems="center" mb={4}>
-              <Image
-                src={Logo}
-                alt="logo"
-                style={{
-                  marginBottom: '12px',
-                }}
-              />
+              <CustomImage src={Logo} alt="logo" />
               <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
                 Log in to your account
               </Typography>
