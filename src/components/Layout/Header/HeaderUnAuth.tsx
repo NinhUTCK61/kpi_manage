@@ -1,7 +1,7 @@
-import LogoHeader from '@/assets/imgs/logo_header.png'
 import { Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import LogoHeader from 'public/assets/imgs/logo_header.png'
 import { StackContainer } from '../StackContainer'
 import { AppBar } from './AppBar'
 import { Language } from './Language'

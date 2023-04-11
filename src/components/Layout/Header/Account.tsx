@@ -1,5 +1,3 @@
-import ArrownDownIcon from '@/assets/imgs/arrow_down.png'
-import NotificationIcon from '@/assets/imgs/noti.png'
 import Logout from '@mui/icons-material/Logout'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
@@ -17,6 +15,8 @@ import {
 import { Stack } from '@mui/system'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import ArrowDownIcon from 'public/assets/imgs/arrow_down.png'
+import NotificationIcon from 'public/assets/imgs/noti.png'
 import { useState } from 'react'
 
 const Account = () => {
@@ -51,7 +51,7 @@ const Account = () => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Image src={ArrownDownIcon} alt="down" />
+            <Image src={ArrowDownIcon} alt="down" />
           </IconButton>
         </StackName>
       </Tooltip>

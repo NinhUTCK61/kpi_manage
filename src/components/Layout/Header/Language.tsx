@@ -1,8 +1,8 @@
-import English from '@/assets/imgs/english.png'
 import { MenuItem, Menu as MuiMenu, Stack, Typography, alpha, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import English from 'public/assets/imgs/english.png'
 import { useState } from 'react'
 
 const Language: React.FC = () => {
@@ -34,7 +34,7 @@ const Language: React.FC = () => {
         onClick={handleClick}
       >
         <Image src={English} alt="english" height={20} width={20} />
-        <Typography ml={0.75} variant="body2">
+        <Typography ml={0.75} variant="body2" width={51} textAlign="center">
           {t('language')}
         </Typography>
       </Item>
@@ -57,7 +57,7 @@ const Language: React.FC = () => {
           </Typography>
         </MenuItem>
         <MenuItem onClick={() => changLanguage('jp')}>
-          <Image src={English} alt="english" height={20} width={20} />
+          <Image src={English} alt="japan" height={20} width={20} />
           <Typography ml={0.75} variant="body2">
             Japan
           </Typography>
