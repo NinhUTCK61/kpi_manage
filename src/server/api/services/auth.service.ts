@@ -48,8 +48,7 @@ class AuthService {
         message: 'Send mail failed!',
       })
     }
-
-    return 'ok!'
+    return 'oke'
   }
 
   async signUp(email: string, password: string, name: string) {
