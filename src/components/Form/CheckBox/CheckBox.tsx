@@ -1,4 +1,3 @@
-// import CheckboxICon from '@/assets/svgs/checkbox.svg'
 import {
   Checkbox,
   CheckboxProps,

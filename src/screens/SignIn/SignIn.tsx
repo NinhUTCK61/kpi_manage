@@ -1,6 +1,3 @@
-import banner1 from '@/assets/imgs/banner_login_1.png'
-import bannerChild from '@/assets/imgs/child_banner_login_1.png'
-import Logo from '@/assets/imgs/logo_login.png'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
 import { StateToast, Toast } from '@/components/Toast'
@@ -13,6 +10,8 @@ import { signIn } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import bannerChild from 'public/assets/imgs/child_banner_login_1.png'
+import Logo from 'public/assets/imgs/logo_login.png'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TextColor } from './TextColor'
@@ -90,7 +89,9 @@ const Login: NextPage = () => {
             spacing={5.25}
             justifyContent="center"
           >
-            <Image src={banner1} alt="banner1" />
+            <video autoPlay loop muted height={362} width={635}>
+              <source src="/assets/videos/banner.mp4" type="video/mp4" />
+            </video>
             <Image src={bannerChild} alt="banner-child" />
           </Stack>
           <Stack
