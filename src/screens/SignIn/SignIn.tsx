@@ -10,7 +10,6 @@ import { signIn } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import banner1 from 'public/assets/imgs/banner_login_1.png'
 import bannerChild from 'public/assets/imgs/child_banner_login_1.png'
 import Logo from 'public/assets/imgs/logo_login.png'
 import { useState } from 'react'
@@ -90,7 +89,9 @@ const Login: NextPage = () => {
             spacing={5.25}
             justifyContent="center"
           >
-            <Image src={banner1} alt="banner1" />
+            <video autoPlay loop muted height={362} width={635}>
+              <source src="/assets/videos/banner.mp4" type="video/mp4" />
+            </video>
             <Image src={bannerChild} alt="banner-child" />
           </Stack>
           <Stack
