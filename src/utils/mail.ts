@@ -1,4 +1,4 @@
-import nodemailer, { SendMailOptions, SentMessageInfo, Transporter } from 'nodemailer'
+import nodemailer, { SendMailOptions, Transporter } from 'nodemailer'
 
 interface MailOptions {
   to: string
@@ -37,21 +37,16 @@ class MailUtils {
       subject: options.subject,
       html: options.html,
     }
-
-    await this.transporter.sendMail(mailOptions, (error: Error | null, info: SentMessageInfo) => {
-      if (error) {
-        console.log(error)
-      } else {
-        console.log('Email sent: ' + info.response)
-      }
-    })
+    await this.transporter.sendMail(mailOptions)
   }
 
   async sendPasswordResetMail(email: string, token: string): Promise<void> {
     const resetLink = `${process.env.NEXTAUTH_URL}/change-password/${token}`
     const subject = 'Password Reset'
     const html = `<h1><a href="${resetLink}">${token}</a></h1>`
-    await this.sendMail({ to: email, subject, html })
+
+    const mailer = await this.sendMail({ to: email, subject, html })
+    return mailer
   }
 }
 

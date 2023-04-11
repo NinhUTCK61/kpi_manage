@@ -1,5 +1,4 @@
-import { ForgotPasswordSchema } from '@/schema'
-import { SignUpSchema } from '@/schema'
+import { ForgotPasswordSchema, SignUpSchema } from '@/schema'
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
