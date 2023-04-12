@@ -1,23 +1,14 @@
-import Logout from '@mui/icons-material/Logout'
-import PersonAdd from '@mui/icons-material/PersonAdd'
-import Settings from '@mui/icons-material/Settings'
-import {
-  Divider,
-  ListItemIcon,
-  MenuItem,
-  Avatar as MuiAvatar,
-  IconButton as MuiIconButton,
-  Menu as MuiMenu,
-  Tooltip,
-  Typography,
-  styled,
-} from '@mui/material'
-import { Stack } from '@mui/system'
+import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import ArrowDownIcon from 'public/assets/imgs/arrow_down.png'
 import NotificationIcon from 'public/assets/imgs/noti.png'
+import ChangeIcon from 'public/assets/svgs/change_pass.svg'
+import LogOutIcon from 'public/assets/svgs/log_out.svg'
+import PrivacyIcon from 'public/assets/svgs/privacy.svg'
+import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
+import { Avatar, Menu, MenuItem, StackName } from './Menu'
 
 const Account = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -30,6 +21,29 @@ const Account = () => {
   }
 
   const { data: sessionData } = useSession()
+
+  const menu = [
+    {
+      title: 'Edit profile',
+      icon: ProfileIcon,
+      handle: handleClose,
+    },
+    {
+      title: 'Change password',
+      icon: ChangeIcon,
+      handle: handleClose,
+    },
+    {
+      title: ' Privacy Policy',
+      icon: PrivacyIcon,
+      handle: handleClose,
+    },
+    {
+      title: 'Log Out',
+      icon: LogOutIcon,
+      handle: signOut,
+    },
+  ]
 
   return (
     <>
@@ -46,7 +60,7 @@ const Account = () => {
           <Typography variant="body2">{sessionData?.user?.name}</Typography>
           <IconButton
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, p: 0 }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -67,85 +81,43 @@ const Account = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar />
-          <Typography variant="body1" color="black">
-            Profile
-          </Typography>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar />
-          <Typography variant="body1" color="black">
-            My account
-          </Typography>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
+        {menu.map((item) => (
+          <MenuItem key={item.title} onClick={() => item.handle()}>
+            <ListItemIcon>
+              <Image src={item.icon} alt="edit icon" />
+            </ListItemIcon>
+            <Typography variant="body1" color="black">
+              {item.title}
+            </Typography>
+          </MenuItem>
+        ))}
+        {/* <MenuItem onClick={handleClose}>^
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <Image src={ChangeIcon} alt="edit icon" />
           </ListItemIcon>
           <Typography variant="body1" color="black">
-            Add another account
+            Change password
           </Typography>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <Image src={PrivacyIcon} alt="edit icon" />
           </ListItemIcon>
           <Typography variant="body1" color="black">
-            Settings
+            Privacy Policy
           </Typography>
         </MenuItem>
         <MenuItem onClick={() => signOut()}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Image src={LogOutIcon} alt="edit icon" />
           </ListItemIcon>
           <Typography variant="body1" color="black">
-            Logout
+            Log out
           </Typography>
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </>
   )
 }
-
-const Avatar = styled(MuiAvatar)({
-  width: 28,
-  height: 28,
-})
-
-const IconButton = styled(MuiIconButton)({
-  padding: 0,
-})
-
-const Menu = styled(MuiMenu)({
-  '.MuiMenu-paper': {
-    overflow: 'visible',
-    mt: 1.5,
-    '& .MuiAvatar-root': {
-      width: 32,
-      height: 32,
-      ml: -0.5,
-      mr: 1,
-    },
-    '&:before': {
-      content: '""',
-      display: 'block',
-      position: 'absolute',
-      top: 0,
-      right: 14,
-      width: 10,
-      height: 10,
-      bgcolor: 'background.paper',
-      transform: 'translateY(-50%) rotate(45deg)',
-      zIndex: 0,
-    },
-  },
-})
-
-const StackName = styled(Stack)({
-  alignItems: 'center',
-  cursor: 'pointer',
-})
 
 export { Account }

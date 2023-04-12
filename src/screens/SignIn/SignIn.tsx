@@ -57,7 +57,7 @@ const Login: NextPage = () => {
     } else {
       const error = res?.error as string
       const description = t(error)
-      enqueueSnackbar('Login failed!', { variant: 'error', description })
+      enqueueSnackbar(t('login_failed'), { variant: 'error', description })
     }
   }
 
@@ -88,7 +88,7 @@ const Login: NextPage = () => {
             <Stack alignItems="center" mb={4}>
               <CustomImage src={Logo} alt="logo" />
               <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
-                Log in to your account
+                {t('title')}
               </Typography>
 
               <Typography
@@ -98,7 +98,7 @@ const Login: NextPage = () => {
                   fontWeight: 400,
                 }}
               >
-                Welcome back! Please enter your details.
+                {t('child_title')}
               </Typography>
             </Stack>
 
@@ -108,7 +108,7 @@ const Login: NextPage = () => {
                 name="email"
                 label="Email"
                 fullWidth
-                placeholder="Enter your email"
+                placeholder={t('enter_email') as string}
               />
 
               <Input
@@ -117,22 +117,22 @@ const Login: NextPage = () => {
                 label="Password"
                 type="password"
                 fullWidth
-                placeholder="Enter your password"
+                placeholder={t('enter_password') as string}
               />
 
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
                 <TextColor variant="body2" onClick={redirectForgot} mr={1.75}>
-                  Forgot password?
+                  {t('forgot')}
                 </TextColor>
               </Stack>
 
               <Button fullWidth variant="contained" onClick={handleSubmit(onSubmit)}>
-                Log in
+                {t('login')}
               </Button>
 
               <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
                 <Typography variant="body2" color="greyScale.600" fontWeight={400}>
-                  Don’t have an account?
+                  {t('not_have_account')}
                 </Typography>
                 <TextColor
                   variant="body2"
@@ -140,7 +140,7 @@ const Login: NextPage = () => {
                   onClick={redirectSignUp}
                   fontWeight={400}
                 >
-                  Sign up
+                  {t('sign_up')}
                 </TextColor>
               </Stack>
             </Stack>

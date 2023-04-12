@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material'
 
 import {
   base,
+  black,
   blue,
   blueGrey,
   coolGrey,
@@ -137,11 +138,20 @@ const defaultTheme: Theme = createTheme({
     fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: base.white,
+          color: black[900],
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           paddingTop: 12,
           paddingBottom: 12,
+          textTransform: 'none',
         },
         contained: {
           color: base.white,

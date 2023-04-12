@@ -32,8 +32,14 @@ export const SignUpSchema = z.object({
   email: z.string().email({
     message: 'Invalid email address!',
   }),
-  password: PasswordSchema,
-  name: z.string().max(255),
+  password: z
+    .string()
+    .min(8, 'Minimum length of 8 characters')
+    .regex(specialCharRegex, 'Must include at least one special character (!,@,#,$,%,^,&,*,(,))')
+    .regex(uppercaseRegex, 'Must include at least one uppercase letter')
+    .regex(lowercaseRegex, 'Must include at least one lowercase letter')
+    .regex(numberRegex, 'Must include at least one number'),
+  name: z.string().max(255).min(1),
 })
 
 export const ResetPasswordSchema = z.object({

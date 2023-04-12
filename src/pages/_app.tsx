@@ -3,7 +3,7 @@ import { customComponents, defaultAnchor } from '@/components/Snackbar'
 import createEmotionCache from '@/libs/config/createEmotionCache'
 import { api } from '@/utils/api'
 import { CacheProvider, type EmotionCache } from '@emotion/react'
-import { ThemeProvider } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import { appWithTranslation } from 'next-i18next'
@@ -24,6 +24,7 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
       <SessionProvider session={session}>
         <ThemeProvider theme={defaultTheme}>
           <SnackbarProvider anchorOrigin={defaultAnchor} Components={customComponents}>
+            <CssBaseline />
             <Component {...pageProps} />
           </SnackbarProvider>
         </ThemeProvider>

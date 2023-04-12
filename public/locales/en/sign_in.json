@@ -1,4 +1,13 @@
 {
+  "login_failed": "Login failed!",
   "not_found": "User not found",
-  "incorrect": "Email or password is incorrect."
+  "incorrect": "Email or password is incorrect.",
+  "title": "Log in to your account",
+  "child_title": "Welcome back! Please enter your details.",
+  "forgot": "Forgot password?",
+  "login": "Log in",
+  "not_have_account": "Don’t have an account?",
+  "sign_up": " Sign up",
+  "enter_email":"Enter your mail",
+  "enter_password":"Enter your password"
 }

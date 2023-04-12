@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
 export { Layout }
 
 const ContentPage = styled('div')({
-  marginTop: `${HEIGHT_HEADER}px`,
+  marginTop: HEIGHT_HEADER,
   minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
   flex: 1,
   justifyContent: 'center',

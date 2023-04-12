@@ -153,6 +153,9 @@ const customPrimary = {
   500: '#6F43E7',
   0o0: '#F3EEFF',
 }
+const black = {
+  900: '#101828',
+}
 
 export {
   green,
@@ -168,4 +171,5 @@ export {
   base,
   greyScale,
   customPrimary,
+  black,
 }
