@@ -20,5 +20,43 @@
     "change_password": "Change password",
     "privacy_policy": "Privacy Policy",
     "log_out": "Log out"
+  },
+  
+  "limit_name": "Maximum length of 250 characters",
+  "incorrect": "Email or password is incorrect.",
+  "limit_password": "Minimun length of 8 characters",
+  "minimum_special_character": "Must include at least one special character (!,@,#,$,%,^,&,*,(,))",
+  "minimum_uppercase": "Must include at least one uppercase letter",
+  "minimum_lowercase": "Must include at least one lowercase letter",
+  "minimum_number": "Must include at least one number",
+  "error": {
+    "invalid_value": "This is a required field.",
+    "invalid_type": "{{expect}} is expected, {{receive}} is recieved",
+    "unrecognized_keys": "Key does not exist in the object: {{keys}}",
+    "invalid_union": "Not a valid input",
+    "invalid_union_discriminator": "Not a valid discriminator {{options}} is expected",
+    "invalid_enum_value": "Not a valid enum {{options}} is expected",
+    "invalid_arguments": "Not a valid argument.",
+    "invalid_return_type": "Not a valid return type.",
+    "invalid_date": "Must be a valid date.",
+    "invalid_string_email": "Must be a valid email address.",
+    "invalid_string_format": "Invalid format",
+    "too_small_array_true" : "At least {{minimum}} items are required.",
+    "too_small_array_false": "Requires at least {{minimum}} items.",
+    "too_small_string1": "This is a required field.",
+    "too_small_string_more_true": "The string must contain at least {{minimum}}  characters.",
+    "too_small_string_more_false": "The string must contain {{minimum}} or more characters.",
+    "too_small_number_true": "Must be or more",
+    "too_small_number_false": "Must be greater",
+    "invalid_input": "Invalid input",
+    "too_big_array_true": "Cannot include more than a certain number items.",
+    "too_big_array_false": "Fewer items are required.",
+    "too_big_string_true": "Character must not exceed.",
+    "too_big_string_false": "Character must be smaller.",
+    "too_big_number_false": "Must be or less.",
+    "too_big_number_true": "Must be small",
+    "invalid_intersection_types": "Intersection results could not be merged",
+    "not_multiple_of": "{{mutipleOf}} must be a multiple of"
   }
 }
+
