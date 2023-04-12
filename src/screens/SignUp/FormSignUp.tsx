@@ -105,9 +105,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
               </Stack>
             ))}
           </Stack>
+
           <Button fullWidth variant="contained" disabled={isLoading} onClick={handleSubmit}>
             {t('submit')}
           </Button>
+
           <Stack
             py={1.5}
             spacing={0.5}
