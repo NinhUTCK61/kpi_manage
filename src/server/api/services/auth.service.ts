@@ -118,19 +118,29 @@ class AuthService {
     }
 
     const hashPassword = await argon2.hash(password)
-    await this.model.update({
-      where: {
-        id: checkToken.user_id,
-      },
-      data: {
-        password: hashPassword,
-      },
-    })
-    await prisma.passwordReset.delete({
-      where: {
-        user_id: checkToken.user_id,
-      },
-    })
+    try {
+      await prisma.$transaction([
+        this.model.update({
+          where: {
+            id: checkToken.user_id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        }),
+        prisma.passwordReset.delete({
+          where: {
+            user_id: checkToken.user_id,
+          },
+        }),
+      ])
+    } catch (error) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Query failed!',
+      })
+    }
+
     return 'Update password success!'
   }
 }
