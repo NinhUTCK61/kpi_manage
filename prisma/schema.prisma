@@ -83,6 +83,7 @@ model UserTemplate {
   can_edit    Boolean  @default(false)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  deleted_ad  DateTime?
   template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
   User        User     @relation(fields: [userId], references: [id])
 }
@@ -95,7 +96,7 @@ model Template {
   public_url   String?        @db.Text
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
-  deleted_at   Boolean        @default(false)
+  deleted_at   DateTime
   userTemplate UserTemplate[]
   node         Node[]
 }
