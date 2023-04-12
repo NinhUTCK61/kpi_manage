@@ -102,12 +102,9 @@ class AuthService {
     const timeDifferenceInMilliseconds = Date.now() - updatedAt
 
     if (timeDifferenceInMilliseconds >= ONE_DAY) {
-      await prisma.passwordReset.update({
+      await prisma.passwordReset.delete({
         where: {
           token: token,
-        },
-        data: {
-          token: '',
         },
         include: {
           user: true,
@@ -127,15 +124,13 @@ class AuthService {
       },
       data: {
         password: hashPassword,
-        PasswordReset: {
-          update: {
-            token: '',
-          },
-        },
       },
-      include: { PasswordReset: true },
     })
-
+    await prisma.passwordReset.delete({
+      where: {
+        user_id: checkToken.user_id,
+      },
+    })
     return 'Update password success!'
   }
 }
