@@ -35,4 +35,12 @@ const ContentPage = styled('div')(({ theme }) => ({
   overflow: 'hidden',
   paddingLeft: theme.spacing(12.5),
   paddingRight: theme.spacing(12.5),
+  [theme.breakpoints.down('md')]: {
+    paddingLeft: theme.spacing(8),
+    paddingRight: theme.spacing(8),
+  },
+  [theme.breakpoints.down('sm')]: {
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+  },
 }))

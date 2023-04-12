@@ -1,3 +1,4 @@
+import { TextColor } from '@/components'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
 import { LoginSchema, type SignInType } from '@/libs/schema'
@@ -16,7 +17,6 @@ import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from './Image'
-import { TextColor } from './TextColor'
 
 const Login: NextPage = () => {
   const router = useRouter()
@@ -67,7 +67,7 @@ const Login: NextPage = () => {
         <Stack direction="row" justifyContent="center" pt={10}>
           <Stack
             alignItems="center"
-            sx={{ marginRight: '155px', display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', md: 'flex' } }}
             spacing={5.25}
             justifyContent="center"
           >
@@ -87,17 +87,11 @@ const Login: NextPage = () => {
           >
             <Stack alignItems="center" mb={4}>
               <CustomImage src={Logo} alt="logo" />
-              <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
+              <Typography variant="h2" mb={0.5} align="center">
                 {t('title')}
               </Typography>
 
-              <Typography
-                variant="body1"
-                sx={{
-                  color: (theme) => theme.palette.greyScale[600],
-                  fontWeight: 400,
-                }}
-              >
+              <Typography color="greyScale.600" align="center">
                 {t('child_title')}
               </Typography>
             </Stack>
@@ -121,7 +115,7 @@ const Login: NextPage = () => {
               />
 
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
-                <TextColor variant="body2" onClick={redirectForgot} mr={1.75}>
+                <TextColor onClick={redirectForgot} mr={1.75}>
                   {t('forgot')}
                 </TextColor>
               </Stack>
@@ -130,18 +124,17 @@ const Login: NextPage = () => {
                 {t('login')}
               </Button>
 
-              <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
+              <Stack
+                py={1.5}
+                spacing={0.5}
+                justifyContent="center"
+                direction="row"
+                onClick={redirectSignUp}
+              >
                 <Typography variant="body2" color="greyScale.600" fontWeight={400}>
                   {t('not_have_account')}
                 </Typography>
-                <TextColor
-                  variant="body2"
-                  sx={{ cursor: 'pointer' }}
-                  onClick={redirectSignUp}
-                  fontWeight={400}
-                >
-                  {t('sign_up')}
-                </TextColor>
+                <TextColor>{t('sign_up')}</TextColor>
               </Stack>
             </Stack>
           </Stack>

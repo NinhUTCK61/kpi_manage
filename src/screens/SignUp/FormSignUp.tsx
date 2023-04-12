@@ -5,6 +5,7 @@ import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import AlertIcon from 'public/assets/svgs/alert.svg'
 import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
@@ -19,7 +20,6 @@ type FormSignUpTypes = {
   control: Control<z.infer<typeof SignUpSchema>>
   handleSubmit(): void
   isLoading: boolean
-  redirectSignIn(): void
   listTextValidate: {
     id: string
     active: boolean
@@ -31,15 +31,19 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
   control,
   handleSubmit,
   isLoading,
-  redirectSignIn,
   listTextValidate,
 }) => {
+  const router = useRouter()
   const { t } = useTranslation('sign_up')
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSubmit()
     }
+  }
+
+  const redirectSignIn = () => {
+    router.push('/sign-in')
   }
 
   return (
@@ -55,18 +59,10 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
       >
         <Stack alignItems="center" mb={4}>
           <CustomImage src={Logo} alt="logo" />
-          <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
+          <Typography variant="h2" mb={0.5}>
             {t('title')}
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: (theme) => theme.palette.greyScale[600],
-              fontWeight: 400,
-            }}
-          >
-            {t('child_title')}
-          </Typography>
+          <Typography color="greyScale.600">{t('child_title')}</Typography>
         </Stack>
 
         <Stack width={{ xs: '100%', md: 460 }} spacing={2}>
@@ -122,9 +118,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
             <Typography variant="body2" color="greyScale.600" fontWeight={400}>
               {t('have_account')}
             </Typography>
-            <TextColor variant="body2" fontWeight={400}>
-              {t('sign_in')}
-            </TextColor>
+            <TextColor>{t('sign_in')}</TextColor>
           </Stack>
         </Stack>
       </Stack>

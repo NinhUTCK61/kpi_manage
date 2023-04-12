@@ -82,39 +82,13 @@ const Account = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {menu.map((item) => (
-          <MenuItem key={item.title} onClick={() => item.handle()}>
+          <MenuItem key={item.title} onClick={item.handle as () => void}>
             <ListItemIcon>
               <Image src={item.icon} alt="edit icon" />
             </ListItemIcon>
-            <Typography variant="body1" color="black">
-              {item.title}
-            </Typography>
+            <Typography color="black">{item.title}</Typography>
           </MenuItem>
         ))}
-        {/* <MenuItem onClick={handleClose}>^
-          <ListItemIcon>
-            <Image src={ChangeIcon} alt="edit icon" />
-          </ListItemIcon>
-          <Typography variant="body1" color="black">
-            Change password
-          </Typography>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Image src={PrivacyIcon} alt="edit icon" />
-          </ListItemIcon>
-          <Typography variant="body1" color="black">
-            Privacy Policy
-          </Typography>
-        </MenuItem>
-        <MenuItem onClick={() => signOut()}>
-          <ListItemIcon>
-            <Image src={LogOutIcon} alt="edit icon" />
-          </ListItemIcon>
-          <Typography variant="body1" color="black">
-            Log out
-          </Typography>
-        </MenuItem> */}
       </Menu>
     </>
   )

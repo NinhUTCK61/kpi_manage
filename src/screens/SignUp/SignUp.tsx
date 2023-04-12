@@ -4,7 +4,6 @@ import { api } from '@/utils/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import { useCallback, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -13,7 +12,6 @@ import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
 
 const SignUp: NextPage = () => {
-  const router = useRouter()
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
   const { control, handleSubmit, watch } = useForm<z.infer<typeof SignUpSchema>>({
     defaultValues: {
@@ -39,10 +37,6 @@ const SignUp: NextPage = () => {
     [mutate, t],
   )
 
-  const redirectSignIn = () => {
-    router.push('/sign-in')
-  }
-
   const list_text_validate = useMemo(() => {
     const data = watch('password')
     const _list = [
@@ -59,17 +53,16 @@ const SignUp: NextPage = () => {
   return (
     <>
       <LayoutUnAuth title="Sign Up">
-        {!isSuccess ? (
+        {!isSuccess && (
           <FormSignUp
             control={control}
             handleSubmit={handleSubmit(onSubmit)}
             isLoading={isLoading}
-            redirectSignIn={redirectSignIn}
             listTextValidate={list_text_validate}
           />
-        ) : null}
+        )}
 
-        {isSuccess ? <Success redirectSignIn={redirectSignIn} /> : null}
+        {isSuccess && <Success />}
       </LayoutUnAuth>
     </>
   )
