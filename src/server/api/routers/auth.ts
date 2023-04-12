@@ -17,7 +17,7 @@ export const authRouter = createTRPCRouter({
   signUp: publicProcedure
     .meta({ openapi: { method: 'POST', path: '/sign-up' } })
     .input(SignUpSchema)
-    .output(UserSchema || z.string())
+    .output(UserSchema.omit({ password: true }) || z.string())
     .mutation(({ input }) => {
       return authService.signUp(input.email, input.password, input.name)
     }),

@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import * as argon2 from 'argon2'
 import { nanoid } from 'nanoid'
+import { User } from 'prisma/generated/zod'
 class AuthService {
   model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
 
@@ -66,14 +67,17 @@ class AuthService {
         message: 'Email already exists!',
       })
     } else {
-      const user = await prisma.user.create({
+      const user: User = await prisma.user.create({
         data: {
           email,
           password: hash,
           name,
         },
       })
-      return user
+
+      const { password, ...userWithoutPassword } = user
+
+      return userWithoutPassword
     }
   }
 }

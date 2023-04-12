@@ -72,7 +72,7 @@ export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCo
 
 export const UserScalarFieldEnumSchema = z.enum(['id','name','email','emailVerified','image','password']);
 
-export const UserTemplateScalarFieldEnumSchema = z.enum(['id','userId','template_id','is_owner','is_favorite','can_edit','created_at','updated_at']);
+export const UserTemplateScalarFieldEnumSchema = z.enum(['id','userId','template_id','is_owner','is_favorite','can_edit','created_at','updated_at','deleted_ad']);
 
 export const VerificationTokenScalarFieldEnumSchema = z.enum(['identifier','token','expires']);
 /////////////////////////////////////////
@@ -157,6 +157,7 @@ export const UserTemplateSchema = z.object({
   can_edit: z.boolean(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
+  deleted_ad: z.coerce.date().nullable(),
 })
 
 export type UserTemplate = z.infer<typeof UserTemplateSchema>
@@ -173,7 +174,7 @@ export const TemplateSchema = z.object({
   public_url: z.string().nullable(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
-  deleted_at: z.boolean(),
+  deleted_at: z.coerce.date(),
 })
 
 export type Template = z.infer<typeof TemplateSchema>
@@ -383,6 +384,7 @@ export const UserTemplateSelectSchema: z.ZodType<Prisma.UserTemplateSelect> = z.
   can_edit: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
+  deleted_ad: z.boolean().optional(),
   template: z.union([z.boolean(),z.lazy(() => TemplateArgsSchema)]).optional(),
   User: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -750,6 +752,7 @@ export const UserTemplateWhereInputSchema: z.ZodType<Prisma.UserTemplateWhereInp
   can_edit: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  deleted_ad: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   template: z.union([ z.lazy(() => TemplateRelationFilterSchema),z.lazy(() => TemplateWhereInputSchema) ]).optional(),
   User: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -763,6 +766,7 @@ export const UserTemplateOrderByWithRelationInputSchema: z.ZodType<Prisma.UserTe
   can_edit: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_ad: z.lazy(() => SortOrderSchema).optional(),
   template: z.lazy(() => TemplateOrderByWithRelationInputSchema).optional(),
   User: z.lazy(() => UserOrderByWithRelationInputSchema).optional()
 }).strict();
@@ -780,6 +784,7 @@ export const UserTemplateOrderByWithAggregationInputSchema: z.ZodType<Prisma.Use
   can_edit: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_ad: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => UserTemplateCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserTemplateMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => UserTemplateMinOrderByAggregateInputSchema).optional()
@@ -797,6 +802,7 @@ export const UserTemplateScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   can_edit: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  deleted_ad: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TemplateWhereInputSchema: z.ZodType<Prisma.TemplateWhereInput> = z.object({
@@ -810,7 +816,7 @@ export const TemplateWhereInputSchema: z.ZodType<Prisma.TemplateWhereInput> = z.
   public_url: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
-  deleted_at: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  deleted_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   userTemplate: z.lazy(() => UserTemplateListRelationFilterSchema).optional(),
   node: z.lazy(() => NodeListRelationFilterSchema).optional()
 }).strict();
@@ -857,7 +863,7 @@ export const TemplateScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Temp
   public_url: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
-  deleted_at: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
+  deleted_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
 export const NodeWhereInputSchema: z.ZodType<Prisma.NodeWhereInput> = z.object({
@@ -1362,6 +1368,7 @@ export const UserTemplateCreateInputSchema: z.ZodType<Prisma.UserTemplateCreateI
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable(),
   template: z.lazy(() => TemplateCreateNestedOneWithoutUserTemplateInputSchema),
   User: z.lazy(() => UserCreateNestedOneWithoutUserTemplateInputSchema)
 }).strict();
@@ -1374,7 +1381,8 @@ export const UserTemplateUncheckedCreateInputSchema: z.ZodType<Prisma.UserTempla
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserTemplateUpdateInputSchema: z.ZodType<Prisma.UserTemplateUpdateInput> = z.object({
@@ -1384,6 +1392,7 @@ export const UserTemplateUpdateInputSchema: z.ZodType<Prisma.UserTemplateUpdateI
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   template: z.lazy(() => TemplateUpdateOneRequiredWithoutUserTemplateNestedInputSchema).optional(),
   User: z.lazy(() => UserUpdateOneRequiredWithoutUserTemplateNestedInputSchema).optional()
 }).strict();
@@ -1397,6 +1406,7 @@ export const UserTemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.UserTempla
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserTemplateCreateManyInputSchema: z.ZodType<Prisma.UserTemplateCreateManyInput> = z.object({
@@ -1407,7 +1417,8 @@ export const UserTemplateCreateManyInputSchema: z.ZodType<Prisma.UserTemplateCre
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserTemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.UserTemplateUpdateManyMutationInput> = z.object({
@@ -1417,6 +1428,7 @@ export const UserTemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.UserTem
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserTemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserTemplateUncheckedUpdateManyInput> = z.object({
@@ -1428,6 +1440,7 @@ export const UserTemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserTe
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = z.object({
@@ -1438,7 +1451,7 @@ export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = 
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional(),
   node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
@@ -1451,7 +1464,7 @@ export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUnchec
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
   node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
@@ -1464,7 +1477,7 @@ export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = 
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional(),
   node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
@@ -1477,7 +1490,7 @@ export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUnchec
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
   node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
@@ -1490,7 +1503,7 @@ export const TemplateCreateManyInputSchema: z.ZodType<Prisma.TemplateCreateManyI
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional()
+  deleted_at: z.coerce.date()
 }).strict();
 
 export const TemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.TemplateUpdateManyMutationInput> = z.object({
@@ -1501,7 +1514,7 @@ export const TemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.TemplateUpd
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const TemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateManyInput> = z.object({
@@ -1512,7 +1525,7 @@ export const TemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TemplateUn
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const NodeCreateInputSchema: z.ZodType<Prisma.NodeCreateInput> = z.object({
@@ -2133,7 +2146,8 @@ export const UserTemplateCountOrderByAggregateInputSchema: z.ZodType<Prisma.User
   is_favorite: z.lazy(() => SortOrderSchema).optional(),
   can_edit: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
-  updated_at: z.lazy(() => SortOrderSchema).optional()
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_ad: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserTemplateMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserTemplateMaxOrderByAggregateInput> = z.object({
@@ -2144,7 +2158,8 @@ export const UserTemplateMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserTe
   is_favorite: z.lazy(() => SortOrderSchema).optional(),
   can_edit: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
-  updated_at: z.lazy(() => SortOrderSchema).optional()
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_ad: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserTemplateMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserTemplateMinOrderByAggregateInput> = z.object({
@@ -2155,7 +2170,8 @@ export const UserTemplateMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserTe
   is_favorite: z.lazy(() => SortOrderSchema).optional(),
   can_edit: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
-  updated_at: z.lazy(() => SortOrderSchema).optional()
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  deleted_ad: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const BoolWithAggregatesFilterSchema: z.ZodType<Prisma.BoolWithAggregatesFilter> = z.object({
@@ -3359,6 +3375,7 @@ export const UserTemplateCreateWithoutUserInputSchema: z.ZodType<Prisma.UserTemp
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable(),
   template: z.lazy(() => TemplateCreateNestedOneWithoutUserTemplateInputSchema)
 }).strict();
 
@@ -3369,7 +3386,8 @@ export const UserTemplateUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserTemplateCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.UserTemplateCreateOrConnectWithoutUserInput> = z.object({
@@ -3518,6 +3536,7 @@ export const UserTemplateScalarWhereInputSchema: z.ZodType<Prisma.UserTemplateSc
   can_edit: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  deleted_ad: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const CommentUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.CommentUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -3733,7 +3752,7 @@ export const TemplateCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.Temp
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
@@ -3745,7 +3764,7 @@ export const TemplateUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Pr
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
@@ -3798,7 +3817,7 @@ export const TemplateUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.Temp
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -3810,7 +3829,7 @@ export const TemplateUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Pr
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -3852,6 +3871,7 @@ export const UserTemplateCreateWithoutTemplateInputSchema: z.ZodType<Prisma.User
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable(),
   User: z.lazy(() => UserCreateNestedOneWithoutUserTemplateInputSchema)
 }).strict();
 
@@ -3862,7 +3882,8 @@ export const UserTemplateUncheckedCreateWithoutTemplateInputSchema: z.ZodType<Pr
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserTemplateCreateOrConnectWithoutTemplateInputSchema: z.ZodType<Prisma.UserTemplateCreateOrConnectWithoutTemplateInput> = z.object({
@@ -3985,7 +4006,7 @@ export const TemplateCreateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCrea
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
@@ -3997,7 +4018,7 @@ export const TemplateUncheckedCreateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
   public_url: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  deleted_at: z.boolean().optional(),
+  deleted_at: z.coerce.date(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
@@ -4105,7 +4126,7 @@ export const TemplateUpdateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateUpda
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -4117,7 +4138,7 @@ export const TemplateUncheckedUpdateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  deleted_at: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -4296,7 +4317,8 @@ export const UserTemplateCreateManyUserInputSchema: z.ZodType<Prisma.UserTemplat
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const CommentCreateManyUserInputSchema: z.ZodType<Prisma.CommentCreateManyUserInput> = z.object({
@@ -4375,6 +4397,7 @@ export const UserTemplateUpdateWithoutUserInputSchema: z.ZodType<Prisma.UserTemp
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   template: z.lazy(() => TemplateUpdateOneRequiredWithoutUserTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -4386,6 +4409,7 @@ export const UserTemplateUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserTemplateUncheckedUpdateManyWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserTemplateUncheckedUpdateManyWithoutUserTemplateInput> = z.object({
@@ -4396,6 +4420,7 @@ export const UserTemplateUncheckedUpdateManyWithoutUserTemplateInputSchema: z.Zo
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const CommentUpdateWithoutUserInputSchema: z.ZodType<Prisma.CommentUpdateWithoutUserInput> = z.object({
@@ -4472,7 +4497,8 @@ export const UserTemplateCreateManyTemplateInputSchema: z.ZodType<Prisma.UserTem
   is_favorite: z.boolean().optional(),
   can_edit: z.boolean().optional(),
   created_at: z.coerce.date().optional(),
-  updated_at: z.coerce.date().optional()
+  updated_at: z.coerce.date().optional(),
+  deleted_ad: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NodeCreateManyTemplateInputSchema: z.ZodType<Prisma.NodeCreateManyTemplateInput> = z.object({
@@ -4500,6 +4526,7 @@ export const UserTemplateUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.User
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   User: z.lazy(() => UserUpdateOneRequiredWithoutUserTemplateNestedInputSchema).optional()
 }).strict();
 
@@ -4511,6 +4538,7 @@ export const UserTemplateUncheckedUpdateWithoutTemplateInputSchema: z.ZodType<Pr
   can_edit: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_ad: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NodeUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.NodeUpdateWithoutTemplateInput> = z.object({
