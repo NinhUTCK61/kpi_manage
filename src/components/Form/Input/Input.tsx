@@ -1,5 +1,15 @@
-import type { FormControlProps, OutlinedInputProps } from '@mui/material'
-import { OutlinedInput, styled } from '@mui/material'
+import {
+  FormControlProps,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  OutlinedInputProps,
+  styled,
+} from '@mui/material'
+import Image from 'next/image'
+import HiddenIcon from 'public/assets/svgs/hidden.svg'
+import ShowIcon from 'public/assets/svgs/show.svg'
+import { useState } from 'react'
 import type { FieldValues, UseControllerProps } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import type { AddControlProps } from './InputControl'
@@ -20,12 +30,14 @@ function Input<T extends FieldValues>({
   helperText,
   controlProps,
   required,
+  type,
   ...props
 }: InputProps<T>) {
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
   } = useController({ name, control, defaultValue })
+  const [hiddenPassword, setHiddenPassword] = useState<boolean>(true)
 
   return (
     <InputControl
@@ -36,7 +48,21 @@ function Input<T extends FieldValues>({
       helperText={helperText}
       {...controlProps}
     >
-      <InputStyled {...inputProps} {...props} inputRef={ref} />
+      <InputStyled
+        type={!hiddenPassword ? 'text' : type}
+        {...(type === 'password' && {
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setHiddenPassword((pre) => !pre)}>
+                <Image src={hiddenPassword ? HiddenIcon : ShowIcon} alt="icon-password" />
+              </IconButton>
+            </InputAdornment>
+          ),
+        })}
+        {...inputProps}
+        {...props}
+        inputRef={ref}
+      />
     </InputControl>
   )
 }
