@@ -9,9 +9,11 @@ import Email from 'public/assets/svgs/email.svg'
 
 const SendMailSuccess: NextPage = () => {
   const router = useRouter()
+
   const handleClick = () => {
-    router.push('/')
+    router.push('/sign-in')
   }
+
   return (
     <LayoutUnAuth title="Send Mail Success">
       <Stack width={450} direction="column" alignItems="center" margin="auto" mt={10}>
@@ -34,7 +36,7 @@ const SendMailSuccess: NextPage = () => {
         <Button
           fullWidth
           variant="contained"
-          onClick={() => handleClick()}
+          onClick={handleClick}
           sx={{ textTransform: 'capitalize', marginTop: 2 }}
         >
           Ok

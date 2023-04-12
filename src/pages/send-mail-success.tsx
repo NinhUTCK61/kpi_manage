@@ -10,8 +10,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
   }
 }
 
-const PageSendMail: NextPage = () => {
+const PageSendMailSuccess: NextPage = () => {
   return <SendMailSuccess />
 }
 
-export default PageSendMail
+export default PageSendMailSuccess

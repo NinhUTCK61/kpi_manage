@@ -10,8 +10,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
   }
 }
 
-const PageForgotpassword: NextPage = () => {
+const PageForgotPassword: NextPage = () => {
   return <ForgotPassword />
 }
 
-export default PageForgotpassword
+export default PageForgotPassword
