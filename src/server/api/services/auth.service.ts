@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { User } from 'prisma/generated/zod'
 
 const ONE_DAY = 24 * 60 * 60 * 1000
+
 class AuthService {
   model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
 
@@ -84,8 +85,6 @@ class AuthService {
   }
 
   async resetPassword(password: string, token: string) {
-    const hashPassword = await argon2.hash(password)
-
     const checkToken = await prisma.passwordReset.findUnique({
       where: {
         token,
@@ -114,12 +113,14 @@ class AuthService {
           user: true,
         },
       })
+
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'Token not found or expired!',
       })
     }
 
+    const hashPassword = await argon2.hash(password)
     await this.model.update({
       where: {
         id: checkToken.user_id,
@@ -134,6 +135,7 @@ class AuthService {
       },
       include: { PasswordReset: true },
     })
+
     return 'Update password success!'
   }
 }
