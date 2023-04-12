@@ -33,3 +33,16 @@ export const SignUpSchema = z.object({
     .regex(numberRegex, 'Must include at least one number'),
   name: z.string().max(255),
 })
+
+export const ResetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(8, 'Minimum length of 8 characters')
+    .regex(specialCharRegex, 'Must include at least one special character (!,@,#,$,%,^,&,*,(,))')
+    .regex(uppercaseRegex, 'Must include at least one uppercase letter')
+    .regex(lowercaseRegex, 'Must include at least one lowercase letter')
+    .regex(numberRegex, 'Must include at least one number'),
+  token: z.string(),
+})
+
+export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>

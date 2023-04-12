@@ -5,6 +5,8 @@ import { TRPCError } from '@trpc/server'
 import * as argon2 from 'argon2'
 import { nanoid } from 'nanoid'
 import { User } from 'prisma/generated/zod'
+
+const ONE_DAY = 24 * 60 * 60 * 1000
 class AuthService {
   model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
 
@@ -79,6 +81,60 @@ class AuthService {
 
       return userWithoutPassword
     }
+  }
+
+  async resetPassword(password: string, token: string) {
+    const hashPassword = await argon2.hash(password)
+
+    const checkToken = await prisma.passwordReset.findUnique({
+      where: {
+        token,
+      },
+    })
+
+    if (!checkToken) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Token not found or expired!',
+      })
+    }
+
+    const updatedAt = +new Date(checkToken.updated_at)
+    const timeDifferenceInMilliseconds = Date.now() - updatedAt
+
+    if (timeDifferenceInMilliseconds >= ONE_DAY) {
+      await prisma.passwordReset.update({
+        where: {
+          token: token,
+        },
+        data: {
+          token: '',
+        },
+        include: {
+          user: true,
+        },
+      })
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Token not found or expired!',
+      })
+    }
+
+    await this.model.update({
+      where: {
+        id: checkToken.user_id,
+      },
+      data: {
+        password: hashPassword,
+        PasswordReset: {
+          update: {
+            token: '',
+          },
+        },
+      },
+      include: { PasswordReset: true },
+    })
+    return 'Update password success!'
   }
 }
 
