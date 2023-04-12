@@ -1,6 +1,6 @@
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
-import { ForgotPasswordSchema, type ForgotPasswordType } from '@/schema'
+import { ForgotPasswordSchema, type ForgotPasswordType } from '@/libs/schema'
 import { api } from '@/utils/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
@@ -8,12 +8,15 @@ import { Stack } from '@mui/system'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { enqueueSnackbar } from 'notistack'
 import ArrowLeft from 'public/assets/imgs/arrow_left.png'
 import Logo from 'public/assets/imgs/logo_login.png'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 const ForgotPassword: NextPage = () => {
   const router = useRouter()
+  const mutation = api.auth.forgotPassword.useMutation()
+
   const { control, handleSubmit } = useForm<ForgotPasswordType>({
     defaultValues: {
       email: '',
@@ -21,21 +24,30 @@ const ForgotPassword: NextPage = () => {
     resolver: zodResolver(ForgotPasswordSchema),
   })
 
-  const mutation = api.auth.forgotPassword.useMutation()
-
-  const handleForgotPassword = async (email: string) => {
-    await mutation.mutate({ email })
-    if (mutation.isSuccess) router.push('/reset-password-success')
+  const redirectBack = () => {
+    router.back()
   }
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async (data) => {
+    const { email } = data
     try {
-      await handleForgotPassword(data.email)
+      await mutation.mutate(
+        {
+          email,
+        },
+        {
+          onError(error) {
+            enqueueSnackbar(`${error.message}`, {
+              variant: 'error',
+              description: `${error.message}`,
+            })
+          },
+          onSuccess() {
+            router.push('/send-mail-success')
+          },
+        },
+      )
     } catch (error) {}
-  }
-
-  const redirectBack = () => {
-    router.back()
   }
 
   return (
@@ -62,7 +74,7 @@ const ForgotPassword: NextPage = () => {
                 fontWeight: 400,
               }}
             >
-              Dont worry! We will help you get back on track.
+              Don&#39;t worry! We&#39;ll help you get back on track.
             </Typography>
             <Typography
               variant="body1"
@@ -91,6 +103,7 @@ const ForgotPassword: NextPage = () => {
               fullWidth
               variant="contained"
               onClick={handleSubmit(onSubmit)}
+              disabled={mutation.isLoading}
               sx={{ textTransform: 'capitalize' }}
             >
               Submit
