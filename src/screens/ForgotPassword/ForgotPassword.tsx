@@ -1,3 +1,4 @@
+import { greyScale } from '@/common/theme'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
 import { ForgotPasswordSchema, type ForgotPasswordType } from '@/libs/schema'
@@ -9,8 +10,8 @@ import { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
-import ArrowLeft from 'public/assets/imgs/arrow_left.png'
-import Logo from 'public/assets/imgs/logo_login.png'
+import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
+import Logo from 'public/assets/svgs/logo.svg'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 const ForgotPassword: NextPage = () => {
@@ -28,9 +29,10 @@ const ForgotPassword: NextPage = () => {
     router.back()
   }
 
-  const onSubmit: SubmitHandler<ForgotPasswordType> = async (data) => {
+  const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {
     const { email } = data
-    await mutation.mutate(
+
+    mutation.mutate(
       {
         email,
       },
@@ -49,7 +51,7 @@ const ForgotPassword: NextPage = () => {
 
   return (
     <LayoutUnAuth title="Forgot Password">
-      <Stack width={450} direction="column" minHeight={'auto'} margin="auto" mt={10}>
+      <Stack width={450} direction="column" margin="auto" mt={10}>
         <Stack alignItems="center" mb={4}>
           <Image src={Logo} alt="logo" />
 
@@ -57,23 +59,16 @@ const ForgotPassword: NextPage = () => {
             Forgot Password
           </Typography>
 
-          <Typography
-            variant="body1"
-            sx={{
-              color: (theme) => theme.palette.greyScale[600],
-            }}
-          >
+          <Typography variant="body1" color={greyScale[600]}>
             Don&#39;t worry! We&#39;ll help you get back on track.
           </Typography>
 
           <Typography
             variant="body1"
             mt={0.5}
-            fontSize={'15px'}
-            textAlign={'center'}
-            sx={{
-              color: (theme) => theme.palette.greyScale[600],
-            }}
+            fontSize="15px"
+            textAlign="center"
+            color={greyScale[600]}
           >
             Enter email address associated with your account. Once your identity is verified, you
             will receive an email with a link to reset your password. Click on the link to proceed.
@@ -101,12 +96,7 @@ const ForgotPassword: NextPage = () => {
           <Stack py={1.5} spacing={0.5} justifyContent="center" alignItems="center" direction="row">
             <Image src={ArrowLeft} alt="arrow-left" style={{ marginRight: '14px' }} />
 
-            <Typography
-              variant="body2"
-              fontWeight={400}
-              sx={{ cursor: 'pointer' }}
-              onClick={redirectBack}
-            >
+            <Typography variant="body2" sx={{ cursor: 'pointer' }} onClick={redirectBack}>
               Back
             </Typography>
           </Stack>
