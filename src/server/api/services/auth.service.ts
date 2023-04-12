@@ -63,13 +63,13 @@ class AuthService {
       },
     })
 
-    const hash = await argon2.hash(password)
     if (user && typeof user !== null) {
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Email already exists!',
       })
     } else {
+      const hash = await argon2.hash(password)
       const user: User = await prisma.user.create({
         data: {
           email,
@@ -78,7 +78,7 @@ class AuthService {
         },
       })
 
-      const { password, ...userWithoutPassword } = user
+      const { password: _, ...userWithoutPassword } = user
 
       return userWithoutPassword
     }
