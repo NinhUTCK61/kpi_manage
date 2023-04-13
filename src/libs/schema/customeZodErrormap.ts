@@ -1,118 +1,96 @@
-import { z } from 'zod'
+import { ZodErrorMap, ZodIssueCode, z } from 'zod'
 
-export const errorMap: z.ZodErrorMap = (issue, ctx) => {
+export const errorMap: ZodErrorMap = (issue, _ctx) => {
+  const { message, code, ...rest } = issue
+  let message1: string
   switch (issue.code) {
-    case z.ZodIssueCode.invalid_type:
-      if (issue.received === 'undefined' || issue.received === 'null') {
-        return {
-          message: 'error.invalid_value',
-        }
+    case ZodIssueCode.invalid_type:
+      if (issue.received === 'undefined') {
+        message1 = 'error.invalid_value_undefined'
       } else {
-        return {
-          message: `error.invalid_type`,
-        }
+        message1 = `error.invalid_value`
       }
-    case z.ZodIssueCode.unrecognized_keys:
-      return {
-        message: `error.unrecognized_keys`,
-      }
-    case z.ZodIssueCode.invalid_union:
-      return {
-        message: `error.invalid_union`,
-      }
-    case z.ZodIssueCode.invalid_union_discriminator:
-      return {
-        message: 'error.invalid_union_discriminator',
-      }
-    case z.ZodIssueCode.invalid_enum_value:
-      return {
-        message: `error.invalid_enum_value`,
-      }
-    case z.ZodIssueCode.invalid_arguments:
-      return {
-        message: 'error.invalid_arguments',
-      }
-    case z.ZodIssueCode.invalid_return_type:
-      return {
-        message: 'error.invalid_return_type',
-      }
-    case z.ZodIssueCode.invalid_date:
-      return {
-        message: 'error.invalid_date',
-      }
-    case z.ZodIssueCode.invalid_string:
+      break
+    case ZodIssueCode.invalid_literal:
+      message1 = `error.invalid_literal`
+      break
+    case ZodIssueCode.unrecognized_keys:
+      message1 = `error.unrecognized_keys`
+      break
+    case ZodIssueCode.invalid_union:
+      message1 = `error.invalid_union`
+      break
+    case ZodIssueCode.invalid_union_discriminator:
+      message1 = `error.invalid_union_discriminator`
+      break
+    case ZodIssueCode.invalid_enum_value:
+      message1 = `error.invalid_enum_value`
+      break
+    case ZodIssueCode.invalid_arguments:
+      message1 = `error.invalid_arguments`
+      break
+    case ZodIssueCode.invalid_return_type:
+      message1 = `error.invalid_return_type`
+      break
+    case ZodIssueCode.invalid_date:
+      message1 = `error.invalid_date`
+      break
+    case ZodIssueCode.invalid_string:
       if (issue.validation === 'email') {
-        return {
-          message: 'error.invalid_string_email',
-          value: issue,
-        }
+        message1 = `error.invalid_string_email`
       } else {
-        return {
-          message: 'error.invalid_string_format',
-        }
+        message1 = `error.invalid_string_format`
       }
-    case z.ZodIssueCode.too_small:
+      break
+    case ZodIssueCode.too_small:
       if (issue.type === 'array') {
-        return {
-          message: `error.too_small_array`,
-        }
+        message1 = issue.inclusive ? `error.too_small_array_true` : 'error.too_small_array_false'
       } else if (issue.type === 'string') {
         if (issue.minimum === 1) {
-          return {
-            message: `error.too_small_string`,
-          }
-        }
-        return {
-          message: issue.inclusive
-            ? 'error.too_small_string_more_true'
-            : `error.too_small_string_more_false`,
+          message1 = `error.too_small_string1`
+        } else {
+          message1 = issue.inclusive
+            ? `error.too_small_string_more_true`
+            : `error.too_small_string_more_false`
         }
       } else if (issue.type === 'number') {
-        return {
-          message: `${issue.minimum}${
-            issue.inclusive ? `error.too_small_number_true` : `error.too_small_number_false`
-          }`,
-        }
+        message1 = `${issue.minimum}${
+          issue.inclusive ? `error.too_small_number_true` : `error.too_small_number_false`
+        }`
       } else {
-        return { message: 'error.too_small_invalid_input' }
+        message1 = 'error.invalid_input'
       }
-    case z.ZodIssueCode.too_big:
+      break
+    case ZodIssueCode.too_big:
       if (issue.type === 'array') {
-        return {
-          message: `${issue.maximum}${
-            issue.inclusive ? `error.too_big_array_true` : `error.too_big_array_false`
-          }`,
-        }
+        message1 = `${issue.maximum}${
+          issue.inclusive ? `error.too_big_array_true` : `error.too_big_array_false`
+        }`
       } else if (issue.type === 'string') {
-        return {
-          message: `${
-            issue.inclusive ? `error.too_big_string_true` : `error.too_big_string_false`
-          }`,
-        }
+        message1 = `${issue.inclusive ? `error.too_big_string_true` : `error.too_big_string_false`}`
       } else if (issue.type === 'number') {
-        return {
-          message: `${issue.maximum}${issue.inclusive ? `error.too_big_number_false` : ``}`,
-        }
+        message1 = `${issue.maximum}${
+          issue.inclusive ? `error.too_big_number_true` : `error.too_big_number_false`
+        }`
       } else {
-        return {
-          message: 'error.invalid_input',
-        }
+        message1 = 'error.too_big_result'
       }
-    case z.ZodIssueCode.custom:
-      return {
-        message: `error.invalid_input`,
-      }
-    case z.ZodIssueCode.invalid_intersection_types:
-      return {
-        message: `error.invalid_intersection_types`,
-      }
-    case z.ZodIssueCode.not_multiple_of:
-      return {
-        message: `error.not_multiple_of`,
-      }
+      break
+    case ZodIssueCode.custom:
+      message1 = `erro.invalid_string_format`
+      break
+    case ZodIssueCode.invalid_intersection_types:
+      message1 = `error.invalid_intersection_types`
+      break
+    case ZodIssueCode.not_multiple_of:
+      message1 = `error.not_multiple_of`
+      break
+    case ZodIssueCode.not_finite:
+      message1 = 'error.not_finite'
+      break
     default:
-      return { message: ctx.defaultError }
+      message1 = _ctx.defaultError
   }
+  return { message: message1 + '|' + JSON.stringify(rest) }
 }
-
 z.setErrorMap(errorMap)

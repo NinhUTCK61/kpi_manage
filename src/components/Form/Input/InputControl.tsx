@@ -2,6 +2,7 @@ import type { FormControlProps } from '@mui/material'
 import { Box, FormControl } from '@mui/material'
 import { memo } from 'react'
 import type { FieldError } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FormHelperText } from './FormHelperText'
 import { FormLabel } from './FormLabel'
 
@@ -22,6 +23,18 @@ function RawInputControl({
   required,
   ...props
 }: InputControlProps) {
+  const { t } = useTranslation('common')
+  const handleError = (fieldError: FieldError) => {
+    if (fieldError.message) {
+      const errorField = fieldError.message
+      const message = errorField.split('|')[0] as string
+      const optionKey = JSON.parse(errorField.split('|')[1] || '')
+      console.log(message, optionKey)
+
+      return `${t(message, optionKey)}`
+    }
+    return ''
+  }
   return (
     <FormControl fullWidth={fullWidth} error={!!fieldError} {...props}>
       {label && (
@@ -43,7 +56,7 @@ function RawInputControl({
 
       {!!fieldError && (
         <FormHelperText error>
-          {typeof fieldError === 'boolean' ? helperText : fieldError?.message}
+          {typeof fieldError === 'boolean' ? helperText : handleError(fieldError)}
         </FormHelperText>
       )}
       {helperText && <FormHelperText error={false}>{helperText}</FormHelperText>}
