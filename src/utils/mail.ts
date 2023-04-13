@@ -1,4 +1,7 @@
+import { Mail } from '@/screens/Mail'
+import { render } from '@react-email/render'
 import nodemailer, { SendMailOptions, Transporter } from 'nodemailer'
+import { ReactElement } from 'react'
 
 interface MailOptions {
   to: string
@@ -40,12 +43,12 @@ class MailUtils {
     await this.transporter.sendMail(mailOptions)
   }
 
-  async sendPasswordResetMail(email: string, token: string): Promise<void> {
-    const resetLink = `${process.env.NEXTAUTH_URL}/change-password/${token}`
+  async sendPasswordResetMail(email: string, token: string, name: string): Promise<void> {
+    const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
+    const text = render(Mail({ url: resetLink, name: name }) as ReactElement)
     const subject = 'Password Reset'
-    const html = `<h1><a href="${resetLink}">${token}</a></h1>`
 
-    const mailer = await this.sendMail({ to: email, subject, html })
+    const mailer = await this.sendMail({ to: email, subject, html: text })
     return mailer
   }
 }

@@ -43,9 +43,12 @@ class AuthService {
         token,
       },
     })
-
     try {
-      await MailUtils.getInstance().sendPasswordResetMail(user.email as string, token)
+      await MailUtils.getInstance().sendPasswordResetMail(
+        user.email as string,
+        token,
+        user.name as string,
+      )
     } catch (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
