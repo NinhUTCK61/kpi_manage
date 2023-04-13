@@ -46,7 +46,7 @@ const Mail: FC<EmailProps> = (props) => {
       <Html>
         <Head />
         <Body>
-          <Container className=" m-auto flex flex-col max-w-[656px] p-4 sm:p-10" style={main}>
+          <Container className="m-auto flex flex-col p-4 sm:p-10" style={main}>
             <Section className="px-6 py-1 sm:py-6 flex justify-start">
               <Img src={logo} className="w-[92px]" />
             </Section>
@@ -100,6 +100,7 @@ export { Mail }
 const main = {
   backgroundColor: '#ffffff',
   fontFamily: '"Noto Sans",sans-serif',
+  maxWidth: '656px ',
 }
 
 const textStyle = {
