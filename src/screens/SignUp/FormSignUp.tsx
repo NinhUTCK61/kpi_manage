@@ -1,18 +1,16 @@
 import { TextColor } from '@/components'
 import { Input } from '@/components/Form/Input'
+import { PasswordStateValidation } from '@/components/PasswordStateValidation'
 import { SignUpSchema } from '@/libs/schema'
-import { Button, Typography } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Button, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import AlertIcon from 'public/assets/svgs/alert.svg'
 import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
 import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
-import AlertCheckedIcon from 'public/assets/svgs/success.svg'
-import { Control } from 'react-hook-form'
+import { Control, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { CustomImage } from './Image'
 
@@ -20,27 +18,13 @@ type FormSignUpTypes = {
   control: Control<z.infer<typeof SignUpSchema>>
   handleSubmit(): void
   isLoading: boolean
-  listTextValidate: {
-    id: string
-    active: boolean
-    text: string
-  }[]
 }
 
-const FormSignUp: React.FC<FormSignUpTypes> = ({
-  control,
-  handleSubmit,
-  isLoading,
-  listTextValidate,
-}) => {
+const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoading }) => {
   const router = useRouter()
-  const { t } = useTranslation('sign_up')
+  const { t } = useTranslation(['sign_up'])
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSubmit()
-    }
-  }
+  const password = useWatch({ control, name: 'password' })
 
   const redirectSignIn = () => {
     router.push('/sign-in')
@@ -65,14 +49,13 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
           <Typography color="greyScale.600">{t('child_title')}</Typography>
         </Stack>
 
-        <Stack width={{ xs: '100%', md: 460 }} spacing={2}>
+        <Stack width={{ xs: '100%', md: 460 }} component="form" onSubmit={handleSubmit} spacing={2}>
           <Input
             control={control}
             name="name"
             label="Your name"
             fullWidth
             placeholder="Enter your name"
-            onKeyPress={handleKeyPress}
             readOnly={isLoading}
           />
           <Input
@@ -81,7 +64,6 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
             label="Email"
             fullWidth
             placeholder="Enter your email"
-            onKeyPress={handleKeyPress}
             readOnly={isLoading}
           />
           <Input
@@ -91,22 +73,12 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
             type="password"
             fullWidth
             placeholder="Enter your password"
-            onKeyPress={handleKeyPress}
             readOnly={isLoading}
           />
 
-          <Stack spacing={1.5}>
-            {listTextValidate.map((e) => (
-              <Stack key={e.id} direction="row" spacing={7 / 9} alignItems="center">
-                <Image src={e.active ? AlertCheckedIcon : AlertIcon} alt="alert" />
-                <Typography color="greyScale.700" variant="body2">
-                  {e.text}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
+          <PasswordStateValidation password={password} />
 
-          <Button fullWidth variant="contained" disabled={isLoading} onClick={handleSubmit}>
+          <Button fullWidth variant="contained" disabled={isLoading} type="submit">
             {t('submit')}
           </Button>
 
@@ -124,6 +96,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({
           </Stack>
         </Stack>
       </Stack>
+
       <Stack
         alignItems="center"
         sx={{ display: { xs: 'none', md: 'flex' } }}

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { FormSignUp } from './FormSignUp'
@@ -13,7 +13,7 @@ import { Success } from './Success'
 
 const SignUp: NextPage = () => {
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
-  const { control, handleSubmit, watch } = useForm<z.infer<typeof SignUpSchema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof SignUpSchema>>({
     defaultValues: {
       name: '',
       email: '',
@@ -37,19 +37,6 @@ const SignUp: NextPage = () => {
     [mutate, t],
   )
 
-  const list_text_validate = useMemo(() => {
-    const data = watch('password')
-    const _list = [
-      { id: 'error_min', active: data.length >= 8, text: t('error_min') },
-      { id: 'error_special', active: /[!@#$%^&*()_+]/.test(data), text: t('error_special') },
-      { id: 'error_upper', active: /[A-Z]/.test(data), text: t('error_upper') },
-      { id: 'error_lower', active: /[a-z]/.test(data), text: t('error_lower') },
-      { id: 'error_number', active: /[0-9]/.test(data), text: t('error_number') },
-    ]
-    return _list
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, watch('password')])
-
   return (
     <>
       <LayoutUnAuth title="Sign Up">
@@ -58,7 +45,6 @@ const SignUp: NextPage = () => {
             control={control}
             handleSubmit={handleSubmit(onSubmit)}
             isLoading={isLoading}
-            listTextValidate={list_text_validate}
           />
         )}
 
