@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { NextPage } from 'next'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
@@ -17,6 +18,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 const ForgotPassword: NextPage = () => {
   const router = useRouter()
   const mutation = api.auth.forgotPassword.useMutation()
+  const { t } = useTranslation('forgot_password')
 
   const { control, handleSubmit } = useForm<ForgotPasswordType>({
     defaultValues: {
@@ -26,7 +28,7 @@ const ForgotPassword: NextPage = () => {
   })
 
   const redirectBack = () => {
-    router.back()
+    router.push('/sign-in')
   }
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {
@@ -56,22 +58,15 @@ const ForgotPassword: NextPage = () => {
           <Image src={Logo} alt="logo" />
 
           <Typography variant="h2" mt={1.5} mb={0.5}>
-            Forgot Password
+            {t('title')}
           </Typography>
 
-          <Typography variant="body1" color={greyScale[600]}>
-            Don&#39;t worry! We&#39;ll help you get back on track.
+          <Typography variant="body1" color={greyScale[600]} mb={4}>
+            {t('child_title')}
           </Typography>
 
-          <Typography
-            variant="body1"
-            mt={0.5}
-            fontSize="15px"
-            textAlign="center"
-            color={greyScale[600]}
-          >
-            Enter email address associated with your account. Once your identity is verified, you
-            will receive an email with a link to reset your password. Click on the link to proceed.
+          <Typography variant="body2" textAlign="center" color={greyScale[600]}>
+            {t('child_title_2')}
           </Typography>
         </Stack>
 
@@ -79,25 +74,20 @@ const ForgotPassword: NextPage = () => {
           <Input
             control={control}
             name="email"
-            label="Email"
+            label={t('email') as string}
             fullWidth
-            placeholder="enter your email"
+            placeholder={t('enter_email') as string}
           />
 
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-            sx={{ textTransform: 'capitalize' }}
-          >
-            Submit
+          <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
+            {t('submit')}
           </Button>
 
           <Stack py={1.5} spacing={0.5} justifyContent="center" alignItems="center" direction="row">
             <Image src={ArrowLeft} alt="arrow-left" style={{ marginRight: '14px' }} />
 
             <Typography variant="body2" sx={{ cursor: 'pointer' }} onClick={redirectBack}>
-              Back
+              {t('back')}
             </Typography>
           </Stack>
         </Stack>
