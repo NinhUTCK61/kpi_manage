@@ -26,6 +26,12 @@ export const authRouter = createTRPCRouter({
     .input(ResetPasswordSchema)
     .output(z.string())
     .mutation(({ input }) => {
-      return authService.resetPassword(input.password, input.token)
+      try {
+        const result = authService.resetPassword(input.password, input.token)
+        return result
+      } catch (err) {
+        console.error('Error occurred while processing input:', err)
+        throw new Error('Error occurred while processing input')
+      }
     }),
 })

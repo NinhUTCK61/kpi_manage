@@ -34,7 +34,6 @@ const ResetPassword: NextPage = () => {
   }
 
   const { token } = router.query as { token: string }
-
   const onSubmit: SubmitHandler<ResetPasswordType> = (data) => {
     mutation.mutate(
       {
@@ -43,9 +42,30 @@ const ResetPassword: NextPage = () => {
       },
       {
         onError(error) {
-          enqueueSnackbar(`${error.message}`, {
-            variant: 'error',
-          })
+          if (typeof error === 'object' && error.message) {
+            try {
+              const parsedError = JSON.parse(error.message)
+              if (Array.isArray(parsedError)) {
+                parsedError.forEach((item) => {
+                  enqueueSnackbar(`${item.message}`, {
+                    variant: 'error',
+                  })
+                })
+              } else {
+                enqueueSnackbar(`${parsedError}`, {
+                  variant: 'error',
+                })
+              }
+            } catch {
+              enqueueSnackbar(`${error.message}`, {
+                variant: 'error',
+              })
+            }
+          } else if (typeof error === 'string') {
+            enqueueSnackbar(`${error}`, {
+              variant: 'error',
+            })
+          }
         },
         onSuccess() {
           enqueueSnackbar('Change password success!', {
