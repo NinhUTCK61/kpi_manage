@@ -78,6 +78,7 @@ const ResetPassword: NextPage = () => {
             control={control}
             name="password"
             label="New password"
+            type="password"
             placeholder="enter your new password"
           />
           <PasswordStateValidation password={password} />
