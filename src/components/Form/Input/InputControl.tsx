@@ -3,6 +3,7 @@ import type { FormControlProps } from '@mui/material'
 import { Box, FormControl } from '@mui/material'
 import { memo } from 'react'
 import type { FieldError } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FormHelperText } from './FormHelperText'
 import { FormLabel } from './FormLabel'
 
