@@ -1,13 +1,11 @@
 import { Button, Fade, Slide, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Logo from 'public/assets/svgs/logo.svg'
 
 const Success: React.FC = () => {
   const router = useRouter()
-  const { t } = useTranslation('sign_up')
   const isSuccess = true
 
   const redirectSignIn = () => {
@@ -18,14 +16,12 @@ const Success: React.FC = () => {
     <Fade in={isSuccess} mountOnEnter unmountOnExit timeout={400}>
       <Slide direction="left" in={isSuccess} mountOnEnter unmountOnExit timeout={400}>
         <Stack
-          sx={{
-            width: 'auto',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            mb: 2,
-            pt: 5,
-          }}
+          width="auto"
+          height="100%"
+          alignItems="center"
+          justifyContent="flex-start"
+          mb={2}
+          pt={5}
         >
           <Stack alignItems="center" mb={4}>
             <Image src={Logo} alt="logo" />
