@@ -6,5 +6,19 @@
   "password_err_special": "Must include at least one special character (!,@,#,$,%,^,&,*,(,))",
   "password_err_upper": "Must include at least one uppercase letter",
   "password_err_lower": "Must include at least one lowercase letter",
-  "password_err_number": "Must include at least one number"
+  "password_err_number": "Must include at least one number",
+  "sidebar": {
+    "home": "Home",
+    "favorite": "Favorite",
+    "consultation": "Consultation",
+    "knowledge_blog": "Knowledge Blog",
+    "faq": "FAQ",
+    "use_case": "Use case"
+  },
+  "menu": {
+    "edit": "Edit Profile",
+    "change_password": "Change password",
+    "privacy_policy": "Privacy Policy",
+    "log_out": "Log out"
+  }
 }
