@@ -12,8 +12,6 @@ const Avatar = styled(MuiAvatar)({
 })
 
 const Menu = styled(MuiMenu)({
-  paddingTop: 0,
-  paddingBottom: 0,
   '.MuiMenu-paper': {
     overflow: 'visible',
     mt: 1.5,
@@ -38,6 +36,7 @@ const Menu = styled(MuiMenu)({
   },
   '.MuiList-root': {
     paddingBottom: 0,
+    paddingTop: 0,
   },
 })
 
