@@ -1,10 +1,11 @@
 import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import ArrowDownIcon from 'public/assets/imgs/arrow_down.png'
-import NotificationIcon from 'public/assets/imgs/noti.png'
+import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
+import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import ChangeIcon from 'public/assets/svgs/change_pass.svg'
 import LogOutIcon from 'public/assets/svgs/log_out.svg'
+import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
@@ -65,7 +66,7 @@ const Account = () => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Image src={ArrowDownIcon} alt="down" />
+            <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
           </IconButton>
         </StackName>
       </Tooltip>

@@ -1,14 +1,12 @@
 import { Box, List } from '@mui/material'
 import { HEIGHT_HEADER } from '../Header/Header'
 
-import KnowledgeIcon from 'public/assets/imgs/blog.png'
-import ConsultationIcon from 'public/assets/imgs/consulation.png'
-import FAQIcon from 'public/assets/imgs/faq.png'
-import HomeIcon from 'public/assets/imgs/home.png'
-import FavoriteIcon from 'public/assets/imgs/likes.png'
-// import OrganizationIcon from 'public/assets/imgs/organization.png'
-// import ReportingIcon from 'public/assets/imgs/reporting.png'
-import UseCase from 'public/assets/imgs/use_case.png'
+import KnowledgeIcon from 'public/assets/svgs/blog.svg'
+import ConsultationIcon from 'public/assets/svgs/consulation.svg'
+import FAQIcon from 'public/assets/svgs/faq.svg'
+import HomeIcon from 'public/assets/svgs/home.svg'
+import FavoriteIcon from 'public/assets/svgs/likes.svg'
+import UseCase from 'public/assets/svgs/use_case.svg'
 import { useMemo } from 'react'
 import { ListItemButton } from './ItemSidebar'
 
@@ -19,8 +17,6 @@ const Sidebar = () => {
     () => [
       { title: 'Home', icon: HomeIcon, href: '/' },
       { title: 'Favorite', icon: FavoriteIcon, href: '/favorite' },
-      // { title: 'Organization chart', icon: OrganizationIcon, href: '/organization' },
-      // { title: 'Reporting', icon: ReportingIcon, href: '/reporting' },
       { title: 'Consultation', icon: ConsultationIcon, href: '/consultation' },
       { title: 'Knowledge Blog', icon: KnowledgeIcon, href: '/knowledge' },
       { title: 'FAQ', icon: FAQIcon, href: '/faq' },
