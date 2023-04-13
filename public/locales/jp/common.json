@@ -1,10 +1,24 @@
 {
-  "language": "Japanese",
+  "language": "日本語",
   "english": "English",
-  "japan": "Japanese",
-  "password_err_min": "Minimum length of 8 characters",
-  "password_err_special": "Must include at least one special character (!,@,#,$,%,^,&,*,(,))",
-  "password_err_upper": "Must include at least one uppercase letter",
-  "password_err_lower": "Must include at least one lowercase letter",
-  "password_err_number": "Must include at least one number"
+  "japan": "日本語",
+  "password_err_min": "8桁以上を入力する必要があります。",
+  "password_err_special": "最少1桁の特殊文字を含める必要があります。",
+  "password_err_upper": "最少1桁の大文字を含める必要があります。",
+  "password_err_lower": "最少1桁の小文字を含める必要があります。",
+  "password_err_number": "最少1桁の数字を含める必要があります。",
+  "sidebar": {
+    "home": "ホーム",
+    "favorite": "お気に入り",
+    "consultation": "相談",
+    "knowledge_blog": "ブログ",
+    "faq": "よくある質問",
+    "use_case": "事例を見る"
+  },
+  "menu": {
+    "edit": "プロフィール編集",
+    "change_password": "パスワード変更",
+    "privacy_policy": "プライバシーポリシー",
+    "log_out": "ログアウト"
+  }
 }

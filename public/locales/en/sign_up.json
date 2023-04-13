@@ -12,5 +12,11 @@
   "description_success": "You've become a member of KPI Master",
   "title_success": "Sign Up Successfully!",
   "title_failed": "Sign Up failed",
-  "back": "Back to log in"
+  "back": "Back to log in",
+  "name": "Your name",
+  "email": "Email",
+  "password": "Password",
+  "enter_name": "Enter your name",
+  "enter_email": "Enter your email",
+  "enter_password": "Enter your password"
 }

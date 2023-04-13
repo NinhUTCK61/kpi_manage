@@ -1,6 +1,7 @@
 import { Box, List } from '@mui/material'
 import { HEIGHT_HEADER } from '../Header/Header'
 
+import { useTranslation } from 'next-i18next'
 import KnowledgeIcon from 'public/assets/svgs/blog.svg'
 import ConsultationIcon from 'public/assets/svgs/consulation.svg'
 import FAQIcon from 'public/assets/svgs/faq.svg'
@@ -13,16 +14,17 @@ import { ListItemButton } from './ItemSidebar'
 const SIDE_BAR_WIDTH = 250
 
 const Sidebar = () => {
+  const { t } = useTranslation()
   const menus = useMemo(
     () => [
-      { title: 'Home', icon: HomeIcon, href: '/' },
-      { title: 'Favorite', icon: FavoriteIcon, href: '/favorite' },
-      { title: 'Consultation', icon: ConsultationIcon, href: '/consultation' },
-      { title: 'Knowledge Blog', icon: KnowledgeIcon, href: '/knowledge' },
-      { title: 'FAQ', icon: FAQIcon, href: '/faq' },
-      { title: 'Use case', icon: UseCase, href: '/use_case' },
+      { title: t('sidebar.home'), icon: HomeIcon, href: '/' },
+      { title: t('sidebar.favorite'), icon: FavoriteIcon, href: '/favorite' },
+      { title: t('sidebar.consultation'), icon: ConsultationIcon, href: '/consultation' },
+      { title: t('sidebar.knowledge_blog'), icon: KnowledgeIcon, href: '/knowledge' },
+      { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
+      { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
     ],
-    [],
+    [t],
   )
 
   return (
