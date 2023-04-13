@@ -9,7 +9,7 @@ import LogOutIcon from 'public/assets/svgs/log_out.svg'
 import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Avatar, Menu, MenuItem, StackName } from './Menu'
 
 const Account = () => {
@@ -25,31 +25,28 @@ const Account = () => {
 
   const { data: sessionData } = useSession()
 
-  const menu = useMemo(
-    () => [
-      {
-        title: t('menu.edit'),
-        icon: ProfileIcon,
-        handle: handleClose,
-      },
-      {
-        title: t('menu.change_password'),
-        icon: ChangeIcon,
-        handle: handleClose,
-      },
-      {
-        title: t('menu.privacy_policy'),
-        icon: PrivacyIcon,
-        handle: handleClose,
-      },
-      {
-        title: t('menu.log_out'),
-        icon: LogOutIcon,
-        handle: signOut,
-      },
-    ],
-    [t],
-  )
+  const menu = [
+    {
+      title: t('menu.edit'),
+      icon: ProfileIcon,
+      handle: handleClose,
+    },
+    {
+      title: t('menu.change_password'),
+      icon: ChangeIcon,
+      handle: handleClose,
+    },
+    {
+      title: t('menu.privacy_policy'),
+      icon: PrivacyIcon,
+      handle: handleClose,
+    },
+    {
+      title: t('menu.log_out'),
+      icon: LogOutIcon,
+      handle: signOut,
+    },
+  ]
 
   return (
     <>
