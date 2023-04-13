@@ -33,7 +33,7 @@ export const SignUpSchema = z.object({
     message: 'Invalid email address!',
   }),
   password: PasswordSchema,
-  name: z.string().max(255),
+  name: z.string().max(255).min(1),
 })
 
 export const ResetPasswordSchema = z.object({
@@ -42,3 +42,11 @@ export const ResetPasswordSchema = z.object({
 })
 
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>
+
+export const passwordPolicySchema = z
+  .string()
+  .min(8, 'password_err_min')
+  .regex(specialCharRegex, 'password_err_special')
+  .regex(uppercaseRegex, 'password_err_upper')
+  .regex(lowercaseRegex, 'password_err_lower')
+  .regex(numberRegex, 'password_err_number')

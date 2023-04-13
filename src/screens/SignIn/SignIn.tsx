@@ -1,3 +1,4 @@
+import { TextColor } from '@/components'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
 import { LoginSchema, type SignInType } from '@/libs/schema'
@@ -16,7 +17,6 @@ import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from './Image'
-import { TextColor } from './TextColor'
 
 const Login: NextPage = () => {
   const router = useRouter()
@@ -57,7 +57,7 @@ const Login: NextPage = () => {
     } else {
       const error = res?.error as string
       const description = t(error)
-      enqueueSnackbar('Login failed!', { variant: 'error', description })
+      enqueueSnackbar(t('login_failed'), { variant: 'error', description })
     }
   }
 
@@ -67,7 +67,7 @@ const Login: NextPage = () => {
         <Stack direction="row" justifyContent="center" pt={10}>
           <Stack
             alignItems="center"
-            sx={{ marginRight: '155px', display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', md: 'flex' } }}
             spacing={5.25}
             justifyContent="center"
           >
@@ -87,18 +87,12 @@ const Login: NextPage = () => {
           >
             <Stack alignItems="center" mb={4}>
               <CustomImage src={Logo} alt="logo" />
-              <Typography variant="h2" fontWeight={700} sx={{ marginBottom: '4px' }}>
-                Log in to your account
+              <Typography variant="h2" mb={0.5} align="center">
+                {t('title')}
               </Typography>
 
-              <Typography
-                variant="body1"
-                sx={{
-                  color: (theme) => theme.palette.greyScale[600],
-                  fontWeight: 400,
-                }}
-              >
-                Welcome back! Please enter your details.
+              <Typography color="greyScale.600" align="center">
+                {t('child_title')}
               </Typography>
             </Stack>
 
@@ -108,7 +102,7 @@ const Login: NextPage = () => {
                 name="email"
                 label="Email"
                 fullWidth
-                placeholder="Enter your email"
+                placeholder={t('enter_email') as string}
               />
 
               <Input
@@ -117,31 +111,30 @@ const Login: NextPage = () => {
                 label="Password"
                 type="password"
                 fullWidth
-                placeholder="Enter your password"
+                placeholder={t('enter_password') as string}
               />
 
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
-                <TextColor variant="body2" onClick={redirectForgot} mr={1.75}>
-                  Forgot password?
+                <TextColor onClick={redirectForgot} mr={1.75}>
+                  {t('forgot')}
                 </TextColor>
               </Stack>
 
               <Button fullWidth variant="contained" onClick={handleSubmit(onSubmit)}>
-                Log in
+                {t('login')}
               </Button>
 
-              <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
+              <Stack
+                py={1.5}
+                spacing={0.5}
+                justifyContent="center"
+                direction="row"
+                onClick={redirectSignUp}
+              >
                 <Typography variant="body2" color="greyScale.600" fontWeight={400}>
-                  Don’t have an account?
+                  {t('not_have_account')}
                 </Typography>
-                <TextColor
-                  variant="body2"
-                  sx={{ cursor: 'pointer' }}
-                  onClick={redirectSignUp}
-                  fontWeight={400}
-                >
-                  Sign up
-                </TextColor>
+                <TextColor>{t('sign_up')}</TextColor>
               </Stack>
             </Stack>
           </Stack>

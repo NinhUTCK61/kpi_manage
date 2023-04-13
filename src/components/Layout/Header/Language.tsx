@@ -2,7 +2,8 @@ import { MenuItem, Menu as MuiMenu, Stack, Typography, alpha, styled } from '@mu
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import English from 'public/assets/imgs/english.png'
+import EnglishIcon from 'public/assets/svgs/english.svg'
+import JapanIcon from 'public/assets/svgs/japanese.svg'
 import { useState } from 'react'
 
 const Language: React.FC = () => {
@@ -17,12 +18,29 @@ const Language: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const { t } = useTranslation('common')
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('common')
   const changLanguage = (locale: string) => {
     const { pathname, asPath, query } = router
 
     router.push({ pathname, query }, asPath, { locale })
   }
+
+  const languages = [
+    {
+      id: 'en',
+      icon: EnglishIcon,
+      title: t('english'),
+    },
+    {
+      id: 'jp',
+      icon: JapanIcon,
+      title: t('japan'),
+    },
+  ]
+
   return (
     <>
       <Item
@@ -33,9 +51,9 @@ const Language: React.FC = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <Image src={English} alt="english" height={20} width={20} />
-        <Typography ml={0.75} variant="body2" width={51} textAlign="center">
-          {t('language')}
+        <Image src={languages.find((e) => e.id === language)?.icon} alt="english" />
+        <Typography ml={0.75} variant="body2" width={64} textAlign="center">
+          {languages.find((e) => e.id === language)?.title}
         </Typography>
       </Item>
       <Menu
@@ -50,18 +68,14 @@ const Language: React.FC = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => changLanguage('en')}>
-          <Image src={English} alt="english" height={20} width={20} />
-          <Typography ml={0.75} variant="body2">
-            English
-          </Typography>
-        </MenuItem>
-        <MenuItem onClick={() => changLanguage('jp')}>
-          <Image src={English} alt="japan" height={20} width={20} />
-          <Typography ml={0.75} variant="body2">
-            Japan
-          </Typography>
-        </MenuItem>
+        {languages.map((e) => (
+          <MenuItem key={e.id} onClick={() => changLanguage(e.id)}>
+            <Image src={e.icon} alt={e.title} height={20} width={20} />
+            <Typography ml={0.75} variant="body2">
+              {e.title}
+            </Typography>
+          </MenuItem>
+        ))}
       </Menu>
     </>
   )

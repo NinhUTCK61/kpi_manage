@@ -27,7 +27,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
 export { LayoutUnAuth }
 
 const ContentPage = styled('div')(({ theme }) => ({
-  marginTop: `${HEIGHT_HEADER}px`,
+  marginTop: HEIGHT_HEADER,
   minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
   flex: 1,
   justifyContent: 'center',
@@ -35,4 +35,12 @@ const ContentPage = styled('div')(({ theme }) => ({
   overflow: 'hidden',
   paddingLeft: theme.spacing(12.5),
   paddingRight: theme.spacing(12.5),
+  [theme.breakpoints.down('md')]: {
+    paddingLeft: theme.spacing(8),
+    paddingRight: theme.spacing(8),
+  },
+  [theme.breakpoints.down('sm')]: {
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+  },
 }))

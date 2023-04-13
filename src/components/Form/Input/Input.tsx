@@ -1,5 +1,4 @@
-import type { FormControlProps, OutlinedInputProps } from '@mui/material'
-import { OutlinedInput, styled } from '@mui/material'
+import { FormControlProps, OutlinedInput, OutlinedInputProps, styled } from '@mui/material'
 import type { FieldValues, UseControllerProps } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import type { AddControlProps } from './InputControl'
