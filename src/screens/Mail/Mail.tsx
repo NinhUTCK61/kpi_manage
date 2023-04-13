@@ -19,25 +19,28 @@ interface EmailProps {
   name: string
 }
 
+const isDevelopment = process.env.NODE_ENV
+const baseUrl = process.env.NEXTAUTH_URL
+
 const logo =
-  process.env.NODE_ENV === 'development'
-    ? 'https://res.cloudinary.com/dipkauizq/image/upload/v1681355463/kpi-master/logo_header_susdmz.png'
-    : '/assets/imgs/logo_header.png'
+  isDevelopment === 'development'
+    ? 'https://i.imgur.com/l9pWgUw.png'
+    : `${baseUrl}/assets/imgs/logo_header.png`
 
 const hand1 =
-  process.env.NODE_ENV === 'development'
-    ? 'https://res.cloudinary.com/dipkauizq/image/upload/v1681355463/kpi-master/hand3_fmwth6.png'
-    : '/assets/imgs/hand1.png'
+  isDevelopment === 'development'
+    ? 'https://i.imgur.com/MLrZJpv.png'
+    : `${baseUrl}/assets/imgs/hand1.png`
 
 const hand2 =
-  process.env.NODE_ENV === 'development'
-    ? 'https://res.cloudinary.com/dipkauizq/image/upload/v1681355463/kpi-master/hand2_d94yxt.png'
-    : '/assets/imgs/hand2.png'
+  isDevelopment === 'development'
+    ? 'https://i.imgur.com/PKULtCn.png'
+    : `${baseUrl}/assets/imgs/hand2.png`
 
 const hand3 =
-  process.env.NODE_ENV === 'development'
-    ? 'https://res.cloudinary.com/dipkauizq/image/upload/v1681355463/kpi-master/hand1_qanq3m.png'
-    : '/assets/imgs/hand3.png'
+  isDevelopment === 'development'
+    ? 'https://i.imgur.com/IRSDJnn.png'
+    : `${baseUrl}/assets/imgs/hand3.png`
 
 const Mail: FC<EmailProps> = (props) => {
   const { url, name } = props

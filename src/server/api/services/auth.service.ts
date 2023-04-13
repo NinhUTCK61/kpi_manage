@@ -50,7 +50,6 @@ class AuthService {
         user.name as string,
       )
     } catch (error) {
-      console.log(error)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Send mail failed!',
