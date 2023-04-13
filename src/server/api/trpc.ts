@@ -65,10 +65,28 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
+import { errorMap } from '@/libs/schema'
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { OpenApiMeta } from 'trpc-openapi'
-import { ZodError } from 'zod'
+import { z, ZodError, ZodIssue } from 'zod'
+
+z.setErrorMap(errorMap)
+
+const processIssue = (issue: ZodIssue) => {
+  const { message, code, ...rest } = issue
+
+  for (const [key, value] of Object.entries(rest)) {
+    if (Array.isArray(value) && key !== 'path') {
+      ;(rest as Record<string, unknown>)[key] = value.join(' ')
+    }
+  }
+
+  return {
+    message: issue.message,
+    values: rest,
+  }
+}
 
 const t = initTRPC
   .meta<OpenApiMeta>()
@@ -80,7 +98,7 @@ const t = initTRPC
         ...shape,
         data: {
           ...shape.data,
-          zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+          zodError: error.cause instanceof ZodError ? error.cause.flatten(processIssue) : null,
         },
       }
     },

@@ -44,6 +44,7 @@ export const errorMap: z.ZodErrorMap = (issue, ctx) => {
       if (issue.validation === 'email') {
         return {
           message: 'error.invalid_string_email',
+          value: issue,
         }
       } else {
         return {
@@ -113,3 +114,5 @@ export const errorMap: z.ZodErrorMap = (issue, ctx) => {
       return { message: ctx.defaultError }
   }
 }
+
+z.setErrorMap(errorMap)

@@ -1,9 +1,8 @@
 import { greyScale } from '@/common/theme'
 import { Input } from '@/components/Form/Input'
 import { LayoutUnAuth } from '@/components/Layout'
-import { ForgotPasswordSchema, type ForgotPasswordType } from '@/libs/schema'
+import { type ForgotPasswordType } from '@/libs/schema'
 import { api } from '@/utils/api'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { NextPage } from 'next'
@@ -24,12 +23,15 @@ const ForgotPassword: NextPage = () => {
     defaultValues: {
       email: '',
     },
-    resolver: zodResolver(ForgotPasswordSchema),
+    // resolver: zodResolver(ForgotPasswordSchema),
   })
 
   const redirectBack = () => {
     router.push('/sign-in')
   }
+
+  console.log(1111, mutation.error?.data?.zodError)
+  console.log(2222, mutation.error?.data?.zodError?.fieldErrors)
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {
     const { email } = data

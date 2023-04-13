@@ -32,10 +32,10 @@
   "error": {
     "invalid_value": "This is a required field.",
     "invalid_type": "{{expect}} is expected, {{receive}} is recieved",
-    "unrecognized_keys": "Key does not exist in the object: {{keys}}",
+    "unrecognized_keys": "Key does not exist in the object: {{key}}",
     "invalid_union": "Not a valid input",
-    "invalid_union_discriminator": "Not a valid discriminator {{options}} is expected",
-    "invalid_enum_value": "Not a valid enum {{options}} is expected",
+    "invalid_union_discriminator": "Not a valid discriminator {{option}} is expected",
+    "invalid_enum_value": "Not a valid enum {{option}} is expected",
     "invalid_arguments": "Not a valid argument.",
     "invalid_return_type": "Not a valid return type.",
     "invalid_date": "Must be a valid date.",
