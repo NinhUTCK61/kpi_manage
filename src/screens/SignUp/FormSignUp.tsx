@@ -53,26 +53,26 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
           <Input
             control={control}
             name="name"
-            label="Your name"
+            label={t('name') as string}
             fullWidth
-            placeholder="Enter your name"
+            placeholder={t('enter_name') as string}
             readOnly={isLoading}
           />
           <Input
             control={control}
             name="email"
-            label="Email"
+            label={t('email') as string}
             fullWidth
-            placeholder="Enter your email"
+            placeholder={t('enter_email') as string}
             readOnly={isLoading}
           />
           <Input
             control={control}
             name="password"
-            label="Password"
+            label={t('password') as string}
             type="password"
             fullWidth
-            placeholder="Enter your password"
+            placeholder={t('enter_password') as string}
             readOnly={isLoading}
           />
 

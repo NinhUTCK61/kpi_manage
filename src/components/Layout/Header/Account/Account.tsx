@@ -1,5 +1,6 @@
 import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
@@ -12,6 +13,7 @@ import { useState } from 'react'
 import { Avatar, Menu, MenuItem, StackName } from './Menu'
 
 const Account = () => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,22 +27,22 @@ const Account = () => {
 
   const menu = [
     {
-      title: 'Edit profile',
+      title: t('menu.edit'),
       icon: ProfileIcon,
       handle: handleClose,
     },
     {
-      title: 'Change password',
+      title: t('menu.change_password'),
       icon: ChangeIcon,
       handle: handleClose,
     },
     {
-      title: ' Privacy Policy',
+      title: t('menu.privacy_policy'),
       icon: PrivacyIcon,
       handle: handleClose,
     },
     {
-      title: 'Log Out',
+      title: t('menu.log_out'),
       icon: LogOutIcon,
       handle: signOut,
     },
@@ -87,7 +89,9 @@ const Account = () => {
             <ListItemIcon>
               <Image src={item.icon} alt="edit icon" />
             </ListItemIcon>
-            <Typography color="black">{item.title}</Typography>
+            <Typography color="black" variant="body2">
+              {item.title}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>

@@ -91,7 +91,7 @@ const Login: NextPage = () => {
                 {t('title')}
               </Typography>
 
-              <Typography color="greyScale.600" align="center">
+              <Typography color="greyScale.600" align="center" whiteSpace="nowrap">
                 {t('child_title')}
               </Typography>
             </Stack>
@@ -100,7 +100,7 @@ const Login: NextPage = () => {
               <Input
                 control={control}
                 name="email"
-                label="Email"
+                label={t('email') as string}
                 fullWidth
                 placeholder={t('enter_email') as string}
               />
@@ -108,7 +108,7 @@ const Login: NextPage = () => {
               <Input
                 control={control}
                 name="password"
-                label="Password"
+                label={t('password') as string}
                 type="password"
                 fullWidth
                 placeholder={t('enter_password') as string}
