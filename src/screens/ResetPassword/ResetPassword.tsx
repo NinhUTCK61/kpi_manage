@@ -26,12 +26,14 @@ const ResetPassword: NextPage = () => {
     mutate(
       {
         password: data.password,
+        confirmPassword: data.confirmPassword,
         token,
       },
       {
         onError(error) {
           if (error.data?.zodError) {
             const errorMes = JSON.parse(error.message)[0].message
+
             enqueueSnackbar(`${errorMes}`, {
               variant: 'error',
             })

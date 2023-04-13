@@ -36,10 +36,16 @@ export const SignUpSchema = z.object({
   name: z.string().max(255).min(1),
 })
 
-export const ResetPasswordSchema = z.object({
-  password: PasswordSchema,
-  token: z.string(),
-})
+export const ResetPasswordSchema = z
+  .object({
+    password: PasswordSchema,
+    confirmPassword: PasswordSchema,
+    token: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  })
 
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>
 

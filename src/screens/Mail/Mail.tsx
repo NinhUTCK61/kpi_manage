@@ -71,7 +71,7 @@ const Mail: FC<EmailProps> = (props) => {
               </Button>
               <Text className="my-6" style={textStyle}>
                 If you cannot click on the button, please use this link to access the password reset
-                page:
+                page:&nbsp;
                 <Link href={url}>{url}</Link>
               </Text>
               <Text style={textStyle} className="m-0">

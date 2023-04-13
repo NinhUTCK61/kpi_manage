@@ -61,6 +61,15 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
             placeholder="enter your new password"
           />
 
+          <Input
+            sx={{ width: 450 }}
+            control={control}
+            name="confirmPassword"
+            label="Confirm password"
+            type="password"
+            placeholder="enter your new password"
+          />
+
           <PasswordStateValidation password={password} />
 
           <Button
