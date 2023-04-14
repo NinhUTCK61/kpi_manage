@@ -46,7 +46,7 @@
     "too_small_array_true" : "At least {{minimum}} items are required element(s).",
     "too_small_array_false": "Requires at least {{minimum}} items element(s).",
     "too_small_string1": "This is a required field.",
-    "too_small_string_more_true": "The string must contain at least {{minimum}}  characters.",
+    "too_small_string_more_true": "The string must contain at least {{minimum}} characters.",
     "too_small_string_more_false": "The string must contain {{minimum}} or more characters.",
     "too_small_number_true": "Must be or more",
     "too_small_number_false": "Must be greater",
@@ -63,4 +63,3 @@
     "not_finite": "Number must be finite"
   }
 }
-
