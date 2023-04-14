@@ -1,96 +1,103 @@
-import { ZodErrorMap, ZodIssueCode, z } from 'zod'
+import { ZodErrorMap, ZodIssue, ZodIssueCode, z } from 'zod'
 
 export const errorMap: ZodErrorMap = (issue, _ctx) => {
-  const { message, code, ...rest } = issue
-  let message1: string
-  switch (issue.code) {
+  const { message: _message, code, ...rest } = issue
+  let message: string
+  switch (code) {
     case ZodIssueCode.invalid_type:
       if (issue.received === 'undefined') {
-        message1 = 'error.invalid_value_undefined'
+        message = 'error.invalid_value_undefined'
       } else {
-        message1 = `error.invalid_value`
+        message = `error.invalid_value`
       }
       break
     case ZodIssueCode.invalid_literal:
-      message1 = `error.invalid_literal`
+      message = `error.invalid_literal`
       break
     case ZodIssueCode.unrecognized_keys:
-      message1 = `error.unrecognized_keys`
+      message = `error.unrecognized_keys`
       break
     case ZodIssueCode.invalid_union:
-      message1 = `error.invalid_union`
+      message = `error.invalid_union`
       break
     case ZodIssueCode.invalid_union_discriminator:
-      message1 = `error.invalid_union_discriminator`
+      message = `error.invalid_union_discriminator`
       break
     case ZodIssueCode.invalid_enum_value:
-      message1 = `error.invalid_enum_value`
+      message = `error.invalid_enum_value`
       break
     case ZodIssueCode.invalid_arguments:
-      message1 = `error.invalid_arguments`
+      message = `error.invalid_arguments`
       break
     case ZodIssueCode.invalid_return_type:
-      message1 = `error.invalid_return_type`
+      message = `error.invalid_return_type`
       break
     case ZodIssueCode.invalid_date:
-      message1 = `error.invalid_date`
+      message = `error.invalid_date`
       break
     case ZodIssueCode.invalid_string:
       if (issue.validation === 'email') {
-        message1 = `error.invalid_string_email`
+        message = `error.invalid_string_email`
       } else {
-        message1 = `error.invalid_string_format`
+        message = `error.invalid_string_format`
       }
       break
     case ZodIssueCode.too_small:
       if (issue.type === 'array') {
-        message1 = issue.inclusive ? `error.too_small_array_true` : 'error.too_small_array_false'
+        message = issue.inclusive ? `error.too_small_array_true` : 'error.too_small_array_false'
       } else if (issue.type === 'string') {
         if (issue.minimum === 1) {
-          message1 = `error.too_small_string1`
+          message = `error.too_small_string1`
         } else {
-          message1 = issue.inclusive
+          message = issue.inclusive
             ? `error.too_small_string_more_true`
             : `error.too_small_string_more_false`
         }
       } else if (issue.type === 'number') {
-        message1 = `${issue.minimum}${
+        message = `${issue.minimum}${
           issue.inclusive ? `error.too_small_number_true` : `error.too_small_number_false`
         }`
       } else {
-        message1 = 'error.invalid_input'
+        message = 'error.invalid_input'
       }
       break
     case ZodIssueCode.too_big:
       if (issue.type === 'array') {
-        message1 = `${issue.maximum}${
+        message = `${issue.maximum}${
           issue.inclusive ? `error.too_big_array_true` : `error.too_big_array_false`
         }`
       } else if (issue.type === 'string') {
-        message1 = `${issue.inclusive ? `error.too_big_string_true` : `error.too_big_string_false`}`
+        message = `${issue.inclusive ? `error.too_big_string_true` : `error.too_big_string_false`}`
       } else if (issue.type === 'number') {
-        message1 = `${issue.maximum}${
+        message = `${issue.maximum}${
           issue.inclusive ? `error.too_big_number_true` : `error.too_big_number_false`
         }`
       } else {
-        message1 = 'error.too_big_result'
+        message = 'error.too_big_result'
       }
       break
     case ZodIssueCode.custom:
-      message1 = `erro.invalid_string_format`
+      message = `error.invalid_string_format`
       break
     case ZodIssueCode.invalid_intersection_types:
-      message1 = `error.invalid_intersection_types`
+      message = `error.invalid_intersection_types`
       break
     case ZodIssueCode.not_multiple_of:
-      message1 = `error.not_multiple_of`
+      message = `error.not_multiple_of`
       break
     case ZodIssueCode.not_finite:
-      message1 = 'error.not_finite'
+      message = 'error.not_finite'
       break
     default:
-      message1 = _ctx.defaultError
+      message = _ctx.defaultError
   }
-  return { message: message1 + '|' + JSON.stringify(rest) }
+  return { message: message + '|' + JSON.stringify(rest) }
 }
+
+export const processIssue = (issue: ZodIssue) => {
+  return {
+    message: issue.message,
+  }
+}
+
 z.setErrorMap(errorMap)

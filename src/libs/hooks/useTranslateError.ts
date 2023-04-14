@@ -1,9 +1,5 @@
 import { useTranslation } from 'react-i18next'
 
-type Props = {
-  messageError: string
-}
-
 export const useTranslateError = () => {
   const { t } = useTranslation('common')
 
@@ -15,7 +11,8 @@ export const useTranslateError = () => {
 
       return `${t(key, optionKey)}`
     }
-    return ''
+
+    return message
   }
   return { handleError }
 }

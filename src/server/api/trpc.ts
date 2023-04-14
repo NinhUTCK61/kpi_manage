@@ -66,16 +66,11 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * errors on the backend.
  */
 
+import { processIssue } from '@/libs/schema'
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { OpenApiMeta } from 'trpc-openapi'
-import { ZodError, ZodIssue } from 'zod'
-
-const processIssue = (issue: ZodIssue) => {
-  return {
-    message: issue.message,
-  }
-}
+import { ZodError } from 'zod'
 
 const t = initTRPC
   .meta<OpenApiMeta>()

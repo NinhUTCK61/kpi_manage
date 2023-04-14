@@ -1,4 +1,4 @@
-import { useTranslateError } from '@/utils/useTranslateError'
+import { useTranslateError } from '@/libs/hooks'
 import type { FormControlProps } from '@mui/material'
 import { Box, FormControl } from '@mui/material'
 import { memo } from 'react'

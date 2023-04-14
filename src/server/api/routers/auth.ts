@@ -1,4 +1,4 @@
-import { ForgotPasswordSchema, ResetPasswordSchema, SignUpSchema, errorMap } from '@/libs/schema'
+import { ForgotPasswordSchema, ResetPasswordSchema, SignUpSchema } from '@/libs/schema'
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -12,7 +12,6 @@ export const authRouter = createTRPCRouter({
     .input(ForgotPasswordSchema)
     .output(z.string())
     .mutation(({ input }) => {
-      z.setErrorMap(errorMap)
       return authService.forgotPassword(input.email)
     }),
   signUp: publicProcedure
