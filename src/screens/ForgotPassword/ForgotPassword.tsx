@@ -30,9 +30,6 @@ const ForgotPassword: NextPage = () => {
     router.push('/sign-in')
   }
 
-  console.log(1111, mutation.error?.data?.zodError)
-  console.log(2222, mutation.error?.data?.zodError?.fieldErrors)
-
   const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {
     const { email } = data
 
