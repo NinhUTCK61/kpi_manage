@@ -1,7 +1,5 @@
 import { SignUpSchema } from '@/libs/schema'
-import { TextColor } from '@/libs/shared/components'
-import { Input } from '@/libs/shared/components/Form/Input'
-import { PasswordStateValidation } from '@/libs/shared/components/PasswordStateValidation'
+import { Input, PasswordStateValidation, TextColor } from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -12,7 +10,7 @@ import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { Control, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { CustomImage } from './Image'
+import { CustomImage } from '../../components'
 
 type FormSignUpTypes = {
   control: Control<z.infer<typeof SignUpSchema>>

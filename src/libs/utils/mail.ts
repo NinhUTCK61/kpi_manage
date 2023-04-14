@@ -1,4 +1,4 @@
-import { Mail } from '@/screens/Mail'
+import { ForgotPasswordMail } from '@/features/mail'
 import { render } from '@react-email/render'
 import nodemailer, { SendMailOptions, Transporter } from 'nodemailer'
 import { ReactElement } from 'react'
@@ -45,7 +45,7 @@ class MailUtils {
 
   async sendPasswordResetMail(email: string, token: string, name: string): Promise<void> {
     const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
-    const text = render(Mail({ url: resetLink, name: name }) as ReactElement)
+    const text = render(ForgotPasswordMail({ url: resetLink, name: name }) as ReactElement)
     const subject = 'Password Reset'
 
     const mailer = await this.sendMail({ to: email, subject, html: text })

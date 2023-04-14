@@ -1,4 +1,4 @@
-import { SignUp } from '@/screens/SignUp'
+import { SignUp } from '@/features/auth'
 import type { GetStaticPropsContext } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

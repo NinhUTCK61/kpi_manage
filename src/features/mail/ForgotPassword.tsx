@@ -42,7 +42,7 @@ const hand3 =
     ? 'https://i.imgur.com/IRSDJnn.png'
     : `${baseUrl}/assets/imgs/hand3.png`
 
-const Mail: FC<EmailProps> = (props) => {
+const ForgotPasswordMail: FC<EmailProps> = (props) => {
   const { url, name } = props
   return (
     <Tailwind>
@@ -98,7 +98,7 @@ const Mail: FC<EmailProps> = (props) => {
   )
 }
 
-export { Mail }
+export { ForgotPasswordMail }
 
 const main = {
   backgroundColor: '#ffffff',

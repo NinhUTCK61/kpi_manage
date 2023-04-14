@@ -1,4 +1,4 @@
-import { ResetPassword } from '@/screens/ResetPassword'
+import { ResetPassword } from '@/features/auth'
 import type { GetStaticPropsContext, NextPage } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

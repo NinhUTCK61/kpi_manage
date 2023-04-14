@@ -1,21 +1,20 @@
 import { api } from '@/libs/api'
 import { greyScale } from '@/libs/config/theme'
 import { ForgotPasswordSchema, type ForgotPasswordType } from '@/libs/schema'
-import { Input } from '@/libs/shared/components/Form/Input'
-import { LayoutUnAuth } from '@/libs/shared/components/Layout'
+import { Input, LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-const ForgotPassword: NextPage = () => {
+const ForgotPassword: FC = () => {
   const router = useRouter()
   const mutation = api.auth.forgotPassword.useMutation()
   const { t } = useTranslation('forgot_password')

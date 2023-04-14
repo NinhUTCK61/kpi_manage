@@ -3,7 +3,7 @@ import { Stack } from '@mui/system'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import Logo from 'public/assets/svgs/logo.svg'
-import { CustomImage } from './Image'
+import { CustomImage } from '../../components'
 
 const Success: React.FC = () => {
   const router = useRouter()

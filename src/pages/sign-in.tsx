@@ -1,4 +1,4 @@
-import { Login } from '@/screens/SignIn'
+import { Login } from '@/features/auth'
 import type { GetStaticPropsContext, NextPage } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

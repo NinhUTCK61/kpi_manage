@@ -1,13 +1,13 @@
 import { greyScale } from '@/libs/config/theme'
-import { LayoutUnAuth } from '@/libs/shared/components/Layout'
+import { LayoutUnAuth } from '@/libs/shared/components'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { NextPage } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Email from 'public/assets/svgs/email.svg'
+import { FC } from 'react'
 
-const SendMailSuccess: NextPage = () => {
+const SendMailSuccess: FC = () => {
   const router = useRouter()
 
   const handleClick = () => {

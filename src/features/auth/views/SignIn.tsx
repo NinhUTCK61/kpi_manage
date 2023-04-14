@@ -1,11 +1,8 @@
 import { LoginSchema, type SignInType } from '@/libs/schema'
-import { TextColor } from '@/libs/shared/components'
-import { Input } from '@/libs/shared/components/Form/Input'
-import { LayoutUnAuth } from '@/libs/shared/components/Layout'
+import { Input, LayoutUnAuth, TextColor } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { NextPage } from 'next'
 import { signIn } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -15,10 +12,11 @@ import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
 import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { CustomImage } from './Image'
+import { CustomImage } from '../components'
 
-const Login: NextPage = () => {
+const Login: FC = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
 

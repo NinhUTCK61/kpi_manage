@@ -1,15 +1,15 @@
 import { api } from '@/libs/api'
 import { ResetPasswordSchema, ResetPasswordType } from '@/libs/schema'
-import { LayoutUnAuth } from '@/libs/shared/components/Layout'
+import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormResetPassword } from './FromResetPassword'
 import { Success } from './Success'
 
-const ResetPassword: NextPage = () => {
+const ResetPassword: FC = () => {
   const router = useRouter()
   const { mutate, isLoading, isSuccess } = api.auth.resetPassword.useMutation()
 

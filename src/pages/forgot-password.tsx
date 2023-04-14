@@ -1,4 +1,4 @@
-import { ForgotPassword } from '@/screens/ForgotPassword'
+import { ForgotPassword } from '@/features/auth'
 import type { GetStaticPropsContext, NextPage } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
