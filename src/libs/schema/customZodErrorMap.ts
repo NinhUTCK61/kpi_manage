@@ -63,15 +63,11 @@ export const errorMap: ZodErrorMap = (issue, _ctx) => {
       break
     case ZodIssueCode.too_big:
       if (issue.type === 'array') {
-        message = `${issue.maximum}${
-          issue.inclusive ? `error.too_big_array_true` : `error.too_big_array_false`
-        }`
+        message = `${issue.inclusive ? `error.too_big_array_true` : `error.too_big_array_false`}`
       } else if (issue.type === 'string') {
         message = `${issue.inclusive ? `error.too_big_string_true` : `error.too_big_string_false`}`
       } else if (issue.type === 'number') {
-        message = `${issue.maximum}${
-          issue.inclusive ? `error.too_big_number_true` : `error.too_big_number_false`
-        }`
+        message = `${issue.inclusive ? `error.too_big_number_true` : `error.too_big_number_false`}`
       } else {
         message = 'error.too_big_result'
       }
