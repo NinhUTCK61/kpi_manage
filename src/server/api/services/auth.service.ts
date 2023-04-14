@@ -1,5 +1,5 @@
+import MailUtils from '@/libs/utils/mail'
 import { prisma } from '@/server/db'
-import MailUtils from '@/utils/mail'
 import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import * as argon2 from 'argon2'

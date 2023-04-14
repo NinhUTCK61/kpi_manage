@@ -1,5 +1,5 @@
-import { greyScale } from '@/common/theme'
-import { LayoutUnAuth } from '@/components/Layout'
+import { greyScale } from '@/libs/config/theme'
+import { LayoutUnAuth } from '@/libs/shared/components/Layout'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { NextPage } from 'next'

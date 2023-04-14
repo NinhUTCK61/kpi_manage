@@ -1,6 +1,6 @@
-import { LayoutUnAuth } from '@/components/Layout'
+import { api } from '@/libs/api'
 import { SignUpSchema } from '@/libs/schema'
-import { api } from '@/utils/api'
+import { LayoutUnAuth } from '@/libs/shared/components/Layout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'

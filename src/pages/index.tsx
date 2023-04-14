@@ -1,4 +1,4 @@
-import { Layout } from '@/components/Layout/Layout'
+import { Layout } from '@/libs/shared/components/Layout/Layout'
 import { GetStaticPropsContext, type NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
