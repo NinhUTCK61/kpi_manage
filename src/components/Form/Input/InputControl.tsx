@@ -1,3 +1,4 @@
+import { useTranslateError } from '@/libs/hooks'
 import type { FormControlProps } from '@mui/material'
 import { Box, FormControl } from '@mui/material'
 import { memo } from 'react'
@@ -22,6 +23,7 @@ function RawInputControl({
   required,
   ...props
 }: InputControlProps) {
+  const { handleError } = useTranslateError()
   return (
     <FormControl fullWidth={fullWidth} error={!!fieldError} {...props}>
       {label && (
@@ -43,7 +45,9 @@ function RawInputControl({
 
       {!!fieldError && (
         <FormHelperText error>
-          {typeof fieldError === 'boolean' ? helperText : fieldError?.message}
+          {typeof fieldError === 'boolean'
+            ? helperText
+            : handleError(fieldError?.message as string)}
         </FormHelperText>
       )}
       {helperText && <FormHelperText error={false}>{helperText}</FormHelperText>}
