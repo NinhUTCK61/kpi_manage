@@ -17,15 +17,22 @@ export function generateIds(node: NodeFlow, prefix: string, index: number): void
 }
 
 export function generateNextId(parentNode: NodeFlow): string {
-  // if parentNode is root
   if (parentNode.id === 'root') {
-    // Find the next letter based on the number of children of the root node
-    const nextLetter = String.fromCharCode(65 + parentNode.children.length)
+    let nextLetter = ''
+    let index = parentNode.children.length
+    do {
+      nextLetter = String.fromCharCode(65 + index)
+      index++
+    } while (parentNode.children.some((child) => child.id === nextLetter))
     return nextLetter
   } else {
-    // If parentNode is not the root node, create an ID for the next child node
-    const nextNumber = parentNode.children.length + 1
-    return `${parentNode.id}${nextNumber}`
+    let nextNumber = ''
+    let index = parentNode.children.length + 1
+    do {
+      nextNumber = `${parentNode.id}${index}`
+      index++
+    } while (parentNode.children.some((child) => child.id === nextNumber))
+    return nextNumber
   }
 }
 
