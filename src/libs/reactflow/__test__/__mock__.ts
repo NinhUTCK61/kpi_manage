@@ -1,3 +1,4 @@
+import { Edge } from 'reactflow'
 import { ReactFlowNode } from '../types'
 
 export const _nodes: ReactFlowNode[] = [
@@ -20,24 +21,6 @@ export const _nodes: ReactFlowNode[] = [
     position: { x: 0, y: 0 },
   },
   {
-    id: 'B',
-    data: {
-      id: 'B',
-      slug: 'B',
-      parent_node_id: 'root',
-    },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: 'C',
-    data: {
-      id: 'C',
-      slug: 'C',
-      parent_node_id: 'root',
-    },
-    position: { x: 0, y: 0 },
-  },
-  {
     id: 'A1',
     data: {
       id: 'A1',
@@ -46,22 +29,17 @@ export const _nodes: ReactFlowNode[] = [
     },
     position: { x: 0, y: 0 },
   },
+]
+
+export const _edges: Edge[] = [
   {
-    id: 'A2',
-    data: {
-      id: 'A2',
-      slug: 'A2',
-      parent_node_id: 'A',
-    },
-    position: { x: 0, y: 0 },
+    id: 'root-A',
+    source: 'root',
+    target: 'A',
   },
   {
-    id: 'A3',
-    data: {
-      id: 'A3',
-      slug: 'A3',
-      parent_node_id: 'A',
-    },
-    position: { x: 0, y: 0 },
+    id: 'A-A1',
+    source: 'A',
+    target: 'A1',
   },
 ]
