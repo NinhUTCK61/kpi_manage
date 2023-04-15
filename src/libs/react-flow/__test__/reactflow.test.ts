@@ -1,6 +1,6 @@
 import { Edge } from 'reactflow'
 import { afterEach, describe, expect, test } from 'vitest'
-import { flattenHierarchy, generateNextReactFlowNode, stratifier } from '../core'
+import { flattenHierarchy, generateNextReactFlowNode, stratifier } from '../helper'
 import { DbNode, ReactFlowNode } from '../types'
 import { _edges, _nodes } from './__mock__'
 

@@ -12,15 +12,14 @@ export const generateNextReactFlowNode = (
       ? d3Root
       : (d3Root.find((node) => node.data.id === parentId) as HierarchyNode<FlowNode>)
 
-  console.log(111, parentNode)
-
   const nextFlowNode = generateNextNode(parentNode)
   parentNode.children = [...(parentNode.children ?? []), hierarchy(nextFlowNode)]
 
   const node: ReactFlowNode = {
     id: nextFlowNode.id,
     data: nextFlowNode,
-    position: { x: 0, y: 0 },
+    position: { x: 350, y: 75 },
+    type: 'kpi',
   }
 
   const edge: Edge = {
