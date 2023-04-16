@@ -10,6 +10,7 @@ import {
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode } from '../helper'
 import { FlowNode, RFStore } from '../types'
+import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: FlowNode = {
   slug: 'root',
@@ -24,38 +25,39 @@ const DEFAULT_STATE: Partial<RFStore> = {
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
-  createStore<RFStore>((set, get) => ({
-    ...(DEFAULT_STATE as RFStore),
-    ...initialState,
-    onNodesChange(changes: NodeChange[]) {
-      set({
-        nodes: applyNodeChanges(changes, get().nodes),
-      })
-    },
-    onEdgesChange(changes: EdgeChange[]) {
-      set({
-        edges: applyEdgeChanges(changes, get().edges),
-      })
-    },
-    onConnect(connection: Connection) {
-      set({
-        edges: addEdge(connection, get().edges),
-      })
-    },
-    addNode(parentNodeId: string) {
-      const d3Root = get().d3Root
-      const nodes = get().nodes
-      const edges = get().edges
-      const { node, edge } = generateNextReactFlowNode(parentNodeId, d3Root)
-      nodes.push(node)
-      edges.push(edge)
+  createStore<RFStore>(
+    d3RootMiddleware((set, get) => ({
+      ...(DEFAULT_STATE as RFStore),
+      ...initialState,
+      onNodesChange(changes: NodeChange[]) {
+        set({
+          nodes: applyNodeChanges(changes, get().nodes),
+        })
+      },
+      onEdgesChange(changes: EdgeChange[]) {
+        set({
+          edges: applyEdgeChanges(changes, get().edges),
+        })
+      },
+      onConnect(connection: Connection) {
+        set({
+          edges: addEdge(connection, get().edges),
+        })
+      },
+      addNode(parentNodeId: string) {
+        const d3Root = get().d3Root
+        const nodes = get().nodes
+        const edges = get().edges
+        const { node, edge } = generateNextReactFlowNode(parentNodeId, d3Root)
+        nodes.push(node)
+        edges.push(edge)
 
-      set({
-        nodes: [...nodes],
-        edges: [...edges],
-        d3Root,
-      })
-    },
-  }))
+        set({
+          nodes: [...nodes],
+          edges: [...edges],
+        })
+      },
+    })),
+  )
 
 export { createRFStore }

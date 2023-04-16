@@ -57,6 +57,7 @@ const Template = () => {
   return (
     <Stack display="flex" flex={1} height="100%">
       <Button onClick={() => addNode('root')}>Add new node</Button>
+      <Button onClick={() => addNode('A')}>Add child A</Button>
       <Box className="reactflow-wrapper" flexGrow={1}>
         <ReactFlow
           nodes={nodes}
