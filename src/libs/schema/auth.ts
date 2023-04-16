@@ -27,9 +27,7 @@ export const PasswordSchema = z
   .regex(numberRegex, 'Must include at least one number')
 
 export const SignUpSchema = z.object({
-  email: z.string().email({
-    message: 'Invalid email address!',
-  }),
+  email: z.string().email(),
   password: PasswordSchema,
   name: z.string().max(255).min(1),
 })
