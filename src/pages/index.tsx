@@ -3,11 +3,11 @@ import {
   KPINode,
   ReactFlowNode,
   TemplateProvider,
+  stratifier,
   useRFStore,
 } from '@/libs/react-flow'
 import { Layout } from '@/libs/shared/components'
 import { Box, Button, Stack } from '@mui/material'
-import { hierarchy } from 'd3-hierarchy'
 import { GetStaticPropsContext, type NextPage } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Background, Edge, ReactFlow } from 'reactflow'
@@ -25,18 +25,13 @@ const _nodes: ReactFlowNode[] = [
   {
     id: 'root',
     type: 'kpi',
-    data: { id: 'root', parent_node_id: '', slug: 'root' },
-    position: { x: 250, y: 25 },
+    data: { id: 'root', parent_node_id: '', slug: 'root', x: 0, y: 0 },
+    position: { x: 0, y: 0 },
   },
 ]
 const _edges: Edge[] = []
 
-const d3Root: HierarchyFlowNode = hierarchy({
-  id: 'root',
-  parent_node_id: '',
-  slug: 'root',
-})
-
+const d3Root: HierarchyFlowNode = stratifier(_nodes)
 const nodeTypes = {
   kpi: KPINode,
 }
