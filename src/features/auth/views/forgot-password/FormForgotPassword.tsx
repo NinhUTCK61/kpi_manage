@@ -1,71 +1,56 @@
-import { api } from '@/libs/api'
 import { greyScale } from '@/libs/config/theme'
-import { ForgotPasswordSchema, type ForgotPasswordType } from '@/libs/schema'
-import { Input, LayoutUnAuth } from '@/libs/shared/components'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { ForgotPasswordSchema } from '@/libs/schema'
+import { Input } from '@/libs/shared/components'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { enqueueSnackbar } from 'notistack'
 import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
-import { FC } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Control } from 'react-hook-form'
+import { z } from 'zod'
 
-const ForgotPassword: FC = () => {
+type FormForgotPasswordTypes = {
+  control: Control<z.infer<typeof ForgotPasswordSchema>>
+  handleSubmit(): void
+  isLoading: boolean
+}
+
+const FormForgotPassword: React.FC<FormForgotPasswordTypes> = ({
+  control,
+  handleSubmit,
+  isLoading,
+}) => {
   const router = useRouter()
-  const mutation = api.auth.forgotPassword.useMutation()
-  const { t } = useTranslation('forgot_password')
-
-  const { control, handleSubmit } = useForm<ForgotPasswordType>({
-    defaultValues: {
-      email: '',
-    },
-    resolver: zodResolver(ForgotPasswordSchema),
-  })
+  const { t } = useTranslation(['forgot_password'])
 
   const redirectBack = () => {
     router.push('/sign-in')
   }
-
-  const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {
-    const { email } = data
-
-    mutation.mutate(
-      {
-        email,
-      },
-      {
-        onError(error) {
-          enqueueSnackbar(`${error.message}`, {
-            variant: 'error',
-          })
-        },
-        onSuccess() {
-          router.push('/send-mail-success')
-        },
-      },
-    )
-  }
-
   return (
-    <LayoutUnAuth title="Forgot Password">
-      <Stack width={450} direction="column" margin="auto" mt={10}>
+    <Stack justifyContent="center" alignItems="center">
+      <Stack
+        width={450}
+        direction="column"
+        margin="auto"
+        mt={10}
+        component="form"
+        onSubmit={handleSubmit}
+      >
         <Stack alignItems="center" mb={4}>
           <Image src={Logo} alt="logo" />
 
           <Typography variant="h2" mt={1.5} mb={0.5}>
-            {t('title')}
+            {t('title') as string}
           </Typography>
 
           <Typography variant="body1" color={greyScale[600]} mb={4}>
-            {t('child_title')}
+            {t('child_title') as string}
           </Typography>
 
           <Typography variant="body2" textAlign="center" color={greyScale[600]}>
-            {t('child_title_2')}
+            {t('child_title_2') as string}
           </Typography>
         </Stack>
 
@@ -76,23 +61,24 @@ const ForgotPassword: FC = () => {
             label={t('email') as string}
             fullWidth
             placeholder={t('enter_email') as string}
+            readOnly={isLoading}
           />
 
-          <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
-            {t('submit')}
+          <Button variant="contained" fullWidth type="submit" disabled={isLoading}>
+            {t('submit') as string}
           </Button>
 
           <Stack py={1.5} spacing={0.5} justifyContent="center" alignItems="center" direction="row">
             <Image src={ArrowLeft} alt="arrow-left" style={{ marginRight: '14px' }} />
 
             <Typography variant="body2" sx={{ cursor: 'pointer' }} onClick={redirectBack}>
-              {t('back')}
+              {t('back') as string}
             </Typography>
           </Stack>
         </Stack>
       </Stack>
-    </LayoutUnAuth>
+    </Stack>
   )
 }
 
-export { ForgotPassword }
+export { FormForgotPassword }
