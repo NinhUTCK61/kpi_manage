@@ -260,7 +260,7 @@ export type UserTemplate = z.infer<typeof UserTemplateSchema>
 
 export const TemplateSchema = z.object({
   id: z.string().cuid(),
-  root_note_id: z.string(),
+  root_note_id: z.string().cuid(),
   name: z.string(),
   image_url: z.string().nullable(),
   public_url: z.string().nullable(),
@@ -1486,8 +1486,7 @@ export const NodeWhereInputSchema: z.ZodType<Prisma.NodeWhereInput> = z
     node_child: z.lazy(() => NodeListRelationFilterSchema).optional(),
     parent_node: z
       .union([z.lazy(() => NodeRelationFilterSchema), z.lazy(() => NodeWhereInputSchema)])
-      .optional()
-      .nullable(),
+      .optional(),
     SpeechBallon: z.lazy(() => SpeechBallonListRelationFilterSchema).optional(),
   })
   .strict()
@@ -1516,7 +1515,6 @@ export const NodeOrderByWithRelationInputSchema: z.ZodType<Prisma.NodeOrderByWit
 export const NodeWhereUniqueInputSchema: z.ZodType<Prisma.NodeWhereUniqueInput> = z
   .object({
     id: z.string().cuid().optional(),
-    parent_node_id: z.string().optional(),
   })
   .strict()
 
@@ -2692,7 +2690,7 @@ export const UserTemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserTe
 export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = z
   .object({
     id: z.string().cuid().optional(),
-    root_note_id: z.string(),
+    root_note_id: z.string().cuid().optional(),
     name: z.string(),
     image_url: z.string().optional().nullable(),
     public_url: z.string().optional().nullable(),
@@ -2708,7 +2706,7 @@ export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = 
 export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateInput> = z
   .object({
     id: z.string().cuid().optional(),
-    root_note_id: z.string(),
+    root_note_id: z.string().cuid().optional(),
     name: z.string(),
     image_url: z.string().optional().nullable(),
     public_url: z.string().optional().nullable(),
@@ -2731,7 +2729,7 @@ export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = 
       .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     root_note_id: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     name: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
     image_url: z
@@ -2763,7 +2761,7 @@ export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUnchec
       .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     root_note_id: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     name: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
     image_url: z
@@ -2796,7 +2794,7 @@ export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUnchec
 export const TemplateCreateManyInputSchema: z.ZodType<Prisma.TemplateCreateManyInput> = z
   .object({
     id: z.string().cuid().optional(),
-    root_note_id: z.string(),
+    root_note_id: z.string().cuid().optional(),
     name: z.string(),
     image_url: z.string().optional().nullable(),
     public_url: z.string().optional().nullable(),
@@ -2813,7 +2811,7 @@ export const TemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.TemplateUpd
         .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       root_note_id: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       name: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       image_url: z
@@ -2843,7 +2841,7 @@ export const TemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TemplateUn
         .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       root_note_id: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       name: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       image_url: z
@@ -2880,7 +2878,7 @@ export const NodeCreateInputSchema: z.ZodType<Prisma.NodeCreateInput> = z
     unit: z.string(),
     Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
     node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
-    parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
+    parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema),
     SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
   })
   .strict()
@@ -2930,7 +2928,7 @@ export const NodeUpdateInputSchema: z.ZodType<Prisma.NodeUpdateInput> = z
     unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
     Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
     node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
-    parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
+    parent_node: z.lazy(() => NodeUpdateOneRequiredWithoutNode_childNestedInputSchema).optional(),
     SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
   })
   .strict()
@@ -4035,14 +4033,8 @@ export const JsonFilterSchema: z.ZodType<Prisma.JsonFilter> = z
 
 export const NodeRelationFilterSchema: z.ZodType<Prisma.NodeRelationFilter> = z
   .object({
-    is: z
-      .lazy(() => NodeWhereInputSchema)
-      .optional()
-      .nullable(),
-    isNot: z
-      .lazy(() => NodeWhereInputSchema)
-      .optional()
-      .nullable(),
+    is: z.lazy(() => NodeWhereInputSchema).optional(),
+    isNot: z.lazy(() => NodeWhereInputSchema).optional(),
   })
   .strict()
 
@@ -6428,7 +6420,7 @@ export const NodeUpdateManyWithoutParent_nodeNestedInputSchema: z.ZodType<Prisma
     })
     .strict()
 
-export const NodeUpdateOneWithoutNode_childNestedInputSchema: z.ZodType<Prisma.NodeUpdateOneWithoutNode_childNestedInput> =
+export const NodeUpdateOneRequiredWithoutNode_childNestedInputSchema: z.ZodType<Prisma.NodeUpdateOneRequiredWithoutNode_childNestedInput> =
   z
     .object({
       create: z
@@ -6439,8 +6431,6 @@ export const NodeUpdateOneWithoutNode_childNestedInputSchema: z.ZodType<Prisma.N
         .optional(),
       connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutNode_childInputSchema).optional(),
       upsert: z.lazy(() => NodeUpsertWithoutNode_childInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -8220,7 +8210,7 @@ export const TemplateCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.Temp
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -8236,7 +8226,7 @@ export const TemplateUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Pr
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -8524,7 +8514,7 @@ export const NodeCreateWithoutTemplateInputSchema: z.ZodType<Prisma.NodeCreateWi
       y: z.number(),
       unit: z.string(),
       node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
-      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
+      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema),
       SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
     })
     .strict()
@@ -8808,7 +8798,7 @@ export const TemplateCreateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCrea
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -8824,7 +8814,7 @@ export const TemplateUncheckedCreateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -8929,7 +8919,7 @@ export const NodeCreateWithoutNode_childInputSchema: z.ZodType<Prisma.NodeCreate
       y: z.number(),
       unit: z.string(),
       Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
-      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
+      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema),
       SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
     })
     .strict()
@@ -9171,7 +9161,7 @@ export const NodeUpdateWithoutNode_childInputSchema: z.ZodType<Prisma.NodeUpdate
       y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
       unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
-      parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
+      parent_node: z.lazy(() => NodeUpdateOneRequiredWithoutNode_childNestedInputSchema).optional(),
       SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
     })
     .strict()
@@ -9250,7 +9240,7 @@ export const TemplateCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.Temp
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -9266,7 +9256,7 @@ export const TemplateUncheckedCreateWithoutSpeechBallonInputSchema: z.ZodType<Pr
   z
     .object({
       id: z.string().optional(),
-      root_note_id: z.string(),
+      root_note_id: z.string().optional(),
       name: z.string(),
       image_url: z.string().optional().nullable(),
       public_url: z.string().optional().nullable(),
@@ -9306,7 +9296,7 @@ export const NodeCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.NodeCrea
       unit: z.string(),
       Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
       node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
-      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
+      parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema),
     })
     .strict()
 
@@ -9455,7 +9445,7 @@ export const NodeUpdateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.NodeUpda
       unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
       node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
-      parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
+      parent_node: z.lazy(() => NodeUpdateOneRequiredWithoutNode_childNestedInputSchema).optional(),
     })
     .strict()
 
@@ -10204,7 +10194,7 @@ export const NodeUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.NodeUpdateWi
       y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
       unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
-      parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
+      parent_node: z.lazy(() => NodeUpdateOneRequiredWithoutNode_childNestedInputSchema).optional(),
       SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
     })
     .strict()
