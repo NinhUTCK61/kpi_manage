@@ -1,3 +1,4 @@
+import { UpdateTemplateSchema } from '@/libs/schema'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc'
 import { UserSchema, UserTemplateSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -16,15 +17,13 @@ export const TemplateRouter = createTRPCRouter({
 
   updateTemplate: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/update-template' } })
-    .input(
-      z.object({
-        name: z.string(),
-        imageUrl: z.string(),
-        id: z.string(),
-      }),
-    )
+    .input(UpdateTemplateSchema)
     .output(z.string())
     .mutation(({ input }) => {
-      return templateService.updateTemplate(input.name, input.imageUrl, input.id)
+      return templateService.updateTemplate(
+        input.name as string,
+        input.imageUrl as string,
+        input.id,
+      )
     }),
 })

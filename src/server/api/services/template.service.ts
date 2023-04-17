@@ -19,7 +19,7 @@ export class TemplateService {
     return listTemplate
   }
 
-  async updateTemplate(imageUrl: string, name: string, id: string) {
+  async updateTemplate(name: string, imageUrl: string, id: string) {
     let updates = {}
 
     if (imageUrl) {
@@ -29,6 +29,8 @@ export class TemplateService {
     if (name) {
       updates = { ...updates, name: name }
     }
+
+    console.log(updates)
 
     console.log(updates)
 
