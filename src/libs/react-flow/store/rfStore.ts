@@ -8,7 +8,7 @@ import {
   applyNodeChanges,
 } from 'reactflow'
 import { createStore } from 'zustand'
-import { generateNextReactFlowNode } from '../helper'
+import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
 import { RFStore, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
@@ -58,8 +58,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         nodes.push(node)
         edges.push(edge)
 
+        const _d3 = stratifier(nodes)
+
+        const _node = getLayoutElements(_d3)
+
         set({
-          nodes: [...nodes],
+          nodes: [..._node],
           edges: [...edges],
         })
       },

@@ -1,14 +1,35 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
+import Image from 'next/image'
 import { memo } from 'react'
 import { Handle, NodeProps, Position } from 'reactflow'
+import { NODE_HEIGHT, NODE_WIDTH } from '../constant'
+import { useRFStore } from '../hooks'
 import { FlowNode } from '../types'
 
+const StyledImage = styled(Image)({
+  transform: 'translate(-50%, -100%)',
+  cursor: 'pointer',
+})
+
 export const KPINode = memo(function KPINode({ data }: NodeProps<FlowNode>) {
+  const addNode = useRFStore((state) => state.addNode)
+
   return (
-    <Box>
-      {data.id !== 'root' && <Handle type="target" position={Position.Top} />}
+    <Box width={NODE_WIDTH} height={NODE_HEIGHT} border={1}>
       <Typography variant="subtitle1">{data.slug}</Typography>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" onClick={() => addNode(data.id)} position={Position.Right}>
+        <StyledImage src="/assets/svgs/add.svg" alt="add" width={12} height={12} />
+      </Handle>
+      {data.id !== 'root' && (
+        <Handle
+          type="source"
+          onClick={() => addNode(data.parent_node_id)}
+          position={Position.Bottom}
+        >
+          <StyledImage src="/assets/svgs/add.svg" alt="add" width={12} height={12} />
+        </Handle>
+      )}
+      <Handle type="target" onClick={() => addNode(data.id)} position={Position.Left} />
     </Box>
   )
 })

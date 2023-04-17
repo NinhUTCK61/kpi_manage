@@ -7,7 +7,7 @@ import {
   useRFStore,
 } from '@/libs/react-flow'
 import { Layout } from '@/libs/shared/components'
-import { Box, Button, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { GetStaticPropsContext, type NextPage } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Background, Edge, ReactFlow } from 'reactflow'
@@ -47,14 +47,18 @@ const Home: NextPage = () => {
 }
 
 const Template = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange, addNode } = useRFStore((state) => state)
+  const { nodes, edges, onNodesChange, onEdgesChange } = useRFStore((state) => state)
+
+  console.log(111, nodes)
 
   return (
     <Stack display="flex" flex={1} height="100%">
-      <Button onClick={() => addNode('root')}>Add new node</Button>
-      <Button onClick={() => addNode('A')}>Add child A</Button>
       <Box className="reactflow-wrapper" flexGrow={1}>
         <ReactFlow
+          snapGrid={[20, 20]}
+          snapToGrid
+          maxZoom={1}
+          minZoom={1}
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
