@@ -1,21 +1,21 @@
 import { HierarchyNode } from 'd3-hierarchy'
 import { Edge as ReactFlowEdge, Node as ReactFlowNode } from 'reactflow'
-import { FlowNode } from '../types'
+import { FlowNode, HierarchyFlowNode } from '../types'
 
-export function generateIds(d3Node: HierarchyNode<FlowNode>): void {
+export function generateIds(d3Node: HierarchyFlowNode): void {
   d3Node.each((node) => {
     if (!node.children) {
       return
     }
 
     for (let i = 0; i < node.children.length; i++) {
-      const childNode = node.children[i] as HierarchyNode<FlowNode>
+      const childNode = node.children[i] as HierarchyFlowNode
       childNode.data.id = generateNextIdByFill(node)
     }
   })
 }
 
-export function generateNextIdByAdd(parentNode: HierarchyNode<FlowNode>): string {
+export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
   if (parentNode.data.id === 'root') {
     let nextLetter = ''
     let index = parentNode.children?.length ?? 0
@@ -35,7 +35,7 @@ export function generateNextIdByAdd(parentNode: HierarchyNode<FlowNode>): string
   }
 }
 
-export function generateNextIdByFill(parentNode: HierarchyNode<FlowNode>): string {
+export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
   if (parentNode.data.id === 'root') {
     let nextLetter = ''
     let index = parentNode.children?.length ?? 0
@@ -57,11 +57,13 @@ export function generateNextIdByFill(parentNode: HierarchyNode<FlowNode>): strin
 
 export const generateNextId = generateNextIdByFill
 
-export const generateNextNode = (parentNode: HierarchyNode<FlowNode>): FlowNode => {
+export const generateNextNode = (parentNode: HierarchyFlowNode): FlowNode => {
   return {
     id: generateNextId(parentNode),
     slug: generateNextId(parentNode),
     parent_node_id: parentNode.data.id,
+    x: 0,
+    y: 0,
   }
 }
 

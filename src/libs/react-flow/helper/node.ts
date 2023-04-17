@@ -1,19 +1,18 @@
-import { HierarchyNode, hierarchy } from 'd3-hierarchy'
+import { hierarchy } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
-import { FlowNode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, ReactFlowNode } from '../types'
 import { generateNextNode } from './hierarchy'
 
 export const generateNextReactFlowNode = (
   parentId: string,
-  d3Root: HierarchyNode<FlowNode>,
+  d3Root: HierarchyFlowNode,
 ): { node: ReactFlowNode; edge: Edge } => {
   const parentNode =
     parentId === 'root'
       ? d3Root
-      : (d3Root.find((node) => node.data.id === parentId) as HierarchyNode<FlowNode>)
+      : (d3Root.find((node) => node.data.id === parentId) as HierarchyFlowNode)
 
   const nextFlowNode = generateNextNode(parentNode)
-  parentNode.children = [...(parentNode.children ?? []), hierarchy(nextFlowNode)]
 
   const node: ReactFlowNode = {
     id: nextFlowNode.id,
@@ -21,6 +20,8 @@ export const generateNextReactFlowNode = (
     position: { x: 350, y: 75 },
     type: 'kpi',
   }
+
+  parentNode.children = [...(parentNode.children ?? []), hierarchy(node)]
 
   const edge: Edge = {
     id: `${parentId}-${nextFlowNode.id}`,

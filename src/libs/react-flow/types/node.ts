@@ -12,8 +12,10 @@ export type FlowNode = {
   id: string
   slug: string
   parent_node_id: string
+  x: 0
+  y: 0
 }
 
 export type ReactFlowNode = Node<FlowNode>
 
-export type HierarchyFlowNode = HierarchyNode<FlowNode>
+export type HierarchyFlowNode = HierarchyNode<ReactFlowNode>

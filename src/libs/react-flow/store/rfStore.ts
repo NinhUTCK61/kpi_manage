@@ -9,13 +9,19 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode } from '../helper'
-import { FlowNode, RFStore } from '../types'
+import { RFStore, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
-const initialRootNode: FlowNode = {
-  slug: 'root',
-  parent_node_id: '',
-  id: '',
+const initialRootNode: ReactFlowNode = {
+  id: 'root',
+  data: {
+    slug: 'root',
+    parent_node_id: '',
+    id: '',
+    x: 0,
+    y: 0,
+  },
+  position: { x: 0, y: 0 },
 }
 
 const DEFAULT_STATE: Partial<RFStore> = {
