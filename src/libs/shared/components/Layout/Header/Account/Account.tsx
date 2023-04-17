@@ -78,9 +78,6 @@ const Account = () => {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-        PaperProps={{
-          elevation: 3,
-        }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
@@ -89,9 +86,7 @@ const Account = () => {
             <ListItemIcon>
               <Image src={item.icon} alt="edit icon" />
             </ListItemIcon>
-            <Typography color="black" variant="body2">
-              {item.title}
-            </Typography>
+            <Typography variant="body2">{item.title}</Typography>
           </MenuItem>
         ))}
       </Menu>

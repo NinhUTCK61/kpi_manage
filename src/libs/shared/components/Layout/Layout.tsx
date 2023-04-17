@@ -28,11 +28,12 @@ const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
 
 export { Layout }
 
-const ContentPage = styled('div')({
+const ContentPage = styled('div')(({ theme }) => ({
   marginTop: HEIGHT_HEADER,
   minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
   overflow: 'hidden',
-})
+  padding: theme.spacing(3, 4),
+}))
