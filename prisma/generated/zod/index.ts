@@ -593,7 +593,7 @@ export const TemplateSelectSchema: z.ZodType<Prisma.TemplateSelect> = z
 export const NodeIncludeSchema: z.ZodType<Prisma.NodeInclude> = z
   .object({
     Template: z.union([z.boolean(), z.lazy(() => TemplateArgsSchema)]).optional(),
-    node_child: z.union([z.boolean(), z.lazy(() => NodeArgsSchema)]).optional(),
+    node_child: z.union([z.boolean(), z.lazy(() => NodeFindManyArgsSchema)]).optional(),
     parent_node: z.union([z.boolean(), z.lazy(() => NodeArgsSchema)]).optional(),
     SpeechBallon: z.union([z.boolean(), z.lazy(() => SpeechBallonFindManyArgsSchema)]).optional(),
     _count: z.union([z.boolean(), z.lazy(() => NodeCountOutputTypeArgsSchema)]).optional(),
@@ -615,6 +615,7 @@ export const NodeCountOutputTypeArgsSchema: z.ZodType<Prisma.NodeCountOutputType
 
 export const NodeCountOutputTypeSelectSchema: z.ZodType<Prisma.NodeCountOutputTypeSelect> = z
   .object({
+    node_child: z.boolean().optional(),
     SpeechBallon: z.boolean().optional(),
   })
   .strict()
@@ -634,7 +635,7 @@ export const NodeSelectSchema: z.ZodType<Prisma.NodeSelect> = z
     templateId: z.boolean().optional(),
     parent_node_id: z.boolean().optional(),
     Template: z.union([z.boolean(), z.lazy(() => TemplateArgsSchema)]).optional(),
-    node_child: z.union([z.boolean(), z.lazy(() => NodeArgsSchema)]).optional(),
+    node_child: z.union([z.boolean(), z.lazy(() => NodeFindManyArgsSchema)]).optional(),
     parent_node: z.union([z.boolean(), z.lazy(() => NodeArgsSchema)]).optional(),
     SpeechBallon: z.union([z.boolean(), z.lazy(() => SpeechBallonFindManyArgsSchema)]).optional(),
     _count: z.union([z.boolean(), z.lazy(() => NodeCountOutputTypeArgsSchema)]).optional(),
@@ -1482,10 +1483,7 @@ export const NodeWhereInputSchema: z.ZodType<Prisma.NodeWhereInput> = z
       .union([z.lazy(() => TemplateRelationFilterSchema), z.lazy(() => TemplateWhereInputSchema)])
       .optional()
       .nullable(),
-    node_child: z
-      .union([z.lazy(() => NodeRelationFilterSchema), z.lazy(() => NodeWhereInputSchema)])
-      .optional()
-      .nullable(),
+    node_child: z.lazy(() => NodeListRelationFilterSchema).optional(),
     parent_node: z
       .union([z.lazy(() => NodeRelationFilterSchema), z.lazy(() => NodeWhereInputSchema)])
       .optional()
@@ -1509,7 +1507,7 @@ export const NodeOrderByWithRelationInputSchema: z.ZodType<Prisma.NodeOrderByWit
     templateId: z.lazy(() => SortOrderSchema).optional(),
     parent_node_id: z.lazy(() => SortOrderSchema).optional(),
     Template: z.lazy(() => TemplateOrderByWithRelationInputSchema).optional(),
-    node_child: z.lazy(() => NodeOrderByWithRelationInputSchema).optional(),
+    node_child: z.lazy(() => NodeOrderByRelationAggregateInputSchema).optional(),
     parent_node: z.lazy(() => NodeOrderByWithRelationInputSchema).optional(),
     SpeechBallon: z.lazy(() => SpeechBallonOrderByRelationAggregateInputSchema).optional(),
   })
@@ -2881,7 +2879,7 @@ export const NodeCreateInputSchema: z.ZodType<Prisma.NodeCreateInput> = z
     y: z.number(),
     unit: z.string(),
     Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
-    node_child: z.lazy(() => NodeCreateNestedOneWithoutParent_nodeInputSchema).optional(),
+    node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
     parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
     SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
   })
@@ -2901,7 +2899,7 @@ export const NodeUncheckedCreateInputSchema: z.ZodType<Prisma.NodeUncheckedCreat
     unit: z.string(),
     templateId: z.string(),
     parent_node_id: z.string(),
-    node_child: z.lazy(() => NodeUncheckedCreateNestedOneWithoutParent_nodeInputSchema).optional(),
+    node_child: z.lazy(() => NodeUncheckedCreateNestedManyWithoutParent_nodeInputSchema).optional(),
     SpeechBallon: z
       .lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutNodeInputSchema)
       .optional(),
@@ -2931,7 +2929,7 @@ export const NodeUpdateInputSchema: z.ZodType<Prisma.NodeUpdateInput> = z
     y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
     unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
     Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
-    node_child: z.lazy(() => NodeUpdateOneWithoutParent_nodeNestedInputSchema).optional(),
+    node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
     parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
     SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
   })
@@ -2965,7 +2963,7 @@ export const NodeUncheckedUpdateInputSchema: z.ZodType<Prisma.NodeUncheckedUpdat
     parent_node_id: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    node_child: z.lazy(() => NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema).optional(),
+    node_child: z.lazy(() => NodeUncheckedUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
     SpeechBallon: z
       .lazy(() => SpeechBallonUncheckedUpdateManyWithoutNodeNestedInputSchema)
       .optional(),
@@ -6216,17 +6214,30 @@ export const TemplateCreateNestedOneWithoutNodeInputSchema: z.ZodType<Prisma.Tem
     })
     .strict()
 
-export const NodeCreateNestedOneWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeCreateNestedOneWithoutParent_nodeInput> =
+export const NodeCreateNestedManyWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeCreateNestedManyWithoutParent_nodeInput> =
   z
     .object({
       create: z
         .union([
           z.lazy(() => NodeCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateWithoutParent_nodeInputSchema).array(),
           z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema).array(),
         ])
         .optional(),
-      connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).optional(),
-      connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      createMany: z.lazy(() => NodeCreateManyParent_nodeInputEnvelopeSchema).optional(),
+      connect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
     })
     .strict()
 
@@ -6271,17 +6282,30 @@ export const SpeechBallonCreateNestedManyWithoutNodeInputSchema: z.ZodType<Prism
     })
     .strict()
 
-export const NodeUncheckedCreateNestedOneWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUncheckedCreateNestedOneWithoutParent_nodeInput> =
+export const NodeUncheckedCreateNestedManyWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUncheckedCreateNestedManyWithoutParent_nodeInput> =
   z
     .object({
       create: z
         .union([
           z.lazy(() => NodeCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateWithoutParent_nodeInputSchema).array(),
           z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema).array(),
         ])
         .optional(),
-      connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).optional(),
-      connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      createMany: z.lazy(() => NodeCreateManyParent_nodeInputEnvelopeSchema).optional(),
+      connect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
     })
     .strict()
 
@@ -6335,24 +6359,70 @@ export const TemplateUpdateOneWithoutNodeNestedInputSchema: z.ZodType<Prisma.Tem
     })
     .strict()
 
-export const NodeUpdateOneWithoutParent_nodeNestedInputSchema: z.ZodType<Prisma.NodeUpdateOneWithoutParent_nodeNestedInput> =
+export const NodeUpdateManyWithoutParent_nodeNestedInputSchema: z.ZodType<Prisma.NodeUpdateManyWithoutParent_nodeNestedInput> =
   z
     .object({
       create: z
         .union([
           z.lazy(() => NodeCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateWithoutParent_nodeInputSchema).array(),
           z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema).array(),
         ])
         .optional(),
-      connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).optional(),
-      upsert: z.lazy(() => NodeUpsertWithoutParent_nodeInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
-      connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      upsert: z
+        .union([
+          z.lazy(() => NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      createMany: z.lazy(() => NodeCreateManyParent_nodeInputEnvelopeSchema).optional(),
+      set: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      disconnect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      delete: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
       update: z
         .union([
-          z.lazy(() => NodeUpdateWithoutParent_nodeInputSchema),
-          z.lazy(() => NodeUncheckedUpdateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateWithWhereUniqueWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateWithWhereUniqueWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      updateMany: z
+        .union([
+          z.lazy(() => NodeUpdateManyWithWhereWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateManyWithWhereWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      deleteMany: z
+        .union([
+          z.lazy(() => NodeScalarWhereInputSchema),
+          z.lazy(() => NodeScalarWhereInputSchema).array(),
         ])
         .optional(),
     })
@@ -6450,24 +6520,70 @@ export const SpeechBallonUpdateManyWithoutNodeNestedInputSchema: z.ZodType<Prism
     })
     .strict()
 
-export const NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema: z.ZodType<Prisma.NodeUncheckedUpdateOneWithoutParent_nodeNestedInput> =
+export const NodeUncheckedUpdateManyWithoutParent_nodeNestedInputSchema: z.ZodType<Prisma.NodeUncheckedUpdateManyWithoutParent_nodeNestedInput> =
   z
     .object({
       create: z
         .union([
           z.lazy(() => NodeCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateWithoutParent_nodeInputSchema).array(),
           z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema).array(),
         ])
         .optional(),
-      connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).optional(),
-      upsert: z.lazy(() => NodeUpsertWithoutParent_nodeInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
-      connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeCreateOrConnectWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      upsert: z
+        .union([
+          z.lazy(() => NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      createMany: z.lazy(() => NodeCreateManyParent_nodeInputEnvelopeSchema).optional(),
+      set: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      disconnect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      delete: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => NodeWhereUniqueInputSchema),
+          z.lazy(() => NodeWhereUniqueInputSchema).array(),
+        ])
+        .optional(),
       update: z
         .union([
-          z.lazy(() => NodeUpdateWithoutParent_nodeInputSchema),
-          z.lazy(() => NodeUncheckedUpdateWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateWithWhereUniqueWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateWithWhereUniqueWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      updateMany: z
+        .union([
+          z.lazy(() => NodeUpdateManyWithWhereWithoutParent_nodeInputSchema),
+          z.lazy(() => NodeUpdateManyWithWhereWithoutParent_nodeInputSchema).array(),
+        ])
+        .optional(),
+      deleteMany: z
+        .union([
+          z.lazy(() => NodeScalarWhereInputSchema),
+          z.lazy(() => NodeScalarWhereInputSchema).array(),
         ])
         .optional(),
     })
@@ -8407,7 +8523,7 @@ export const NodeCreateWithoutTemplateInputSchema: z.ZodType<Prisma.NodeCreateWi
       x: z.number(),
       y: z.number(),
       unit: z.string(),
-      node_child: z.lazy(() => NodeCreateNestedOneWithoutParent_nodeInputSchema).optional(),
+      node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
       parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
       SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
     })
@@ -8428,7 +8544,7 @@ export const NodeUncheckedCreateWithoutTemplateInputSchema: z.ZodType<Prisma.Nod
       unit: z.string(),
       parent_node_id: z.string(),
       node_child: z
-        .lazy(() => NodeUncheckedCreateNestedOneWithoutParent_nodeInputSchema)
+        .lazy(() => NodeUncheckedCreateNestedManyWithoutParent_nodeInputSchema)
         .optional(),
       SpeechBallon: z
         .lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutNodeInputSchema)
@@ -8749,7 +8865,7 @@ export const NodeCreateWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeCreat
       y: z.number(),
       unit: z.string(),
       Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
-      node_child: z.lazy(() => NodeCreateNestedOneWithoutParent_nodeInputSchema).optional(),
+      node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
       SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutNodeInputSchema).optional(),
     })
     .strict()
@@ -8769,7 +8885,7 @@ export const NodeUncheckedCreateWithoutParent_nodeInputSchema: z.ZodType<Prisma.
       unit: z.string(),
       templateId: z.string(),
       node_child: z
-        .lazy(() => NodeUncheckedCreateNestedOneWithoutParent_nodeInputSchema)
+        .lazy(() => NodeUncheckedCreateNestedManyWithoutParent_nodeInputSchema)
         .optional(),
       SpeechBallon: z
         .lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutNodeInputSchema)
@@ -8785,6 +8901,17 @@ export const NodeCreateOrConnectWithoutParent_nodeInputSchema: z.ZodType<Prisma.
         z.lazy(() => NodeCreateWithoutParent_nodeInputSchema),
         z.lazy(() => NodeUncheckedCreateWithoutParent_nodeInputSchema),
       ]),
+    })
+    .strict()
+
+export const NodeCreateManyParent_nodeInputEnvelopeSchema: z.ZodType<Prisma.NodeCreateManyParent_nodeInputEnvelope> =
+  z
+    .object({
+      data: z.union([
+        z.lazy(() => NodeCreateManyParent_nodeInputSchema),
+        z.lazy(() => NodeCreateManyParent_nodeInputSchema).array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
     })
     .strict()
 
@@ -8971,9 +9098,10 @@ export const TemplateUncheckedUpdateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
     })
     .strict()
 
-export const NodeUpsertWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpsertWithoutParent_nodeInput> =
+export const NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpsertWithWhereUniqueWithoutParent_nodeInput> =
   z
     .object({
+      where: z.lazy(() => NodeWhereUniqueInputSchema),
       update: z.union([
         z.lazy(() => NodeUpdateWithoutParent_nodeInputSchema),
         z.lazy(() => NodeUncheckedUpdateWithoutParent_nodeInputSchema),
@@ -8985,63 +9113,25 @@ export const NodeUpsertWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpser
     })
     .strict()
 
-export const NodeUpdateWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpdateWithoutParent_nodeInput> =
+export const NodeUpdateWithWhereUniqueWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpdateWithWhereUniqueWithoutParent_nodeInput> =
   z
     .object({
-      id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      input_title: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      input_value: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      is_formula: z
-        .union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)])
-        .optional(),
-      value2number: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]).optional(),
-      x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
-      y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
-      unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
-      node_child: z.lazy(() => NodeUpdateOneWithoutParent_nodeNestedInputSchema).optional(),
-      SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
+      where: z.lazy(() => NodeWhereUniqueInputSchema),
+      data: z.union([
+        z.lazy(() => NodeUpdateWithoutParent_nodeInputSchema),
+        z.lazy(() => NodeUncheckedUpdateWithoutParent_nodeInputSchema),
+      ]),
     })
     .strict()
 
-export const NodeUncheckedUpdateWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUncheckedUpdateWithoutParent_nodeInput> =
+export const NodeUpdateManyWithWhereWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpdateManyWithWhereWithoutParent_nodeInput> =
   z
     .object({
-      id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      input_title: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      input_value: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      is_formula: z
-        .union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)])
-        .optional(),
-      value2number: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]).optional(),
-      x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
-      y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
-      unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      templateId: z
-        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-        .optional(),
-      node_child: z
-        .lazy(() => NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema)
-        .optional(),
-      SpeechBallon: z
-        .lazy(() => SpeechBallonUncheckedUpdateManyWithoutNodeNestedInputSchema)
-        .optional(),
+      where: z.lazy(() => NodeScalarWhereInputSchema),
+      data: z.union([
+        z.lazy(() => NodeUpdateManyMutationInputSchema),
+        z.lazy(() => NodeUncheckedUpdateManyWithoutNode_childInputSchema),
+      ]),
     })
     .strict()
 
@@ -9215,7 +9305,7 @@ export const NodeCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.NodeCrea
       y: z.number(),
       unit: z.string(),
       Template: z.lazy(() => TemplateCreateNestedOneWithoutNodeInputSchema).optional(),
-      node_child: z.lazy(() => NodeCreateNestedOneWithoutParent_nodeInputSchema).optional(),
+      node_child: z.lazy(() => NodeCreateNestedManyWithoutParent_nodeInputSchema).optional(),
       parent_node: z.lazy(() => NodeCreateNestedOneWithoutNode_childInputSchema).optional(),
     })
     .strict()
@@ -9236,7 +9326,7 @@ export const NodeUncheckedCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma
       templateId: z.string(),
       parent_node_id: z.string(),
       node_child: z
-        .lazy(() => NodeUncheckedCreateNestedOneWithoutParent_nodeInputSchema)
+        .lazy(() => NodeUncheckedCreateNestedManyWithoutParent_nodeInputSchema)
         .optional(),
     })
     .strict()
@@ -9364,7 +9454,7 @@ export const NodeUpdateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.NodeUpda
       y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
       unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
       Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
-      node_child: z.lazy(() => NodeUpdateOneWithoutParent_nodeNestedInputSchema).optional(),
+      node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
       parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
     })
     .strict()
@@ -9397,7 +9487,7 @@ export const NodeUncheckedUpdateWithoutSpeechBallonInputSchema: z.ZodType<Prisma
         .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       node_child: z
-        .lazy(() => NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema)
+        .lazy(() => NodeUncheckedUpdateManyWithoutParent_nodeNestedInputSchema)
         .optional(),
     })
     .strict()
@@ -10113,7 +10203,7 @@ export const NodeUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.NodeUpdateWi
       x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
       y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
       unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
-      node_child: z.lazy(() => NodeUpdateOneWithoutParent_nodeNestedInputSchema).optional(),
+      node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
       parent_node: z.lazy(() => NodeUpdateOneWithoutNode_childNestedInputSchema).optional(),
       SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
     })
@@ -10144,7 +10234,7 @@ export const NodeUncheckedUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.Nod
         .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
         .optional(),
       node_child: z
-        .lazy(() => NodeUncheckedUpdateOneWithoutParent_nodeNestedInputSchema)
+        .lazy(() => NodeUncheckedUpdateManyWithoutParent_nodeNestedInputSchema)
         .optional(),
       SpeechBallon: z
         .lazy(() => SpeechBallonUncheckedUpdateManyWithoutNodeNestedInputSchema)
@@ -10247,6 +10337,23 @@ export const SpeechBallonUncheckedUpdateManyWithoutSpeechBallonInputSchema: z.Zo
     })
     .strict()
 
+export const NodeCreateManyParent_nodeInputSchema: z.ZodType<Prisma.NodeCreateManyParent_nodeInput> =
+  z
+    .object({
+      id: z.string().cuid().optional(),
+      slug: z.string(),
+      input_title: z.string(),
+      input_value: z.string(),
+      is_formula: z.boolean().optional(),
+      value2number: z.string(),
+      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]),
+      x: z.number(),
+      y: z.number(),
+      unit: z.string(),
+      templateId: z.string(),
+    })
+    .strict()
+
 export const SpeechBallonCreateManyNodeInputSchema: z.ZodType<Prisma.SpeechBallonCreateManyNodeInput> =
   z
     .object({
@@ -10260,6 +10367,95 @@ export const SpeechBallonCreateManyNodeInputSchema: z.ZodType<Prisma.SpeechBallo
       stroke: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]),
       created_at: z.coerce.date().optional(),
       updated_at: z.coerce.date().optional(),
+    })
+    .strict()
+
+export const NodeUpdateWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpdateWithoutParent_nodeInput> =
+  z
+    .object({
+      id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      input_title: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      input_value: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      is_formula: z
+        .union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)])
+        .optional(),
+      value2number: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]).optional(),
+      x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      Template: z.lazy(() => TemplateUpdateOneWithoutNodeNestedInputSchema).optional(),
+      node_child: z.lazy(() => NodeUpdateManyWithoutParent_nodeNestedInputSchema).optional(),
+      SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutNodeNestedInputSchema).optional(),
+    })
+    .strict()
+
+export const NodeUncheckedUpdateWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUncheckedUpdateWithoutParent_nodeInput> =
+  z
+    .object({
+      id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      input_title: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      input_value: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      is_formula: z
+        .union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)])
+        .optional(),
+      value2number: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]).optional(),
+      x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      templateId: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      node_child: z
+        .lazy(() => NodeUncheckedUpdateManyWithoutParent_nodeNestedInputSchema)
+        .optional(),
+      SpeechBallon: z
+        .lazy(() => SpeechBallonUncheckedUpdateManyWithoutNodeNestedInputSchema)
+        .optional(),
+    })
+    .strict()
+
+export const NodeUncheckedUpdateManyWithoutNode_childInputSchema: z.ZodType<Prisma.NodeUncheckedUpdateManyWithoutNode_childInput> =
+  z
+    .object({
+      id: z
+        .union([z.string().cuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      slug: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      input_title: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      input_value: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      is_formula: z
+        .union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputSchema)])
+        .optional(),
+      value2number: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
+      style: z.union([z.lazy(() => JsonNullValueInputSchema), InputJsonValue]).optional(),
+      x: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      y: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)]).optional(),
+      unit: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)]).optional(),
+      templateId: z
+        .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+        .optional(),
     })
     .strict()
 

@@ -116,7 +116,7 @@ model Node {
   unit           String
   Template       Template?      @relation(fields: [templateId], references: [id])
   templateId     String         @map("template_id")
-  node_child     Node?          @relation("nodetonodes")
+  node_child     Node[]         @relation("nodetonodes")
   parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id])
   parent_node_id String         @unique
   SpeechBallon   SpeechBallon[]
