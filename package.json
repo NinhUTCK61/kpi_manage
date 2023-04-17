@@ -9,7 +9,8 @@
     "lint": "next lint",
     "start": "next start",
     "prepare": "husky install",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.7",
@@ -29,6 +30,7 @@
     "@trpc/server": "^10.19.1",
     "argon2": "^0.30.3",
     "consola": "^3.0.0-3",
+    "d3-hierarchy": "^3.1.2",
     "i18next": "^22.4.14",
     "nanoid": "^4.0.2",
     "next": "^13.2.4",
@@ -40,6 +42,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.0",
+    "reactflow": "^11.7.0",
     "sharp": "^0.32.0",
     "superjson": "1.12.2",
     "trpc-openapi": "^1.1.2",
@@ -51,6 +54,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",
     "@commitlint/config-conventional": "^17.4.4",
+    "@types/d3-hierarchy": "^3.1.2",
     "@types/eslint": "^8.21.3",
     "@types/node": "^18.15.5",
     "@types/nodemailer": "^6.4.7",
@@ -65,7 +69,8 @@
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prisma": "^4.11.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vitest": "^0.30.1"
   },
   "ct3aMetadata": {
     "initVersion": "7.10.1"
