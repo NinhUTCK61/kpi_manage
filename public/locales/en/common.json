@@ -37,7 +37,7 @@
     "unrecognized_keys": "Unrecognized key(s) in object: {{keys}}",
     "invalid_union": "Invalid input",
     "invalid_union_discriminator": "Invalid discriminator value. Expected {{option}}",
-    "invalid_enum_value": "Invalid enum value. Expected {{issue.option}}, received '{{issue.received}}",
+    "invalid_enum_value": "Invalid enum value. Expected {{option}}, received '{{received}}",
     "invalid_arguments": "Invalid function arguments",
     "invalid_return_type": "Invalid function return type",
     "invalid_date": "Invalid date",

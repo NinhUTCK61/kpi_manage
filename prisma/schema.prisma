@@ -2,9 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl", "debian-openssl-1.1.x", "linux-musl-openssl-3.0.x"]
-  engineType    = "binary"
+  provider   = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
@@ -63,34 +62,35 @@ model User {
 
 model Comment {
   id                String    @id @default(cuid())
-  nodeId            String    @map("node_id")
   comment           String?   @db.Text
   user              User?     @relation(fields: [userId], references: [id])
   userId            String?
-  childrens         Comment[] @relation("CommentToComments")
-  rep_to_comment    Comment?  @relation("CommentToComments", fields: [rep_to_comment_id], references: [id])
-  rep_to_comment_id String?
+  children          Comment[] @relation("CommentToComments")
+  parent_comment    Comment?  @relation("CommentToComments", fields: [parent_comment_id], references: [id])
+  parent_comment_id String?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
   x                 Float
   y                 Float
 }
 
 model UserTemplate {
-  id          String   @id @default(cuid())
-  userId      String   @map("user_id")
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
   template_id String
-  is_owner    Boolean  @default(false)
-  is_favorite Boolean  @default(false)
-  can_edit    Boolean  @default(false)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  is_owner    Boolean   @default(false)
+  is_favorite Boolean   @default(false)
+  can_edit    Boolean   @default(false)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
   deleted_ad  DateTime?
-  template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  User        User     @relation(fields: [userId], references: [id])
+  template    Template  @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  User        User      @relation(fields: [userId], references: [id])
 }
 
 model Template {
   id           String         @id @default(cuid())
-  root_note_id String
+  root_note_id String         @default(cuid())
   name         String
   image_url    String?        @db.Text
   public_url   String?        @db.Text
@@ -99,28 +99,42 @@ model Template {
   deleted_at   DateTime
   userTemplate UserTemplate[]
   node         Node[]
+  SpeechBallon SpeechBallon[]
 }
 
 model Node {
-  id                String    @id @default(cuid())
-  level             String
-  child_no          String
-  slug              String    @db.Text
-  input_title       String    @db.Text
-  input_value       String    @db.Text
-  is_formula        Boolean   @default(false)
-  value2number      String    @map("value_2_number")
-  title_style       Json
-  input_value_style Json
-  bg_color          String
-  x                 Float
-  y                 Float
-  unit              String
-  Template          Template? @relation(fields: [templateId], references: [id])
-  templateId        String    @map("template_id")
-  node_child        Node?     @relation("nodetonodes")
-  parent_node       Node?     @relation("nodetonodes", fields: [parent_node_id], references: [id])
-  parent_node_id    String    @unique
+  id             String         @id @default(cuid())
+  slug           String         @db.Text
+  input_title    String         @db.Text
+  input_value    String         @db.Text
+  is_formula     Boolean        @default(false)
+  value2number   String         @map("value_2_number")
+  style          Json
+  x              Float
+  y              Float
+  unit           String
+  Template       Template?      @relation(fields: [templateId], references: [id])
+  templateId     String         @map("template_id")
+  children       Node[]         @relation("nodetonodes")
+  parent_node    Node           @relation("nodetonodes", fields: [parent_node_id], references: [id])
+  parent_node_id String
+  SpeechBallon   SpeechBallon[]
+}
+
+model SpeechBallon {
+  id         String   @id @default(cuid())
+  templateId String   @map("template_id")
+  node_id    String
+  text       String
+  x          Float
+  y          Float
+  shape      String
+  style      Json
+  stroke     Json
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Template   Template @relation(fields: [templateId], references: [id])
+  Node       Node     @relation(fields: [node_id], references: [id])
 }
 
 model VerificationToken {
