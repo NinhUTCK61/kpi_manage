@@ -18,4 +18,25 @@ export class TemplateService {
     }
     return listTemplate
   }
+
+  async updateTemplate(imageUrl: string, name: string, id: string) {
+    let updates = {}
+
+    if (imageUrl) {
+      updates = { ...updates, image_url: imageUrl }
+    }
+
+    if (name) {
+      updates = { ...updates, name: name }
+    }
+
+    console.log(updates)
+
+    await prisma.template.update({
+      where: { id },
+      data: updates,
+    })
+
+    return 'ok!'
+  }
 }
