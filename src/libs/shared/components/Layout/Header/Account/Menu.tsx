@@ -14,6 +14,7 @@ const Avatar = styled(MuiAvatar)({
 const Menu = styled(MuiMenu)({
   '.MuiMenu-paper': {
     overflow: 'visible',
+    boxShadow: '0px 2px 40px rgba(17, 17, 17, 0.08)',
     mt: 1.5,
     '& .MuiAvatar-root': {
       width: 32,
@@ -48,6 +49,9 @@ const StackName = styled(Stack)({
 const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
   height: theme.spacing(6.75),
   borderBottom: `1px solid ${theme.palette.greyScale[200]}`,
+  fontSize: 15,
+  lineHeight: '22px',
+  color: theme.palette.common.black,
 }))
 
 export { Avatar, Menu, StackName, MenuItem }
