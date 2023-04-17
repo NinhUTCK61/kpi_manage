@@ -1,6 +1,5 @@
 import { greyScale } from '@/libs/config/theme'
-import { Button, Fade, Slide, Typography } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Button, Fade, Slide, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Email from 'public/assets/svgs/email.svg'
