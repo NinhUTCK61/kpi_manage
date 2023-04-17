@@ -91,7 +91,7 @@ model UserTemplate {
 
 model Template {
   id           String         @id @default(cuid())
-  root_note_id String
+  root_note_id String         @default(cuid())
   name         String
   image_url    String?        @db.Text
   public_url   String?        @db.Text
@@ -117,8 +117,8 @@ model Node {
   Template       Template?      @relation(fields: [templateId], references: [id])
   templateId     String         @map("template_id")
   node_child     Node[]         @relation("nodetonodes")
-  parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id])
-  parent_node_id String         @unique
+  parent_node    Node           @relation("nodetonodes", fields: [parent_node_id], references: [id])
+  parent_node_id String
   SpeechBallon   SpeechBallon[]
 }
 
