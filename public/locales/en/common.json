@@ -60,6 +60,7 @@
     "too_big_result": "This is not a valid input",
     "invalid_intersection_types": "Intersection results could not be merged",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of",
-    "not_finite": "Number must be finite"
+    "not_finite": "Number must be finite",
+    "template_not_found": "Template not found!"
   }
 }
