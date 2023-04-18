@@ -837,7 +837,8 @@ export const UserTemplateOrderByWithRelationInputSchema: z.ZodType<Prisma.UserTe
 }).strict();
 
 export const UserTemplateWhereUniqueInputSchema: z.ZodType<Prisma.UserTemplateWhereUniqueInput> = z.object({
-  id: z.string().cuid().optional()
+  id: z.string().cuid().optional(),
+  userId_template_id: z.lazy(() => UserTemplateUserIdTemplate_idCompoundUniqueInputSchema).optional()
 }).strict();
 
 export const UserTemplateOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserTemplateOrderByWithAggregationInput> = z.object({
@@ -2349,6 +2350,11 @@ export const BoolFilterSchema: z.ZodType<Prisma.BoolFilter> = z.object({
 export const TemplateRelationFilterSchema: z.ZodType<Prisma.TemplateRelationFilter> = z.object({
   is: z.lazy(() => TemplateWhereInputSchema).optional().nullable(),
   isNot: z.lazy(() => TemplateWhereInputSchema).optional().nullable()
+}).strict();
+
+export const UserTemplateUserIdTemplate_idCompoundUniqueInputSchema: z.ZodType<Prisma.UserTemplateUserIdTemplate_idCompoundUniqueInput> = z.object({
+  userId: z.string(),
+  template_id: z.string()
 }).strict();
 
 export const UserTemplateCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserTemplateCountOrderByAggregateInput> = z.object({

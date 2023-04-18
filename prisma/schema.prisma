@@ -86,6 +86,8 @@ model UserTemplate {
   deleted_at  DateTime?
   template    Template  @relation(fields: [template_id], references: [id], onDelete: Cascade)
   User        User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, template_id])
 }
 
 model Template {
