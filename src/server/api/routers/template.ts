@@ -19,7 +19,7 @@ export const templateRouter = createTRPCRouter({
     .input(UpdateTemplateSchema)
     .output(TemplateSchema)
     .mutation(({ input, ctx }) => {
-      return templateService.updateTemplate({ ...input, id_user: ctx.session.user.id })
+      return templateService.updateTemplate(input, ctx.session.user)
     }),
   createTemplate: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/create-template', protect: true } })

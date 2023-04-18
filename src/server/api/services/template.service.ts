@@ -1,8 +1,10 @@
 import { UpdateTemplateSchema } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
+
 import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
+import { User } from 'next-auth'
 import { z } from 'zod'
 
 export class TemplateService {
@@ -24,21 +26,11 @@ export class TemplateService {
     return listTemplate
   }
 
-  async updateTemplate({
-    id_user,
-    id_template,
-    ...restUpdate
-  }: z.infer<typeof UpdateTemplateSchema>) {
-    const checkUser = await prisma.template.findMany({
+  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
+    const checkUser = await prisma.userTemplate.findFirst({
       where: {
-        id: id_template,
-      },
-      include: {
-        userTemplate: {
-          where: {
-            userId: id_user,
-          },
-        },
+        userId: user.id,
+        template_id: id,
       },
     })
 
@@ -50,7 +42,7 @@ export class TemplateService {
     }
 
     const updateData = await prisma.template.update({
-      where: { id: id_user },
+      where: { id },
       data: restUpdate,
     })
 
