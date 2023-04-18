@@ -20,10 +20,6 @@ export const TemplateRouter = createTRPCRouter({
     .input(UpdateTemplateSchema)
     .output(TemplateSchema)
     .mutation(({ input }) => {
-      return templateService.updateTemplate(
-        input.name as string,
-        input.imageUrl as string,
-        input.id,
-      )
+      return templateService.updateTemplate(input)
     }),
 })

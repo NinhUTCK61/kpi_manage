@@ -1,6 +1,7 @@
+import { UpdateTemplateSchema } from '@/libs/schema'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
-import { Template } from 'prisma/generated/zod'
+import { z } from 'zod'
 
 export class TemplateService {
   async getListTemplate(idUser: string) {
@@ -21,7 +22,7 @@ export class TemplateService {
     return listTemplate
   }
 
-  async updateTemplate(name: string, imageUrl: string, id: string) {
+  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>) {
     const checkTemplate = await prisma.template.findUnique({
       where: { id },
     })
@@ -33,14 +34,9 @@ export class TemplateService {
       })
     }
 
-    const updates = {
-      ...(imageUrl && { image_url: imageUrl }),
-      ...(name && { name }),
-    }
-
-    const updateData: Template = await prisma.template.update({
+    const updateData = await prisma.template.update({
       where: { id },
-      data: updates,
+      data: restUpdate,
     })
 
     return updateData
