@@ -71,12 +71,12 @@ const FileItem: React.FC<TemplateItemTypes> = ({
     setName(e.target.value)
   }
 
-  const openDialogDelete = () => {
+  const setNodeDelete = () => {
     handleSelectNodeDelete('id')
     handleClose()
   }
 
-  const openDialogThumbnail = () => {
+  const setNodeThumbnail = () => {
     handleSelectNodeThumbnail('id')
     handleClose()
   }
@@ -106,9 +106,9 @@ const FileItem: React.FC<TemplateItemTypes> = ({
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
         <MenuItemFile onClick={handleClose}>{t('open')}</MenuItemFile>
-        <MenuItemFile onClick={openDialogThumbnail}>{t('thumbnail')}</MenuItemFile>
+        <MenuItemFile onClick={setNodeThumbnail}>{t('thumbnail')}</MenuItemFile>
         <MenuItemFile onClick={handleOpenChangeName}>{t('rename')}</MenuItemFile>
-        <MenuItemFileDelete onClick={openDialogDelete}>{t('delete')}</MenuItemFileDelete>
+        <MenuItemFileDelete onClick={setNodeDelete}>{t('delete')}</MenuItemFileDelete>
       </Menu>
 
       <CardContent sx={{ p: 0 }}>
