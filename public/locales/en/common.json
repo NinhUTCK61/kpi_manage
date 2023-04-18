@@ -21,7 +21,7 @@
     "privacy_policy": "Privacy Policy",
     "log_out": "Log out"
   },
-  
+
   "limit_name": "Maximum length of 250 characters",
   "incorrect": "Email or password is incorrect.",
   "limit_password": "Minimun length of 8 characters",
@@ -43,8 +43,8 @@
     "invalid_date": "Invalid date",
     "invalid_string_email": "Must be a valid email address.",
     "invalid_string_format": "Invalid format",
-    "too_small_array_true" : "At least {{minimum}} items are required element(s).",
-    "too_small_array_false": "Requires at least {{minimum}} items element(s).",
+    "too_small_array_true": "Array must contain at least {{minimum}} element(s)",
+    "too_small_array_false": "Array must contain more than {{minimum}} element(s)",
     "too_small_string1": "This is a required field.",
     "too_small_string_more_true": "The string must contain at least {{minimum}} characters.",
     "too_small_string_more_false": "The string must contain {{minimum}} or more characters.",
@@ -60,6 +60,7 @@
     "too_big_result": "This is not a valid input",
     "invalid_intersection_types": "Intersection results could not be merged",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of",
-    "not_finite": "Number must be finite"
+    "not_finite": "Number must be finite",
+    "template_not_found": "Template not found!"
   }
 }
