@@ -14,12 +14,18 @@ export const TemplateRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return templateService.getListTemplate(input.id)
     }),
-
   updateTemplate: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/update-template' } })
     .input(UpdateTemplateSchema)
     .output(TemplateSchema)
     .mutation(({ input }) => {
       return templateService.updateTemplate(input)
+    }),
+  createTemplate: protectedProcedure
+    .meta({ openapi: { method: 'POST', path: '/create-template' } })
+    .input(z.object({}))
+    .output(TemplateSchema)
+    .mutation(({ ctx }) => {
+      return templateService.createTemplate(ctx.session.user.id as string)
     }),
 })

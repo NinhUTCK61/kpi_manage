@@ -105,21 +105,21 @@ model Template {
 }
 
 model Node {
-  id             String         @id @default(cuid())
+  id             String         @id @default(nanoid())
   slug           String         @db.Text
   input_title    String         @db.Text
   input_value    String         @db.Text
   is_formula     Boolean        @default(false)
-  value2number   String         @map("value_2_number")
-  style          Json
+  value2number   Float          @map("value_2_number")
+  style          Json?
   x              Float
   y              Float
   unit           String
   Template       Template?      @relation(fields: [templateId], references: [id])
   templateId     String         @map("template_id")
   children       Node[]         @relation("nodetonodes")
-  parent_node    Node           @relation("nodetonodes", fields: [parent_node_id], references: [id])
-  parent_node_id String
+  parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id])
+  parent_node_id String?
   SpeechBallon   SpeechBallon[]
 }
 

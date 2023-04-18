@@ -1,4 +1,5 @@
 import { UpdateTemplateSchema } from '@/libs/schema'
+import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
@@ -40,5 +41,33 @@ export class TemplateService {
     })
 
     return updateData
+  }
+
+  async createTemplate(userId: string) {
+    return await prisma.$transaction(async (tx) => {
+      const template = await tx.template.create({
+        data: {
+          name: 'New Template',
+          userTemplate: {
+            create: {
+              userId,
+              is_owner: true,
+              can_edit: true,
+            },
+          },
+        },
+        include: {
+          userTemplate: true,
+        },
+      })
+
+      const nodeArr = generateDefaultNode(template.id)
+
+      await tx.node.createMany({
+        data: nodeArr,
+      })
+
+      return template
+    })
   }
 }
