@@ -1,5 +1,7 @@
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
+import { Template } from 'prisma/generated/zod'
+
 export class TemplateService {
   async getListTemplate(idUser: string) {
     const listTemplate = await prisma.user.findUnique({
@@ -20,25 +22,27 @@ export class TemplateService {
   }
 
   async updateTemplate(name: string, imageUrl: string, id: string) {
-    let updates = {}
+    const checkTemplate = await prisma.template.findUnique({
+      where: { id },
+    })
 
-    if (imageUrl) {
-      updates = { ...updates, image_url: imageUrl }
+    if (!checkTemplate) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Template not found!',
+      })
     }
 
-    if (name) {
-      updates = { ...updates, name: name }
+    const updates = {
+      ...(imageUrl && { image_url: imageUrl }),
+      ...(name && { name }),
     }
 
-    console.log(updates)
-
-    console.log(updates)
-
-    await prisma.template.update({
+    const updateData: Template = await prisma.template.update({
       where: { id },
       data: updates,
     })
 
-    return 'ok!'
+    return updateData
   }
 }
