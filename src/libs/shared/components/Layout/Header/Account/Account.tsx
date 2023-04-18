@@ -1,3 +1,4 @@
+import { Menu, MenuItem } from '@/features/auth/components'
 import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
@@ -10,7 +11,7 @@ import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
-import { Avatar, Menu, MenuItem, StackName } from './Menu'
+import { Avatar, StackName } from './Menu'
 
 const Account = () => {
   const { t } = useTranslation()

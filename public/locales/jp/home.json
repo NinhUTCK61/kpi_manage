@@ -1,13 +1,24 @@
 {
-    "create": "Create new file",
-    "my_files": "MY FILES",
-    "all_file": "All files",
-    "deleted_file": "Deleted files",
-    "open": "Open",
-    "duplicate": "Duplicate file",
-    "copy": "Copy link",
-    "thumbnail": "Set a thumbnail",
-    "rename": "Rename",
-    "delete": "Delete"
-  }
-  
+  "create": "新しいファイルを作成",
+  "my_files": "マイファイル",
+  "all_file": "全てのファイル",
+  "deleted_file": "ファイルを削除しました。",
+  "open": "開く",
+  "duplicate": "ファイルを複製",
+  "copy": "リンクをコピー",
+  "thumbnail": "サムネイルを設定",
+  "rename": "ファイル名を変更",
+  "delete": "削除",
+  "cancel": "キャンセル",
+  "delete_file": "ファイルを削除",
+  "rename_success": "ファイル名を変更しました。",
+  "description_rename_success": "ファイル名を変更しました。",
+  "delete_success": "ファイルを削除しました",
+  "description_delete_success": "このファイルはごみ箱に移動されました。",
+  "set_thumbnail_success": "サムネイルを設定しました。",
+  "description_set_thumbnail_success": "ファイルのサムネイルを設定しました。",
+  "detail_dialog_delete": "このファイルを削除しますか？",
+  "click_to_upload": "クリックしてアップロード",
+  "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
+  "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
+}

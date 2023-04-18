@@ -1,16 +1,16 @@
 import { base } from '@/libs/config/theme'
+import { useModalState } from '@/libs/hooks'
 import { Layout } from '@/libs/shared/components'
-import { Menu, MenuItem } from '@/libs/shared/components/Layout/Header/Account/Menu'
 import { Button, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { enqueueSnackbar } from 'notistack'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
-import { ButtonCreate } from './ButtonCreate'
-import { FileItem } from './FileItem'
-
+import { Menu, MenuItem } from '../../../auth/components'
+import { ButtonCreate, DialogDelete, DialogThumbnail, FileItem } from './Components'
 enum StatusFile {
   all,
   deleted,
@@ -41,7 +41,39 @@ const Home = () => {
     },
   ]
 
-  const fakeData = Array(8).fill(0)
+  const [fakeData, setFakeData] = useState<number[] | undefined>(Array(8).fill(0))
+  const { isOpen, onToggle } = useModalState()
+  const { isOpen: isOpenThumbnail, onToggle: onToggleThumbnail } = useModalState()
+  const [nodeId, setNodeId] = useState<string>()
+  console.log(nodeId)
+  const handleSelectNodeDelete = (id: string) => {
+    setNodeId(id)
+    onToggle()
+  }
+
+  const handleSelectNodeThumbnail = (id: string) => {
+    setNodeId(id)
+    onToggleThumbnail()
+  }
+
+  const handleConfirmDelete = () => {
+    fakeData?.pop()
+    const _fakeData = fakeData
+    setFakeData(_fakeData)
+    enqueueSnackbar('', {
+      variant: 'success',
+      description: t('description_delete_success') as string,
+    })
+    onToggle()
+  }
+
+  const handleConfirmThumbnail = () => {
+    enqueueSnackbar('', {
+      variant: 'success',
+      description: t('description_set_thumbnail_success') as string,
+    })
+    onToggle()
+  }
 
   return (
     <Layout title="KPI Master">
@@ -80,12 +112,21 @@ const Home = () => {
         </Menu>
       </Stack>
       <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
-        {fakeData.map((file, index) => (
+        {(fakeData || []).map((file, index) => (
           <Grid item lg={3} md={4} sm={5} xs={12} key={index}>
-            <FileItem />
+            <FileItem
+              handleSelectNodeDelete={handleSelectNodeDelete}
+              handleSelectNodeThumbnail={handleSelectNodeThumbnail}
+            />
           </Grid>
         ))}
       </Grid>
+      <DialogDelete open={isOpen} handleClose={onToggle} handleConfirm={handleConfirmDelete} />
+      <DialogThumbnail
+        open={isOpenThumbnail}
+        handleClose={onToggleThumbnail}
+        handleConfirm={handleConfirmThumbnail}
+      />
     </Layout>
   )
 }
