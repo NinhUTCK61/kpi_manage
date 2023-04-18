@@ -1,5 +1,11 @@
 import { TextColor } from '@/libs/shared/components'
-import { DialogContent, Dialog as MuiDialog, Stack, Typography, styled } from '@mui/material'
+import {
+  Dialog as MuiDialog,
+  DialogContent as MuiDialogContent,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ThumbnailIcon from 'public/assets/svgs/thumbnail.svg'
@@ -26,14 +32,7 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogContent
-        sx={{
-          width: 512,
-          p: 0,
-          cursor: 'pointer',
-        }}
-        {...getRootProps()}
-      >
+      <DialogContent {...getRootProps()}>
         <Stack direction="row" justifyContent="center" mb={1.5}>
           <Image src={ThumbnailIcon} alt="delete" />
         </Stack>
@@ -41,7 +40,7 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
         <Stack>
           <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mb={0.5}>
             <TextColorCustom alignSelf="center">{t('click_to_upload')}</TextColorCustom>
-            <Typography color="greyScale.600" variant="caption">
+            <Typography color="greyScale.600" variant="body2">
               {t('detail_set_thumbnail_1')}
             </Typography>
           </Stack>
@@ -67,4 +66,10 @@ const Dialog = styled(MuiDialog)(({ theme }) => ({
     padding: theme.spacing(2, 3),
   },
 }))
+
+const DialogContent = styled(MuiDialogContent)({
+  width: 512,
+  p: 0,
+  cursor: 'pointer',
+})
 export { DialogThumbnail }
