@@ -6,7 +6,7 @@ import { TemplateService } from '../services/template.service'
 
 const templateService = new TemplateService()
 
-export const TemplateRouter = createTRPCRouter({
+export const templateRouter = createTRPCRouter({
   getListTemplate: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/get-list-template', protect: true } })
     .input(z.object({ id: z.string() }))

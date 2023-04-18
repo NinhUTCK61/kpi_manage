@@ -1,21 +1,28 @@
 import { stratify } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
-import { DbNode, HierarchyFlowNode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, ReactFlowNode, RootNode } from '../types'
 
-export function flattenHierarchy(rootNode: DbNode): { nodes: ReactFlowNode[]; edges: Edge[] } {
+export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; edges: Edge[] } {
   const nodes: ReactFlowNode[] = []
   const edges: Edge[] = []
 
-  function traverse(node: DbNode, parent?: DbNode): void {
+  function traverse(node: RootNode, parent?: RootNode): void {
     // Thêm node hiện tại vào mảng kết quả
     nodes.push({
       id: node.id,
       data: {
-        parent_node_id: '',
+        parent_node_id: node.parent_node_id,
         id: node.id,
         slug: node.slug,
-        x: 0,
-        y: 0,
+        x: node.x,
+        y: node.y,
+        input_title: node.input_title,
+        input_value: node.input_value,
+        value2number: node.value2number,
+        style: node.style,
+        is_formula: node.is_formula,
+        unit: node.unit,
+        templateId: node.templateId,
       },
       position: { x: 0, y: 0 },
       // Thêm các trường dữ liệu khác mà ReactFlow cần
@@ -24,7 +31,7 @@ export function flattenHierarchy(rootNode: DbNode): { nodes: ReactFlowNode[]; ed
     // Thêm cạnh nếu node hiện tại có cha
     if (parent) {
       edges.push({
-        id: `${parent.id}-${node.id}`,
+        id: `${parent.slug}-${node.slug}`,
         source: parent.id,
         target: node.id,
         // Thêm các trường dữ liệu khác mà ReactFlow cần

@@ -1,15 +1,24 @@
 import { Edge } from 'reactflow'
 import { afterEach, describe, expect, test } from 'vitest'
 import { flattenHierarchy, generateNextReactFlowNode, stratifier } from '../helper'
-import { DbNode, ReactFlowNode } from '../types'
+import { ReactFlowNode, RootNode } from '../types'
 import { _edges, _nodes } from './__mock__'
 
 // This is data from API
-const rootNode: DbNode = {
+const rootNode: RootNode = {
   id: 'root',
   slug: 'root',
   parent_node_id: '',
+  input_title: 'root',
+  input_value: '',
+  is_formula: false,
+  style: null,
+  unit: '',
+  value2number: 0,
+  templateId: 'root',
   children: [],
+  x: 0,
+  y: 0,
 }
 
 // const d3Root = createD3Hierarchy(rootNode)

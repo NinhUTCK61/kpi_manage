@@ -1,19 +1,11 @@
+import { Node as PNode } from '@prisma/client'
 import { HierarchyNode } from 'd3-hierarchy'
 import { Node } from 'reactflow'
 
-export type DbNode = {
-  id: string
-  slug: string
-  parent_node_id: string
-  children: DbNode[]
-}
+export type FlowNode = PNode
 
-export type FlowNode = {
-  id: string
-  slug: string
-  parent_node_id: string
-  x: 0
-  y: 0
+export type RootNode = FlowNode & {
+  children: RootNode[]
 }
 
 export type ReactFlowNode = Node<FlowNode>

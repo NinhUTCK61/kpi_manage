@@ -28,7 +28,7 @@ export const KPINode = memo(function KPINode({ data }: NodeProps<FlowNode>) {
       {data.id !== 'root' && (
         <Handle
           type="source"
-          onClick={() => handleAddNode(data.parent_node_id)}
+          onClick={() => handleAddNode(data.parent_node_id as string)}
           position={Position.Bottom}
         >
           <StyledImage src="/assets/svgs/add.svg" alt="add" width={12} height={12} />

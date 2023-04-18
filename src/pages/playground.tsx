@@ -25,7 +25,20 @@ const _nodes: ReactFlowNode[] = [
   {
     id: 'root',
     type: 'kpi',
-    data: { id: 'root', parent_node_id: '', slug: 'root', x: 0, y: 0 },
+    data: {
+      id: 'root',
+      parent_node_id: '',
+      slug: 'root',
+      x: 0,
+      y: 0,
+      input_title: 'root',
+      input_value: '',
+      is_formula: false,
+      style: null,
+      unit: '',
+      value2number: 0,
+      templateId: 'root',
+    },
     position: { x: 0, y: 0 },
   },
 ]

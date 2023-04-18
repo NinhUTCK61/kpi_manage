@@ -20,6 +20,13 @@ const initialRootNode: ReactFlowNode = {
     id: '',
     x: 0,
     y: 0,
+    input_title: 'root',
+    input_value: '',
+    is_formula: false,
+    style: null,
+    unit: '',
+    value2number: 0,
+    templateId: 'root',
   },
   position: { x: 0, y: 0 },
 }

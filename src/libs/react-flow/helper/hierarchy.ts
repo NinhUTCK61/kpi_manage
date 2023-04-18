@@ -1,5 +1,6 @@
 import { HierarchyNode } from 'd3-hierarchy'
 import { Edge as ReactFlowEdge, Node as ReactFlowNode } from 'reactflow'
+import { DEFAULT_NODE_ATTRIBUTES } from '../constant'
 import { FlowNode, HierarchyFlowNode } from '../types'
 
 export function generateIds(d3Node: HierarchyFlowNode): void {
@@ -62,8 +63,7 @@ export const generateNextNode = (parentNode: HierarchyFlowNode): FlowNode => {
     id: generateNextId(parentNode),
     slug: generateNextId(parentNode),
     parent_node_id: parentNode.data.id,
-    x: 0,
-    y: 0,
+    ...DEFAULT_NODE_ATTRIBUTES,
   }
 }
 
