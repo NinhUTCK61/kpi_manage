@@ -45,7 +45,7 @@ export class TemplateService {
     if (!checkUser) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Template not found!',
+        message: 'err.template_not_found',
       })
     }
 
