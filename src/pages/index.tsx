@@ -1,4 +1,4 @@
-import Home from '@/features/auth/views/home/Home'
+import Home from '@/features/template/views/home/Home'
 import { GetStaticPropsContext } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import 'reactflow/dist/style.css'

@@ -152,12 +152,12 @@ const defaultTheme: Theme = createTheme({
           paddingTop: 12,
           paddingBottom: 12,
           textTransform: 'none',
-        },
-        contained: {
-          color: base.white,
           fontWeight: 600,
           fontSize: 15,
           lineHeight: '22px',
+        },
+        contained: {
+          color: base.white,
           backgroundColor: customPrimary[700],
           ':hover': {
             backgroundColor: customPrimary[800],
@@ -174,9 +174,6 @@ const defaultTheme: Theme = createTheme({
         outlined: {
           color: customPrimary[700],
           border: `1px solid ${customPrimary[700]}`,
-          fontWeight: 600,
-          fontSize: 15,
-          lineHeight: '22px',
           backgroundColor: base.white,
           ':hover': {
             color: customPrimary[800],
@@ -191,6 +188,9 @@ const defaultTheme: Theme = createTheme({
             border: `1px solid ${customPrimary[0]}`,
           },
         },
+        text: {
+          color: customPrimary[700],
+        },
       },
     },
     MuiFormLabel: {
@@ -201,6 +201,13 @@ const defaultTheme: Theme = createTheme({
           fontSize: 15,
           lineHeight: '22px',
           color: coolGrey[900],
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          color: base.black,
         },
       },
     },
