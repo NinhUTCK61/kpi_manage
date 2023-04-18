@@ -24,12 +24,25 @@ export class TemplateService {
     return listTemplate
   }
 
-  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>) {
-    const checkTemplate = await prisma.template.findUnique({
-      where: { id },
+  async updateTemplate({
+    id_user,
+    id_template,
+    ...restUpdate
+  }: z.infer<typeof UpdateTemplateSchema>) {
+    const checkUser = await prisma.template.findMany({
+      where: {
+        id: id_template,
+      },
+      include: {
+        userTemplate: {
+          where: {
+            userId: id_user,
+          },
+        },
+      },
     })
 
-    if (!checkTemplate) {
+    if (!checkUser) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'Template not found!',
@@ -37,7 +50,7 @@ export class TemplateService {
     }
 
     const updateData = await prisma.template.update({
-      where: { id },
+      where: { id: id_user },
       data: restUpdate,
     })
 
