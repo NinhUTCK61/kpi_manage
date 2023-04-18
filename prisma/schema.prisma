@@ -92,7 +92,7 @@ model UserTemplate {
 
 model Template {
   id           String         @id @default(cuid())
-  root_note_id String         @default(cuid())
+  root_note_id String         @default(nanoid())
   name         String
   image_url    String?        @db.Text
   public_url   String?        @db.Text

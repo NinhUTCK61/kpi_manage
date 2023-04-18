@@ -1,4 +1,4 @@
-import { hierarchy, tree } from 'd3-hierarchy'
+import { HierarchyNode, hierarchy, tree } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
 import {
   HORIZONTAL_SPACING_FACTOR,
@@ -38,7 +38,7 @@ export const generateNextReactFlowNode = (
   return { node, edge }
 }
 
-function calculateSubtreeChild(node: HierarchyFlowNode): number {
+function calculateSubtreeChild<T>(node: HierarchyNode<T>): number {
   let sumChild = 0
   node.each((n) => {
     if (n.children?.length) {
@@ -48,8 +48,8 @@ function calculateSubtreeChild(node: HierarchyFlowNode): number {
   return sumChild
 }
 
-export const getLayoutElements = (d3Root: HierarchyFlowNode) => {
-  const treeData = tree<ReactFlowNode>()
+export function getTreeLayout<T>(d3Root: HierarchyNode<T>) {
+  return tree<T>()
     .nodeSize([
       NODE_HEIGHT * (1 + VERTICAL_SPACING_FACTOR),
       NODE_WIDTH * (1 + HORIZONTAL_SPACING_FACTOR),
@@ -66,10 +66,13 @@ export const getLayoutElements = (d3Root: HierarchyFlowNode) => {
 
       return a.parent === b.parent ? distanceFactor : distanceFactor + 0.5
     })(d3Root)
+}
 
+export function getLayoutElements(d3Root: HierarchyFlowNode) {
+  const tree = getTreeLayout(d3Root)
   const newNodes: ReactFlowNode[] = []
 
-  treeData.each((node) => {
+  tree.each((node) => {
     node.data.position = {
       x: node.y,
       y: node.x,

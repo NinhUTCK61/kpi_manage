@@ -173,7 +173,7 @@ export type UserTemplate = z.infer<typeof UserTemplateSchema>
 
 export const TemplateSchema = z.object({
   id: z.string().cuid(),
-  root_note_id: z.string().cuid(),
+  root_note_id: z.string(),
   name: z.string(),
   image_url: z.string().nullable(),
   public_url: z.string().nullable(),
@@ -1582,7 +1582,7 @@ export const UserTemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserTe
 
 export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  root_note_id: z.string().cuid().optional(),
+  root_note_id: z.string().optional(),
   name: z.string(),
   image_url: z.string().optional().nullable(),
   public_url: z.string().optional().nullable(),
@@ -1596,7 +1596,7 @@ export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = 
 
 export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateInput> = z.object({
   id: z.string().cuid().optional(),
-  root_note_id: z.string().cuid().optional(),
+  root_note_id: z.string().optional(),
   name: z.string(),
   image_url: z.string().optional().nullable(),
   public_url: z.string().optional().nullable(),
@@ -1610,7 +1610,7 @@ export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUnchec
 
 export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  root_note_id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1624,7 +1624,7 @@ export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = 
 
 export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  root_note_id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1638,7 +1638,7 @@ export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUnchec
 
 export const TemplateCreateManyInputSchema: z.ZodType<Prisma.TemplateCreateManyInput> = z.object({
   id: z.string().cuid().optional(),
-  root_note_id: z.string().cuid().optional(),
+  root_note_id: z.string().optional(),
   name: z.string(),
   image_url: z.string().optional().nullable(),
   public_url: z.string().optional().nullable(),
@@ -1649,7 +1649,7 @@ export const TemplateCreateManyInputSchema: z.ZodType<Prisma.TemplateCreateManyI
 
 export const TemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.TemplateUpdateManyMutationInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  root_note_id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1660,7 +1660,7 @@ export const TemplateUpdateManyMutationInputSchema: z.ZodType<Prisma.TemplateUpd
 
 export const TemplateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  root_note_id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),

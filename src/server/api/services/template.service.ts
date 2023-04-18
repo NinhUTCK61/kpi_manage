@@ -2,6 +2,7 @@ import { UpdateTemplateSchema } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
+import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 export class TemplateService {
@@ -45,9 +46,11 @@ export class TemplateService {
 
   async createTemplate(userId: string) {
     return await prisma.$transaction(async (tx) => {
+      const rootNodeId = nanoid()
       const template = await tx.template.create({
         data: {
           name: 'New Template',
+          root_note_id: rootNodeId,
           userTemplate: {
             create: {
               userId,
@@ -61,7 +64,7 @@ export class TemplateService {
         },
       })
 
-      const nodeArr = generateDefaultNode(template.id)
+      const nodeArr = generateDefaultNode(template.id, rootNodeId)
 
       await tx.node.createMany({
         data: nodeArr,

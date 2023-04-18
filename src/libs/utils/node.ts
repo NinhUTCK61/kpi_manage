@@ -1,14 +1,13 @@
 import { Prisma } from '@prisma/client'
+import { stratify } from 'd3-hierarchy'
 import { nanoid } from 'nanoid'
+import { getTreeLayout } from '../react-flow'
 
-export function generateDefaultNode(templateId: string): Prisma.NodeCreateManyInput[] {
-  const [rootId, nodeAId, nodeBId, nodeA1Id, nodeA2] = [
-    nanoid(),
-    nanoid(),
-    nanoid(),
-    nanoid(),
-    nanoid(),
-  ]
+export function generateDefaultNode(
+  templateId: string,
+  rootId: string,
+): Prisma.NodeCreateManyInput[] {
+  const [nodeAId, nodeBId, nodeA1Id, nodeA2] = [nanoid(), nanoid(), nanoid(), nanoid()]
 
   const defaultAttr = {
     input_value: '',
@@ -61,5 +60,19 @@ export function generateDefaultNode(templateId: string): Prisma.NodeCreateManyIn
     ...defaultAttr,
   }
 
-  return [rootNode, nodeA, nodeB, nodeA1, nodeB2]
+  const nodes = [rootNode, nodeA, nodeB, nodeA1, nodeB2]
+  const hierarchy = stratify<Prisma.NodeCreateManyInput>()
+    .id((n) => n.id)
+    .parentId((n) => n.parent_node_id)(nodes)
+  const tree = getTreeLayout(hierarchy)
+
+  const nodeLayout: Prisma.NodeCreateManyInput[] = []
+  tree.each((node) => {
+    node.data.x = node.y
+    node.data.y = node.x
+
+    nodeLayout.push(node.data)
+  })
+
+  return nodeLayout
 }
