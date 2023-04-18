@@ -14,22 +14,27 @@ const StyledImage = styled(Image)({
 export const KPINode = memo(function KPINode({ data }: NodeProps<FlowNode>) {
   const addNode = useRFStore((state) => state.addNode)
 
+  const handleAddNode = (id: string) => {
+    const nodes = addNode(id)
+    console.log(nodes)
+  }
+
   return (
     <Box width={NODE_WIDTH} height={NODE_HEIGHT} border={1}>
       <Typography variant="subtitle1">{data.slug}</Typography>
-      <Handle type="source" onClick={() => addNode(data.id)} position={Position.Right}>
+      <Handle type="source" onClick={() => handleAddNode(data.id)} position={Position.Right}>
         <StyledImage src="/assets/svgs/add.svg" alt="add" width={12} height={12} />
       </Handle>
       {data.id !== 'root' && (
         <Handle
           type="source"
-          onClick={() => addNode(data.parent_node_id)}
+          onClick={() => handleAddNode(data.parent_node_id)}
           position={Position.Bottom}
         >
           <StyledImage src="/assets/svgs/add.svg" alt="add" width={12} height={12} />
         </Handle>
       )}
-      <Handle type="target" onClick={() => addNode(data.id)} position={Position.Left} />
+      <Handle type="target" onClick={() => handleAddNode(data.id)} position={Position.Left} />
     </Box>
   )
 })

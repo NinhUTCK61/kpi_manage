@@ -1,6 +1,11 @@
 import { hierarchy, tree } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
-import { NODE_HEIGHT, NODE_WIDTH } from '../constant'
+import {
+  HORIZONTAL_SPACING_FACTOR,
+  NODE_HEIGHT,
+  NODE_WIDTH,
+  VERTICAL_SPACING_FACTOR,
+} from '../constant'
 import { HierarchyFlowNode, ReactFlowNode } from '../types'
 import { generateNextNode } from './hierarchy'
 
@@ -45,7 +50,10 @@ function calculateSubtreeChild(node: HierarchyFlowNode): number {
 
 export const getLayoutElements = (d3Root: HierarchyFlowNode) => {
   const treeData = tree<ReactFlowNode>()
-    .nodeSize([NODE_HEIGHT * 1.5, NODE_WIDTH * 1.5]) // vertical spacing: 40*(1.5 - 1) = 20, horizontal = 80*(1.5 - 1) = 40
+    .nodeSize([
+      NODE_HEIGHT * (1 + VERTICAL_SPACING_FACTOR),
+      NODE_WIDTH * (1 + HORIZONTAL_SPACING_FACTOR),
+    ]) // default vertical spacing: 1.5 - 1 = 0.5 (* NODE_HEIGHT), horizontal = NODE_WIDTH * (1.5 - 1)
     .separation((a, b) => {
       const aTotalChild = calculateSubtreeChild(a)
       const bTotalChild = calculateSubtreeChild(b)
@@ -56,7 +64,7 @@ export const getLayoutElements = (d3Root: HierarchyFlowNode) => {
         return 1
       }
 
-      return a.parent === b.parent ? distanceFactor : distanceFactor * 2
+      return a.parent === b.parent ? distanceFactor : distanceFactor + 0.5
     })(d3Root)
 
   const newNodes: ReactFlowNode[] = []
