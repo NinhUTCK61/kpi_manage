@@ -103,7 +103,7 @@ export class TemplateService {
 
     const likeTemplate = await prisma.userTemplate.update({
       where: { id },
-      data: { is_favorite: isFavorite },
+      data: { ...restUpdate },
     })
 
     return likeTemplate
