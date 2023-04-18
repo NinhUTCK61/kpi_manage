@@ -8,5 +8,5 @@ export type RFStore = {
   onNodesChange: OnNodesChange
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
-  addNode: (parentId: string) => void
+  addNode: (parentId: string) => ReactFlowNode[]
 }
