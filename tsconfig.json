@@ -30,7 +30,6 @@
     "**/*.cjs",
     "**/*.mjs",
     "next-i18next.config.js",
-    "custom.d.ts"
   ],
   "exclude": ["node_modules"]
 }
