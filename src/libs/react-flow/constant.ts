@@ -13,5 +13,5 @@ export const DEFAULT_NODE_ATTRIBUTES = {
   style: null,
   unit: '',
   value2number: 0,
-  templateId: '',
+  template_id: '',
 }

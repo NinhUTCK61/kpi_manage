@@ -63,8 +63,8 @@ model User {
 model Comment {
   id                String    @id @default(cuid())
   comment           String?   @db.Text
-  user              User?     @relation(fields: [userId], references: [id])
-  userId            String?
+  user              User?     @relation(fields: [user_id], references: [id])
+  user_id           String?
   children          Comment[] @relation("CommentToComments")
   parent_comment    Comment?  @relation("CommentToComments", fields: [parent_comment_id], references: [id])
   parent_comment_id String?
@@ -75,19 +75,18 @@ model Comment {
 }
 
 model UserTemplate {
-  id          String    @id @default(cuid())
-  userId      String    @map("user_id")
+  id          String   @id @default(cuid())
+  user_id     String
   template_id String
-  is_owner    Boolean   @default(false)
-  is_favorite Boolean   @default(false)
-  can_edit    Boolean   @default(false)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  deleted_at  DateTime?
-  template    Template  @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  User        User      @relation(fields: [userId], references: [id])
+  is_owner    Boolean  @default(false)
+  is_favorite Boolean  @default(false)
+  can_edit    Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  User        User     @relation(fields: [user_id], references: [id])
 
-  @@unique([userId, template_id])
+  @@unique([user_id, template_id])
 }
 
 model Template {
@@ -108,15 +107,15 @@ model Node {
   id             String         @id @default(nanoid())
   slug           String         @db.Text
   input_title    String         @db.Text
-  input_value    String         @db.Text
-  is_formula     Boolean        @default(false)
-  value2number   Float          @map("value_2_number")
+  input_value    String?        @db.Text
+  is_formula     Boolean?       @default(false)
+  value2number   Float?         @map("value_2_number")
   style          Json?
   x              Float
   y              Float
-  unit           String
-  Template       Template?      @relation(fields: [templateId], references: [id])
-  templateId     String         @map("template_id")
+  unit           String?
+  Template       Template?      @relation(fields: [template_id], references: [id])
+  template_id    String
   children       Node[]         @relation("nodetonodes")
   parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id])
   parent_node_id String?
@@ -124,19 +123,19 @@ model Node {
 }
 
 model SpeechBallon {
-  id         String   @id @default(cuid())
-  templateId String   @map("template_id")
-  node_id    String
-  text       String
-  x          Float
-  y          Float
-  shape      String
-  style      Json
-  stroke     Json
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  Template   Template @relation(fields: [templateId], references: [id])
-  Node       Node     @relation(fields: [node_id], references: [id])
+  id          String   @id @default(cuid())
+  template_id String
+  node_id     String
+  text        String
+  x           Float
+  y           Float
+  shape       String
+  style       Json
+  stroke      Json
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  Template    Template @relation(fields: [template_id], references: [id])
+  Node        Node     @relation(fields: [node_id], references: [id])
 }
 
 model VerificationToken {
@@ -153,8 +152,7 @@ model PasswordReset {
   token      String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, token])
 }

@@ -29,7 +29,7 @@ export class TemplateService {
   async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
     const checkUser = await prisma.userTemplate.findFirst({
       where: {
-        userId: user.id,
+        user_id: user.id,
         template_id: id,
       },
     })
@@ -49,7 +49,7 @@ export class TemplateService {
     return updateData
   }
 
-  async createTemplate(userId: string) {
+  async createTemplate(user_id: string) {
     return await prisma.$transaction(async (tx) => {
       const rootNodeId = nanoid()
       const template = await tx.template.create({
@@ -58,7 +58,7 @@ export class TemplateService {
           root_note_id: rootNodeId,
           userTemplate: {
             create: {
-              userId,
+              user_id,
               is_owner: true,
               can_edit: true,
             },
@@ -82,7 +82,7 @@ export class TemplateService {
   async likeTemplate({ id, is_favorite }: z.infer<typeof likeTemplateSchema>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
-        userId: user.id,
+        user_id: user.id,
         template_id: id,
         template: {
           deleted_at: null,

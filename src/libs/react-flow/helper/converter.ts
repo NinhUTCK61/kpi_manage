@@ -22,9 +22,9 @@ export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; 
         style: node.style,
         is_formula: node.is_formula,
         unit: node.unit,
-        templateId: node.templateId,
+        template_id: node.template_id,
       },
-      position: { x: 0, y: 0 },
+      position: { x: node.x, y: node.y },
       // Thêm các trường dữ liệu khác mà ReactFlow cần
     })
 

@@ -37,7 +37,7 @@ const _nodes: ReactFlowNode[] = [
       style: null,
       unit: '',
       value2number: 0,
-      templateId: 'root',
+      template_id: 'root',
     },
     position: { x: 0, y: 0 },
   },

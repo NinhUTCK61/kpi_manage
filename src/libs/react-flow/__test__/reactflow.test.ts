@@ -15,7 +15,7 @@ const rootNode: RootNode = {
   style: null,
   unit: '',
   value2number: 0,
-  templateId: 'root',
+  template_id: 'root',
   children: [],
   x: 0,
   y: 0,

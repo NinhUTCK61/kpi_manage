@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 import { getTreeLayout } from '../react-flow'
 
 export function generateDefaultNode(
-  templateId: string,
+  template_id: string,
   rootId: string,
 ): Prisma.NodeCreateManyInput[] {
   const [nodeAId, nodeBId, nodeA1Id, nodeA2] = [nanoid(), nanoid(), nanoid(), nanoid()]
@@ -12,7 +12,7 @@ export function generateDefaultNode(
   const defaultAttr = {
     input_value: '',
     is_formula: false,
-    templateId,
+    template_id,
     value2number: 0,
     x: 0,
     y: 0,
