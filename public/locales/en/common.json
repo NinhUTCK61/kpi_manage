@@ -61,6 +61,7 @@
     "invalid_intersection_types": "Intersection results could not be merged",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of",
     "not_finite": "Number must be finite",
-    "template_not_found": "Template not found!"
+    "template_not_found": "Template not found!",
+    "template_deleted": "The template has been deleted"
   }
 }
