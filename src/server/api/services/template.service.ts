@@ -40,7 +40,7 @@ export class TemplateService {
     if (!checkUserTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'err.template_not_found',
+        message: 'error.template_not_found',
       })
     }
 
@@ -96,7 +96,7 @@ export class TemplateService {
     if (!checkUserTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'err.template_not_found',
+        message: 'error.template_not_found',
       })
     }
 
@@ -123,7 +123,7 @@ export class TemplateService {
     if (!checkUserTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'err.template_not_found',
+        message: 'error.template_not_found',
       })
     }
 

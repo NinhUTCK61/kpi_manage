@@ -54,10 +54,12 @@
     "not_multiple_of": "数値は{{multipleOf}}の倍数である必要があります。",
     "not_finite": "数値は有限数である必要があります。",
     "template_not_found": "Template not found!",
-    "template_deleted": "The template has been deleted"
+    "template_deleted": "The template has been deleted",
+    "internal_server_error": "内部サーバーエラーが発生しました。"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
-    "delete_template": "Delete template success!"
+    "delete_template": "Delete template success!",
+    "template_deleted": "The template has been deleted"
   }
 }

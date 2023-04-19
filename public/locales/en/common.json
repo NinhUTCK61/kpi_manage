@@ -62,10 +62,12 @@
     "not_multiple_of": "{{mutipleOf}} must be a multiple of",
     "not_finite": "Number must be finite",
     "template_not_found": "Template not found!",
-    "template_deleted": "The template has been deleted"
+    "template_deleted": "The template has been deleted",
+    "internal_server_error": "An internal server error occurred."
   },
   "template": {
     "move_to_trash": "Move to trash success!",
-    "delete_template": "Delete template success!"
+    "delete_template": "Delete template success!",
+    "template_deleted": "The template has been deleted"
   }
 }
