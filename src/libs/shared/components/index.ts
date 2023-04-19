@@ -1,3 +1,4 @@
+export * from './Dialog'
 export * from './Form'
 export * from './Layout'
 export * from './Menu'

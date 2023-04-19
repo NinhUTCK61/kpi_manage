@@ -2,8 +2,7 @@ import { Menu as MuiMenu, MenuItem as MuiMenuItem, styled } from '@mui/material'
 
 const Menu = styled(MuiMenu)({
   '.MuiMenu-paper': {
-    overflow: 'visible',
-    boxShadow: '0px 2px 40px rgba(17, 17, 17, 0.08)',
+    overflow: 'hidden',
     mt: 1.5,
     '& .MuiAvatar-root': {
       width: 32,

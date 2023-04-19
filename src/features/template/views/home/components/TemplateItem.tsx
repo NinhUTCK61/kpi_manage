@@ -13,6 +13,7 @@ import {
   styled,
 } from '@mui/material'
 import { formatDistance } from 'date-fns'
+import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { enqueueSnackbar } from 'notistack'
@@ -27,7 +28,10 @@ type TemplateItemTypes = {
 }
 
 const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template }) => {
-  const { t } = useTranslation('home')
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('home')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const inputNameRef = useRef<HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -71,8 +75,39 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const isDelete = template.delete_at !== ''
 
+  const menuItem = isDelete
+    ? [
+        {
+          title: t('restore'),
+          action: () => handleAction(FileAction.Restore),
+        },
+        {
+          title: t('permanently_delete'),
+          action: () => handleAction(FileAction.DeletePermanently),
+        },
+      ]
+    : [
+        {
+          title: t('open'),
+          action: () => handleClose(),
+        },
+        {
+          title: t('thumbnail'),
+          action: () => handleAction(FileAction.UpdateThumbnail),
+        },
+        {
+          title: t('rename'),
+          action: () => handleOpenChangeName,
+        },
+        {
+          title: t('delete'),
+          action: () => handleAction(FileAction.Delete),
+          delete: true,
+        },
+      ]
+
   return (
-    <Card sx={{ maxWidth: 268, borderRadius: 3, position: 'relative' }}>
+    <Card sx={{ maxWidth: 268, borderRadius: 3, position: 'relative' }} elevation={0}>
       <CardHeader
         action={
           <IconButton onClick={handleClick}>
@@ -89,32 +124,24 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         onClick={handleClose}
         PaperProps={{
           sx: {
-            ml: 3.5,
+            ml: 1,
+            boxShadow: '0px 2px 40px rgba(17, 17, 17, 0.08)',
           },
         }}
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+        elevation={0}
       >
-        {isDelete ? (
-          <>
-            <MenuItemFile onClick={() => handleAction(FileAction.Restore)}>
-              {t('restore')}
-            </MenuItemFile>
-            <MenuItemFile onClick={() => handleAction(FileAction.DeletePermanently)}>
-              {t('permanently_delete')}
-            </MenuItemFile>
-          </>
-        ) : (
-          <>
-            <MenuItemFile onClick={handleClose}>{t('open')}</MenuItemFile>
-            <MenuItemFile onClick={() => handleAction(FileAction.UpdateThumbnail)}>
-              {t('thumbnail')}
-            </MenuItemFile>
-            <MenuItemFile onClick={handleOpenChangeName}>{t('rename')}</MenuItemFile>
-            <MenuItemFileDelete onClick={() => handleAction(FileAction.Delete)}>
-              {t('delete')}
+        {menuItem.map((menu) =>
+          menu.delete ? (
+            <MenuItemFileDelete key={menu.title} onClick={menu.action}>
+              {menu.title}
             </MenuItemFileDelete>
-          </>
+          ) : (
+            <MenuItemFile key={menu.title} onClick={menu.action}>
+              {menu.title}
+            </MenuItemFile>
+          ),
         )}
       </Menu>
 
@@ -142,7 +169,10 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
             <Image src={LikeIcon} alt="like" />
           </Stack>
           <Typography variant="body2" color="greyScale.500">
-            {formatDistance(new Date('2023-04-05T09:00:00Z'), new Date(), { addSuffix: true })}
+            {formatDistance(new Date('2023-04-05T09:00:00Z'), new Date(), {
+              addSuffix: true,
+              locale: language === 'en' ? enAU : ja,
+            })}
           </Typography>
         </Stack>
       </CardActions>

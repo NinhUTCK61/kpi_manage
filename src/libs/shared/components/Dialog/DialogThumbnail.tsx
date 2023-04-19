@@ -1,4 +1,3 @@
-import { TextColor } from '@/libs/shared/components'
 import {
   Dialog as MuiDialog,
   DialogContent as MuiDialogContent,
@@ -38,7 +37,7 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
 
         <Stack>
           <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mb={0.5}>
-            <TextColorCustom alignSelf="center">
+            <TextColorCustom alignSelf="center" variant="body2">
               {t('dialog.thumbnail.click_to_upload')}
             </TextColorCustom>
             <Typography color="greyScale.600" variant="body2">
@@ -57,8 +56,9 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
   )
 }
 
-const TextColorCustom = styled(TextColor)(({ theme }) => ({
+const TextColorCustom = styled(Typography)(({ theme }) => ({
   color: theme.palette.customPrimary[700],
+  fontWeight: 600,
 }))
 
 const Dialog = styled(MuiDialog)(({ theme }) => ({

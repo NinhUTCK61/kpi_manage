@@ -81,6 +81,7 @@ const Account = () => {
         onClick={handleClose}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        elevation={0}
       >
         {menu.map((item) => (
           <MenuItem key={item.title} onClick={item.handle as () => void}>

@@ -1,7 +1,6 @@
 import { base } from '@/libs/config/theme'
 import { useModalState } from '@/libs/hooks'
-import { Layout, Menu, MenuItem } from '@/libs/shared/components'
-import { DialogAction, DialogThumbnail } from '@/libs/shared/components/Dialog'
+import { DialogAction, DialogThumbnail, Layout, Menu, MenuItem } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Button, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -77,8 +76,7 @@ const Home = () => {
     onClose: closeDialogThumbnail,
   } = useModalState()
 
-  const [nodeId, setNodeId] = useState<string>()
-  console.log(nodeId)
+  const [_nodeId, setNodeId] = useState<string>()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -147,7 +145,7 @@ const Home = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <ButtonCreate variant="contained" startIcon={<Image src={AddIcon} alt="add" />}>
+      <ButtonCreate variant="contained" disableRipple startIcon={<Image src={AddIcon} alt="add" />}>
         {t('create')}
       </ButtonCreate>
       <Stack direction="row" justifyContent="space-between" mb={1.5}>
@@ -173,6 +171,12 @@ const Home = () => {
           onClick={handleClose}
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          PaperProps={{
+            style: {
+              borderRadius: 12,
+              overflow: 'hidden',
+            },
+          }}
         >
           {menu.map((item) => (
             <MenuItem key={item.title} onClick={() => setStatus(item.id)}>
