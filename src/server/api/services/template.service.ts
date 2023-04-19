@@ -27,16 +27,19 @@ export class TemplateService {
   }
 
   async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
-    const checkUser = await prisma.userTemplate.findFirst({
+    const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
         template_id: id,
+        template: {
+          deleted_at: null,
+        },
       },
     })
 
-    if (!checkUser) {
+    if (!checkUserTemplate) {
       throw new TRPCError({
-        code: 'UNAUTHORIZED',
+        code: 'NOT_FOUND',
         message: 'err.template_not_found',
       })
     }
