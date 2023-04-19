@@ -1,4 +1,4 @@
-import { UpdateTemplateSchema } from '@/libs/schema'
+import { UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
@@ -77,5 +77,35 @@ export class TemplateService {
 
       return template
     })
+  }
+
+  async likeTemplate({ id, isFavorite }: z.infer<typeof likeTemplateSchema>, user: User) {
+    const checkUserTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        id,
+        userId: user.id,
+      },
+    })
+
+    if (!checkUserTemplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'err.template_not_found',
+      })
+    }
+
+    if (checkUserTemplate.updated_at) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'err.template_deleted',
+      })
+    }
+
+    const likeTemplate = await prisma.userTemplate.update({
+      where: { id },
+      data: { is_favorite: isFavorite },
+    })
+
+    return likeTemplate
   }
 }

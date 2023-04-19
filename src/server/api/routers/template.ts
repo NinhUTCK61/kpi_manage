@@ -1,4 +1,4 @@
-import { UpdateTemplateSchema } from '@/libs/schema'
+import { UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc'
 import { TemplateSchema, UserSchema, UserTemplateSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -27,5 +27,13 @@ export const templateRouter = createTRPCRouter({
     .output(TemplateSchema)
     .mutation(({ ctx }) => {
       return templateService.createTemplate(ctx.session.user.id)
+    }),
+
+  likeTemplate: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/like-template' } })
+    .input(likeTemplateSchema)
+    .output(UserTemplateSchema)
+    .mutation(({ input, ctx }) => {
+      return templateService.likeTemplate(input, ctx?.session?.user)
     }),
 })
