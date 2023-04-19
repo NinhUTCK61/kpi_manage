@@ -1,4 +1,4 @@
-import { DialogBaseProps } from '@/libs/shared/types/utils'
+import { DialogActionType, DialogBaseProps } from '@/libs/shared/types/utils'
 import {
   Button,
   DialogContent,
@@ -16,13 +16,11 @@ import WarningIcon from 'public/assets/svgs/warning.svg'
 
 type DialogActionTypes = DialogBaseProps<{
   handleConfirm(): void
-  title?: string | null
-  description?: string | null
-  type: TypeDialog
-  textSubmit?: string | null
+  title?: string
+  description?: string
+  type: DialogActionType
+  textSubmit?: string
 }>
-
-export type TypeDialog = 'delete' | 'warning' | undefined
 
 const DialogAction: React.FC<DialogActionTypes> = ({
   open,
@@ -30,7 +28,7 @@ const DialogAction: React.FC<DialogActionTypes> = ({
   title,
   description,
   handleConfirm,
-  type,
+  type = 'default',
   textSubmit,
 }) => {
   const { t } = useTranslation()
@@ -45,10 +43,12 @@ const DialogAction: React.FC<DialogActionTypes> = ({
         <Stack
           direction="row"
           justifyContent="space-between"
-          {...(type && { mb: 2 })}
+          {...(type !== 'default' && { mb: 2 })}
           position="relative"
         >
-          {type && <Image src={type == 'delete' ? DeleteIcon : WarningIcon} alt="delete" />}
+          {type !== 'default' && (
+            <Image src={type == 'delete' ? DeleteIcon : WarningIcon} alt="delete" />
+          )}
           <Image
             src={CloseIcon}
             alt="close"

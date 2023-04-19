@@ -3,4 +3,6 @@ type DialogBaseProps<T = Record<string, unknown>> = {
   handleClose(): void
 } & T
 
-export type { DialogBaseProps }
+type DialogActionType = 'delete' | 'warning' | 'default'
+
+export type { DialogBaseProps, DialogActionType }

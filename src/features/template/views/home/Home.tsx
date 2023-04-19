@@ -1,7 +1,8 @@
 import { base } from '@/libs/config/theme'
 import { useModalState } from '@/libs/hooks'
 import { Layout, Menu, MenuItem } from '@/libs/shared/components'
-import { DialogAction, DialogThumbnail, TypeDialog } from '@/libs/shared/components/Dialog'
+import { DialogAction, DialogThumbnail } from '@/libs/shared/components/Dialog'
+import { DialogActionType } from '@/libs/shared/types/utils'
 import { Button, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -194,10 +195,10 @@ const Home = () => {
           open={isOpenDialogAction}
           handleClose={closeDialog}
           handleConfirm={OPTION_ACTIONS[action].handleConfirm}
-          title={OPTION_ACTIONS[action].title as string}
-          description={OPTION_ACTIONS[action].description as string}
-          type={OPTION_ACTIONS[action].type as TypeDialog}
-          textSubmit={OPTION_ACTIONS[action].textSubmit as string}
+          title={OPTION_ACTIONS[action].title}
+          description={OPTION_ACTIONS[action].description}
+          type={OPTION_ACTIONS[action].type as DialogActionType}
+          textSubmit={OPTION_ACTIONS[action].textSubmit}
         />
       )}
       <DialogThumbnail
@@ -209,4 +210,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export { Home }
