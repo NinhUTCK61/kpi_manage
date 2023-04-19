@@ -34,6 +34,6 @@ export const templateRouter = createTRPCRouter({
     .input(likeTemplateSchema)
     .output(UserTemplateSchema)
     .mutation(({ input, ctx }) => {
-      return templateService.likeTemplate(input, ctx?.session?.user)
+      return templateService.likeTemplate(input, ctx.session.user)
     }),
 })
