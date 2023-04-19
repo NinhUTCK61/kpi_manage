@@ -18,5 +18,6 @@
   "password": "パスワード",
   "enter_name": "お名前をご記入ください。",
   "enter_email": "メールアドレスを入力してください。",
-  "enter_password": "パスワードを入力してください。"
+  "enter_password": "パスワードを入力してください。",
+  "seo_title": "ログアウト"
 }

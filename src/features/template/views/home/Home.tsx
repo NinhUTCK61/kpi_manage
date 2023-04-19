@@ -76,7 +76,7 @@ const Home = () => {
   }
 
   return (
-    <Layout title="KPI Master">
+    <Layout title={t('seo_title')}>
       <ButtonCreate variant="contained" startIcon={<Image src={AddIcon} alt="add" />}>
         {t('create')}
       </ButtonCreate>
