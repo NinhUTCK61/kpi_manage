@@ -108,7 +108,7 @@ export class TemplateService {
   async deleteTemplate(id: string, is_permanently: boolean, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
-        userId: user.id,
+        user_id: user.id,
         template_id: id,
         is_owner: true,
         template: {

@@ -55,5 +55,9 @@
     "not_finite": "数値は有限数である必要があります。",
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted"
+  },
+  "template": {
+    "move_to_trash": "Move to trash success!",
+    "delete_template": "Delete template success!"
   }
 }
