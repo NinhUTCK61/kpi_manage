@@ -63,5 +63,9 @@
     "not_finite": "Number must be finite",
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted"
+  },
+  "template": {
+    "move_to_trash": "Move to trash success!",
+    "delete_template": "Delete template success!"
   }
 }

@@ -10,3 +10,8 @@ export const likeTemplateSchema = z.object({
   id: z.string(),
   is_favorite: z.boolean(),
 })
+
+export const DeleteTemplateSchema = z.object({
+  id: z.string(),
+  is_permanently: z.boolean().optional().default(false),
+})

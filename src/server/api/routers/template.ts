@@ -1,4 +1,4 @@
-import { UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
+import { DeleteTemplateSchema, UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc'
 import { TemplateSchema, UserSchema, UserTemplateSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -34,5 +34,12 @@ export const templateRouter = createTRPCRouter({
     .output(UserTemplateSchema)
     .mutation(({ input, ctx }) => {
       return templateService.likeTemplate(input, ctx.session.user)
+    }),
+  deleteTemplate: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/delete-template', protect: true } })
+    .input(DeleteTemplateSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return templateService.deleteTemplate(input.id, input.is_permanently, ctx.session.user)
     }),
 })

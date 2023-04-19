@@ -107,4 +107,48 @@ export class TemplateService {
 
     return likeTemplate
   }
+
+  async deleteTemplate(id: string, is_permanently: boolean, user: User) {
+    const checkUserTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        user_id: user.id,
+        template_id: id,
+        is_owner: true,
+        template: {
+          deleted_at: null,
+        },
+      },
+    })
+
+    if (!checkUserTemplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'err.template_not_found',
+      })
+    }
+
+    if (is_permanently) {
+      await prisma.template.delete({
+        where: {
+          id,
+        },
+        include: {
+          userTemplate: true,
+        },
+      })
+      return 'template.delete_template'
+    }
+
+    const date = new Date()
+    await prisma.template.update({
+      where: {
+        id: id,
+      },
+      data: {
+        deleted_at: date,
+      },
+    })
+
+    return 'template.move_to_trash'
+  }
 }
