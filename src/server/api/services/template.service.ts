@@ -1,4 +1,4 @@
-import { UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
+import { TemplateDataOutputSchema, UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
@@ -8,22 +8,39 @@ import { User } from 'next-auth'
 import { z } from 'zod'
 
 export class TemplateService {
-  async getListTemplate(idUser: string) {
-    const listTemplate = await prisma.user.findUnique({
+  async getListTemplate(userId: string, isTrash: boolean) {
+    const deletedOpt = isTrash ? { not: null } : null
+    const listTemplate = await prisma.userTemplate.findMany({
       where: {
-        id: idUser,
+        user_id: userId,
+        template: {
+          deleted_at: deletedOpt,
+        },
       },
       include: {
-        userTemplate: true,
+        template: true,
       },
     })
-    if (!listTemplate) {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'Email already exists!',
+
+    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
+
+    if (listTemplate.length) {
+      listTemplate.forEach((item) => {
+        const {
+          template: { id: _, ...restTemplate },
+        } = item
+
+        templateData.push({
+          template_id: item.template_id,
+          can_edit: item.can_edit,
+          is_favorite: item.is_favorite,
+          is_owner: item.is_owner,
+          ...restTemplate,
+        })
       })
     }
-    return listTemplate
+
+    return templateData
   }
 
   async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
