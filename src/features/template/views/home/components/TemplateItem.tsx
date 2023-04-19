@@ -1,4 +1,6 @@
+import { FileAction, TemplateTypes } from '@/features/template/types/template'
 import { useModalState } from '@/libs/hooks'
+import { Menu, MenuItem } from '@/libs/shared/components'
 import {
   Card,
   CardContent,
@@ -17,18 +19,14 @@ import { enqueueSnackbar } from 'notistack'
 import ImageFile from 'public/assets/imgs/file.png'
 import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
-import { KeyboardEvent, useRef, useState } from 'react'
-import { Menu, MenuItem } from '../../../../auth/components'
+import { FormEvent, useRef, useState } from 'react'
 
 type TemplateItemTypes = {
-  handleSelectNodeDelete(id: string): void
-  handleSelectNodeThumbnail(id: string): void
+  handleFileAction(id: string, type: FileAction): void
+  template: TemplateTypes
 }
 
-const FileItem: React.FC<TemplateItemTypes> = ({
-  handleSelectNodeDelete,
-  handleSelectNodeThumbnail,
-}) => {
+const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template }) => {
   const { t } = useTranslation('home')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const inputNameRef = useRef<HTMLElement>(null)
@@ -42,10 +40,10 @@ const FileItem: React.FC<TemplateItemTypes> = ({
 
   const [name, setName] = useState<string>('Circle Simple Mind')
 
-  const { isOpen: isRename, onToggle: onToggleRename } = useModalState()
+  const { isOpen: isRename, onOpen: openRename, onClose: closeRename } = useModalState()
 
   const handleOpenChangeName = () => {
-    onToggleRename()
+    openRename()
     setTimeout(() => {
       if (inputNameRef.current) {
         inputNameRef.current.focus()
@@ -53,33 +51,25 @@ const FileItem: React.FC<TemplateItemTypes> = ({
     }, 200)
   }
 
-  const onSaveName = () => {
+  const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
+    event && event.preventDefault()
     enqueueSnackbar(t('rename_success'), {
       variant: 'success',
       description: t('description_rename_success') as string,
     })
-    onToggleRename()
-  }
-
-  const onSaveNameKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter') {
-      onSaveName()
-    }
+    closeRename()
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
 
-  const setNodeDelete = () => {
-    handleSelectNodeDelete('id')
+  const handleAction = (type: FileAction) => {
+    handleFileAction('id', type)
     handleClose()
   }
 
-  const setNodeThumbnail = () => {
-    handleSelectNodeThumbnail('id')
-    handleClose()
-  }
+  const isDelete = template.delete_at !== ''
 
   return (
     <Card sx={{ maxWidth: 268, borderRadius: 3, position: 'relative' }}>
@@ -105,10 +95,27 @@ const FileItem: React.FC<TemplateItemTypes> = ({
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
-        <MenuItemFile onClick={handleClose}>{t('open')}</MenuItemFile>
-        <MenuItemFile onClick={setNodeThumbnail}>{t('thumbnail')}</MenuItemFile>
-        <MenuItemFile onClick={handleOpenChangeName}>{t('rename')}</MenuItemFile>
-        <MenuItemFileDelete onClick={setNodeDelete}>{t('delete')}</MenuItemFileDelete>
+        {isDelete ? (
+          <>
+            <MenuItemFile onClick={() => handleAction(FileAction.Restore)}>
+              {t('restore')}
+            </MenuItemFile>
+            <MenuItemFile onClick={() => handleAction(FileAction.DeletePermanently)}>
+              {t('permanently_delete')}
+            </MenuItemFile>
+          </>
+        ) : (
+          <>
+            <MenuItemFile onClick={handleClose}>{t('open')}</MenuItemFile>
+            <MenuItemFile onClick={() => handleAction(FileAction.UpdateThumbnail)}>
+              {t('thumbnail')}
+            </MenuItemFile>
+            <MenuItemFile onClick={handleOpenChangeName}>{t('rename')}</MenuItemFile>
+            <MenuItemFileDelete onClick={() => handleAction(FileAction.Delete)}>
+              {t('delete')}
+            </MenuItemFileDelete>
+          </>
+        )}
       </Menu>
 
       <CardContent sx={{ p: 0 }}>
@@ -126,9 +133,8 @@ const FileItem: React.FC<TemplateItemTypes> = ({
               <InputRename
                 value={name}
                 onChange={handleChangeName}
-                onBlur={onSaveName}
+                onBlur={() => onSaveName()}
                 inputRef={inputNameRef}
-                onKeyPress={onSaveNameKeyPress}
               />
             ) : (
               <TextName>{name}</TextName>
@@ -174,4 +180,4 @@ const TextName = styled(Typography)(({ theme }) => ({
   overflow: 'hidden',
 }))
 
-export { FileItem }
+export { TemplateItem }

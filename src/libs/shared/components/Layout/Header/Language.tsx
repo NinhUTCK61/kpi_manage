@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from '@/features/auth/components'
+import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'

@@ -9,7 +9,6 @@
   "thumbnail": "サムネイルを設定",
   "rename": "ファイル名を変更",
   "delete": "削除",
-  "cancel": "キャンセル",
   "delete_file": "ファイルを削除",
   "rename_success": "ファイル名を変更しました。",
   "description_rename_success": "ファイル名を変更しました。",
@@ -21,5 +20,7 @@
   "click_to_upload": "クリックしてアップロード",
   "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
   "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)",
-  "seo_title": "ホーム"
+  "seo_title": "ホーム",
+  "restore": "このファイルを復元する。",
+  "permanently_delete": "完全に削除する。"
 }

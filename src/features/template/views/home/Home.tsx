@@ -1,6 +1,7 @@
 import { base } from '@/libs/config/theme'
 import { useModalState } from '@/libs/hooks'
-import { Layout } from '@/libs/shared/components'
+import { Layout, Menu, MenuItem } from '@/libs/shared/components'
+import { DialogAction, DialogThumbnail, TypeDialog } from '@/libs/shared/components/Dialog'
 import { Button, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -9,12 +10,8 @@ import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
-import { Menu, MenuItem } from '../../../auth/components'
-import { ButtonCreate, DialogDelete, DialogThumbnail, FileItem } from './Components'
-enum StatusFile {
-  all,
-  deleted,
-}
+import { FileAction, StatusTemplate, TemplateTypes } from '../../types/template'
+import { ButtonCreate, TemplateItem } from './components'
 
 const Home = () => {
   const { t } = useTranslation('home')
@@ -27,33 +24,69 @@ const Home = () => {
     setAnchorEl(null)
   }
 
-  const [status, setStatus] = useState<StatusFile>(StatusFile.all)
+  const [status, setStatus] = useState<StatusTemplate>(StatusTemplate.all)
   const menu = [
     {
-      id: StatusFile.all,
+      id: StatusTemplate.all,
       title: t('all_file'),
       handle: handleClose,
     },
     {
-      id: StatusFile.deleted,
+      id: StatusTemplate.deleted,
       title: t('deleted_file'),
       handle: handleClose,
     },
   ]
 
-  const [fakeData, setFakeData] = useState<number[] | undefined>(Array(8).fill(0))
-  const { isOpen, onToggle } = useModalState()
-  const { isOpen: isOpenThumbnail, onToggle: onToggleThumbnail } = useModalState()
+  const [fakeData, setFakeData] = useState<TemplateTypes[] | undefined>(
+    Array(8)
+      .fill(0)
+      .map((e, index) => {
+        return {
+          id: `${index}`,
+          name: 'Template 1',
+          rootNodeId: '1',
+          delete_at: '',
+          public_url: '',
+          image_url: '',
+        }
+      }),
+  )
+
+  const [fakeDataDelete, setFakeDataDelete] = useState<TemplateTypes[] | undefined>(
+    Array(3)
+      .fill(0)
+      .map((e, index) => {
+        return {
+          id: `${index}`,
+          name: 'Template 1',
+          rootNodeId: '1',
+          delete_at: '19-05-2022',
+          public_url: '',
+          image_url: '',
+        }
+      }),
+  )
+
+  const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
+  const { isOpen: isOpenDialogAction, onOpen: openDialog, onClose: closeDialog } = useModalState()
+  const {
+    isOpen: isOpenThumbnail,
+    onOpen: openDialogThumbnail,
+    onClose: closeDialogThumbnail,
+  } = useModalState()
+
   const [nodeId, setNodeId] = useState<string>()
   console.log(nodeId)
-  const handleSelectNodeDelete = (id: string) => {
-    setNodeId(id)
-    onToggle()
-  }
 
-  const handleSelectNodeThumbnail = (id: string) => {
+  const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
-    onToggleThumbnail()
+    if (type === FileAction.UpdateThumbnail) {
+      openDialogThumbnail()
+    } else {
+      setAction(type)
+      openDialog()
+    }
   }
 
   const handleConfirmDelete = () => {
@@ -64,7 +97,19 @@ const Home = () => {
       variant: 'success',
       description: t('description_delete_success') as string,
     })
-    onToggle()
+    closeDialog()
+  }
+
+  const handleConfirmDeletePer = () => {
+    fakeDataDelete?.pop()
+    const _fakeDataDelete = fakeDataDelete
+    console.log({ _fakeDataDelete })
+    setFakeDataDelete(_fakeDataDelete)
+    enqueueSnackbar('', {
+      variant: 'success',
+      description: t('description_delete_success') as string,
+    })
+    closeDialog()
   }
 
   const handleConfirmThumbnail = () => {
@@ -72,7 +117,31 @@ const Home = () => {
       variant: 'success',
       description: t('description_set_thumbnail_success') as string,
     })
-    onToggle()
+    closeDialogThumbnail()
+  }
+
+  const OPTION_ACTIONS = {
+    [FileAction.Delete]: {
+      title: t('delete_file'),
+      description: t('detail_dialog_delete'),
+      handleConfirm: handleConfirmDelete,
+      type: 'delete',
+      textSubmit: t('delete'),
+    },
+    [FileAction.Restore]: {
+      title: t('restore'),
+      description: t('detail_dialog_delete'),
+      handleConfirm: handleConfirmDelete,
+      type: 'warning',
+      textSubmit: t('restore'),
+    },
+    [FileAction.DeletePermanently]: {
+      title: t('permanently_delete'),
+      description: t('detail_dialog_delete'),
+      handleConfirm: handleConfirmDeletePer,
+      type: 'warning',
+      textSubmit: t('permanently_delete'),
+    },
   }
 
   return (
@@ -112,19 +181,28 @@ const Home = () => {
         </Menu>
       </Stack>
       <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
-        {(fakeData || []).map((file, index) => (
-          <Grid item lg={3} md={4} sm={5} xs={12} key={index}>
-            <FileItem
-              handleSelectNodeDelete={handleSelectNodeDelete}
-              handleSelectNodeThumbnail={handleSelectNodeThumbnail}
-            />
-          </Grid>
-        ))}
+        {((status === StatusTemplate.all ? fakeData : fakeDataDelete) || []).map(
+          (template, index) => (
+            <Grid item lg={3} md={4} sm={5} xs={12} key={index}>
+              <TemplateItem template={template} handleFileAction={handleFileAction} />
+            </Grid>
+          ),
+        )}
       </Grid>
-      <DialogDelete open={isOpen} handleClose={onToggle} handleConfirm={handleConfirmDelete} />
+      {action && (
+        <DialogAction
+          open={isOpenDialogAction}
+          handleClose={closeDialog}
+          handleConfirm={OPTION_ACTIONS[action].handleConfirm}
+          title={OPTION_ACTIONS[action].title as string}
+          description={OPTION_ACTIONS[action].description as string}
+          type={OPTION_ACTIONS[action].type as TypeDialog}
+          textSubmit={OPTION_ACTIONS[action].textSubmit as string}
+        />
+      )}
       <DialogThumbnail
         open={isOpenThumbnail}
-        handleClose={onToggleThumbnail}
+        handleClose={closeDialogThumbnail}
         handleConfirm={handleConfirmThumbnail}
       />
     </Layout>

@@ -11,15 +11,14 @@ import Image from 'next/image'
 import ThumbnailIcon from 'public/assets/svgs/thumbnail.svg'
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { DialogBaseProps } from '../../types/utils'
 
-type DialogThumbnailTypes = {
-  open: boolean
-  handleClose(): void
-  handleConfirm(): void
-}
+type DialogThumbnailTypes = DialogBaseProps<{
+  handleConfirm: () => void
+}>
 
 const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, handleConfirm }) => {
-  const { t } = useTranslation('home')
+  const { t } = useTranslation()
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log({ acceptedFiles })
@@ -39,14 +38,16 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
 
         <Stack>
           <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mb={0.5}>
-            <TextColorCustom alignSelf="center">{t('click_to_upload')}</TextColorCustom>
+            <TextColorCustom alignSelf="center">
+              {t('dialog.thumbnail.click_to_upload')}
+            </TextColorCustom>
             <Typography color="greyScale.600" variant="body2">
-              {t('detail_set_thumbnail_1')}
+              {t('dialog.thumbnail.detail_set_thumbnail_1')}
             </Typography>
           </Stack>
           <Stack>
             <Typography color="greyScale.600" variant="caption" textAlign="center">
-              {t('detail_set_thumbnail_2')}
+              {t('dialog.thumbnail.detail_set_thumbnail_2')}
             </Typography>
           </Stack>
           <input {...getInputProps()} />

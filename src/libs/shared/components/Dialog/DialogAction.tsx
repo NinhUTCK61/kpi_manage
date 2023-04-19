@@ -1,4 +1,4 @@
-import { ImagePointer } from '@/features/auth/components'
+import { DialogBaseProps } from '@/libs/shared/types/utils'
 import {
   Button,
   DialogContent,
@@ -12,15 +12,28 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import DeleteIcon from 'public/assets/svgs/delete.svg'
+import WarningIcon from 'public/assets/svgs/warning.svg'
 
-type DialogDeleteTypes = {
-  open: boolean
-  handleClose(): void
+type DialogActionTypes = DialogBaseProps<{
   handleConfirm(): void
-}
+  title?: string | null
+  description?: string | null
+  type: TypeDialog
+  textSubmit?: string | null
+}>
 
-const DialogDelete: React.FC<DialogDeleteTypes> = ({ open, handleClose, handleConfirm }) => {
-  const { t } = useTranslation('home')
+export type TypeDialog = 'delete' | 'warning' | undefined
+
+const DialogAction: React.FC<DialogActionTypes> = ({
+  open,
+  handleClose,
+  title,
+  description,
+  handleConfirm,
+  type,
+  textSubmit,
+}) => {
+  const { t } = useTranslation()
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent
@@ -29,19 +42,29 @@ const DialogDelete: React.FC<DialogDeleteTypes> = ({ open, handleClose, handleCo
           p: 0,
         }}
       >
-        <Stack direction="row" justifyContent="space-between" mb={2}>
-          <Image src={DeleteIcon} alt="delete" />
-          <ImagePointer src={CloseIcon} alt="close" onClick={handleClose} />
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          {...(type && { mb: 2 })}
+          position="relative"
+        >
+          {type && <Image src={type == 'delete' ? DeleteIcon : WarningIcon} alt="delete" />}
+          <Image
+            src={CloseIcon}
+            alt="close"
+            onClick={handleClose}
+            style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
+          />
         </Stack>
-        <TitleDiaLog>{t('delete_file')}</TitleDiaLog>
-        <DescriptionDiaLog>{t('detail_dialog_delete')}</DescriptionDiaLog>
+        {title && <TitleDiaLog>{title}</TitleDiaLog>}
+        {description && <DescriptionDiaLog>{description}</DescriptionDiaLog>}
       </DialogContent>
       <DialogActions>
         <Button variant="text" onClick={handleClose} sx={{ width: 168 }}>
-          {t('cancel')}
+          {t('dialog.cancel')}
         </Button>
         <Button variant="contained" onClick={handleConfirm} autoFocus sx={{ width: 168 }}>
-          {t('delete')}
+          {textSubmit ? textSubmit : t('dialog.submit')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -77,4 +100,4 @@ const Dialog = styled(MuiDialog)(({ theme }) => ({
     padding: theme.spacing(3),
   },
 }))
-export { DialogDelete }
+export { DialogAction }

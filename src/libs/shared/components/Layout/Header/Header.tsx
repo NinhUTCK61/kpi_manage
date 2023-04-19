@@ -1,4 +1,3 @@
-import { ImagePointer } from '@/features/auth/components'
 import { InputAdornment, Stack } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -30,7 +29,12 @@ const Header = () => {
     <AppBar elevation={0}>
       <StackContainer>
         <Stack direction="row" spacing={19.75} alignItems="center">
-          <ImagePointer src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
+          <Image
+            src={LogoHeader}
+            alt="logo-header"
+            onClick={() => router.push('/')}
+            style={{ cursor: 'pointer' }}
+          />
 
           <InputSearch
             name="search"

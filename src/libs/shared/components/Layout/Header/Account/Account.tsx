@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from '@/features/auth/components'
+import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
