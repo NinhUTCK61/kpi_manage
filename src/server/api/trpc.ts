@@ -78,15 +78,14 @@ const t = initTRPC
   .create({
     transformer: superjson,
     errorFormatter({ shape, error }) {
+      let message = error.message
       if (error.code === 'INTERNAL_SERVER_ERROR') {
-        return {
-          ...shape,
-          message: 'error.internal_server_error',
-        }
+        message = 'error.internal_server_error'
       }
 
       return {
         ...shape,
+        message,
         data: {
           ...shape.data,
           zodError: error.cause instanceof ZodError ? error.cause.flatten(processIssue) : null,
