@@ -68,6 +68,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const d3Updated = stratifier(nodes)
         const _nodes = getLayoutElements(d3Updated)
 
+        const _newNode = _nodes.find((n) => n.id === node.id)
+
         set({
           nodes: _nodes,
           edges: [...edges],
