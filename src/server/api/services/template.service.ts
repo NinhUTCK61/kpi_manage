@@ -79,7 +79,7 @@ export class TemplateService {
     })
   }
 
-  async likeTemplate({ id, isFavorite }: z.infer<typeof likeTemplateSchema>, user: User) {
+  async likeTemplate({ id, is_favorite }: z.infer<typeof likeTemplateSchema>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         id,
@@ -103,7 +103,7 @@ export class TemplateService {
 
     const likeTemplate = await prisma.userTemplate.update({
       where: { id },
-      data: { ...restUpdate },
+      data: { is_favorite: is_favorite },
     })
 
     return likeTemplate

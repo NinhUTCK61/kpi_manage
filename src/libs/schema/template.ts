@@ -8,5 +8,5 @@ export const UpdateTemplateSchema = z.object({
 
 export const likeTemplateSchema = z.object({
   id: z.string(),
-  isFavorite: z.boolean(),
+  is_favorite: z.boolean(),
 })
