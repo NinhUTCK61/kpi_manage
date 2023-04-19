@@ -5,7 +5,7 @@ import { HEIGHT_HEADER, Header } from './Header'
 import { Sidebar } from './Sidebar'
 
 type LayoutType = {
-  title?: string
+  title?: string | null
   description?: string
   children: React.ReactNode
 }

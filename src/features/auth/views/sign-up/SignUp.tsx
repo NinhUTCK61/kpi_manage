@@ -38,7 +38,7 @@ const SignUp: FC = () => {
 
   return (
     <>
-      <LayoutUnAuth title="Sign Up">
+      <LayoutUnAuth title={t('seo_title')}>
         {!isSuccess && (
           <FormSignUp
             control={control}

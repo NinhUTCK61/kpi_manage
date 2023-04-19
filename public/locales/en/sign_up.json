@@ -18,5 +18,6 @@
   "password": "Password",
   "enter_name": "Enter your name",
   "enter_email": "Enter your email",
-  "enter_password": "Enter your password"
+  "enter_password": "Enter your password",
+  "seo_title": "Sign Up"
 }
