@@ -80,27 +80,25 @@ export class TemplateService {
   }
 
   async likeTemplate({ id, is_favorite }: z.infer<typeof likeTemplateSchema>, user: User) {
-    const template = await prisma.template.findUnique({
-      where: { id },
-      include: { userTemplate: { where: { userId: user.id } } },
+    const checkUserTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        userId: user.id,
+        template_id: id,
+        template: {
+          deleted_at: null,
+        },
+      },
     })
 
-    if (!template) {
+    if (!checkUserTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'err.template_not_found',
       })
     }
 
-    if (template.userTemplate[0]?.deleted_at) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'err.template_deleted',
-      })
-    }
-
     const likeTemplate = await prisma.userTemplate.update({
-      where: { id: template.userTemplate[0]?.id },
+      where: { id: checkUserTemplate.id },
       data: { is_favorite },
     })
 

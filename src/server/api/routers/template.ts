@@ -28,9 +28,8 @@ export const templateRouter = createTRPCRouter({
     .mutation(({ ctx }) => {
       return templateService.createTemplate(ctx.session.user.id)
     }),
-
   likeTemplate: protectedProcedure
-    .meta({ openapi: { method: 'PUT', path: '/like-template' } })
+    .meta({ openapi: { method: 'PUT', path: '/like-template', protect: true } })
     .input(likeTemplateSchema)
     .output(UserTemplateSchema)
     .mutation(({ input, ctx }) => {
