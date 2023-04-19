@@ -18,8 +18,8 @@ export const templateRouter = createTRPCRouter({
     .meta({ openapi: { method: 'PUT', path: '/update-template', protect: true } })
     .input(UpdateTemplateSchema)
     .output(TemplateSchema)
-    .mutation(({ input }) => {
-      return templateService.updateTemplate(input)
+    .mutation(({ input, ctx }) => {
+      return templateService.updateTemplate(input, ctx.session.user)
     }),
   createTemplate: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/create-template', protect: true } })

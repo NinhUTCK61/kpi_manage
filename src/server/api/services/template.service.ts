@@ -1,8 +1,10 @@
 import { UpdateTemplateSchema } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
+
 import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
+import { User } from 'next-auth'
 import { z } from 'zod'
 
 export class TemplateService {
@@ -24,15 +26,18 @@ export class TemplateService {
     return listTemplate
   }
 
-  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>) {
-    const checkTemplate = await prisma.template.findUnique({
-      where: { id },
+  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
+    const checkUser = await prisma.userTemplate.findFirst({
+      where: {
+        userId: user.id,
+        template_id: id,
+      },
     })
 
-    if (!checkTemplate) {
+    if (!checkUser) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Template not found!',
+        message: 'err.template_not_found',
       })
     }
 
