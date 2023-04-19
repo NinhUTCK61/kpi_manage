@@ -19,8 +19,7 @@ type DialogThumbnailTypes = DialogBaseProps<{
 const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, handleConfirm }) => {
   const { t } = useTranslation()
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      console.log({ acceptedFiles })
+    (_acceptedFiles: File[]) => {
       handleConfirm()
     },
     [handleConfirm],

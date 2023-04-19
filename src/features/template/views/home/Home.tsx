@@ -102,7 +102,6 @@ const Home = () => {
   const handleConfirmDeletePer = () => {
     fakeDataDelete?.pop()
     const _fakeDataDelete = fakeDataDelete
-    console.log({ _fakeDataDelete })
     setFakeDataDelete(_fakeDataDelete)
     enqueueSnackbar('', {
       variant: 'success',
