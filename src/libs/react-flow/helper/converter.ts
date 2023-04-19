@@ -25,6 +25,7 @@ export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; 
         template_id: node.template_id,
       },
       position: { x: node.x, y: node.y },
+      type: 'kpi',
       // Thêm các trường dữ liệu khác mà ReactFlow cần
     })
 

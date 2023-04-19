@@ -29,6 +29,7 @@ const initialRootNode: ReactFlowNode = {
     template_id: '',
   },
   position: { x: 0, y: 0 },
+  type: 'kpi',
 }
 
 const DEFAULT_STATE: Partial<RFStore> = {
