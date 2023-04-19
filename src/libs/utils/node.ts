@@ -13,7 +13,7 @@ export function generateDefaultNode(
     input_value: '',
     is_formula: false,
     template_id,
-    value2number: 0,
+    value2number: null,
     x: 0,
     y: 0,
     unit: '',
