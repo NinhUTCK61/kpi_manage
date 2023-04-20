@@ -5,6 +5,7 @@ import { DialogActionType } from '@/libs/shared/types/utils'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
@@ -13,6 +14,7 @@ import { FileAction } from '../../types/template'
 import { ButtonCreate, SelectStatus, TemplateItem } from './components'
 
 const Home = () => {
+  const router = useRouter()
   const { t } = useTranslation('home')
   const [nodeId, setNodeId] = useState<string>()
   const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
