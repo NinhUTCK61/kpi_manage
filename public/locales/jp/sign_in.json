@@ -11,5 +11,6 @@
   "enter_email": "メールアドレスを入力してください。",
   "enter_password": "パスワードを入力してください",
   "email": "メールアドレス",
-  "password": "パスワード"
+  "password": "パスワード",
+  "seo_title": "ログイン"
 }

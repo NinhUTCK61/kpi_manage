@@ -60,6 +60,20 @@
   "template": {
     "move_to_trash": "Move to trash success!",
     "delete_template": "Delete template success!",
-    "template_deleted": "The template has been deleted"
+    "template_deleted": "The template has been deleted",
+    "template_not_found": "Template not found!"
+  },
+  "node": {
+    "delete_success": "Delete node succcess!"
+  },
+  "dialog": {
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "thumbnail": {
+      "click_to_upload": "クリックしてアップロード",
+      "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
+      "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
+    },
+    "submit": "登録"
   }
 }

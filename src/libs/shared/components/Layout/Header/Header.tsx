@@ -1,4 +1,4 @@
-import { InputAdornment, Stack, styled } from '@mui/material'
+import { InputAdornment, Stack } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
@@ -11,10 +11,6 @@ import { AppBar } from './AppBar'
 import { Language } from './Language'
 
 const HEIGHT_HEADER = 60
-
-const MuiImage = styled(Image)({
-  cursor: 'pointer',
-})
 
 type SearchType = {
   search: string
@@ -33,7 +29,12 @@ const Header = () => {
     <AppBar elevation={0}>
       <StackContainer>
         <Stack direction="row" spacing={19.75} alignItems="center">
-          <MuiImage src={LogoHeader} alt="logo-header" onClick={() => router.push('/')} />
+          <Image
+            src={LogoHeader}
+            alt="logo-header"
+            onClick={() => router.push('/')}
+            style={{ cursor: 'pointer' }}
+          />
 
           <InputSearch
             name="search"

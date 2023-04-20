@@ -68,6 +68,20 @@
   "template": {
     "move_to_trash": "Move to trash success!",
     "delete_template": "Delete template success!",
-    "template_deleted": "The template has been deleted"
+    "template_deleted": "The template has been deleted",
+    "template_not_found": "Template not found!"
+  },
+  "node": {
+    "delete_success": "Delete node succcess!"
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "thumbnail": {
+      "click_to_upload": "Click to upload",
+      "detail_set_thumbnail_1": "or drag and drop",
+      "detail_set_thumbnail_2": "PNG, JPG or (max. 800x400px)"
+    },
+    "submit": "Submit"
   }
 }

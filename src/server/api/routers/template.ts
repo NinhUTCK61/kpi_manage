@@ -17,7 +17,7 @@ export const templateRouter = createTRPCRouter({
     .meta({ openapi: { method: 'GET', path: '/template', protect: true } })
     .input(InputGetListTemplate)
     .output(TemplateDataOutputSchema)
-    .mutation(({ input, ctx }) => {
+    .query(({ input, ctx }) => {
       return templateService.getListTemplate(ctx.session.user.id, input.isTrash)
     }),
   updateTemplate: protectedProcedure

@@ -150,7 +150,9 @@ const customPrimary = {
   900: '#1B015F',
   800: '#2B0B81',
   700: '#3E19A3',
+  600: '#552CC5',
   500: '#6F43E7',
+  100: '#D8CAFF',
   0o0: '#F3EEFF',
 }
 const black = {

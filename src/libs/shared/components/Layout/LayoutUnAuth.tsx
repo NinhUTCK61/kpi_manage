@@ -4,7 +4,7 @@ import React from 'react'
 import { HEIGHT_HEADER, HeaderUnAuth } from './Header'
 
 type LayoutType = {
-  title?: string
+  title?: string | null
   description?: string
   children: React.ReactNode
 }

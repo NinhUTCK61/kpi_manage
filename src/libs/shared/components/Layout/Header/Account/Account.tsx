@@ -1,3 +1,4 @@
+import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
@@ -10,7 +11,7 @@ import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
-import { Avatar, Menu, MenuItem, StackName } from './Menu'
+import { Avatar, StackName } from './Menu'
 
 const Account = () => {
   const { t } = useTranslation()
@@ -78,20 +79,16 @@ const Account = () => {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-        PaperProps={{
-          elevation: 3,
-        }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        elevation={0}
       >
         {menu.map((item) => (
           <MenuItem key={item.title} onClick={item.handle as () => void}>
             <ListItemIcon>
               <Image src={item.icon} alt="edit icon" />
             </ListItemIcon>
-            <Typography color="black" variant="body2">
-              {item.title}
-            </Typography>
+            <Typography variant="body2">{item.title}</Typography>
           </MenuItem>
         ))}
       </Menu>

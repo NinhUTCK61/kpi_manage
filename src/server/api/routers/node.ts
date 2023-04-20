@@ -1,16 +1,24 @@
-import { KpiNodeSchema } from '@/libs/schema/node'
-import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
+import { DeleteNodeSchema, KpiNodeSchema } from '@/libs/schema/node'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { Node } from 'prisma/generated/zod'
-import NodeService from '../services/node.service'
+import { z } from 'zod'
+import { NodeService } from '../services/node.service'
 
-const node = new NodeService()
+const nodeService = new NodeService()
 
 export const nodeRouter = createTRPCRouter({
-  createNode: publicProcedure
+  createNode: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/create-node' } })
     .input(KpiNodeSchema)
     .output(KpiNodeSchema)
     .mutation(({ input }) => {
-      return node.createNode(input as Node)
+      return nodeService.createNode(input as Node)
+    }),
+  deleteNode: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/node-delete' }, protect: true })
+    .input(DeleteNodeSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return nodeService.deleteNode(input.id, ctx.session.user)
     }),
 })

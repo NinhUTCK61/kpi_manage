@@ -13,3 +13,7 @@ export const KpiNodeSchema = z.object({
   template_id: z.string(),
   parent_node_id: z.string().nullable(),
 })
+
+export const DeleteNodeSchema = z.object({
+  id: z.string().array(),
+})

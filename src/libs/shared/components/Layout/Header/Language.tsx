@@ -1,4 +1,5 @@
-import { MenuItem, Menu as MuiMenu, Stack, Typography, alpha, styled } from '@mui/material'
+import { Menu, MenuItem } from '@/libs/shared/components/Menu'
+import { Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -87,27 +88,5 @@ const Item = styled(Stack)({
   alignItems: 'center',
   cursor: 'pointer',
 })
-
-const Menu = styled(MuiMenu)(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-      },
-    },
-  },
-}))
 
 export { Language }

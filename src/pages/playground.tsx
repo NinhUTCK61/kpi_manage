@@ -38,6 +38,7 @@ const _nodes: ReactFlowNode[] = [
       unit: '',
       value2number: 0,
       template_id: 'root',
+      type: 'kpi',
     },
     position: { x: 0, y: 0 },
   },

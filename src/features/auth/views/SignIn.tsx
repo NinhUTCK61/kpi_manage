@@ -61,7 +61,7 @@ const Login: FC = () => {
 
   return (
     <>
-      <LayoutUnAuth title="Login">
+      <LayoutUnAuth title={t('seo_title')}>
         <Stack direction="row" justifyContent="center" pt={10}>
           <Stack
             alignItems="center"

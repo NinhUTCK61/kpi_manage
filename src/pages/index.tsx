@@ -1,22 +1,13 @@
-import { Layout } from '@/libs/shared/components'
-import { GetStaticPropsContext, type NextPage } from 'next'
+import { Home } from '@/features/template/views'
+import { GetStaticPropsContext } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Link from 'next/link'
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
+      ...(await serverSideTranslations(locale as string, ['common', 'home'])),
     },
   }
-}
-
-const Home: NextPage = () => {
-  return (
-    <Layout title="KPI Master">
-      <Link href="/playground"> Playground</Link>
-    </Layout>
-  )
 }
 
 export default Home
