@@ -16,6 +16,10 @@ export const DeleteTemplateSchema = z.object({
   is_permanently: z.boolean().optional().default(false),
 })
 
+export const RestoreTemplateSchema = z.object({
+  id: z.string(),
+})
+
 export const InputGetListTemplate = z.object({ isTrash: z.boolean().default(false) })
 
 export const TemplateDataSchema = z.object({

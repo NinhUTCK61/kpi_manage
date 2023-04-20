@@ -61,7 +61,9 @@
     "move_to_trash": "Move to trash success!",
     "delete_template": "Delete template success!",
     "template_deleted": "The template has been deleted",
-    "template_not_found": "Template not found!"
+    "template_not_found": "Template not found!",
+    "template_not_deleted": "Template not deleted yet!",
+    "template_restore_success": "Template restore success!"
   },
   "node": {
     "delete_success": "Delete node succcess!"
