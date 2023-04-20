@@ -1,6 +1,7 @@
 import {
   DeleteTemplateSchema,
   InputGetListTemplate,
+  RestoreTemplateSchema,
   TemplateDataOutputSchema,
   UpdateTemplateSchema,
   likeTemplateSchema,
@@ -35,7 +36,7 @@ export const templateRouter = createTRPCRouter({
       return templateService.createTemplate(ctx.session.user.id)
     }),
   likeTemplate: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/like-template', protect: true } })
+    .meta({ openapi: { method: 'POST', path: '/template', protect: true } })
     .input(likeTemplateSchema)
     .output(UserTemplateSchema)
     .mutation(({ input, ctx }) => {
@@ -47,5 +48,12 @@ export const templateRouter = createTRPCRouter({
     .output(z.string())
     .mutation(({ input, ctx }) => {
       return templateService.deleteTemplate(input.id, input.is_permanently, ctx.session.user)
+    }),
+  restoreTemplate: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/template-restore', protect: true } })
+    .input(RestoreTemplateSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return templateService.restoreTemplate(input.id, ctx.session.user)
     }),
 })

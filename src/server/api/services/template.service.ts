@@ -170,4 +170,29 @@ export class TemplateService {
 
     return 'template.move_to_trash'
   }
+
+  async restoreTemplate(id: string, user: User) {
+    const checkUserTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        user_id: user.id,
+        template_id: id,
+      },
+    })
+
+    if (!checkUserTemplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+
+    await prisma.template.update({
+      where: { id },
+      data: {
+        deleted_at: null,
+      },
+    })
+
+    return 'template.template_restore_success'
+  }
 }
