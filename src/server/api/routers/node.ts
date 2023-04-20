@@ -8,7 +8,7 @@ const nodeService = new NodeService()
 
 export const nodeRouter = createTRPCRouter({
   createNode: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/create-node' } })
+    .meta({ openapi: { method: 'POST', path: '/node' } })
     .input(KpiNodeSchema)
     .output(KpiNodeSchema)
     .mutation(({ input }) => {
