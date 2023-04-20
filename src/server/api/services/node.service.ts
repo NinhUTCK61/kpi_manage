@@ -3,30 +3,40 @@ import { TRPCError } from '@trpc/server'
 import { User } from 'next-auth'
 
 export class NodeService {
-  async deleteNode([...id], template_id: string, user: User) {
-    const checkTemplate = await prisma.userTemplate.findFirst({
+  async deleteNode([...nodeIds], template_id: string, user: User) {
+    const validNodeCount = await prisma.node.findMany({
       where: {
-        template_id,
-        userId: user.id,
+        id: { in: nodeIds },
+        Template: {
+          userTemplate: {
+            some: {
+              user_id: user.id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
       },
     })
 
-    if (!checkTemplate) {
+    // Kiểm tra xem tất cả các Node có hợp lệ không
+    if (validNodeCount.length !== nodeIds.length) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
       })
     }
 
-    const data = await prisma.node.deleteMany({
+    await prisma.node.deleteMany({
       where: {
-        templateId: template_id,
+        template_id,
         id: {
-          in: id,
+          in: nodeIds,
         },
       },
     })
 
-    return data
+    return 'Delete succcess!'
   }
 }
