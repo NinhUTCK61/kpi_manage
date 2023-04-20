@@ -14,7 +14,6 @@ import { FileAction } from '../../types/template'
 import { ButtonCreate, SelectStatus, TemplateItem } from './components'
 
 const Home = () => {
-  const router = useRouter()
   const { t } = useTranslation('home')
   const [nodeId, setNodeId] = useState<string>()
   const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
