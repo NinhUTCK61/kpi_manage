@@ -7,13 +7,13 @@ import { z } from 'zod'
 type NodeCustome = z.infer<typeof KpiNodeSchema>
 class NodeService {
   async createNode(node: Node) {
-    const isTemplate = await prisma.template.findFirst({
+    const itemTemplate = await prisma.template.findFirst({
       where: {
         id: node.template_id,
       },
     })
 
-    if (isTemplate) {
+    if (itemTemplate) {
       const newNode = await prisma.node.create({
         data: node,
       })
