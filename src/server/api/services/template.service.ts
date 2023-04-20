@@ -131,9 +131,11 @@ export class TemplateService {
         user_id: user.id,
         template_id: id,
         is_owner: true,
-        template: {
-          deleted_at: null,
-        },
+        template: is_permanently
+          ? {}
+          : {
+              deleted_at: null,
+            },
       },
     })
 

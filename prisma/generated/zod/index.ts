@@ -50,7 +50,7 @@ export type InputJsonValueType = z.infer<typeof InputJsonValue>;
 
 export const AccountScalarFieldEnumSchema = z.enum(['id','userId','type','provider','providerAccountId','refresh_token','access_token','expires_at','token_type','scope','id_token','session_state']);
 
-export const CommentScalarFieldEnumSchema = z.enum(['id','comment','user_id','parent_comment_id','created_at','updated_at','x','y']);
+export const CommentScalarFieldEnumSchema = z.enum(['id','comment','user_id','parent_comment_id','created_at','updated_at','x','y','template_id']);
 
 export const JsonNullValueFilterSchema = z.enum(['DbNull','JsonNull','AnyNull',]);
 
@@ -145,6 +145,7 @@ export const CommentSchema = z.object({
   updated_at: z.coerce.date(),
   x: z.number(),
   y: z.number(),
+  template_id: z.string(),
 })
 
 export type Comment = z.infer<typeof CommentSchema>
@@ -349,6 +350,7 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
 //------------------------------------------------------
 
 export const CommentIncludeSchema: z.ZodType<Prisma.CommentInclude> = z.object({
+  template: z.union([z.boolean(),z.lazy(() => TemplateArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   children: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
   parent_comment: z.union([z.boolean(),z.lazy(() => CommentArgsSchema)]).optional(),
@@ -377,6 +379,8 @@ export const CommentSelectSchema: z.ZodType<Prisma.CommentSelect> = z.object({
   updated_at: z.boolean().optional(),
   x: z.boolean().optional(),
   y: z.boolean().optional(),
+  template_id: z.boolean().optional(),
+  template: z.union([z.boolean(),z.lazy(() => TemplateArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   children: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
   parent_comment: z.union([z.boolean(),z.lazy(() => CommentArgsSchema)]).optional(),
@@ -416,6 +420,7 @@ export const TemplateIncludeSchema: z.ZodType<Prisma.TemplateInclude> = z.object
   userTemplate: z.union([z.boolean(),z.lazy(() => UserTemplateFindManyArgsSchema)]).optional(),
   node: z.union([z.boolean(),z.lazy(() => NodeFindManyArgsSchema)]).optional(),
   SpeechBallon: z.union([z.boolean(),z.lazy(() => SpeechBallonFindManyArgsSchema)]).optional(),
+  Comment: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TemplateCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -432,6 +437,7 @@ export const TemplateCountOutputTypeSelectSchema: z.ZodType<Prisma.TemplateCount
   userTemplate: z.boolean().optional(),
   node: z.boolean().optional(),
   SpeechBallon: z.boolean().optional(),
+  Comment: z.boolean().optional(),
 }).strict();
 
 export const TemplateSelectSchema: z.ZodType<Prisma.TemplateSelect> = z.object({
@@ -446,6 +452,7 @@ export const TemplateSelectSchema: z.ZodType<Prisma.TemplateSelect> = z.object({
   userTemplate: z.union([z.boolean(),z.lazy(() => UserTemplateFindManyArgsSchema)]).optional(),
   node: z.union([z.boolean(),z.lazy(() => NodeFindManyArgsSchema)]).optional(),
   SpeechBallon: z.union([z.boolean(),z.lazy(() => SpeechBallonFindManyArgsSchema)]).optional(),
+  Comment: z.union([z.boolean(),z.lazy(() => CommentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TemplateCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -752,6 +759,8 @@ export const CommentWhereInputSchema: z.ZodType<Prisma.CommentWhereInput> = z.ob
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   x: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
+  template_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  template: z.union([ z.lazy(() => TemplateRelationFilterSchema),z.lazy(() => TemplateWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   children: z.lazy(() => CommentListRelationFilterSchema).optional(),
   parent_comment: z.union([ z.lazy(() => CommentRelationFilterSchema),z.lazy(() => CommentWhereInputSchema) ]).optional().nullable(),
@@ -766,6 +775,8 @@ export const CommentOrderByWithRelationInputSchema: z.ZodType<Prisma.CommentOrde
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   x: z.lazy(() => SortOrderSchema).optional(),
   y: z.lazy(() => SortOrderSchema).optional(),
+  template_id: z.lazy(() => SortOrderSchema).optional(),
+  template: z.lazy(() => TemplateOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   children: z.lazy(() => CommentOrderByRelationAggregateInputSchema).optional(),
   parent_comment: z.lazy(() => CommentOrderByWithRelationInputSchema).optional()
@@ -784,6 +795,7 @@ export const CommentOrderByWithAggregationInputSchema: z.ZodType<Prisma.CommentO
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   x: z.lazy(() => SortOrderSchema).optional(),
   y: z.lazy(() => SortOrderSchema).optional(),
+  template_id: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => CommentCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => CommentAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => CommentMaxOrderByAggregateInputSchema).optional(),
@@ -803,6 +815,7 @@ export const CommentScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Comme
   updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   x: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
+  template_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
 }).strict();
 
 export const UserTemplateWhereInputSchema: z.ZodType<Prisma.UserTemplateWhereInput> = z.object({
@@ -881,7 +894,8 @@ export const TemplateWhereInputSchema: z.ZodType<Prisma.TemplateWhereInput> = z.
   deleted_at: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateListRelationFilterSchema).optional(),
   node: z.lazy(() => NodeListRelationFilterSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonListRelationFilterSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonListRelationFilterSchema).optional(),
+  Comment: z.lazy(() => CommentListRelationFilterSchema).optional()
 }).strict();
 
 export const TemplateOrderByWithRelationInputSchema: z.ZodType<Prisma.TemplateOrderByWithRelationInput> = z.object({
@@ -895,7 +909,8 @@ export const TemplateOrderByWithRelationInputSchema: z.ZodType<Prisma.TemplateOr
   deleted_at: z.lazy(() => SortOrderSchema).optional(),
   userTemplate: z.lazy(() => UserTemplateOrderByRelationAggregateInputSchema).optional(),
   node: z.lazy(() => NodeOrderByRelationAggregateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonOrderByRelationAggregateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonOrderByRelationAggregateInputSchema).optional(),
+  Comment: z.lazy(() => CommentOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export const TemplateWhereUniqueInputSchema: z.ZodType<Prisma.TemplateWhereUniqueInput> = z.object({
@@ -1420,6 +1435,7 @@ export const CommentCreateInputSchema: z.ZodType<Prisma.CommentCreateInput> = z.
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template: z.lazy(() => TemplateCreateNestedOneWithoutCommentInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutCommentInputSchema).optional(),
   children: z.lazy(() => CommentCreateNestedManyWithoutParent_commentInputSchema).optional(),
   parent_comment: z.lazy(() => CommentCreateNestedOneWithoutChildrenInputSchema).optional()
@@ -1434,6 +1450,7 @@ export const CommentUncheckedCreateInputSchema: z.ZodType<Prisma.CommentUnchecke
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template_id: z.string(),
   children: z.lazy(() => CommentUncheckedCreateNestedManyWithoutParent_commentInputSchema).optional()
 }).strict();
 
@@ -1444,6 +1461,7 @@ export const CommentUpdateInputSchema: z.ZodType<Prisma.CommentUpdateInput> = z.
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template: z.lazy(() => TemplateUpdateOneRequiredWithoutCommentNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneWithoutCommentNestedInputSchema).optional(),
   children: z.lazy(() => CommentUpdateManyWithoutParent_commentNestedInputSchema).optional(),
   parent_comment: z.lazy(() => CommentUpdateOneWithoutChildrenNestedInputSchema).optional()
@@ -1458,6 +1476,7 @@ export const CommentUncheckedUpdateInputSchema: z.ZodType<Prisma.CommentUnchecke
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   children: z.lazy(() => CommentUncheckedUpdateManyWithoutParent_commentNestedInputSchema).optional()
 }).strict();
 
@@ -1469,7 +1488,8 @@ export const CommentCreateManyInputSchema: z.ZodType<Prisma.CommentCreateManyInp
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   x: z.number(),
-  y: z.number()
+  y: z.number(),
+  template_id: z.string()
 }).strict();
 
 export const CommentUpdateManyMutationInputSchema: z.ZodType<Prisma.CommentUpdateManyMutationInput> = z.object({
@@ -1490,6 +1510,7 @@ export const CommentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.CommentUnch
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const UserTemplateCreateInputSchema: z.ZodType<Prisma.UserTemplateCreateInput> = z.object({
@@ -1578,7 +1599,8 @@ export const TemplateCreateInputSchema: z.ZodType<Prisma.TemplateCreateInput> = 
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional(),
   node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateInput> = z.object({
@@ -1592,7 +1614,8 @@ export const TemplateUncheckedCreateInputSchema: z.ZodType<Prisma.TemplateUnchec
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
   node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = z.object({
@@ -1606,7 +1629,8 @@ export const TemplateUpdateInputSchema: z.ZodType<Prisma.TemplateUpdateInput> = 
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional(),
   node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateInput> = z.object({
@@ -1620,7 +1644,8 @@ export const TemplateUncheckedUpdateInputSchema: z.ZodType<Prisma.TemplateUnchec
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
   node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const TemplateCreateManyInputSchema: z.ZodType<Prisma.TemplateCreateManyInput> = z.object({
@@ -2267,6 +2292,11 @@ export const FloatFilterSchema: z.ZodType<Prisma.FloatFilter> = z.object({
   not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
 }).strict();
 
+export const TemplateRelationFilterSchema: z.ZodType<Prisma.TemplateRelationFilter> = z.object({
+  is: z.lazy(() => TemplateWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => TemplateWhereInputSchema).optional().nullable()
+}).strict();
+
 export const CommentRelationFilterSchema: z.ZodType<Prisma.CommentRelationFilter> = z.object({
   is: z.lazy(() => CommentWhereInputSchema).optional().nullable(),
   isNot: z.lazy(() => CommentWhereInputSchema).optional().nullable()
@@ -2280,7 +2310,8 @@ export const CommentCountOrderByAggregateInputSchema: z.ZodType<Prisma.CommentCo
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   x: z.lazy(() => SortOrderSchema).optional(),
-  y: z.lazy(() => SortOrderSchema).optional()
+  y: z.lazy(() => SortOrderSchema).optional(),
+  template_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CommentAvgOrderByAggregateInputSchema: z.ZodType<Prisma.CommentAvgOrderByAggregateInput> = z.object({
@@ -2296,7 +2327,8 @@ export const CommentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.CommentMaxO
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   x: z.lazy(() => SortOrderSchema).optional(),
-  y: z.lazy(() => SortOrderSchema).optional()
+  y: z.lazy(() => SortOrderSchema).optional(),
+  template_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CommentMinOrderByAggregateInputSchema: z.ZodType<Prisma.CommentMinOrderByAggregateInput> = z.object({
@@ -2307,7 +2339,8 @@ export const CommentMinOrderByAggregateInputSchema: z.ZodType<Prisma.CommentMinO
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   x: z.lazy(() => SortOrderSchema).optional(),
-  y: z.lazy(() => SortOrderSchema).optional()
+  y: z.lazy(() => SortOrderSchema).optional(),
+  template_id: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CommentSumOrderByAggregateInputSchema: z.ZodType<Prisma.CommentSumOrderByAggregateInput> = z.object({
@@ -2334,11 +2367,6 @@ export const FloatWithAggregatesFilterSchema: z.ZodType<Prisma.FloatWithAggregat
 export const BoolFilterSchema: z.ZodType<Prisma.BoolFilter> = z.object({
   equals: z.boolean().optional(),
   not: z.union([ z.boolean(),z.lazy(() => NestedBoolFilterSchema) ]).optional(),
-}).strict();
-
-export const TemplateRelationFilterSchema: z.ZodType<Prisma.TemplateRelationFilter> = z.object({
-  is: z.lazy(() => TemplateWhereInputSchema).optional().nullable(),
-  isNot: z.lazy(() => TemplateWhereInputSchema).optional().nullable()
 }).strict();
 
 export const UserTemplateUser_idTemplate_idCompoundUniqueInputSchema: z.ZodType<Prisma.UserTemplateUser_idTemplate_idCompoundUniqueInput> = z.object({
@@ -2997,6 +3025,12 @@ export const PasswordResetUncheckedUpdateOneWithoutUserNestedInputSchema: z.ZodT
   update: z.union([ z.lazy(() => PasswordResetUpdateWithoutUserInputSchema),z.lazy(() => PasswordResetUncheckedUpdateWithoutUserInputSchema) ]).optional(),
 }).strict();
 
+export const TemplateCreateNestedOneWithoutCommentInputSchema: z.ZodType<Prisma.TemplateCreateNestedOneWithoutCommentInput> = z.object({
+  create: z.union([ z.lazy(() => TemplateCreateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedCreateWithoutCommentInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => TemplateCreateOrConnectWithoutCommentInputSchema).optional(),
+  connect: z.lazy(() => TemplateWhereUniqueInputSchema).optional()
+}).strict();
+
 export const UserCreateNestedOneWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutCommentInput> = z.object({
   create: z.union([ z.lazy(() => UserCreateWithoutCommentInputSchema),z.lazy(() => UserUncheckedCreateWithoutCommentInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutCommentInputSchema).optional(),
@@ -3029,6 +3063,14 @@ export const FloatFieldUpdateOperationsInputSchema: z.ZodType<Prisma.FloatFieldU
   decrement: z.number().optional(),
   multiply: z.number().optional(),
   divide: z.number().optional()
+}).strict();
+
+export const TemplateUpdateOneRequiredWithoutCommentNestedInputSchema: z.ZodType<Prisma.TemplateUpdateOneRequiredWithoutCommentNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TemplateCreateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedCreateWithoutCommentInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => TemplateCreateOrConnectWithoutCommentInputSchema).optional(),
+  upsert: z.lazy(() => TemplateUpsertWithoutCommentInputSchema).optional(),
+  connect: z.lazy(() => TemplateWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => TemplateUpdateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedUpdateWithoutCommentInputSchema) ]).optional(),
 }).strict();
 
 export const UserUpdateOneWithoutCommentNestedInputSchema: z.ZodType<Prisma.UserUpdateOneWithoutCommentNestedInput> = z.object({
@@ -3132,6 +3174,13 @@ export const SpeechBallonCreateNestedManyWithoutTemplateInputSchema: z.ZodType<P
   connect: z.union([ z.lazy(() => SpeechBallonWhereUniqueInputSchema),z.lazy(() => SpeechBallonWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const CommentCreateNestedManyWithoutTemplateInputSchema: z.ZodType<Prisma.CommentCreateNestedManyWithoutTemplateInput> = z.object({
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentCreateWithoutTemplateInputSchema).array(),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => CommentCreateManyTemplateInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
 export const UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema: z.ZodType<Prisma.UserTemplateUncheckedCreateNestedManyWithoutTemplateInput> = z.object({
   create: z.union([ z.lazy(() => UserTemplateCreateWithoutTemplateInputSchema),z.lazy(() => UserTemplateCreateWithoutTemplateInputSchema).array(),z.lazy(() => UserTemplateUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => UserTemplateUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => UserTemplateCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => UserTemplateCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
@@ -3151,6 +3200,13 @@ export const SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema: z.
   connectOrCreate: z.union([ z.lazy(() => SpeechBallonCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => SpeechBallonCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
   createMany: z.lazy(() => SpeechBallonCreateManyTemplateInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => SpeechBallonWhereUniqueInputSchema),z.lazy(() => SpeechBallonWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const CommentUncheckedCreateNestedManyWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUncheckedCreateNestedManyWithoutTemplateInput> = z.object({
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentCreateWithoutTemplateInputSchema).array(),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => CommentCreateManyTemplateInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const UserTemplateUpdateManyWithoutTemplateNestedInputSchema: z.ZodType<Prisma.UserTemplateUpdateManyWithoutTemplateNestedInput> = z.object({
@@ -3195,6 +3251,20 @@ export const SpeechBallonUpdateManyWithoutTemplateNestedInputSchema: z.ZodType<P
   deleteMany: z.union([ z.lazy(() => SpeechBallonScalarWhereInputSchema),z.lazy(() => SpeechBallonScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
+export const CommentUpdateManyWithoutTemplateNestedInputSchema: z.ZodType<Prisma.CommentUpdateManyWithoutTemplateNestedInput> = z.object({
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentCreateWithoutTemplateInputSchema).array(),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => CommentUpsertWithWhereUniqueWithoutTemplateInputSchema),z.lazy(() => CommentUpsertWithWhereUniqueWithoutTemplateInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => CommentCreateManyTemplateInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => CommentUpdateWithWhereUniqueWithoutTemplateInputSchema),z.lazy(() => CommentUpdateWithWhereUniqueWithoutTemplateInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => CommentUpdateManyWithWhereWithoutTemplateInputSchema),z.lazy(() => CommentUpdateManyWithWhereWithoutTemplateInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => CommentScalarWhereInputSchema),z.lazy(() => CommentScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
 export const UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema: z.ZodType<Prisma.UserTemplateUncheckedUpdateManyWithoutTemplateNestedInput> = z.object({
   create: z.union([ z.lazy(() => UserTemplateCreateWithoutTemplateInputSchema),z.lazy(() => UserTemplateCreateWithoutTemplateInputSchema).array(),z.lazy(() => UserTemplateUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => UserTemplateUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => UserTemplateCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => UserTemplateCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
@@ -3235,6 +3305,20 @@ export const SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema: z.
   update: z.union([ z.lazy(() => SpeechBallonUpdateWithWhereUniqueWithoutTemplateInputSchema),z.lazy(() => SpeechBallonUpdateWithWhereUniqueWithoutTemplateInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => SpeechBallonUpdateManyWithWhereWithoutTemplateInputSchema),z.lazy(() => SpeechBallonUpdateManyWithWhereWithoutTemplateInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => SpeechBallonScalarWhereInputSchema),z.lazy(() => SpeechBallonScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const CommentUncheckedUpdateManyWithoutTemplateNestedInputSchema: z.ZodType<Prisma.CommentUncheckedUpdateManyWithoutTemplateNestedInput> = z.object({
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentCreateWithoutTemplateInputSchema).array(),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema),z.lazy(() => CommentCreateOrConnectWithoutTemplateInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => CommentUpsertWithWhereUniqueWithoutTemplateInputSchema),z.lazy(() => CommentUpsertWithWhereUniqueWithoutTemplateInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => CommentCreateManyTemplateInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => CommentWhereUniqueInputSchema),z.lazy(() => CommentWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => CommentUpdateWithWhereUniqueWithoutTemplateInputSchema),z.lazy(() => CommentUpdateWithWhereUniqueWithoutTemplateInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => CommentUpdateManyWithWhereWithoutTemplateInputSchema),z.lazy(() => CommentUpdateManyWithWhereWithoutTemplateInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => CommentScalarWhereInputSchema),z.lazy(() => CommentScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const TemplateCreateNestedOneWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCreateNestedOneWithoutNodeInput> = z.object({
@@ -3914,6 +3998,7 @@ export const CommentCreateWithoutUserInputSchema: z.ZodType<Prisma.CommentCreate
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template: z.lazy(() => TemplateCreateNestedOneWithoutCommentInputSchema),
   children: z.lazy(() => CommentCreateNestedManyWithoutParent_commentInputSchema).optional(),
   parent_comment: z.lazy(() => CommentCreateNestedOneWithoutChildrenInputSchema).optional()
 }).strict();
@@ -3926,6 +4011,7 @@ export const CommentUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.Comm
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template_id: z.string(),
   children: z.lazy(() => CommentUncheckedCreateNestedManyWithoutParent_commentInputSchema).optional()
 }).strict();
 
@@ -4075,6 +4161,7 @@ export const CommentScalarWhereInputSchema: z.ZodType<Prisma.CommentScalarWhereI
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   x: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
+  template_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
 }).strict();
 
 export const PasswordResetUpsertWithoutUserInputSchema: z.ZodType<Prisma.PasswordResetUpsertWithoutUserInput> = z.object({
@@ -4093,6 +4180,39 @@ export const PasswordResetUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prism
   token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const TemplateCreateWithoutCommentInputSchema: z.ZodType<Prisma.TemplateCreateWithoutCommentInput> = z.object({
+  id: z.string().optional(),
+  root_note_id: z.string().optional(),
+  name: z.string(),
+  image_url: z.string().optional().nullable(),
+  public_url: z.string().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  deleted_at: z.coerce.date().optional().nullable(),
+  userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional(),
+  node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional(),
+  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional()
+}).strict();
+
+export const TemplateUncheckedCreateWithoutCommentInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateWithoutCommentInput> = z.object({
+  id: z.string().optional(),
+  root_note_id: z.string().optional(),
+  name: z.string(),
+  image_url: z.string().optional().nullable(),
+  public_url: z.string().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  deleted_at: z.coerce.date().optional().nullable(),
+  userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
+}).strict();
+
+export const TemplateCreateOrConnectWithoutCommentInputSchema: z.ZodType<Prisma.TemplateCreateOrConnectWithoutCommentInput> = z.object({
+  where: z.lazy(() => TemplateWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => TemplateCreateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedCreateWithoutCommentInputSchema) ]),
 }).strict();
 
 export const UserCreateWithoutCommentInputSchema: z.ZodType<Prisma.UserCreateWithoutCommentInput> = z.object({
@@ -4133,6 +4253,7 @@ export const CommentCreateWithoutParent_commentInputSchema: z.ZodType<Prisma.Com
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template: z.lazy(() => TemplateCreateNestedOneWithoutCommentInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutCommentInputSchema).optional(),
   children: z.lazy(() => CommentCreateNestedManyWithoutParent_commentInputSchema).optional()
 }).strict();
@@ -4145,6 +4266,7 @@ export const CommentUncheckedCreateWithoutParent_commentInputSchema: z.ZodType<P
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template_id: z.string(),
   children: z.lazy(() => CommentUncheckedCreateNestedManyWithoutParent_commentInputSchema).optional()
 }).strict();
 
@@ -4165,6 +4287,7 @@ export const CommentCreateWithoutChildrenInputSchema: z.ZodType<Prisma.CommentCr
   updated_at: z.coerce.date().optional(),
   x: z.number(),
   y: z.number(),
+  template: z.lazy(() => TemplateCreateNestedOneWithoutCommentInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutCommentInputSchema).optional(),
   parent_comment: z.lazy(() => CommentCreateNestedOneWithoutChildrenInputSchema).optional()
 }).strict();
@@ -4177,12 +4300,46 @@ export const CommentUncheckedCreateWithoutChildrenInputSchema: z.ZodType<Prisma.
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   x: z.number(),
-  y: z.number()
+  y: z.number(),
+  template_id: z.string()
 }).strict();
 
 export const CommentCreateOrConnectWithoutChildrenInputSchema: z.ZodType<Prisma.CommentCreateOrConnectWithoutChildrenInput> = z.object({
   where: z.lazy(() => CommentWhereUniqueInputSchema),
   create: z.union([ z.lazy(() => CommentCreateWithoutChildrenInputSchema),z.lazy(() => CommentUncheckedCreateWithoutChildrenInputSchema) ]),
+}).strict();
+
+export const TemplateUpsertWithoutCommentInputSchema: z.ZodType<Prisma.TemplateUpsertWithoutCommentInput> = z.object({
+  update: z.union([ z.lazy(() => TemplateUpdateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedUpdateWithoutCommentInputSchema) ]),
+  create: z.union([ z.lazy(() => TemplateCreateWithoutCommentInputSchema),z.lazy(() => TemplateUncheckedCreateWithoutCommentInputSchema) ]),
+}).strict();
+
+export const TemplateUpdateWithoutCommentInputSchema: z.ZodType<Prisma.TemplateUpdateWithoutCommentInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional()
+}).strict();
+
+export const TemplateUncheckedUpdateWithoutCommentInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateWithoutCommentInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  root_note_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  image_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  public_url: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const UserUpsertWithoutCommentInputSchema: z.ZodType<Prisma.UserUpsertWithoutCommentInput> = z.object({
@@ -4244,6 +4401,7 @@ export const CommentUpdateWithoutChildrenInputSchema: z.ZodType<Prisma.CommentUp
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template: z.lazy(() => TemplateUpdateOneRequiredWithoutCommentNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneWithoutCommentNestedInputSchema).optional(),
   parent_comment: z.lazy(() => CommentUpdateOneWithoutChildrenNestedInputSchema).optional()
 }).strict();
@@ -4257,6 +4415,7 @@ export const CommentUncheckedUpdateWithoutChildrenInputSchema: z.ZodType<Prisma.
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const TemplateCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.TemplateCreateWithoutUserTemplateInput> = z.object({
@@ -4269,7 +4428,8 @@ export const TemplateCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.Temp
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateWithoutUserTemplateInput> = z.object({
@@ -4282,7 +4442,8 @@ export const TemplateUncheckedCreateWithoutUserTemplateInputSchema: z.ZodType<Pr
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateCreateOrConnectWithoutUserTemplateInputSchema: z.ZodType<Prisma.TemplateCreateOrConnectWithoutUserTemplateInput> = z.object({
@@ -4336,7 +4497,8 @@ export const TemplateUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.Temp
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateWithoutUserTemplateInput> = z.object({
@@ -4349,7 +4511,8 @@ export const TemplateUncheckedUpdateWithoutUserTemplateInputSchema: z.ZodType<Pr
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const UserUpsertWithoutUserTemplateInputSchema: z.ZodType<Prisma.UserUpsertWithoutUserTemplateInput> = z.object({
@@ -4491,6 +4654,40 @@ export const SpeechBallonCreateManyTemplateInputEnvelopeSchema: z.ZodType<Prisma
   skipDuplicates: z.boolean().optional()
 }).strict();
 
+export const CommentCreateWithoutTemplateInputSchema: z.ZodType<Prisma.CommentCreateWithoutTemplateInput> = z.object({
+  id: z.string().optional(),
+  comment: z.string().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  x: z.number(),
+  y: z.number(),
+  user: z.lazy(() => UserCreateNestedOneWithoutCommentInputSchema).optional(),
+  children: z.lazy(() => CommentCreateNestedManyWithoutParent_commentInputSchema).optional(),
+  parent_comment: z.lazy(() => CommentCreateNestedOneWithoutChildrenInputSchema).optional()
+}).strict();
+
+export const CommentUncheckedCreateWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUncheckedCreateWithoutTemplateInput> = z.object({
+  id: z.string().optional(),
+  comment: z.string().optional().nullable(),
+  user_id: z.string().optional().nullable(),
+  parent_comment_id: z.string().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  x: z.number(),
+  y: z.number(),
+  children: z.lazy(() => CommentUncheckedCreateNestedManyWithoutParent_commentInputSchema).optional()
+}).strict();
+
+export const CommentCreateOrConnectWithoutTemplateInputSchema: z.ZodType<Prisma.CommentCreateOrConnectWithoutTemplateInput> = z.object({
+  where: z.lazy(() => CommentWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema) ]),
+}).strict();
+
+export const CommentCreateManyTemplateInputEnvelopeSchema: z.ZodType<Prisma.CommentCreateManyTemplateInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => CommentCreateManyTemplateInputSchema),z.lazy(() => CommentCreateManyTemplateInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
 export const UserTemplateUpsertWithWhereUniqueWithoutTemplateInputSchema: z.ZodType<Prisma.UserTemplateUpsertWithWhereUniqueWithoutTemplateInput> = z.object({
   where: z.lazy(() => UserTemplateWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => UserTemplateUpdateWithoutTemplateInputSchema),z.lazy(() => UserTemplateUncheckedUpdateWithoutTemplateInputSchema) ]),
@@ -4574,6 +4771,22 @@ export const SpeechBallonScalarWhereInputSchema: z.ZodType<Prisma.SpeechBallonSc
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
+export const CommentUpsertWithWhereUniqueWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUpsertWithWhereUniqueWithoutTemplateInput> = z.object({
+  where: z.lazy(() => CommentWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => CommentUpdateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedUpdateWithoutTemplateInputSchema) ]),
+  create: z.union([ z.lazy(() => CommentCreateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedCreateWithoutTemplateInputSchema) ]),
+}).strict();
+
+export const CommentUpdateWithWhereUniqueWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUpdateWithWhereUniqueWithoutTemplateInput> = z.object({
+  where: z.lazy(() => CommentWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => CommentUpdateWithoutTemplateInputSchema),z.lazy(() => CommentUncheckedUpdateWithoutTemplateInputSchema) ]),
+}).strict();
+
+export const CommentUpdateManyWithWhereWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUpdateManyWithWhereWithoutTemplateInput> = z.object({
+  where: z.lazy(() => CommentScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => CommentUpdateManyMutationInputSchema),z.lazy(() => CommentUncheckedUpdateManyWithoutCommentInputSchema) ]),
+}).strict();
+
 export const TemplateCreateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCreateWithoutNodeInput> = z.object({
   id: z.string().optional(),
   root_note_id: z.string().optional(),
@@ -4584,7 +4797,8 @@ export const TemplateCreateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCrea
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedCreateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateWithoutNodeInput> = z.object({
@@ -4597,7 +4811,8 @@ export const TemplateUncheckedCreateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateCreateOrConnectWithoutNodeInputSchema: z.ZodType<Prisma.TemplateCreateOrConnectWithoutNodeInput> = z.object({
@@ -4735,7 +4950,8 @@ export const TemplateUpdateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateUpda
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedUpdateWithoutNodeInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateWithoutNodeInput> = z.object({
@@ -4748,7 +4964,8 @@ export const TemplateUncheckedUpdateWithoutNodeInputSchema: z.ZodType<Prisma.Tem
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
+  SpeechBallon: z.lazy(() => SpeechBallonUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const NodeUpsertWithWhereUniqueWithoutParent_nodeInputSchema: z.ZodType<Prisma.NodeUpsertWithWhereUniqueWithoutParent_nodeInput> = z.object({
@@ -4830,7 +5047,8 @@ export const TemplateCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.Temp
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateCreateNestedManyWithoutTemplateInputSchema).optional(),
-  node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional()
+  node: z.lazy(() => NodeCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedCreateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.TemplateUncheckedCreateWithoutSpeechBallonInput> = z.object({
@@ -4843,7 +5061,8 @@ export const TemplateUncheckedCreateWithoutSpeechBallonInputSchema: z.ZodType<Pr
   updated_at: z.coerce.date().optional(),
   deleted_at: z.coerce.date().optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
-  node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
+  node: z.lazy(() => NodeUncheckedCreateNestedManyWithoutTemplateInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedCreateNestedManyWithoutTemplateInputSchema).optional()
 }).strict();
 
 export const TemplateCreateOrConnectWithoutSpeechBallonInputSchema: z.ZodType<Prisma.TemplateCreateOrConnectWithoutSpeechBallonInput> = z.object({
@@ -4903,7 +5122,8 @@ export const TemplateUpdateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.Temp
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional()
+  node: z.lazy(() => NodeUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const TemplateUncheckedUpdateWithoutSpeechBallonInputSchema: z.ZodType<Prisma.TemplateUncheckedUpdateWithoutSpeechBallonInput> = z.object({
@@ -4916,7 +5136,8 @@ export const TemplateUncheckedUpdateWithoutSpeechBallonInputSchema: z.ZodType<Pr
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   deleted_at: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userTemplate: z.lazy(() => UserTemplateUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
-  node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
+  node: z.lazy(() => NodeUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional(),
+  Comment: z.lazy(() => CommentUncheckedUpdateManyWithoutTemplateNestedInputSchema).optional()
 }).strict();
 
 export const NodeUpsertWithoutSpeechBallonInputSchema: z.ZodType<Prisma.NodeUpsertWithoutSpeechBallonInput> = z.object({
@@ -5055,7 +5276,8 @@ export const CommentCreateManyUserInputSchema: z.ZodType<Prisma.CommentCreateMan
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   x: z.number(),
-  y: z.number()
+  y: z.number(),
+  template_id: z.string()
 }).strict();
 
 export const AccountUpdateWithoutUserInputSchema: z.ZodType<Prisma.AccountUpdateWithoutUserInput> = z.object({
@@ -5155,6 +5377,7 @@ export const CommentUpdateWithoutUserInputSchema: z.ZodType<Prisma.CommentUpdate
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template: z.lazy(() => TemplateUpdateOneRequiredWithoutCommentNestedInputSchema).optional(),
   children: z.lazy(() => CommentUpdateManyWithoutParent_commentNestedInputSchema).optional(),
   parent_comment: z.lazy(() => CommentUpdateOneWithoutChildrenNestedInputSchema).optional()
 }).strict();
@@ -5167,6 +5390,7 @@ export const CommentUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Comm
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   children: z.lazy(() => CommentUncheckedUpdateManyWithoutParent_commentNestedInputSchema).optional()
 }).strict();
 
@@ -5178,6 +5402,7 @@ export const CommentUncheckedUpdateManyWithoutCommentInputSchema: z.ZodType<Pris
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const CommentCreateManyParent_commentInputSchema: z.ZodType<Prisma.CommentCreateManyParent_commentInput> = z.object({
@@ -5187,7 +5412,8 @@ export const CommentCreateManyParent_commentInputSchema: z.ZodType<Prisma.Commen
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   x: z.number(),
-  y: z.number()
+  y: z.number(),
+  template_id: z.string()
 }).strict();
 
 export const CommentUpdateWithoutParent_commentInputSchema: z.ZodType<Prisma.CommentUpdateWithoutParent_commentInput> = z.object({
@@ -5197,6 +5423,7 @@ export const CommentUpdateWithoutParent_commentInputSchema: z.ZodType<Prisma.Com
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template: z.lazy(() => TemplateUpdateOneRequiredWithoutCommentNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneWithoutCommentNestedInputSchema).optional(),
   children: z.lazy(() => CommentUpdateManyWithoutParent_commentNestedInputSchema).optional()
 }).strict();
@@ -5209,6 +5436,7 @@ export const CommentUncheckedUpdateWithoutParent_commentInputSchema: z.ZodType<P
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   children: z.lazy(() => CommentUncheckedUpdateManyWithoutParent_commentNestedInputSchema).optional()
 }).strict();
 
@@ -5220,6 +5448,7 @@ export const CommentUncheckedUpdateManyWithoutChildrenInputSchema: z.ZodType<Pri
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const UserTemplateCreateManyTemplateInputSchema: z.ZodType<Prisma.UserTemplateCreateManyTemplateInput> = z.object({
@@ -5257,6 +5486,17 @@ export const SpeechBallonCreateManyTemplateInputSchema: z.ZodType<Prisma.SpeechB
   stroke: z.union([ z.lazy(() => JsonNullValueInputSchema),InputJsonValue ]),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
+}).strict();
+
+export const CommentCreateManyTemplateInputSchema: z.ZodType<Prisma.CommentCreateManyTemplateInput> = z.object({
+  id: z.string().cuid().optional(),
+  comment: z.string().optional().nullable(),
+  user_id: z.string().optional().nullable(),
+  parent_comment_id: z.string().optional().nullable(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
+  x: z.number(),
+  y: z.number()
 }).strict();
 
 export const UserTemplateUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.UserTemplateUpdateWithoutTemplateInput> = z.object({
@@ -5362,6 +5602,30 @@ export const SpeechBallonUncheckedUpdateManyWithoutSpeechBallonInputSchema: z.Zo
   stroke: z.union([ z.lazy(() => JsonNullValueInputSchema),InputJsonValue ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const CommentUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUpdateWithoutTemplateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  comment: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  user: z.lazy(() => UserUpdateOneWithoutCommentNestedInputSchema).optional(),
+  children: z.lazy(() => CommentUpdateManyWithoutParent_commentNestedInputSchema).optional(),
+  parent_comment: z.lazy(() => CommentUpdateOneWithoutChildrenNestedInputSchema).optional()
+}).strict();
+
+export const CommentUncheckedUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.CommentUncheckedUpdateWithoutTemplateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  comment: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  user_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  parent_comment_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
+  children: z.lazy(() => CommentUncheckedUpdateManyWithoutParent_commentNestedInputSchema).optional()
 }).strict();
 
 export const NodeCreateManyParent_nodeInputSchema: z.ZodType<Prisma.NodeCreateManyParent_nodeInput> = z.object({

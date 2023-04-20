@@ -62,16 +62,18 @@ model User {
 
 model Comment {
   id                String    @id @default(cuid())
+  template          Template  @relation(fields: [template_id], references: [id], onDelete: Cascade)
   comment           String?   @db.Text
   user              User?     @relation(fields: [user_id], references: [id])
   user_id           String?
   children          Comment[] @relation("CommentToComments")
-  parent_comment    Comment?  @relation("CommentToComments", fields: [parent_comment_id], references: [id])
+  parent_comment    Comment?  @relation("CommentToComments", fields: [parent_comment_id], references: [id], onDelete: Cascade)
   parent_comment_id String?
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
   x                 Float
   y                 Float
+  template_id       String
 }
 
 model UserTemplate {
@@ -84,7 +86,7 @@ model UserTemplate {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  User        User     @relation(fields: [user_id], references: [id])
+  User        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, template_id])
 }
@@ -101,6 +103,7 @@ model Template {
   userTemplate UserTemplate[]
   node         Node[]
   SpeechBallon SpeechBallon[]
+  Comment      Comment[]
 }
 
 model Node {
@@ -114,10 +117,10 @@ model Node {
   x              Float
   y              Float
   unit           String?
-  Template       Template?      @relation(fields: [template_id], references: [id])
+  Template       Template?      @relation(fields: [template_id], references: [id], onDelete: Cascade)
   template_id    String
   children       Node[]         @relation("nodetonodes")
-  parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id])
+  parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id], onDelete: Cascade)
   parent_node_id String?
   SpeechBallon   SpeechBallon[]
 }
@@ -134,8 +137,8 @@ model SpeechBallon {
   stroke      Json
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-  Template    Template @relation(fields: [template_id], references: [id])
-  Node        Node     @relation(fields: [node_id], references: [id])
+  Template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  Node        Node     @relation(fields: [node_id], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
