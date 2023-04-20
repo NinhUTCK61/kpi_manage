@@ -24,5 +24,13 @@
   "restore": "このファイルを復元する。",
   "permanently_delete": "完全に削除する。",
   "detail_dialog_restore": "このファイルを復元しますか？このファイルを復元しますか？",
-  "detail_dialog_delete_per": "このファイルを完全に削除しますか？"
+  "detail_dialog_delete_per": "このファイルを完全に削除しますか？",
+  "rename_failed": "ファイル名の変更に失敗しました。",
+  "delete_failed": "ファイルを削除しました。",
+  "permanently_delete_failed": "ファイルの完全削除に失敗しました。",
+  "create_failed": "ファイルの作成に失敗しました。",
+  "like_failed": "お気に入りに登録できませんでした。",
+  "description_restore_success": "ファイルを復元しました。",
+  "restore success": "復元完了",
+  "restore_failed": "ファイルの復元に失敗しました。"
 }
