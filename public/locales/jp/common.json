@@ -63,6 +63,9 @@
     "template_deleted": "The template has been deleted",
     "template_not_found": "Template not found!"
   },
+  "node": {
+    "delete_success": "Delete node succcess!"
+  },
   "dialog": {
     "cancel": "キャンセル",
     "delete": "削除",

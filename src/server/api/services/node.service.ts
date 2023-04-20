@@ -20,7 +20,6 @@ export class NodeService {
       },
     })
 
-    // Kiểm tra xem tất cả các Node có hợp lệ không
     if (validNodeCount.length !== nodeIds.length) {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -37,6 +36,6 @@ export class NodeService {
       },
     })
 
-    return 'Delete succcess!'
+    return 'node.delete_success'
   }
 }
