@@ -9,7 +9,7 @@ export const nodeRouter = createTRPCRouter({
   deleteNode: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node-delete' }, protect: true })
     .input(DeleteNodeSchema)
-    .output(z.any())
+    .output(z.string())
     .mutation(({ input, ctx }) => {
       return nodeService.deleteNode(input.id, ctx.session.user)
     }),
