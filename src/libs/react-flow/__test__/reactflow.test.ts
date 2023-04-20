@@ -1,7 +1,7 @@
 import { Edge } from 'reactflow'
 import { afterEach, describe, expect, test } from 'vitest'
 import { flattenHierarchy, generateNextReactFlowNode, stratifier } from '../helper'
-import { ReactFlowNode, RootNode } from '../types'
+import { ReactFlowKPINode, RootNode } from '../types'
 import { _edges, _nodes } from './__mock__'
 
 // This is data from API
@@ -24,7 +24,7 @@ const rootNode: RootNode = {
 
 // const d3Root = createD3Hierarchy(rootNode)
 
-const nodes: ReactFlowNode[] = _nodes
+const nodes: ReactFlowKPINode[] = _nodes
 const edges: Edge[] = _edges
 const d3Root = stratifier(nodes)
 

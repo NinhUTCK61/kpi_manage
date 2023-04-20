@@ -1,7 +1,7 @@
 import {
   HierarchyFlowNode,
   KPINode,
-  ReactFlowNode,
+  ReactFlowKPINode,
   TemplateProvider,
   stratifier,
   useRFStore,
@@ -21,7 +21,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
   }
 }
 
-const _nodes: ReactFlowNode[] = [
+const _nodes: ReactFlowKPINode[] = [
   {
     id: 'root',
     type: 'kpi',

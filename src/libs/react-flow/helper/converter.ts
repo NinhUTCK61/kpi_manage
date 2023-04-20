@@ -1,6 +1,6 @@
 import { stratify } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
-import { HierarchyFlowNode, ReactFlowNode, RootNode } from '../types'
+import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode, RootNode } from '../types'
 
 export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; edges: Edge[] } {
   const nodes: ReactFlowNode[] = []
@@ -55,10 +55,12 @@ export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; 
 }
 
 export function stratifier(nodes: ReactFlowNode[]): HierarchyFlowNode {
-  const fn = stratify<ReactFlowNode>()
+  const kpiNodes = nodes.filter((n) => n.data.type === 'kpi') as ReactFlowKPINode[]
+
+  const fn = stratify<ReactFlowKPINode>()
     .id((d) => d.data.id)
     .parentId((d) => d.data.parent_node_id)
 
-  const d3Root = fn(nodes)
+  const d3Root = fn(kpiNodes)
   return d3Root
 }

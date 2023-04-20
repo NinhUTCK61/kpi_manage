@@ -1,7 +1,7 @@
 import { Edge } from 'reactflow'
-import { ReactFlowNode } from '../types'
+import { ReactFlowKPINode } from '../types'
 
-export const _nodes: ReactFlowNode[] = [
+export const _nodes: ReactFlowKPINode[] = [
   {
     id: 'root',
     data: {

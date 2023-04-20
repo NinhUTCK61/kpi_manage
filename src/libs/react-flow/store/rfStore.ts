@@ -9,10 +9,10 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
-import { RFStore, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowKPINode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
-const initialRootNode: ReactFlowNode = {
+const initialRootNode: ReactFlowKPINode = {
   id: 'root',
   data: {
     slug: 'root',
@@ -61,6 +61,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       addNode(parentNodeId: string) {
         const _d3 = get().d3Root
+
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)

@@ -1,6 +1,6 @@
 import { StateCreator, StoreMutatorIdentifier } from 'zustand'
 import { stratifier } from '../helper'
-import { RFStore, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 
 type D3Middleware = <
   RFStore,
@@ -19,7 +19,11 @@ const _d3RootMiddleware: D3MiddlewareImpl = (createStore) => (set, get, api) => 
     if ('nodes' in newState) {
       // Nếu 'nodes' có trong newState, tức là nodes đã thay đổi
       // Cập nhật d3Root dựa trên giá trị mới của nodes
-      const updatedD3Root = stratifier(newState['nodes'] as ReactFlowNode[]) // Cập nhật d3Root dựa trên newState.nodes
+      // Get Node type = kpi
+      const kpiNodes = (newState['nodes'] as ReactFlowKPINode[]).filter(
+        (node: ReactFlowNode) => node.type === 'kpi',
+      )
+      const updatedD3Root = stratifier(kpiNodes) // Cập nhật d3Root dựa trên newState.nodes
 
       // Cập nhật d3Root trong store
       set({ d3Root: updatedD3Root })

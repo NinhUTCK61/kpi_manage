@@ -6,13 +6,13 @@ import {
   NODE_WIDTH,
   VERTICAL_SPACING_FACTOR,
 } from '../constant'
-import { HierarchyFlowNode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { generateNextNode } from './hierarchy'
 
 export const generateNextReactFlowNode = (
   parentId: string,
   d3Root: HierarchyFlowNode,
-): { node: ReactFlowNode; edge: Edge } => {
+): { node: ReactFlowKPINode; edge: Edge } => {
   const parentNode =
     parentId === 'root'
       ? d3Root
@@ -20,7 +20,7 @@ export const generateNextReactFlowNode = (
 
   const nextFlowNode = generateNextNode(parentNode)
 
-  const node: ReactFlowNode = {
+  const node: ReactFlowKPINode = {
     id: nextFlowNode.id,
     data: nextFlowNode,
     position: { x: 0, y: 0 },
