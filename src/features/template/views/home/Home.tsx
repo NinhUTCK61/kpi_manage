@@ -142,14 +142,14 @@ const Home = () => {
     },
     [FileAction.Restore]: {
       title: t('restore'),
-      description: t('detail_dialog_delete'),
+      description: t('detail_dialog_restore'),
       handleConfirm: handleConfirmDelete,
       type: 'warning',
       textSubmit: t('restore'),
     },
     [FileAction.DeletePermanently]: {
       title: t('permanently_delete'),
-      description: t('detail_dialog_delete'),
+      description: t('detail_dialog_delete_per'),
       handleConfirm: handleConfirmDeletePer,
       type: 'warning',
       textSubmit: t('permanently_delete'),

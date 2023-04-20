@@ -215,5 +215,7 @@ const defaultTheme: Theme = createTheme({
 })
 
 defaultTheme.shadows[1] = '0px 2px 40px rgba(17, 17, 17, 0.08)'
+defaultTheme.shadows[2] =
+  '0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)'
 
 export { defaultTheme }

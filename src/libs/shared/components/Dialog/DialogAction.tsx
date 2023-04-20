@@ -33,7 +33,13 @@ const DialogAction: React.FC<DialogActionTypes> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      PaperProps={{
+        elevation: 2,
+      }}
+    >
       <DialogContent
         sx={{
           width: 400,

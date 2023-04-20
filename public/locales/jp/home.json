@@ -22,5 +22,7 @@
   "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)",
   "seo_title": "ホーム",
   "restore": "このファイルを復元する。",
-  "permanently_delete": "完全に削除する。"
+  "permanently_delete": "完全に削除する。",
+  "detail_dialog_restore": "このファイルを復元しますか？このファイルを復元しますか？",
+  "detail_dialog_delete_per": "このファイルを完全に削除しますか？"
 }
