@@ -1,5 +1,5 @@
+import { useApiTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
-import { api } from '@/libs/api'
 import { useTranslateError } from '@/libs/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
@@ -19,7 +19,6 @@ import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { enqueueSnackbar } from 'notistack'
 import ImageFile from 'public/assets/imgs/file.png'
 import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
@@ -44,6 +43,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
   const open = Boolean(anchorEl)
   const [name, setName] = useState<string>('')
   const { showError } = useTranslateError()
+  const { renameTemplate, likeTemplate } = useApiTemplate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -63,21 +63,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    rename(
-      {
-        id: template.template_id,
-        name: name,
-      },
-      {
-        onSuccess: () => {
-          setName('')
-          enqueueSnackbar(t('rename_success'), {
-            variant: 'success',
-            description: t('description_rename_success') as string,
-          })
-        },
-      },
-    )
+    renameTemplate(template.template_id, name, () => setName(''))
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,69 +109,9 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
   const redirectTemplate = () => {
     !template.deleted_at && router.push('template/' + template.template_id)
   }
-  const utils = api.useContext()
-
-  const { mutate: like } = api.template.likeTemplate.useMutation({
-    onMutate: async (template) => {
-      await utils.template.getListTemplate.cancel()
-
-      const prevData = utils.template.getListTemplate.getData()
-      utils.template.getListTemplate.setData({ isTrash: false }, (old) =>
-        (old || []).map((e) =>
-          e.template_id === template.id ? { ...e, is_favorite: !template.is_favorite } : e,
-        ),
-      )
-
-      return { prevData }
-    },
-    onSuccess: () => {
-      utils.template.getListTemplate.refetch({ isTrash: false })
-    },
-    onError: (err, variables, ctx) => {
-      utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
-    },
-
-    onSettled: () => {
-      utils.template.getListTemplate.invalidate()
-    },
-  })
-  const { mutate: rename } = api.template.updateTemplate.useMutation({
-    onMutate: async (template) => {
-      await utils.template.getListTemplate.cancel()
-
-      const prevData = utils.template.getListTemplate.getData()
-      utils.template.getListTemplate.setData({ isTrash: false }, (old) =>
-        (old || []).map((e) =>
-          e.template_id === template.id ? { ...e, name: String(template.name) } : e,
-        ),
-      )
-
-      return { prevData }
-    },
-    onSuccess: () => {
-      utils.template.getListTemplate.refetch({ isTrash: false })
-    },
-    onError: (err, variables, ctx) => {
-      utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
-    },
-
-    onSettled: () => {
-      utils.template.getListTemplate.invalidate()
-    },
-  })
 
   const handleLike = () => {
-    like(
-      {
-        id: template.template_id,
-        is_favorite: !template.is_favorite,
-      },
-      {
-        onError: (err) => {
-          showError(err, t('like_failed'))
-        },
-      },
-    )
+    likeTemplate(template.template_id, template.is_favorite)
   }
 
   return (
