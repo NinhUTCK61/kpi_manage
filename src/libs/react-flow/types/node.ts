@@ -2,7 +2,9 @@ import { Node as PNode } from '@prisma/client'
 import { HierarchyNode } from 'd3-hierarchy'
 import { Node } from 'reactflow'
 
-export type FlowNode = PNode
+export type NodeType = 'kpi' | 'speech_ballon' | 'comment'
+
+export type FlowNode = PNode & { type: NodeType }
 
 export type RootNode = FlowNode & {
   children: RootNode[]

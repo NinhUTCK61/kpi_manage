@@ -89,6 +89,7 @@ export const convertToReactFlowNodes = (
         is_formula: node.data.is_formula,
         unit: node.data.unit,
         template_id: node.data.template_id,
+        type: node.data.type,
       },
       position: { x: node.data.x, y: node.data.y },
       type: 'kpi',

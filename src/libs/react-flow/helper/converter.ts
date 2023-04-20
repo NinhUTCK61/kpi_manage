@@ -23,6 +23,7 @@ export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; 
         is_formula: node.is_formula,
         unit: node.unit,
         template_id: node.template_id,
+        type: node.type,
       },
       position: { x: node.x, y: node.y },
       type: 'kpi',

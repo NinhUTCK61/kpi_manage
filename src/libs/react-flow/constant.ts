@@ -14,4 +14,5 @@ export const DEFAULT_NODE_ATTRIBUTES = {
   unit: '',
   value2number: 0,
   template_id: '',
+  type: 'kpi' as const,
 }

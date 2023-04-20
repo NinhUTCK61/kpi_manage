@@ -27,6 +27,7 @@ const initialRootNode: ReactFlowNode = {
     unit: '',
     value2number: 0,
     template_id: '',
+    type: 'kpi',
   },
   position: { x: 0, y: 0 },
   type: 'kpi',
