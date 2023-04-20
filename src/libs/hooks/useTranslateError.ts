@@ -1,3 +1,7 @@
+import { AppRouter } from '@/server/api/root'
+import { TRPCClientError } from '@trpc/client'
+import { TRPCError } from '@trpc/server'
+import { enqueueSnackbar } from 'notistack'
 import { useTranslation } from 'react-i18next'
 
 export const useTranslateError = () => {
@@ -14,5 +18,11 @@ export const useTranslateError = () => {
 
     return message
   }
-  return { handleError }
+
+  function showError<T extends TRPCClientError<AppRouter>>(err: T, title: string) {
+    const error = String(err.message)
+    const description = t(error)
+    enqueueSnackbar(title, { variant: 'error', description })
+  }
+  return { handleError, showError }
 }

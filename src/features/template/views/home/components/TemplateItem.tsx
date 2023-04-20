@@ -1,4 +1,6 @@
 import { FileAction } from '@/features/template/types/template'
+import { api } from '@/libs/api'
+import { useTranslateError } from '@/libs/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import {
@@ -16,19 +18,23 @@ import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import ImageFile from 'public/assets/imgs/file.png'
 import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
+import UnLikeIcon from 'public/assets/svgs/un_like.svg'
 import { FormEvent, useRef, useState } from 'react'
 import { z } from 'zod'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
   template: z.infer<typeof TemplateDataSchema>
+  refetch(): void
 }
 
-const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template }) => {
+const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template, refetch }) => {
+  const router = useRouter()
   const {
     t,
     i18n: { language },
@@ -36,14 +42,15 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const inputNameRef = useRef<HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const [name, setName] = useState<string>('')
+  const { showError } = useTranslateError()
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  const [name, setName] = useState<string>('')
 
   const handleOpenChangeName = () => {
     setName(template.name)
@@ -56,11 +63,22 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    enqueueSnackbar(t('rename_success'), {
-      variant: 'success',
-      description: t('description_rename_success') as string,
-    })
-    setName('')
+    rename(
+      {
+        id: template.template_id,
+        name: name,
+      },
+      {
+        onSuccess: () => {
+          setName('')
+          enqueueSnackbar(t('rename_success'), {
+            variant: 'success',
+            description: t('description_rename_success') as string,
+          })
+          refetch()
+        },
+      },
+    )
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +86,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   }
 
   const handleAction = (type: FileAction) => {
-    handleFileAction('id', type)
+    handleFileAction(template.template_id, type)
     handleClose()
   }
 
@@ -103,8 +121,32 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         },
       ]
 
+  const redirectTemplate = () => {
+    !template.deleted_at && router.push('template/' + template.template_id)
+  }
+
+  const { mutate: like } = api.template.likeTemplate.useMutation()
+  const { mutate: rename } = api.template.updateTemplate.useMutation()
+
+  const handleLike = () => {
+    like(
+      {
+        id: template.template_id,
+        is_favorite: !template.is_favorite,
+      },
+      {
+        onSuccess: () => {
+          refetch()
+        },
+        onError: (err) => {
+          showError(err, t('like_error'))
+        },
+      },
+    )
+  }
+
   return (
-    <Card sx={{}} elevation={0}>
+    <Card elevation={0}>
       <CardHeader
         action={
           <IconButton onClick={handleClick}>
@@ -142,8 +184,8 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         )}
       </Menu>
 
-      <CardContent sx={{ p: 0 }}>
-        <Image src={ImageFile} alt="file" />
+      <CardContent sx={{ p: 0 }} onClick={redirectTemplate}>
+        <ImagePointer src={ImageFile} alt="file" />
       </CardContent>
       <CardActions>
         <Stack width="100%">
@@ -163,10 +205,16 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
             ) : (
               <TextName>{template.name}</TextName>
             )}
-            <Image src={LikeIcon} alt="like" />
+            {!template.deleted_at && (
+              <ImagePointer
+                onClick={handleLike}
+                src={template.is_favorite ? LikeIcon : UnLikeIcon}
+                alt="like"
+              />
+            )}
           </Stack>
           <Typography variant="body2" color="greyScale.500">
-            {formatDistance(new Date('2023-04-05T09:00:00Z'), new Date(), {
+            {formatDistance(template.created_at, new Date(), {
               addSuffix: true,
               locale: language === 'en' ? enAU : ja,
             })}
@@ -213,5 +261,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   position: 'relative',
   border: `1px solid ${theme.palette.greyScale[300]}`,
 }))
+
+const ImagePointer = styled(Image)({ cursor: 'pointer' })
 
 export { TemplateItem }

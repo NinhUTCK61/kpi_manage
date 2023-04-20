@@ -24,5 +24,13 @@
   "restore": "Restore this file",
   "permanently_delete": "Permanently delete",
   "detail_dialog_restore": "Are you sure to restore this file?",
-  "detail_dialog_delete_per": "Are you sure to delete permanently this file?"
+  "detail_dialog_delete_per": "Are you sure to delete permanently this file?",
+  "rename_failed": "Rename failed",
+  "delete_failed": "Delete failed",
+  "permanently_delete_failed": "Permanently delete failed",
+  "create_failed": "Create failed",
+  "like_failed": "Like Failed",
+  "description_restore_success": "Successfully restore this file",
+  "restore_success":"Restore success",
+  "restore_failed": "Restore failed"
 }
