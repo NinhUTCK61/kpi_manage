@@ -3,7 +3,6 @@ import { Menu as MuiMenu, MenuItem as MuiMenuItem, styled } from '@mui/material'
 const Menu = styled(MuiMenu)({
   '.MuiMenu-paper': {
     overflow: 'hidden',
-    mt: 1.5,
     '& .MuiAvatar-root': {
       width: 32,
       height: 32,

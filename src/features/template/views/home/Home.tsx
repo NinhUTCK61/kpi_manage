@@ -1,5 +1,6 @@
 import { base } from '@/libs/config/theme'
 import { useModalState } from '@/libs/hooks'
+import type { TemplateDataSchema } from '@/libs/schema'
 import { DialogAction, DialogThumbnail, Layout, Menu, MenuItem } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Button, Grid, Stack, Typography } from '@mui/material'
@@ -10,7 +11,8 @@ import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
-import { FileAction, StatusTemplate, TemplateTypes } from '../../types/template'
+import { z } from 'zod'
+import { FileAction, StatusTemplate } from '../../types/template'
 import { ButtonCreate, TemplateItem } from './components'
 
 const Home = () => {
@@ -38,38 +40,51 @@ const Home = () => {
     },
   ]
 
-  const [fakeData, setFakeData] = useState<TemplateTypes[] | undefined>(
+  const [fakeData, setFakeData] = useState<z.infer<typeof TemplateDataSchema>[] | undefined>(
     Array(8)
       .fill(0)
       .map((e, index) => {
         return {
-          id: `${index}`,
+          template_id: `${index}`,
           name: 'Template 1',
-          rootNodeId: '1',
+          root_note_id: '1',
           delete_at: '',
           public_url: '',
           image_url: '',
+          is_owner: true,
+          is_favorite: true,
+          can_edit: true,
+          created_at: new Date(),
+          updated_at: new Date(),
+          deleted_at: null,
         }
       }),
   )
 
-  const [fakeDataDelete, setFakeDataDelete] = useState<TemplateTypes[] | undefined>(
+  const [fakeDataDelete, setFakeDataDelete] = useState<
+    z.infer<typeof TemplateDataSchema>[] | undefined
+  >(
     Array(3)
       .fill(0)
       .map((e, index) => {
         return {
-          id: `${index}`,
+          template_id: `${index}`,
           name: 'Template 1',
-          rootNodeId: '1',
-          delete_at: '19-05-2022',
+          root_note_id: `${index}`,
+          delete_at: '',
           public_url: '',
           image_url: '',
+          is_owner: true,
+          is_favorite: true,
+          can_edit: true,
+          created_at: new Date(),
+          updated_at: new Date(),
+          deleted_at: new Date(),
         }
       }),
   )
 
   const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
-  const { isOpen: isOpenDialogAction, onOpen: openDialog, onClose: closeDialog } = useModalState()
   const {
     isOpen: isOpenThumbnail,
     onOpen: openDialogThumbnail,
@@ -84,7 +99,6 @@ const Home = () => {
       openDialogThumbnail()
     } else {
       setAction(type)
-      openDialog()
     }
   }
 
@@ -96,7 +110,7 @@ const Home = () => {
       variant: 'success',
       description: t('description_delete_success') as string,
     })
-    closeDialog()
+    setAction(null)
   }
 
   const handleConfirmDeletePer = () => {
@@ -107,7 +121,7 @@ const Home = () => {
       variant: 'success',
       description: t('description_delete_success') as string,
     })
-    closeDialog()
+    setAction(null)
   }
 
   const handleConfirmThumbnail = () => {
@@ -173,9 +187,9 @@ const Home = () => {
           PaperProps={{
             style: {
               borderRadius: 12,
-              overflow: 'hidden',
             },
           }}
+          elevation={1}
         >
           {menu.map((item) => (
             <MenuItem key={item.title} onClick={() => setStatus(item.id)}>
@@ -195,8 +209,8 @@ const Home = () => {
       </Grid>
       {action && (
         <DialogAction
-          open={isOpenDialogAction}
-          handleClose={closeDialog}
+          open={!!action}
+          handleClose={() => setAction(null)}
           handleConfirm={OPTION_ACTIONS[action].handleConfirm}
           title={OPTION_ACTIONS[action].title}
           description={OPTION_ACTIONS[action].description}

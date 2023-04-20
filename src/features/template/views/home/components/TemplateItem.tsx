@@ -1,12 +1,12 @@
-import { FileAction, TemplateTypes } from '@/features/template/types/template'
-import { useModalState } from '@/libs/hooks'
+import { FileAction } from '@/features/template/types/template'
+import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import {
-  Card,
   CardContent,
   CardHeader,
   IconButton,
   Input,
+  Card as MuiCard,
   CardActions as MuiCardActions,
   Stack,
   Typography,
@@ -21,10 +21,11 @@ import ImageFile from 'public/assets/imgs/file.png'
 import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { FormEvent, useRef, useState } from 'react'
+import { z } from 'zod'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
-  template: TemplateTypes
+  template: z.infer<typeof TemplateDataSchema>
 }
 
 const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template }) => {
@@ -42,12 +43,10 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     setAnchorEl(null)
   }
 
-  const [name, setName] = useState<string>('Circle Simple Mind')
-
-  const { isOpen: isRename, onOpen: openRename, onClose: closeRename } = useModalState()
+  const [name, setName] = useState<string>('')
 
   const handleOpenChangeName = () => {
-    openRename()
+    setName(template.name)
     setTimeout(() => {
       if (inputNameRef.current) {
         inputNameRef.current.focus()
@@ -61,7 +60,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       variant: 'success',
       description: t('description_rename_success') as string,
     })
-    closeRename()
+    setName('')
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,9 +72,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     handleClose()
   }
 
-  const isDelete = template.delete_at !== ''
-
-  const menuItem = isDelete
+  const menuItem = template.deleted_at
     ? [
         {
           title: t('restore'),
@@ -97,7 +94,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         },
         {
           title: t('rename'),
-          action: () => handleOpenChangeName,
+          action: () => handleOpenChangeName(),
         },
         {
           title: t('delete'),
@@ -107,7 +104,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       ]
 
   return (
-    <Card sx={{ maxWidth: 268, borderRadius: 3, position: 'relative' }} elevation={0}>
+    <Card sx={{}} elevation={0}>
       <CardHeader
         action={
           <IconButton onClick={handleClick}>
@@ -125,12 +122,12 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         PaperProps={{
           sx: {
             ml: 1,
-            boxShadow: '0px 2px 40px rgba(17, 17, 17, 0.08)',
+            borderRadius: 3,
           },
         }}
+        elevation={1}
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-        elevation={0}
       >
         {menuItem.map((menu) =>
           menu.delete ? (
@@ -156,7 +153,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
             component="form"
             onSubmit={onSaveName}
           >
-            {isRename ? (
+            {!!name ? (
               <InputRename
                 value={name}
                 onChange={handleChangeName}
@@ -164,7 +161,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
                 inputRef={inputNameRef}
               />
             ) : (
-              <TextName>{name}</TextName>
+              <TextName>{template.name}</TextName>
             )}
             <Image src={LikeIcon} alt="like" />
           </Stack>
@@ -208,6 +205,13 @@ const TextName = styled(Typography)(({ theme }) => ({
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
+}))
+
+const Card = styled(MuiCard)(({ theme }) => ({
+  maxWidth: 268,
+  borderRadius: 12,
+  position: 'relative',
+  border: `1px solid ${theme.palette.greyScale[300]}`,
 }))
 
 export { TemplateItem }
