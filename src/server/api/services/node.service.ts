@@ -1,6 +1,8 @@
 import { KpiNodeSchema } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
+import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
+import { stratify } from 'd3-hierarchy'
 import { User } from 'next-auth'
 import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -62,27 +64,22 @@ export class NodeService {
     return 'node.delete_success'
   }
 
-  async getChildrenRecursive(root_note_id: string) {
-    const node = await prisma.node.findUnique({
-      where: { id: root_note_id },
-      include: { children: true },
-    })
+  async getChildrenRecursive(node_id: string) {
+    const node: Node[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
+        SELECT *
+        FROM "Node"
+        WHERE ID = ${node_id}
+        UNION ALL
+        SELECT n.*
+        FROM "Node" n
+        JOIN node_tree nt ON n."parent_node_id" = nt.id
+      )
+      SELECT * FROM node_tree;`
 
-    console.log(node?.children)
+    const d3Root = stratify<Node>()
+      .id((n) => n.id)
+      .parentId((n) => n.parent_node_id)(node)
 
-    if (!node?.children || node?.children.length === 0) {
-      return node
-    }
-
-    const children: any = await Promise.all(
-      node?.children?.map(async (child) => {
-        return this.getChildrenRecursive(child.id)
-      }),
-    )
-
-    return {
-      ...node?.children,
-      children: children,
-    }
+    return d3Root
   }
 }
