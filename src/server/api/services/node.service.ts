@@ -61,4 +61,28 @@ export class NodeService {
 
     return 'node.delete_success'
   }
+
+  async getChildrenRecursive(root_note_id: string) {
+    const node = await prisma.node.findUnique({
+      where: { id: root_note_id },
+      include: { children: true },
+    })
+
+    console.log(node?.children)
+
+    if (!node?.children || node?.children.length === 0) {
+      return node
+    }
+
+    const children: any = await Promise.all(
+      node?.children?.map(async (child) => {
+        return this.getChildrenRecursive(child.id)
+      }),
+    )
+
+    return {
+      ...node?.children,
+      children: children,
+    }
+  }
 }

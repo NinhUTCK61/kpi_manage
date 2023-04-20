@@ -17,3 +17,7 @@ export const KpiNodeSchema = z.object({
 export const DeleteNodeSchema = z.object({
   id: z.string().array(),
 })
+
+export const GetListNodes = z.object({
+  root_note_id: z.string(),
+})

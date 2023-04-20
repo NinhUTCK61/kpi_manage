@@ -1,4 +1,4 @@
-import { DeleteNodeSchema, KpiNodeSchema } from '@/libs/schema/node'
+import { DeleteNodeSchema, GetListNodes, KpiNodeSchema } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
@@ -20,5 +20,12 @@ export const nodeRouter = createTRPCRouter({
     .output(z.string())
     .mutation(({ input, ctx }) => {
       return nodeService.deleteNode(input.id, ctx.session.user)
+    }),
+  getListNodes: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/get-list-nodes' }, protect: true })
+    .input(GetListNodes)
+    .output(z.any())
+    .query(({ input, ctx }) => {
+      return nodeService.getChildrenRecursive(input.root_note_id)
     }),
 })
