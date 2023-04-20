@@ -28,7 +28,7 @@ const Home = () => {
     onOpen: openDialogThumbnail,
     onClose: closeDialogThumbnail,
   } = useModalState()
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -47,9 +47,6 @@ const Home = () => {
       handle: () => setIsTrash(true),
     },
   ]
-
-
-
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
