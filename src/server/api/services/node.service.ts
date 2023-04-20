@@ -1,10 +1,10 @@
+import { convertToReactFlowNodes } from '@/libs/react-flow'
 import { KpiNodeSchema } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { stratify } from 'd3-hierarchy'
 import { User } from 'next-auth'
-import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
 
 type NodeCustom = z.infer<typeof KpiNodeSchema>
@@ -64,11 +64,22 @@ export class NodeService {
     return 'node.delete_success'
   }
 
-  async getChildrenRecursive(node_id: string) {
+  async getChildrenRecursive(id: string) {
+    const checkTemplate = await prisma.template.findFirst({
+      where: { id: id },
+    })
+
+    if (!checkTemplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Template not found',
+      })
+    }
+
     const node: Node[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
         SELECT *
         FROM "Node"
-        WHERE ID = ${node_id}
+        WHERE ID = ${checkTemplate.root_note_id}
         UNION ALL
         SELECT n.*
         FROM "Node" n
@@ -80,6 +91,6 @@ export class NodeService {
       .id((n) => n.id)
       .parentId((n) => n.parent_node_id)(node)
 
-    return d3Root
+    return convertToReactFlowNodes(d3Root)
   }
 }

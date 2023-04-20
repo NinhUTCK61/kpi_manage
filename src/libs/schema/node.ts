@@ -19,5 +19,5 @@ export const DeleteNodeSchema = z.object({
 })
 
 export const GetListNodes = z.object({
-  root_note_id: z.string(),
+  id: z.string(),
 })

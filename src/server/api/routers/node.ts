@@ -25,7 +25,7 @@ export const nodeRouter = createTRPCRouter({
     .meta({ openapi: { method: 'GET', path: '/get-list-nodes' }, protect: true })
     .input(GetListNodes)
     .output(z.any())
-    .query(({ input, ctx }) => {
-      return nodeService.getChildrenRecursive(input.root_note_id)
+    .query(({ input }) => {
+      return nodeService.getChildrenRecursive(input.id)
     }),
 })
