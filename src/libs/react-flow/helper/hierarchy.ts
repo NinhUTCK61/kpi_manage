@@ -76,9 +76,22 @@ export const convertToReactFlowNodes = (
   return descendants.map((node) => {
     return {
       id: node.data.id,
-      data: { id: node.data.id },
-      // position: { x: node.data.x, y: node.data.y },
-      position: { x: 0, y: 0 },
+      data: {
+        parent_node_id: node.data.parent_node_id,
+        id: node.data.id,
+        slug: node.data.slug,
+        x: node.data.x,
+        y: node.data.y,
+        input_title: node.data.input_title,
+        input_value: node.data.input_value,
+        value2number: node.data.value2number,
+        style: node.data.style,
+        is_formula: node.data.is_formula,
+        unit: node.data.unit,
+        template_id: node.data.template_id,
+      },
+      position: { x: node.data.x, y: node.data.y },
+      type: 'kpi',
     }
   })
 }
@@ -89,9 +102,9 @@ export const convertToReactFlowEdges = (
 ): ReactFlowEdge[] => {
   const links = hierarchyNode.links()
 
-  return links.map((link, index) => {
+  return links.map((link) => {
     return {
-      id: `edge-${link.source.data.id}-${link.target.data.id}-${index}`,
+      id: `${link.source.data.slug}-${link.target.data.slug}`,
       source: link.source.data.id,
       target: link.target.data.id,
       animated: true,
