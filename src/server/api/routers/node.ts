@@ -1,15 +1,15 @@
-import { NodeSchemaActive } from '@/libs/schema/node'
+import { KpiNodeSchema } from '@/libs/schema/node'
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 import { Node } from 'prisma/generated/zod'
-import NodeService from '../services/node'
+import NodeService from '../services/node.service'
 
 const node = new NodeService()
 
 export const nodeRouter = createTRPCRouter({
   createNode: publicProcedure
     .meta({ openapi: { method: 'POST', path: '/create-node' } })
-    .input(NodeSchemaActive)
-    .output(NodeSchemaActive)
+    .input(KpiNodeSchema)
+    .output(KpiNodeSchema)
     .mutation(({ input }) => {
       return node.createNode(input as Node)
     }),

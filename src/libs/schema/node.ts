@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const NodeSchemaActive = z.object({
+export const KpiNodeSchema = z.object({
   slug: z.string(),
   input_title: z.string(),
   input_value: z.string().nullable(),

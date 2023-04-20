@@ -1,10 +1,10 @@
-import { NodeSchemaActive } from '@/libs/schema/node'
+import { KpiNodeSchema } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
 
-type NodeCustome = z.infer<typeof NodeSchemaActive>
+type NodeCustome = z.infer<typeof KpiNodeSchema>
 class NodeService {
   async createNode(node: Node) {
     const isTemplate = await prisma.template.findFirst({
@@ -12,21 +12,16 @@ class NodeService {
         id: node.template_id,
       },
     })
-    const newNode = await prisma.node.create({
-      data: node,
-    })
-    console.log(isTemplate, newNode, 'ninhtran9234242')
-    if (newNode && isTemplate) {
+
+    if (isTemplate) {
+      const newNode = await prisma.node.create({
+        data: node,
+      })
       return newNode as NodeCustome
-    } else if (!isTemplate) {
+    } else {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
-      })
-    } else {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'error.invalid_server_error',
       })
     }
   }
