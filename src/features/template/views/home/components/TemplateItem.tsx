@@ -1,7 +1,5 @@
 import { useRenameTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
-import { api } from '@/libs/api'
-import { useTranslateError } from '@/libs/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import {
@@ -16,7 +14,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
-import UnLikeIcon from 'public/assets/svgs/un_like.svg'
 import { FormEvent, useRef, useState } from 'react'
 import { z } from 'zod'
 import { TemplateAction } from './TemplateAction'
@@ -119,7 +116,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         query: { root: template.root_note_id },
       })
   }
-  const utils = api.useContext()
 
   return (
     <Card elevation={0}>
