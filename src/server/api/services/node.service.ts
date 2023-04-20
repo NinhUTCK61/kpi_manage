@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server'
 import { User } from 'next-auth'
 
 export class NodeService {
-  async deleteNode([...nodeIds], template_id: string, user: User) {
+  async deleteNode([...nodeIds], user: User) {
     const validNodeCount = await prisma.node.findMany({
       where: {
         id: { in: nodeIds },
@@ -29,7 +29,6 @@ export class NodeService {
 
     await prisma.node.deleteMany({
       where: {
-        template_id,
         id: {
           in: nodeIds,
         },

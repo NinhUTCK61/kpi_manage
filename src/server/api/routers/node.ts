@@ -11,6 +11,6 @@ export const nodeRouter = createTRPCRouter({
     .input(DeleteNodeSchema)
     .output(z.any())
     .mutation(({ input, ctx }) => {
-      return nodeService.deleteNode(input.id, input.template_id, ctx.session.user)
+      return nodeService.deleteNode(input.id, ctx.session.user)
     }),
 })
