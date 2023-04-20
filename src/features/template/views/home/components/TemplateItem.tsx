@@ -115,6 +115,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const redirectTemplate = () => {
     !template.deleted_at && router.push('file/' + template.template_id)
   }
+  const utils = api.useContext()
 
   return (
     <Card elevation={0}>

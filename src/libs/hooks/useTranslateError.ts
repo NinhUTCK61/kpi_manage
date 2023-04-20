@@ -21,10 +21,12 @@ export const useTranslateError = () => {
     return message
   }
 
-  function showError<T extends TRPCClientError<AppRouter>>(err: T, title: string) {
-    const error = String(err.message)
-    const description = t(error)
-    enqueueSnackbar(title, { variant: 'error', description })
+  function showError(err: unknown, title: string) {
+    if (isTRPCClientError(err)) {
+      const error = String(err.message)
+      const description = t(error)
+      enqueueSnackbar(title, { variant: 'error', description })
+    }
   }
   return { handleError, showError }
 }
