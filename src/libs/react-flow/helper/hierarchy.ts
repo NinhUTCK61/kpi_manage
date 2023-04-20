@@ -1,7 +1,7 @@
 import { HierarchyNode } from 'd3-hierarchy'
 import { Edge as ReactFlowEdge } from 'reactflow'
 import { DEFAULT_NODE_ATTRIBUTES } from '../constant'
-import { HierarchyFlowNode, KPINode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from '../types'
 
 export function generateIds(d3Node: HierarchyFlowNode): void {
   d3Node.each((node) => {
@@ -58,7 +58,7 @@ export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
 
 export const generateNextId = generateNextIdByFill
 
-export const generateNextNode = (parentNode: HierarchyFlowNode): KPINode => {
+export const generateNextNode = (parentNode: HierarchyFlowNode): KPINodeType => {
   return {
     id: generateNextId(parentNode),
     slug: generateNextId(parentNode),
@@ -68,7 +68,9 @@ export const generateNextNode = (parentNode: HierarchyFlowNode): KPINode => {
 }
 
 // Convert d3-hierarchy nodes to reactflow nodes
-export const convertToReactFlowNodes = (hierarchyNode: HierarchyNode<KPINode>): ReactFlowNode[] => {
+export const convertToReactFlowNodes = (
+  hierarchyNode: HierarchyNode<KPINodeType>,
+): ReactFlowNode[] => {
   const descendants = hierarchyNode.descendants()
 
   return descendants.map((node) => {
@@ -96,7 +98,9 @@ export const convertToReactFlowNodes = (hierarchyNode: HierarchyNode<KPINode>): 
 }
 
 // Convert d3-hierarchy links to reactflow edges
-export const convertToReactFlowEdges = (hierarchyNode: HierarchyNode<KPINode>): ReactFlowEdge[] => {
+export const convertToReactFlowEdges = (
+  hierarchyNode: HierarchyNode<KPINodeType>,
+): ReactFlowEdge[] => {
   const links = hierarchyNode.links()
 
   return links.map((link) => {

@@ -4,18 +4,18 @@ import { Node } from 'reactflow'
 
 export type NodeType = 'kpi' | 'speech_ballon' | 'comment'
 
-export type KPINode = PNode & { type: 'kpi' }
-export type SpeechBallonNode = SpeechBallon & { type: 'speech_ballon' }
-export type CommentNode = Comment & { type: 'comment' }
+export type KPINodeType = PNode & { type: 'kpi' }
+export type SpeechBallonNodeType = SpeechBallon & { type: 'speech_ballon' }
+export type CommentNodeType = Comment & { type: 'comment' }
 
-export type RootNode = KPINode & {
+export type RootNode = KPINodeType & {
   children: RootNode[]
 }
 
-export type ReactFlowKPINode = Node<KPINode>
-export type ReactFlowSpeechBallonNode = Node<SpeechBallonNode>
-export type ReactFlowCommentNode = Node<CommentNode>
+export type ReactFlowKPINode = Node<KPINodeType>
+export type ReactFlowSpeechBallonNode = Node<SpeechBallonNodeType>
+export type ReactFlowCommentNode = Node<CommentNodeType>
 
-export type ReactFlowNode = Node<KPINode | SpeechBallonNode | CommentNode>
+export type ReactFlowNode = Node<KPINodeType | SpeechBallonNodeType | CommentNodeType>
 
 export type HierarchyFlowNode = HierarchyNode<ReactFlowKPINode>

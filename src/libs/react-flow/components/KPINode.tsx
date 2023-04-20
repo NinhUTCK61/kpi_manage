@@ -4,14 +4,14 @@ import { memo } from 'react'
 import { Handle, NodeProps, Position } from 'reactflow'
 import { NODE_HEIGHT, NODE_WIDTH } from '../constant'
 import { useRFStore } from '../hooks'
-import { KPINode } from '../types'
+import { KPINodeType } from '../types'
 
 const StyledImage = styled(Image)({
   transform: 'translate(-50%, -100%)',
   cursor: 'pointer',
 })
 
-export const KPINode = memo(function KPINode({ data }: NodeProps<KPINode>) {
+export const KPINode = memo(function KPINode({ data }: NodeProps<KPINodeType>) {
   const addNode = useRFStore((state) => state.addNode)
 
   const handleAddNode = (id: string) => {
