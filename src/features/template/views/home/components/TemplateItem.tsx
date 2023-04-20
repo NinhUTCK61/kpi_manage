@@ -119,6 +119,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         query: { root: template.root_note_id },
       })
   }
+  const utils = api.useContext()
 
   return (
     <Card elevation={0}>
