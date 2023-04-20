@@ -14,6 +14,7 @@
   "description_rename_success": "ファイル名を変更しました。",
   "delete_success": "ファイルを削除しました",
   "description_delete_success": "このファイルはごみ箱に移動されました。",
+  "description_delete_per_success": "このファイルは完全に削除されました",
   "set_thumbnail_success": "サムネイルを設定しました。",
   "description_set_thumbnail_success": "ファイルのサムネイルを設定しました。",
   "detail_dialog_delete": "このファイルを削除しますか？",
