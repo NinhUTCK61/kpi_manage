@@ -1,6 +1,6 @@
 import { api } from '@/libs/api'
 import { base } from '@/libs/config/theme'
-import { useModalState } from '@/libs/hooks'
+import { useModalState, useTranslateError } from '@/libs/hooks'
 import { DialogAction, DialogThumbnail, Layout, Menu, MenuItem } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Button, Grid, Stack, Typography } from '@mui/material'
@@ -28,6 +28,7 @@ const Home = () => {
     onOpen: openDialogThumbnail,
     onClose: closeDialogThumbnail,
   } = useModalState()
+  const { showError } = useTranslateError()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -106,9 +107,7 @@ const Home = () => {
           router.push(`/template/${data.id}`)
         },
         onError: (err) => {
-          const error = String(err.message)
-          const description = t(error)
-          enqueueSnackbar(t('create_failed'), { variant: 'error', description })
+          showError(err, t('create_failed'))
         },
       },
     )
@@ -130,12 +129,7 @@ const Home = () => {
           refetch()
         },
         onError: (err) => {
-          const error = String(err.message)
-          const description = t(error)
-          enqueueSnackbar(t(is_permanently ? 'permanently_delete_failed' : 'delete_failed'), {
-            variant: 'error',
-            description,
-          })
+          showError(err, t(is_permanently ? 'permanently_delete_failed' : 'delete_failed'))
         },
       },
     )
@@ -156,9 +150,7 @@ const Home = () => {
           refetch()
         },
         onError: (err) => {
-          const error = String(err.message)
-          const description = t(error)
-          enqueueSnackbar(t('restore_failed'), { variant: 'error', description })
+          showError(err, t('restore_failed'))
         },
       },
     )

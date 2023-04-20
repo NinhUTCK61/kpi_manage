@@ -75,7 +75,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
             variant: 'success',
             description: t('description_rename_success') as string,
           })
-          refetch()
         },
       },
     )
@@ -124,9 +123,56 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
   const redirectTemplate = () => {
     !template.deleted_at && router.push('template/' + template.template_id)
   }
+  const utils = api.useContext()
 
-  const { mutate: like } = api.template.likeTemplate.useMutation()
-  const { mutate: rename } = api.template.updateTemplate.useMutation()
+  const { mutate: like } = api.template.likeTemplate.useMutation({
+    onMutate: async (template) => {
+      await utils.template.getListTemplate.cancel()
+
+      const prevData = utils.template.getListTemplate.getData()
+      utils.template.getListTemplate.setData({ isTrash: false }, (old) =>
+        (old || []).map((e) =>
+          e.template_id === template.id ? { ...e, is_favorite: !template.is_favorite } : e,
+        ),
+      )
+
+      return { prevData }
+    },
+    onSuccess: () => {
+      utils.template.getListTemplate.refetch({ isTrash: false })
+    },
+    onError: (err, variables, ctx) => {
+      utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
+    },
+
+    onSettled: () => {
+      utils.template.getListTemplate.invalidate()
+    },
+  })
+  const { mutate: rename } = api.template.updateTemplate.useMutation({
+    onMutate: async (template) => {
+      await utils.template.getListTemplate.cancel()
+
+      const prevData = utils.template.getListTemplate.getData()
+      utils.template.getListTemplate.setData({ isTrash: false }, (old) =>
+        (old || []).map((e) =>
+          e.template_id === template.id ? { ...e, name: String(template.name) } : e,
+        ),
+      )
+
+      return { prevData }
+    },
+    onSuccess: () => {
+      utils.template.getListTemplate.refetch({ isTrash: false })
+    },
+    onError: (err, variables, ctx) => {
+      utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
+    },
+
+    onSettled: () => {
+      utils.template.getListTemplate.invalidate()
+    },
+  })
 
   const handleLike = () => {
     like(
@@ -135,11 +181,8 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
         is_favorite: !template.is_favorite,
       },
       {
-        onSuccess: () => {
-          refetch()
-        },
         onError: (err) => {
-          showError(err, t('like_error'))
+          showError(err, t('like_failed'))
         },
       },
     )
