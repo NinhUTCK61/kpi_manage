@@ -1,10 +1,10 @@
 import {
   HierarchyFlowNode,
-  KPINode,
   ReactFlowKPINode,
   TemplateProvider,
   stratifier,
   useRFStore,
+  KpiNode,
 } from '@/libs/react-flow'
 import { Box } from '@mui/material'
 import { GetStaticPropsContext, type NextPage } from 'next'
@@ -47,10 +47,11 @@ const _edges: Edge[] = []
 
 const d3Root: HierarchyFlowNode = stratifier(_nodes)
 const nodeTypes = {
-  kpi: KPINode,
+  kpi: KpiNode,
 }
 
 const Home: NextPage = () => {
+  
   return (
     <>
       <Head>

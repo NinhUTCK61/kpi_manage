@@ -25,6 +25,7 @@ export const generateNextReactFlowNode = (
     data: nextFlowNode,
     position: { x: 0, y: 0 },
     type: 'kpi',
+    draggable: false,
   }
 
   parentNode.children = [...(parentNode.children ?? []), hierarchy(node)]
@@ -33,6 +34,7 @@ export const generateNextReactFlowNode = (
     id: `${parentId}-${nextFlowNode.id}`,
     source: parentId,
     target: nextFlowNode.id,
+    type: 'kpi',
   }
 
   return { node, edge }
@@ -51,7 +53,7 @@ function calculateSubtreeChild<T>(node: HierarchyNode<T>): number {
 export function getTreeLayout<T>(d3Root: HierarchyNode<T>) {
   return tree<T>()
     .nodeSize([
-      NODE_HEIGHT * (1 + VERTICAL_SPACING_FACTOR),
+      NODE_HEIGHT * (1.5 + VERTICAL_SPACING_FACTOR),
       NODE_WIDTH * (1 + HORIZONTAL_SPACING_FACTOR),
     ]) // default vertical spacing: 1.5 - 1 = 0.5 (* NODE_HEIGHT), horizontal = NODE_WIDTH * (1.5 - 1)
     .separation((a, b) => {

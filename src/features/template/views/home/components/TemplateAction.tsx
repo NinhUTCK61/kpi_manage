@@ -81,10 +81,21 @@ const CardActions = styled(MuiCardActions)(({ theme }) => ({
 }))
 
 const InputRename = styled(Input)(({ theme }) => ({
-  maxWidth: 170,
   height: 24,
   background: theme.palette.customPrimary[100],
   fontWeight: 600,
+  ':hover': {
+    borderBottom: 'none !important',
+    '&:before': {
+      borderBottom: 'none !important',
+    },
+  },
+  ':before': {
+    borderBottom: 'none !important',
+  },
+  ':after': {
+    borderBottom: 'none',
+  },
 }))
 
 const TextName = styled(Typography)(({ theme }) => ({
