@@ -113,7 +113,7 @@ model Node {
   input_value    String?        @db.Text
   is_formula     Boolean?       @default(false)
   value2number   Float?
-  style          String?
+  node_style     String?
   x              Float
   y              Float
   unit           String?
@@ -133,8 +133,8 @@ model SpeechBallon {
   x           Float
   y           Float
   shape       String
-  style       Json
-  stroke      Json
+  node_style  String?
+  stroke      String?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   Template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
