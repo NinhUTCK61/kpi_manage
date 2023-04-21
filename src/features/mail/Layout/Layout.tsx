@@ -8,6 +8,7 @@ import {
   Row,
   Section,
   Tailwind,
+  Text,
 } from '@react-email/components'
 import { FC, PropsWithChildren } from 'react'
 import { Header } from './Header'
@@ -38,7 +39,16 @@ const MailLayout: FC<PropsWithChildren> = ({ children }) => {
         <Body>
           <Container className="m-auto flex flex-col p-4 sm:p-10" style={main}>
             <Header />
-            <Section className="px-6 py-1 sm:py-6">{children}</Section>
+            <Section className="px-6 py-1 sm:py-6">
+              {children}
+              <Text style={textStyle} className="m-0">
+                Thank you for choosing KPI-Master!
+                <br />
+                Best regards,
+                <br />
+                The KPI Master Team
+              </Text>
+            </Section>
             <Row>
               <Column align="right">
                 <Img src={hand1} className="w-[100px] md:w-[140px]" />
@@ -63,4 +73,9 @@ const main = {
   backgroundColor: '#ffffff',
   fontFamily: '"Noto Sans",sans-serif',
   maxWidth: '656px',
+}
+
+const textStyle = {
+  fontSize: '17px',
+  color: '#222222',
 }

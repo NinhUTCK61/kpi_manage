@@ -31,11 +31,6 @@ const ForgotPasswordMail: FC<EmailProps> = (props) => {
         page:&nbsp;
         <Link href={url}>{url}</Link>
       </Text>
-      <Text style={textStyle} className="m-0">
-        Thanks,
-        <br />
-        KPI Master Team.
-      </Text>
     </MailLayout>
   )
 }
