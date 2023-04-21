@@ -47,17 +47,22 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?      @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  password      String?
-  userTemplate  UserTemplate[]
-  comment       Comment[]
-  PasswordReset PasswordReset?
+  id              String         @id @default(cuid())
+  name            String?        @map("last_name")
+  first_name      String?
+  email           String?        @unique
+  emailVerified   DateTime?      @map("email_verified")
+  image           String?
+  company_name    String?
+  role_in_company String?
+  date_of_birth   DateTime?
+  accounts        Account[]
+  sessions        Session[]
+  password        String?
+  userTemplate    UserTemplate[]
+  comment         Comment[]
+  PasswordReset   PasswordReset?
+  user_reason     UserReason[]
 }
 
 model Comment {
@@ -158,4 +163,33 @@ model PasswordReset {
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, token])
+}
+
+model Reason {
+  id         Int        @id @default(autoincrement())
+  text_ja    String
+  text_en    String
+  type       ReasonType @default(REASON)
+  is_enabled Boolean    @default(true)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  user_reason UserReason[]
+}
+
+enum ReasonType {
+  REASON
+  ISSUE
+}
+
+model UserReason {
+  id        Int     @id @default(autoincrement())
+  user_id   String
+  reason_id Int
+  User      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  Reason    Reason? @relation(fields: [reasonId], references: [id], onDelete: Cascade)
+  reasonId  Int?
+
+  @@unique([user_id, reason_id])
 }
