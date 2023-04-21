@@ -28,8 +28,8 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const router = useRouter()
   const { t } = useTranslation('home')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const inputNameRef = useRef<HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const inputNameRef = useRef<HTMLElement>(null)
   const [name, setName] = useState<string>('')
   const mutationRename = useRenameTemplate()
 
@@ -52,11 +52,17 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    mutationRename.mutate({
-      id: template.template_id,
-      name,
-    })
-    setName('')
+    mutationRename.mutate(
+      {
+        id: template.template_id,
+        name,
+      },
+      {
+        onSettled() {
+          setName('')
+        },
+      },
+    )
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +96,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         },
         {
           title: t('rename'),
-          action: () => handleOpenChangeName(),
+          action: handleOpenChangeName,
         },
         {
           title: t('delete'),
