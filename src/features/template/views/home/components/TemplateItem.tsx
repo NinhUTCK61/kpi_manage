@@ -1,30 +1,22 @@
-import { useApiTemplate } from '@/features/template/hooks'
+import { useRenameTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
-import { useTranslateError } from '@/libs/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import {
   CardContent,
-  CardHeader,
   IconButton,
-  Input,
   Card as MuiCard,
-  CardActions as MuiCardActions,
-  Stack,
-  Typography,
+  CardHeader as MuiCardHeader,
   styled,
 } from '@mui/material'
-import { formatDistance } from 'date-fns'
-import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import ImageFile from 'public/assets/imgs/file.png'
-import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
-import UnLikeIcon from 'public/assets/svgs/un_like.svg'
 import { FormEvent, useRef, useState } from 'react'
 import { z } from 'zod'
+import { TemplateAction } from './TemplateAction'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
@@ -32,22 +24,19 @@ type TemplateItemTypes = {
   refetch(): void
 }
 
-const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template, refetch }) => {
+const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template }) => {
   const router = useRouter()
-  const {
-    t,
-    i18n: { language },
-  } = useTranslation('home')
+  const { t } = useTranslation('home')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const inputNameRef = useRef<HTMLElement>(null)
   const open = Boolean(anchorEl)
   const [name, setName] = useState<string>('')
-  const { showError } = useTranslateError()
-  const { renameTemplate, likeTemplate } = useApiTemplate()
+  const mutationRename = useRenameTemplate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -63,7 +52,11 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    renameTemplate(template.template_id, name, () => setName(''))
+    mutationRename.mutate({
+      id: template.template_id,
+      name,
+    })
+    setName('')
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +82,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
     : [
         {
           title: t('open'),
-          action: () => handleClose(),
+          action: () => router.push('file/' + template.template_id),
         },
         {
           title: t('thumbnail'),
@@ -110,10 +103,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
     !template.deleted_at && router.push('template/' + template.template_id)
   }
 
-  const handleLike = () => {
-    likeTemplate(template.template_id, template.is_favorite)
-  }
-
   return (
     <Card elevation={0}>
       <CardHeader
@@ -122,8 +111,8 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
             <Image src={MenuIcon} alt="menu" />
           </IconButton>
         }
-        sx={{ position: 'absolute', right: 10, top: 5, p: 0 }}
       />
+
       <Menu
         anchorEl={anchorEl}
         id="file-menu"
@@ -154,50 +143,23 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template,
       </Menu>
 
       <CardContent sx={{ p: 0 }} onClick={redirectTemplate}>
-        <ImagePointer src={ImageFile} alt="file" />
+        <Image
+          src={ImageFile}
+          alt="file"
+          style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
+        />
       </CardContent>
-      <CardActions>
-        <Stack width="100%">
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            component="form"
-            onSubmit={onSaveName}
-          >
-            {!!name ? (
-              <InputRename
-                value={name}
-                onChange={handleChangeName}
-                onBlur={() => onSaveName()}
-                inputRef={inputNameRef}
-              />
-            ) : (
-              <TextName>{template.name}</TextName>
-            )}
-            {!template.deleted_at && (
-              <ImagePointer
-                onClick={handleLike}
-                src={template.is_favorite ? LikeIcon : UnLikeIcon}
-                alt="like"
-              />
-            )}
-          </Stack>
-          <Typography variant="body2" color="greyScale.500">
-            {formatDistance(template.created_at, new Date(), {
-              addSuffix: true,
-              locale: language === 'en' ? enAU : ja,
-            })}
-          </Typography>
-        </Stack>
-      </CardActions>
+
+      <TemplateAction
+        onSaveName={onSaveName}
+        template={template}
+        name={name}
+        handleChangeName={handleChangeName}
+        inputNameRef={inputNameRef}
+      />
     </Card>
   )
 }
-
-const CardActions = styled(MuiCardActions)(({ theme }) => ({
-  padding: '11px 16px',
-  background: theme.palette.greyScale[200],
-}))
 
 const MenuItemFile = styled(MenuItem)({
   borderBottom: 'none',
@@ -208,22 +170,6 @@ const MenuItemFileDelete = styled(MenuItem)(({ theme }) => ({
   color: theme.palette.red[400],
 }))
 
-const InputRename = styled(Input)(({ theme }) => ({
-  maxWidth: 170,
-  height: 24,
-  background: theme.palette.customPrimary[100],
-  fontWeight: 600,
-}))
-
-const TextName = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  maxWidth: 170,
-  color: theme.palette.base.black,
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-}))
-
 const Card = styled(MuiCard)(({ theme }) => ({
   maxWidth: 268,
   borderRadius: 12,
@@ -231,6 +177,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
   border: `1px solid ${theme.palette.greyScale[300]}`,
 }))
 
-const ImagePointer = styled(Image)({ cursor: 'pointer' })
+const CardHeader = styled(MuiCardHeader)({
+  position: 'absolute',
+  right: 5,
+  top: 5,
+  padding: 0,
+})
 
 export { TemplateItem }

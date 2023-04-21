@@ -1,20 +1,18 @@
 import { api } from '@/libs/api'
-import { useModalState, useTranslateError } from '@/libs/hooks'
+import { useModalState } from '@/libs/hooks'
 import { DialogAction, DialogThumbnail, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
-import { useApiTemplate } from '../../hooks'
+import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
 import { ButtonCreate, SelectStatus, TemplateItem } from './components'
 
 const Home = () => {
-  const router = useRouter()
   const { t } = useTranslation('home')
   const [nodeId, setNodeId] = useState<string>()
   const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
@@ -24,8 +22,10 @@ const Home = () => {
     onOpen: openDialogThumbnail,
     onClose: closeDialogThumbnail,
   } = useModalState()
-  const { showError } = useTranslateError()
-  const { createTemplate, deleteTemplate, restoreTemplate } = useApiTemplate()
+
+  const mutationCreate = useCreateTemplate()
+  const mutationRestore = useRestoreTemplate()
+  const mutationDelete = useDeleteTemplate()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -43,7 +43,10 @@ const Home = () => {
       handleConfirm: () => handleConfirmAction(),
       type: 'delete',
       textSubmit: t('delete'),
-      action: () => deleteTemplate(String(nodeId), false, () => setAction(null)),
+      action: () =>
+        mutationDelete.mutate({
+          id: String(nodeId),
+        }),
     },
     [FileAction.Restore]: {
       title: t('restore'),
@@ -51,7 +54,10 @@ const Home = () => {
       handleConfirm: () => handleConfirmAction(),
       type: 'warning',
       textSubmit: t('restore'),
-      action: () => restoreTemplate(String(nodeId), () => setAction(null)),
+      action: () =>
+        mutationRestore.mutate({
+          id: String(nodeId),
+        }),
     },
     [FileAction.DeletePermanently]: {
       title: t('permanently_delete'),
@@ -59,13 +65,22 @@ const Home = () => {
       handleConfirm: () => handleConfirmAction(),
       type: 'delete',
       textSubmit: t('permanently_delete'),
-      action: () => deleteTemplate(String(nodeId), true, () => setAction(null)),
+      action: () =>
+        mutationDelete.mutate({
+          id: String(nodeId),
+          is_permanently: true,
+        }),
     },
   }
 
-  const { data, refetch } = api.template.getListTemplate.useQuery({
-    isTrash: isTrash,
-  })
+  const { data, refetch } = api.template.getListTemplate.useQuery(
+    {
+      isTrash: isTrash,
+    },
+    {
+      initialData: [],
+    },
+  )
 
   const handleConfirmThumbnail = () => {
     enqueueSnackbar('', {
@@ -78,6 +93,7 @@ const Home = () => {
   const handleConfirmAction = () => {
     if (!action) return
     OPTION_ACTIONS[action].action()
+    setAction(null)
   }
 
   return (
@@ -85,13 +101,15 @@ const Home = () => {
       <ButtonCreate
         variant="contained"
         startIcon={<Image src={AddIcon} alt="add" />}
-        onClick={createTemplate}
+        onClick={() => mutationCreate.mutate({})}
       >
         {t('create')}
       </ButtonCreate>
+
       <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
+
       <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
-        {(data || []).map((template, index) => (
+        {data.map((template, index) => (
           <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
             <TemplateItem
               template={template}
@@ -101,6 +119,7 @@ const Home = () => {
           </Grid>
         ))}
       </Grid>
+
       {action && (
         <DialogAction
           open={!!action}
@@ -112,6 +131,7 @@ const Home = () => {
           textSubmit={OPTION_ACTIONS[action].textSubmit}
         />
       )}
+
       <DialogThumbnail
         open={isOpenThumbnail}
         handleClose={closeDialogThumbnail}

@@ -1,1 +1,5 @@
-export * from './useApiTemplate'
+export * from './useCreateTemplate'
+export * from './useDeleteTemplate'
+export * from './useLikeTemplate'
+export * from './useRenameTemplate'
+export * from './useRestoreTemplate'
