@@ -137,6 +137,9 @@ const defaultTheme: Theme = createTheme({
     },
     fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
   },
+  shape: {
+    borderRadius: 6,
+  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {

@@ -21,11 +21,11 @@ const useDeleteTemplate = () => {
 
       return { prevData, isTrash: template.is_permanently }
     },
-    onSuccess: (data, _, isTrash) => {
+    onSuccess: (data, _, ctx) => {
       enqueueSnackbar('', {
         variant: 'success',
         description: t(
-          isTrash ? 'description_delete_per_success' : 'description_delete_success',
+          ctx?.isTrash ? 'description_delete_per_success' : 'description_delete_success',
         ) as string,
       })
     },

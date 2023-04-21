@@ -38,11 +38,14 @@ const DialogAction: React.FC<DialogActionTypes> = ({
       onClose={handleClose}
       PaperProps={{
         elevation: 2,
+        sx: {
+          p: 0,
+          width: 400,
+        },
       }}
     >
       <DialogContent
         sx={{
-          width: 400,
           p: 0,
         }}
       >

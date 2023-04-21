@@ -23,7 +23,11 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
     <CacheProvider value={emotionCache}>
       <SessionProvider session={session}>
         <ThemeProvider theme={defaultTheme}>
-          <SnackbarProvider anchorOrigin={defaultAnchor} Components={customComponents}>
+          <SnackbarProvider
+            anchorOrigin={defaultAnchor}
+            autoHideDuration={1000}
+            Components={customComponents}
+          >
             <CssBaseline />
             <Component {...pageProps} />
           </SnackbarProvider>
