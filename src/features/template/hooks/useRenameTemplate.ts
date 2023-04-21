@@ -11,7 +11,6 @@ const useRenameTemplate = () => {
   const mutation = api.template.updateTemplate.useMutation({
     onMutate: async (template) => {
       await utils.template.getListTemplate.cancel()
-
       const prevData = utils.template.getListTemplate.getData({ isTrash: false })
 
       utils.template.getListTemplate.setData({ isTrash: false }, (old = []) =>
@@ -20,23 +19,21 @@ const useRenameTemplate = () => {
 
       return { prevData }
     },
-
     onSuccess: () => {
       enqueueSnackbar(t('rename_success'), {
         variant: 'success',
         description: t('description_rename_success') as string,
       })
     },
-
     onError: (err, _, ctx) => {
       showError(err, t('rename_failed'))
       utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
     },
-
     onSettled: () => {
       utils.template.getListTemplate.invalidate()
     },
   })
+
   return mutation
 }
 

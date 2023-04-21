@@ -11,7 +11,6 @@ const useRestoreTemplate = () => {
   const mutation = api.template.restoreTemplate.useMutation({
     onMutate: async (template) => {
       await utils.template.getListTemplate.cancel()
-
       const prevData = utils.template.getListTemplate.getData({ isTrash: true })
 
       utils.template.getListTemplate.setData({ isTrash: true }, (old = []) =>
@@ -20,23 +19,21 @@ const useRestoreTemplate = () => {
 
       return { prevData }
     },
-
     onSuccess: () => {
       enqueueSnackbar(t('restore_success'), {
         variant: 'success',
         description: t('description_restore_success') as string,
       })
     },
-
     onError: (err, _, ctx) => {
       showError(err, t('restore_failed'))
       utils.template.getListTemplate.setData({ isTrash: true }, ctx?.prevData)
     },
-
     onSettled: () => {
       utils.template.getListTemplate.invalidate()
     },
   })
+
   return mutation
 }
 

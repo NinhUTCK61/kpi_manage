@@ -27,6 +27,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
   const {
     i18n: { language },
   } = useTranslation('home')
+
   const mutationLike = useLikeTemplate()
   const handleLike = () => {
     mutationLike.mutate({ id: template.template_id, is_favorite: !template.is_favorite })

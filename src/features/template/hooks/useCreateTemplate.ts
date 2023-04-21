@@ -13,15 +13,14 @@ const useCreateTemplate = () => {
     onSuccess: (data) => {
       router.push('/file/' + data.id)
     },
-
     onError: (err) => {
       showError(err, t('create_failed'))
     },
-
     onSettled: () => {
       utils.template.getListTemplate.invalidate()
     },
   })
+
   return mutation
 }
 

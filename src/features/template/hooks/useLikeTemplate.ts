@@ -10,7 +10,6 @@ const useLikeTemplate = () => {
   const mutation = api.template.likeTemplate.useMutation({
     onMutate: async (template) => {
       await utils.template.getListTemplate.cancel()
-
       const prevData = utils.template.getListTemplate.getData({ isTrash: false })
 
       utils.template.getListTemplate.setData({ isTrash: false }, (old = []) =>
@@ -21,16 +20,15 @@ const useLikeTemplate = () => {
 
       return { prevData }
     },
-
     onError: (err, _, ctx) => {
       showError(err, t('like_failed'))
       utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
     },
-
     onSettled: () => {
       utils.template.getListTemplate.invalidate()
     },
   })
+
   return mutation
 }
 

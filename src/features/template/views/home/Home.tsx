@@ -36,11 +36,17 @@ const Home = () => {
     }
   }
 
+  const handleConfirmAction = () => {
+    if (!action) return
+    OPTION_ACTIONS[action].action()
+    setAction(null)
+  }
+
   const OPTION_ACTIONS = {
     [FileAction.Delete]: {
       title: t('delete_file'),
       description: t('detail_dialog_delete'),
-      handleConfirm: () => handleConfirmAction(),
+      handleConfirm: handleConfirmAction,
       type: 'delete',
       textSubmit: t('delete'),
       action: () =>
@@ -51,7 +57,7 @@ const Home = () => {
     [FileAction.Restore]: {
       title: t('restore'),
       description: t('detail_dialog_restore'),
-      handleConfirm: () => handleConfirmAction(),
+      handleConfirm: handleConfirmAction,
       type: 'warning',
       textSubmit: t('restore'),
       action: () =>
@@ -62,7 +68,7 @@ const Home = () => {
     [FileAction.DeletePermanently]: {
       title: t('permanently_delete'),
       description: t('detail_dialog_delete_per'),
-      handleConfirm: () => handleConfirmAction(),
+      handleConfirm: handleConfirmAction,
       type: 'delete',
       textSubmit: t('permanently_delete'),
       action: () =>
@@ -88,12 +94,6 @@ const Home = () => {
       description: t('description_set_thumbnail_success') as string,
     })
     closeDialogThumbnail()
-  }
-
-  const handleConfirmAction = () => {
-    if (!action) return
-    OPTION_ACTIONS[action].action()
-    setAction(null)
   }
 
   return (

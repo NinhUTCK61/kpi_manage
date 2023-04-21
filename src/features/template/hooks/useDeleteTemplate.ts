@@ -11,7 +11,6 @@ const useDeleteTemplate = () => {
   const mutation = api.template.deleteTemplate.useMutation({
     onMutate: async (template) => {
       await utils.template.getListTemplate.cancel()
-
       const prevData = utils.template.getListTemplate.getData({ isTrash: template.is_permanently })
 
       utils.template.getListTemplate.setData({ isTrash: template.is_permanently }, (old = []) => {
@@ -22,7 +21,6 @@ const useDeleteTemplate = () => {
 
       return { prevData, isTrash: template.is_permanently }
     },
-
     onSuccess: (data, _, isTrash) => {
       enqueueSnackbar('', {
         variant: 'success',
@@ -31,16 +29,15 @@ const useDeleteTemplate = () => {
         ) as string,
       })
     },
-
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))
       utils.template.getListTemplate.setData({ isTrash: ctx?.isTrash }, ctx?.prevData)
     },
-
     onSettled: () => {
       utils.template.getListTemplate.invalidate()
     },
   })
+
   return mutation
 }
 
