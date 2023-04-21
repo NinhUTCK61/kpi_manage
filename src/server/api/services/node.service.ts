@@ -69,12 +69,12 @@ export class NodeService {
     return 'node.delete_success'
   }
 
-  async getListNodes(template_id: string, root_note_id: string) {
-    const checkTemplate = await prisma.template.findFirst({
-      where: { id: template_id },
+  async getListNodes(template_id: string, root_note_id: string, user: User) {
+    const checkUserTempplate = await prisma.userTemplate.findFirst({
+      where: { template_id, user_id: user.id },
     })
 
-    if (!checkTemplate) {
+    if (!checkUserTempplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
