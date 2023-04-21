@@ -8,12 +8,12 @@ const useDeleteTemplate = () => {
   const utils = api.useContext()
   const { showError } = useTranslateError()
 
-  const mutation = api.template.deleteTemplate.useMutation({
+  const mutation = api.template.delete.useMutation({
     onMutate: async (template) => {
-      await utils.template.getListTemplate.cancel()
-      const prevData = utils.template.getListTemplate.getData({ isTrash: template.is_permanently })
+      await utils.template.list.cancel()
+      const prevData = utils.template.list.getData({ isTrash: template.is_permanently })
 
-      utils.template.getListTemplate.setData({ isTrash: template.is_permanently }, (old = []) => {
+      utils.template.list.setData({ isTrash: template.is_permanently }, (old = []) => {
         return template.is_permanently
           ? old.filter((e) => e.template_id !== template.id)
           : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
@@ -31,10 +31,10 @@ const useDeleteTemplate = () => {
     },
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))
-      utils.template.getListTemplate.setData({ isTrash: ctx?.isTrash }, ctx?.prevData)
+      utils.template.list.setData({ isTrash: ctx?.isTrash }, ctx?.prevData)
     },
     onSettled: () => {
-      utils.template.getListTemplate.invalidate()
+      utils.template.list.invalidate()
     },
   })
 

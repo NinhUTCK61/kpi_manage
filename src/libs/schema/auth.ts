@@ -6,12 +6,12 @@ export const LoginSchema = z.object({
   password: NonEmptyString,
 })
 
-export const ForgotPasswordSchema = z.object({
+export const ForgotPasswordSchemaInput = z.object({
   email: z.string().email(),
 })
 
 export type SignInType = z.infer<typeof LoginSchema>
-export type ForgotPasswordType = z.infer<typeof ForgotPasswordSchema>
+export type ForgotPasswordType = z.infer<typeof ForgotPasswordSchemaInput>
 
 const uppercaseRegex = /[A-Z]/
 const lowercaseRegex = /[a-z]/
@@ -26,13 +26,13 @@ export const PasswordSchema = z
   .regex(lowercaseRegex, 'Must include at least one lowercase letter')
   .regex(numberRegex, 'Must include at least one number')
 
-export const SignUpSchema = z.object({
+export const SignUpSchemaInput = z.object({
   email: z.string().email(),
   password: PasswordSchema,
   name: z.string().max(255).min(1),
 })
 
-export const ResetPasswordSchema = z
+export const ResetPasswordSchemaInput = z
   .object({
     password: PasswordSchema,
     confirmPassword: PasswordSchema,
@@ -43,7 +43,7 @@ export const ResetPasswordSchema = z
     path: ['confirmPassword'],
   })
 
-export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>
+export type ResetPasswordType = z.infer<typeof ResetPasswordSchemaInput>
 
 export const passwordPolicySchema = z
   .string()

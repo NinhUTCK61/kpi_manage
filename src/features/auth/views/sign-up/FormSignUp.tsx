@@ -1,4 +1,4 @@
-import { SignUpSchema } from '@/libs/schema'
+import { SignUpSchemaInput } from '@/libs/schema'
 import { Input, PasswordStateValidation, TextColor } from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -13,7 +13,7 @@ import { z } from 'zod'
 import { CustomImage } from '../../components'
 
 type FormSignUpTypes = {
-  control: Control<z.infer<typeof SignUpSchema>>
+  control: Control<z.infer<typeof SignUpSchemaInput>>
   handleSubmit(): void
   isLoading: boolean
 }

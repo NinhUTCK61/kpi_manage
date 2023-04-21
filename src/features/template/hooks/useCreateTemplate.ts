@@ -9,7 +9,7 @@ const useCreateTemplate = () => {
   const utils = api.useContext()
   const { showError } = useTranslateError()
 
-  const mutation = api.template.createTemplate.useMutation({
+  const mutation = api.template.create.useMutation({
     onSuccess: (data) => {
       router.push('/file/' + data.id)
     },
@@ -17,7 +17,7 @@ const useCreateTemplate = () => {
       showError(err, t('create_failed'))
     },
     onSettled: () => {
-      utils.template.getListTemplate.invalidate()
+      utils.template.list.invalidate()
     },
   })
 

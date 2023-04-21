@@ -79,7 +79,7 @@ const Home = () => {
     },
   }
 
-  const { data, refetch } = api.template.getListTemplate.useQuery(
+  const { data, refetch } = api.template.list.useQuery(
     {
       isTrash: isTrash,
     },
@@ -101,7 +101,7 @@ const Home = () => {
       <ButtonCreate
         variant="contained"
         startIcon={<Image src={AddIcon} alt="add" />}
-        onClick={() => mutationCreate.mutate({})}
+        onClick={() => mutationCreate.mutate()}
       >
         {t('create')}
       </ButtonCreate>

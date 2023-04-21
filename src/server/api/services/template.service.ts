@@ -1,4 +1,8 @@
-import { TemplateDataOutputSchema, UpdateTemplateSchema, likeTemplateSchema } from '@/libs/schema'
+import {
+  LikeTemplateSchemaInput,
+  TemplateDataOutputSchema,
+  UpdateTemplateSchemaInput,
+} from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
@@ -8,7 +12,7 @@ import { User } from 'next-auth'
 import { z } from 'zod'
 
 export class TemplateService {
-  async getListTemplate(userId: string, isTrash: boolean) {
+  async list(userId: string, isTrash: boolean) {
     const deletedOpt = isTrash ? { not: null } : null
     const listTemplate = await prisma.userTemplate.findMany({
       where: {
@@ -48,7 +52,7 @@ export class TemplateService {
     return templateData
   }
 
-  async updateTemplate({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchema>, user: User) {
+  async update({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchemaInput>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -74,7 +78,7 @@ export class TemplateService {
     return updateData
   }
 
-  async createTemplate(user_id: string) {
+  async create(user_id: string) {
     return await prisma.$transaction(async (tx) => {
       const rootNodeId = nanoid()
       const template = await tx.template.create({
@@ -104,7 +108,7 @@ export class TemplateService {
     })
   }
 
-  async likeTemplate({ id, is_favorite }: z.infer<typeof likeTemplateSchema>, user: User) {
+  async like({ id, is_favorite }: z.infer<typeof LikeTemplateSchemaInput>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -130,7 +134,7 @@ export class TemplateService {
     return likeTemplate
   }
 
-  async deleteTemplate(id: string, is_permanently: boolean, user: User) {
+  async delete(id: string, is_permanently: boolean, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -176,7 +180,7 @@ export class TemplateService {
     return 'template.move_to_trash'
   }
 
-  async restoreTemplate(id: string, user: User) {
+  async restore(id: string, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,

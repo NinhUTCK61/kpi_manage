@@ -15,12 +15,12 @@ export const KpiNodeSchema = z.object({
   parent_node_id: z.string().nullable(),
 })
 
-export const DeleteNodeSchema = z.object({
+export const DeleteNodeSchemaInput = z.object({
   id: z.string().array(),
 })
 
 const kpiNodeSchema = NodeSchema.merge(z.object({ type: z.literal('kpi') }))
-const scpeechBallonSchema = SpeechBallonSchema.merge(z.object({ type: z.literal('speech_ballon') }))
+const speechBallonSchema = SpeechBallonSchema.merge(z.object({ type: z.literal('speech_ballon') }))
 
 const reactFlowSchema = z.object({
   id: z.string(),
@@ -39,7 +39,7 @@ const reactFlowKPINode = reactFlowSchema.merge(
 
 const reactFlowSpeechBallonNode = reactFlowSchema.merge(
   z.object({
-    data: scpeechBallonSchema,
+    data: speechBallonSchema,
     type: z.literal('speech_ballon'),
   }),
 )
@@ -58,7 +58,7 @@ export const ReactFlowSchema = z.object({
 
 export type ReactFlowType = z.infer<typeof ReactFlowSchema>
 
-export const GetListNodes = z.object({
+export const GetListNodesSchemaInput = z.object({
   template_id: z.string(),
   root_node_id: z.string(),
 })

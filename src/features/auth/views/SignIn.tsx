@@ -94,7 +94,7 @@ const Login: FC = () => {
               </Typography>
             </Stack>
 
-            <Stack width="100%" spacing={2}>
+            <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
               <Input
                 control={control}
                 name="email"
@@ -118,7 +118,7 @@ const Login: FC = () => {
                 </TextColor>
               </Stack>
 
-              <Button fullWidth variant="contained" onClick={handleSubmit(onSubmit)}>
+              <Button fullWidth variant="contained" type="submit">
                 {t('login')}
               </Button>
 

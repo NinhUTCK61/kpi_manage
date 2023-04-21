@@ -1,5 +1,5 @@
 import { greyScale } from '@/libs/config/theme'
-import { ResetPasswordSchema } from '@/libs/schema'
+import { ResetPasswordSchemaInput } from '@/libs/schema'
 import { Input, LayoutUnAuth, PasswordStateValidation } from '@/libs/shared/components'
 import { Button, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
@@ -11,7 +11,7 @@ import { Control, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 
 type FormResetPasswordTypes = {
-  control: Control<z.infer<typeof ResetPasswordSchema>>
+  control: Control<z.infer<typeof ResetPasswordSchemaInput>>
   handleSubmit(): void
   isLoading: boolean
 }

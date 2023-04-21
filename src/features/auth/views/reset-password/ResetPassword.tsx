@@ -1,5 +1,5 @@
 import { api } from '@/libs/api'
-import { ResetPasswordSchema, ResetPasswordType } from '@/libs/schema'
+import { ResetPasswordSchemaInput, ResetPasswordType } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ const ResetPassword: FC = () => {
       password: '',
       token: '',
     },
-    resolver: zodResolver(ResetPasswordSchema),
+    resolver: zodResolver(ResetPasswordSchemaInput),
   })
 
   const onSubmit: SubmitHandler<ResetPasswordType> = (data) => {

@@ -1,10 +1,9 @@
 import {
-  DeleteTemplateSchema,
-  InputGetListTemplate,
-  RestoreTemplateSchema,
+  DeleteTemplateSchemaInput,
+  LikeTemplateSchemaInput,
+  ListTemplateSchemaInput,
   TemplateDataOutputSchema,
-  UpdateTemplateSchema,
-  likeTemplateSchema,
+  UpdateTemplateSchemaInput,
 } from '@/libs/schema'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { TemplateSchema, UserTemplateSchema } from 'prisma/generated/zod'
@@ -14,46 +13,46 @@ import { TemplateService } from '../services/template.service'
 const templateService = new TemplateService()
 
 export const templateRouter = createTRPCRouter({
-  getListTemplate: protectedProcedure
+  list: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/template', protect: true } })
-    .input(InputGetListTemplate)
+    .input(ListTemplateSchemaInput)
     .output(TemplateDataOutputSchema)
     .query(({ input, ctx }) => {
-      return templateService.getListTemplate(ctx.session.user.id, input.isTrash)
+      return templateService.list(ctx.session.user.id, input.isTrash)
     }),
-  updateTemplate: protectedProcedure
+  update: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/template', protect: true } })
-    .input(UpdateTemplateSchema)
+    .input(UpdateTemplateSchemaInput)
     .output(TemplateSchema)
     .mutation(({ input, ctx }) => {
-      return templateService.updateTemplate(input, ctx.session.user)
+      return templateService.update(input, ctx.session.user)
     }),
-  createTemplate: protectedProcedure
+  create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/template', protect: true } })
-    .input(z.object({}))
+    .input(z.void())
     .output(TemplateSchema)
     .mutation(({ ctx }) => {
-      return templateService.createTemplate(ctx.session.user.id)
+      return templateService.create(ctx.session.user.id)
     }),
-  likeTemplate: protectedProcedure
+  like: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/template', protect: true } })
-    .input(likeTemplateSchema)
+    .input(LikeTemplateSchemaInput)
     .output(UserTemplateSchema)
     .mutation(({ input, ctx }) => {
-      return templateService.likeTemplate(input, ctx.session.user)
+      return templateService.like(input, ctx.session.user)
     }),
-  deleteTemplate: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/template', protect: true } })
-    .input(DeleteTemplateSchema)
+    .input(DeleteTemplateSchemaInput)
     .output(z.string())
     .mutation(({ input, ctx }) => {
-      return templateService.deleteTemplate(input.id, input.is_permanently, ctx.session.user)
+      return templateService.delete(input.id, input.is_permanently, ctx.session.user)
     }),
-  restoreTemplate: protectedProcedure
+  restore: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/template-restore', protect: true } })
-    .input(RestoreTemplateSchema)
+    .input(DeleteTemplateSchemaInput)
     .output(z.string())
     .mutation(({ input, ctx }) => {
-      return templateService.restoreTemplate(input.id, ctx.session.user)
+      return templateService.restore(input.id, ctx.session.user)
     }),
 })

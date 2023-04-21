@@ -1,5 +1,5 @@
 import { greyScale } from '@/libs/config/theme'
-import { ForgotPasswordSchema } from '@/libs/schema'
+import { ForgotPasswordSchemaInput } from '@/libs/schema'
 import { Input } from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -11,7 +11,7 @@ import { Control } from 'react-hook-form'
 import { z } from 'zod'
 
 type FormForgotPasswordTypes = {
-  control: Control<z.infer<typeof ForgotPasswordSchema>>
+  control: Control<z.infer<typeof ForgotPasswordSchemaInput>>
   handleSubmit(): void
   isLoading: boolean
 }

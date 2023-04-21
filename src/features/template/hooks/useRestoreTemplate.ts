@@ -8,12 +8,12 @@ const useRestoreTemplate = () => {
   const utils = api.useContext()
   const { showError } = useTranslateError()
 
-  const mutation = api.template.restoreTemplate.useMutation({
+  const mutation = api.template.restore.useMutation({
     onMutate: async (template) => {
-      await utils.template.getListTemplate.cancel()
-      const prevData = utils.template.getListTemplate.getData({ isTrash: true })
+      await utils.template.list.cancel()
+      const prevData = utils.template.list.getData({ isTrash: true })
 
-      utils.template.getListTemplate.setData({ isTrash: true }, (old = []) =>
+      utils.template.list.setData({ isTrash: true }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: null } : e)),
       )
 
@@ -27,10 +27,10 @@ const useRestoreTemplate = () => {
     },
     onError: (err, _, ctx) => {
       showError(err, t('restore_failed'))
-      utils.template.getListTemplate.setData({ isTrash: true }, ctx?.prevData)
+      utils.template.list.setData({ isTrash: true }, ctx?.prevData)
     },
     onSettled: () => {
-      utils.template.getListTemplate.invalidate()
+      utils.template.list.invalidate()
     },
   })
 

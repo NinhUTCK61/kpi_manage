@@ -14,7 +14,7 @@ import { z } from 'zod'
 
 type NodeCustom = z.infer<typeof KpiNodeSchema>
 export class NodeService {
-  async createNode(node: Node) {
+  async create(node: Node) {
     const itemTemplate = await prisma.template.findFirst({
       where: {
         id: node.template_id,
@@ -34,7 +34,7 @@ export class NodeService {
     }
   }
 
-  async deleteNode([...nodeIds], user: User) {
+  async delete([...nodeIds], user: User) {
     const validNodeCount = await prisma.node.findMany({
       where: {
         id: { in: nodeIds },
@@ -69,7 +69,7 @@ export class NodeService {
     return 'node.delete_success'
   }
 
-  async getListNodes(template_id: string, root_note_id: string, user: User) {
+  async list(template_id: string, root_note_id: string, user: User) {
     const checkUserTempplate = await prisma.userTemplate.findFirst({
       where: { template_id, user_id: user.id },
     })

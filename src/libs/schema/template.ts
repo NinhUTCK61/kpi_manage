@@ -1,26 +1,22 @@
 import { z } from 'zod'
 
-export const UpdateTemplateSchema = z.object({
+export const UpdateTemplateSchemaInput = z.object({
   id: z.string(),
   name: z.string().min(1).max(255).optional(),
   image_url: z.string().optional(),
 })
 
-export const likeTemplateSchema = z.object({
+export const LikeTemplateSchemaInput = z.object({
   id: z.string(),
   is_favorite: z.boolean(),
 })
 
-export const DeleteTemplateSchema = z.object({
+export const DeleteTemplateSchemaInput = z.object({
   id: z.string(),
   is_permanently: z.boolean().optional().default(false),
 })
 
-export const RestoreTemplateSchema = z.object({
-  id: z.string(),
-})
-
-export const InputGetListTemplate = z.object({ isTrash: z.boolean().default(false) })
+export const ListTemplateSchemaInput = z.object({ isTrash: z.boolean().default(false) })
 
 export const TemplateDataSchema = z.object({
   template_id: z.string(),

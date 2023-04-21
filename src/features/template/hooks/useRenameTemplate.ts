@@ -8,12 +8,12 @@ const useRenameTemplate = () => {
   const utils = api.useContext()
   const { showError } = useTranslateError()
 
-  const mutation = api.template.updateTemplate.useMutation({
+  const mutation = api.template.update.useMutation({
     onMutate: async (template) => {
-      await utils.template.getListTemplate.cancel()
-      const prevData = utils.template.getListTemplate.getData({ isTrash: false })
+      await utils.template.list.cancel()
+      const prevData = utils.template.list.getData({ isTrash: false })
 
-      utils.template.getListTemplate.setData({ isTrash: false }, (old = []) =>
+      utils.template.list.setData({ isTrash: false }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
@@ -27,10 +27,10 @@ const useRenameTemplate = () => {
     },
     onError: (err, _, ctx) => {
       showError(err, t('rename_failed'))
-      utils.template.getListTemplate.setData({ isTrash: false }, ctx?.prevData)
+      utils.template.list.setData({ isTrash: false }, ctx?.prevData)
     },
     onSettled: () => {
-      utils.template.getListTemplate.invalidate()
+      utils.template.list.invalidate()
     },
   })
 

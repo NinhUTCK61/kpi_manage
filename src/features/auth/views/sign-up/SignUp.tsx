@@ -1,5 +1,5 @@
 import { api } from '@/libs/api'
-import { SignUpSchema } from '@/libs/schema'
+import { SignUpSchemaInput } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
@@ -12,18 +12,18 @@ import { Success } from './Success'
 
 const SignUp: FC = () => {
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
-  const { control, handleSubmit } = useForm<z.infer<typeof SignUpSchema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof SignUpSchemaInput>>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
     },
-    resolver: zodResolver(SignUpSchema),
+    resolver: zodResolver(SignUpSchemaInput),
   })
 
   const { t } = useTranslation('sign_up')
 
-  const onSubmit: SubmitHandler<z.infer<typeof SignUpSchema>> = useCallback(
+  const onSubmit: SubmitHandler<z.infer<typeof SignUpSchemaInput>> = useCallback(
     async (data) => {
       mutate(data, {
         onError: (err) => {
