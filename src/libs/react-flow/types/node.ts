@@ -1,4 +1,4 @@
-import { Node as PNode, SpeechBallon } from '@prisma/client'
+import { Comment, Node as PNode, SpeechBallon } from '@prisma/client'
 import { HierarchyNode } from 'd3-hierarchy'
 import { Node } from 'reactflow'
 

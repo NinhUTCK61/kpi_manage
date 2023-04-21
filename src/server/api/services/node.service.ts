@@ -1,4 +1,9 @@
-import { convertToReactFlowNodes } from '@/libs/react-flow'
+import {
+  KPINodeType,
+  convertToReactFlowEdges,
+  convertToReactFlowNodes,
+  convertToReactFlowSpeechBallon,
+} from '@/libs/react-flow'
 import { KpiNodeSchema } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
@@ -64,22 +69,22 @@ export class NodeService {
     return 'node.delete_success'
   }
 
-  async getChildrenRecursive(id: string) {
+  async getListNodes(template_id: string, root_note_id: string) {
     const checkTemplate = await prisma.template.findFirst({
-      where: { id: id },
+      where: { id: template_id },
     })
 
     if (!checkTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'Template not found',
+        message: 'error.template_not_found',
       })
     }
 
-    const node: Node[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
+    const node: KPINodeType[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
         SELECT *
         FROM "Node"
-        WHERE ID = ${checkTemplate.root_note_id}
+        WHERE ID = ${root_note_id}
         UNION ALL
         SELECT n.*
         FROM "Node" n
@@ -87,10 +92,22 @@ export class NodeService {
       )
       SELECT * FROM node_tree;`
 
-    const d3Root = stratify<Node>()
+    const d3Root = stratify<KPINodeType>()
       .id((n) => n.id)
       .parentId((n) => n.parent_node_id)(node)
 
-    return convertToReactFlowNodes(d3Root)
+    const getSpeechBallon = await prisma.speechBallon.findMany({
+      where: {
+        template_id,
+      },
+    })
+
+    const edges = convertToReactFlowEdges(d3Root)
+    const kpiNodes = convertToReactFlowNodes(d3Root)
+    const speechBallon = convertToReactFlowSpeechBallon(getSpeechBallon)
+
+    const nodes = [...kpiNodes, ...speechBallon]
+
+    return { nodes, edges }
   }
 }

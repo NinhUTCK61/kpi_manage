@@ -1,6 +1,6 @@
-import { DeleteNodeSchema, GetListNodes, KpiNodeSchema } from '@/libs/schema/node'
+import { DeleteNodeSchema, GetListNodes, KpiNodeSchema, ReactFlowSchema } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
-import { Node } from 'prisma/generated/zod'
+import { Node, NodeSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NodeService } from '../services/node.service'
 
@@ -9,13 +9,13 @@ const nodeService = new NodeService()
 export const nodeRouter = createTRPCRouter({
   createNode: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/node' } })
-    .input(KpiNodeSchema)
+    .input(NodeSchema.omit({ id: true }))
     .output(KpiNodeSchema)
     .mutation(({ input }) => {
       return nodeService.createNode(input as Node)
     }),
   deleteNode: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/node-delete' }, protect: true })
+    .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })
     .input(DeleteNodeSchema)
     .output(z.string())
     .mutation(({ input, ctx }) => {
@@ -24,8 +24,10 @@ export const nodeRouter = createTRPCRouter({
   getListNodes: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/get-list-nodes' }, protect: true })
     .input(GetListNodes)
-    .output(z.any())
+    .output(ReactFlowSchema)
     .query(({ input }) => {
-      return nodeService.getChildrenRecursive(input.id)
+      return nodeService.getListNodes(input.template_id, input.root_node_id) as unknown as z.infer<
+        typeof ReactFlowSchema
+      >
     }),
 })
