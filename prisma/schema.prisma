@@ -112,8 +112,8 @@ model Node {
   input_title    String         @db.Text
   input_value    String?        @db.Text
   is_formula     Boolean?       @default(false)
-  value2number   Float?         @map("value_2_number")
-  style          Json?
+  value2number   Float?
+  style          String?
   x              Float
   y              Float
   unit           String?
