@@ -5,7 +5,7 @@ import { User } from 'next-auth'
 import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
 
-type NodeCustome = z.infer<typeof KpiNodeSchema>
+type NodeCustom = z.infer<typeof KpiNodeSchema>
 export class NodeService {
   async createNode(node: Node) {
     const itemTemplate = await prisma.template.findFirst({
@@ -18,7 +18,7 @@ export class NodeService {
       const newNode = await prisma.node.create({
         data: node,
       })
-      return newNode as NodeCustome
+      return newNode as NodeCustom
     } else {
       throw new TRPCError({
         code: 'NOT_FOUND',

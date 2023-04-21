@@ -85,7 +85,7 @@ export const convertToReactFlowNodes = (
         input_title: node.data.input_title,
         input_value: node.data.input_value,
         value2number: node.data.value2number,
-        style: node.data.style,
+        node_style: node.data.node_style,
         is_formula: node.data.is_formula,
         unit: node.data.unit,
         template_id: node.data.template_id,

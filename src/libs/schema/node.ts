@@ -6,7 +6,7 @@ export const KpiNodeSchema = z.object({
   input_value: z.string().nullable(),
   is_formula: z.boolean().nullable(),
   value2number: z.number().nullable(),
-  style: z.string().nullable(),
+  node_style: z.string().nullable(),
   x: z.number(),
   y: z.number(),
   unit: z.string().nullable(),

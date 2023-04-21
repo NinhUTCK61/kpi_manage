@@ -34,7 +34,7 @@ const _nodes: ReactFlowKPINode[] = [
       input_title: 'root',
       input_value: '',
       is_formula: false,
-      style: null,
+      node_style: null,
       unit: '',
       value2number: 0,
       template_id: 'root',
