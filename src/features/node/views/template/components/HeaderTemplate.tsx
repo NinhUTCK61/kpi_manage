@@ -79,7 +79,6 @@ const HeaderTemplate = () => {
         </Menu>
         <Stack direction="row" alignItems="center">
           <Language />
-
           <Account />
         </Stack>
       </StackContainer>

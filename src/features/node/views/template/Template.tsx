@@ -56,10 +56,6 @@ export const Template = () => {
           }}
           panOnDrag={viewportAction === ViewPortAction.Pan}
           onNodeClick={onNodeClick}
-          // fitView
-          // fitViewOptions={{
-          //   maxZoom: 0.5,
-          // }}
           defaultViewport={{
             x: 0,
             y: 0.5,
