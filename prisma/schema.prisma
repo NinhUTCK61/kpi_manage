@@ -63,6 +63,8 @@ model User {
   comment         Comment[]
   PasswordReset   PasswordReset?
   user_reason     UserReason[]
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
 }
 
 model Comment {
@@ -169,7 +171,7 @@ model Reason {
   id         Int        @id @default(autoincrement())
   text_ja    String
   text_en    String
-  type       ReasonType @default(REASON)
+  type       ReasonType @default(REASON_KNOW)
   is_enabled Boolean    @default(true)
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
@@ -178,7 +180,7 @@ model Reason {
 }
 
 enum ReasonType {
-  REASON
+  REASON_KNOW
   ISSUE
 }
 

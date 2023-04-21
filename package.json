@@ -12,6 +12,9 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@emotion/cache": "^11.10.7",
     "@emotion/react": "^11.10.6",
@@ -58,7 +61,6 @@
     "@commitlint/config-conventional": "^17.4.4",
     "@types/d3-hierarchy": "^3.1.2",
     "@types/eslint": "^8.21.3",
-    "@types/node": "^18.15.5",
     "@types/nodemailer": "^6.4.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
@@ -71,6 +73,7 @@
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prisma": "^4.13.0",
+    "tsx": "^3.12.6",
     "typescript": "^5.0.2",
     "vitest": "^0.30.1"
   },
