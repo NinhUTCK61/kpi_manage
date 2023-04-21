@@ -17,6 +17,11 @@ export class TemplateService {
           deleted_at: deletedOpt,
         },
       },
+      orderBy: {
+        template: {
+          created_at: 'desc',
+        },
+      },
       include: {
         template: true,
       },
