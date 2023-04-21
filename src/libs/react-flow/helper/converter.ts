@@ -1,8 +1,18 @@
+import { SpeechBallon } from '@prisma/client'
 import { stratify } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
-import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode, RootNode } from '../types'
+import {
+  HierarchyFlowNode,
+  ReactFlowKPINode,
+  ReactFlowNode,
+  ReactFlowSpeechBallonNode,
+  RootNode,
+} from '../types'
 
-export function flattenHierarchy(rootNode: RootNode): { nodes: ReactFlowNode[]; edges: Edge[] } {
+export function flattenHierarchy(rootNode: RootNode): {
+  nodes: ReactFlowNode[]
+  edges: Edge[]
+} {
   const nodes: ReactFlowNode[] = []
   const edges: Edge[] = []
 
@@ -63,4 +73,20 @@ export function stratifier(nodes: ReactFlowNode[]): HierarchyFlowNode {
 
   const d3Root = fn(kpiNodes)
   return d3Root
+}
+
+export const convertToReactFlowSpeechBallon = (
+  speechBallon: SpeechBallon[],
+): ReactFlowSpeechBallonNode[] => {
+  return speechBallon.map((sb) => {
+    return {
+      id: sb.id,
+      data: {
+        ...sb,
+        type: 'speech_ballon',
+      },
+      position: { x: sb.x, y: sb.y },
+      type: 'speech_ballon',
+    }
+  })
 }

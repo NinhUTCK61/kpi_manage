@@ -1,8 +1,15 @@
+import {
+  KPINodeType,
+  convertToReactFlowEdges,
+  convertToReactFlowNodes,
+  convertToReactFlowSpeechBallon,
+} from '@/libs/react-flow'
 import { KpiNodeSchema } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
+import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
+import { stratify } from 'd3-hierarchy'
 import { User } from 'next-auth'
-import { Node } from 'prisma/generated/zod'
 import { z } from 'zod'
 
 type NodeCustom = z.infer<typeof KpiNodeSchema>
@@ -60,5 +67,47 @@ export class NodeService {
     })
 
     return 'node.delete_success'
+  }
+
+  async getListNodes(template_id: string, root_note_id: string, user: User) {
+    const checkUserTempplate = await prisma.userTemplate.findFirst({
+      where: { template_id, user_id: user.id },
+    })
+
+    if (!checkUserTempplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+
+    const node: KPINodeType[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
+        SELECT *
+        FROM "Node"
+        WHERE ID = ${root_note_id}
+        UNION ALL
+        SELECT n.*
+        FROM "Node" n
+        JOIN node_tree nt ON n."parent_node_id" = nt.id
+      )
+      SELECT * FROM node_tree;`
+
+    const d3Root = stratify<KPINodeType>()
+      .id((n) => n.id)
+      .parentId((n) => n.parent_node_id)(node)
+
+    const getSpeechBallon = await prisma.speechBallon.findMany({
+      where: {
+        template_id,
+      },
+    })
+
+    const edges = convertToReactFlowEdges(d3Root)
+    const kpiNodes = convertToReactFlowNodes(d3Root)
+    const speechBallon = convertToReactFlowSpeechBallon(getSpeechBallon)
+
+    const nodes = [...kpiNodes, ...speechBallon]
+
+    return { nodes, edges }
   }
 }
