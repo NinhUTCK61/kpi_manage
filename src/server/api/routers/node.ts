@@ -2,6 +2,7 @@ import {
   DeleteNodeSchemaInput,
   GetListNodesSchemaInput,
   KpiNodeSchema,
+  NodeSchemaInput,
   ReactFlowSchema,
 } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
@@ -19,9 +20,9 @@ export const nodeRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return nodeService.create(input as Node)
     }),
-  update: protectedProcedure
+  updateMultiple: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/node' } })
-    .input(NodeSchema.array())
+    .input(NodeSchemaInput.array())
     .output(NodeSchema.array() || z.string())
     .mutation(({ input }) => {
       return nodeService.update(input)
