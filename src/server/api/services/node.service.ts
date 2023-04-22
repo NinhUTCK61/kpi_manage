@@ -39,7 +39,7 @@ export class NodeService {
       return node.id
     })
 
-    await prisma.$executeRaw(this.handleExcteUpdate(nodes, nodeIds))
+    await prisma.$executeRaw(this.buildUpdateNodeQuery(nodes, nodeIds))
     const resultData: Node[] = await prisma.node.findMany({
       where: {
         id: {
@@ -153,8 +153,8 @@ export class NodeService {
     return valueStrings
   }
 
-  handleExcteUpdate = (nodes: Node[], nodeIds: string[]) => {
-    const excute = Prisma.sql`
+  buildUpdateNodeQuery = (nodes: Node[], nodeIds: string[]) => {
+    const execute = Prisma.sql`
     UPDATE "Node"
     SET
       slug = new_values.slug,
@@ -175,6 +175,6 @@ export class NodeService {
       ) AS new_values(slug, id,  input_title, input_value, is_formula, value2number, node_style, x, y, unit, template_id, parent_node_id)
       WHERE "Node".id = new_values.id AND "Node".id IN (${Prisma.sql`${Prisma.join(nodeIds)}`})
     `
-    return excute
+    return execute
   }
 }
