@@ -39,12 +39,14 @@ export class NodeService {
       return node.id
     })
 
-    const sqlSelect = Prisma.sql`
-      SELECT * FROM public."Node"
-      WHERE "Node".id IN (${nodeIds.join('')})`
-
     await prisma.$executeRaw(this.handleExcteUpdate(nodes, nodeIds))
-    const resultData: Node[] = await prisma.$queryRaw(sqlSelect)
+    const resultData: Node[] = await prisma.node.findMany({
+      where: {
+        id: {
+          in: nodeIds,
+        },
+      },
+    })
     return resultData
   }
 
