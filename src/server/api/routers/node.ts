@@ -19,6 +19,13 @@ export const nodeRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return nodeService.create(input as Node)
     }),
+  update: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/node' } })
+    .input(NodeSchema.array())
+    .output(NodeSchema.array() || z.string())
+    .mutation(({ input }) => {
+      return nodeService.update(input)
+    }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })
     .input(DeleteNodeSchemaInput)
