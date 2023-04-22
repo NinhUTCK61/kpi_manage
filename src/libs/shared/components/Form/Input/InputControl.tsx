@@ -30,7 +30,12 @@ function RawInputControl({
           {required ? (
             <>
               {label}
-              <Typography ml="3px" component="span" sx={{ color: 'red !important' }}>
+              <Typography
+                ml={0.5}
+                variant="body2"
+                component="span"
+                sx={{ color: 'red !important' }}
+              >
                 *
               </Typography>
             </>

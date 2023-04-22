@@ -63,7 +63,9 @@
     "not_finite": "Number must be finite",
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted",
-    "internal_server_error": "An internal server error occurred."
+    "internal_server_error": "An internal server error occurred.",
+    "invalid_token": "Token not found or expired!",
+    "email_conflict": "Email already exists!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

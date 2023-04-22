@@ -54,8 +54,8 @@ export class NodeService {
     const validNodeCount = await prisma.node.findMany({
       where: {
         id: { in: nodeIds },
-        Template: {
-          userTemplate: {
+        template: {
+          users: {
             some: {
               user_id: user.id,
             },

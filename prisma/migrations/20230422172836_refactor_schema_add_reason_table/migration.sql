@@ -36,8 +36,6 @@ CREATE TABLE "UserReason" (
     "id" SERIAL NOT NULL,
     "user_id" TEXT NOT NULL,
     "reason_id" INTEGER NOT NULL,
-    "userId" TEXT,
-    "reasonId" INTEGER,
 
     CONSTRAINT "UserReason_pkey" PRIMARY KEY ("id")
 );
@@ -46,7 +44,7 @@ CREATE TABLE "UserReason" (
 CREATE UNIQUE INDEX "UserReason_user_id_reason_id_key" ON "UserReason"("user_id", "reason_id");
 
 -- AddForeignKey
-ALTER TABLE "UserReason" ADD CONSTRAINT "UserReason_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserReason" ADD CONSTRAINT "UserReason_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserReason" ADD CONSTRAINT "UserReason_reasonId_fkey" FOREIGN KEY ("reasonId") REFERENCES "Reason"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserReason" ADD CONSTRAINT "UserReason_reason_id_fkey" FOREIGN KEY ("reason_id") REFERENCES "Reason"("id") ON DELETE CASCADE ON UPDATE CASCADE;

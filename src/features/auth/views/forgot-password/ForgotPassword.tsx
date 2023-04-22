@@ -26,15 +26,12 @@ const ForgotPassword: FC = () => {
       {
         onError(error) {
           if (error.data?.zodError) {
-            const errorMes = JSON.parse(error.message)[0].message
-            enqueueSnackbar(`${errorMes}`, {
-              variant: 'error',
-            })
+            // TODO: add zod error to form
 
             return
           }
 
-          enqueueSnackbar(`${error.message}`, {
+          enqueueSnackbar(t(error.message, { ns: 'common' }), {
             variant: 'error',
           })
         },

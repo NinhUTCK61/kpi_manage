@@ -55,7 +55,9 @@
     "not_finite": "数値は有限数である必要があります。",
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted",
-    "internal_server_error": "内部サーバーエラーが発生しました。"
+    "internal_server_error": "内部サーバーエラーが発生しました。",
+    "invalid_token": "トークンが見つからないか、期限切れです",
+    "email_conflict": "メールアドレスは既に存在します！"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

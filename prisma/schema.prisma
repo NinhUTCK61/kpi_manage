@@ -59,10 +59,10 @@ model User {
   accounts        Account[]
   sessions        Session[]
   password        String?
-  userTemplate    UserTemplate[]
+  templates       UserTemplate[]
   comment         Comment[]
-  PasswordReset   PasswordReset?
-  user_reason     UserReason[]
+  password_reset  PasswordReset?
+  reasons         UserReason[]
   created_at      DateTime       @default(now())
   updated_at      DateTime       @updatedAt
 }
@@ -93,24 +93,24 @@ model UserTemplate {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  User        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, template_id])
 }
 
 model Template {
-  id           String         @id @default(cuid())
-  root_note_id String         @default(nanoid())
-  name         String
-  image_url    String?        @db.Text
-  public_url   String?        @db.Text
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  deleted_at   DateTime?
-  userTemplate UserTemplate[]
-  node         Node[]
-  SpeechBallon SpeechBallon[]
-  Comment      Comment[]
+  id            String         @id @default(cuid())
+  root_note_id  String         @default(nanoid())
+  name          String
+  image_url     String?        @db.Text
+  public_url    String?        @db.Text
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  deleted_at    DateTime?
+  users         UserTemplate[]
+  node          Node[]
+  speech_ballon SpeechBallon[]
+  comment       Comment[]
 }
 
 model Node {
@@ -124,12 +124,12 @@ model Node {
   x              Float
   y              Float
   unit           String?
-  Template       Template?      @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  template       Template?      @relation(fields: [template_id], references: [id], onDelete: Cascade)
   template_id    String
   children       Node[]         @relation("nodetonodes")
   parent_node    Node?          @relation("nodetonodes", fields: [parent_node_id], references: [id], onDelete: Cascade)
   parent_node_id String?
-  SpeechBallon   SpeechBallon[]
+  speech_ballon  SpeechBallon[]
 }
 
 model SpeechBallon {
@@ -144,8 +144,8 @@ model SpeechBallon {
   stroke      String?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-  Template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  Node        Node     @relation(fields: [node_id], references: [id], onDelete: Cascade)
+  template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  node        Node     @relation(fields: [node_id], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -176,7 +176,7 @@ model Reason {
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
 
-  user_reason UserReason[]
+  users UserReason[]
 }
 
 enum ReasonType {
@@ -185,13 +185,11 @@ enum ReasonType {
 }
 
 model UserReason {
-  id        Int     @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   user_id   String
   reason_id Int
-  User      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String?
-  Reason    Reason? @relation(fields: [reasonId], references: [id], onDelete: Cascade)
-  reasonId  Int?
+  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  reason    Reason @relation(fields: [reason_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, reason_id])
 }

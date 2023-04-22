@@ -1,4 +1,4 @@
-import { ForgotPasswordMail } from '@/features/mail'
+import { ForgotPasswordMail, VerifyEmail } from '@/features/mail'
 import { render } from '@react-email/render'
 import nodemailer, { SendMailOptions, Transporter } from 'nodemailer'
 import { ReactElement } from 'react'
@@ -33,7 +33,7 @@ class MailUtils {
     return MailUtils.instance
   }
 
-  async sendMail(options: MailOptions): Promise<void> {
+  async sendMail(options: MailOptions) {
     const mailOptions: SendMailOptions = {
       from: process.env.EMAIL_FROM,
       to: options.to,
@@ -43,12 +43,21 @@ class MailUtils {
     await this.transporter.sendMail(mailOptions)
   }
 
-  async sendPasswordResetMail(email: string, token: string, name: string): Promise<void> {
-    const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
-    const text = render(ForgotPasswordMail({ url: resetLink, name: name }) as ReactElement)
-    const subject = 'Password Reset'
+  async sendPasswordResetMail(email: string, token: string, name: string) {
+    const url = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
+    const html = render(ForgotPasswordMail({ url, name }) as ReactElement)
+    const subject = 'Password Reset - KPI Master'
 
-    const mailer = await this.sendMail({ to: email, subject, html: text })
+    const mailer = await this.sendMail({ to: email, subject, html })
+    return mailer
+  }
+
+  async sendVerifyMail(email: string, token: string, name: string) {
+    const url = `${process.env.NEXTAUTH_URL}/verify?token=${token}`
+    const html = render(VerifyEmail({ url, name }) as ReactElement)
+    const subject = 'Email Verification - KPI Master'
+
+    const mailer = await this.sendMail({ to: email, subject, html })
     return mailer
   }
 }

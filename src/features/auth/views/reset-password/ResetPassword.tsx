@@ -2,6 +2,7 @@ import { api } from '@/libs/api'
 import { ResetPasswordSchemaInput, ResetPasswordType } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import { FC } from 'react'
@@ -12,6 +13,8 @@ import { Success } from './Success'
 const ResetPassword: FC = () => {
   const router = useRouter()
   const { mutate, isLoading, isSuccess } = api.auth.resetPassword.useMutation()
+
+  const { t } = useTranslation('common')
 
   const { control, handleSubmit } = useForm<ResetPasswordType>({
     defaultValues: {
@@ -31,17 +34,7 @@ const ResetPassword: FC = () => {
       },
       {
         onError(error) {
-          if (error.data?.zodError) {
-            const errorMes = JSON.parse(error.message)[0].message
-
-            enqueueSnackbar(`${errorMes}`, {
-              variant: 'error',
-            })
-
-            return
-          }
-
-          enqueueSnackbar(`${error.message}`, {
+          enqueueSnackbar(t(error.message), {
             variant: 'error',
           })
         },

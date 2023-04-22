@@ -85,7 +85,7 @@ export class TemplateService {
         data: {
           name: 'New Template',
           root_note_id: rootNodeId,
-          userTemplate: {
+          users: {
             create: {
               user_id,
               is_owner: true,
@@ -94,7 +94,7 @@ export class TemplateService {
           },
         },
         include: {
-          userTemplate: true,
+          users: true,
         },
       })
 
@@ -159,9 +159,6 @@ export class TemplateService {
       await prisma.template.delete({
         where: {
           id,
-        },
-        include: {
-          userTemplate: true,
         },
       })
       return 'template.delete_template'

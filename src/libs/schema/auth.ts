@@ -34,7 +34,7 @@ export const SignUpSchemaInput = z.object({
   company_name: z.string().max(255).min(1),
   role_in_company: z.string().max(255).min(1),
   date_of_birth: z.string().datetime(),
-  reason: z.array(z.number()),
+  reasons: z.array(z.number()),
 })
 
 export const ResetPasswordSchemaInput = z

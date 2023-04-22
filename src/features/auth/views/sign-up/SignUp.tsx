@@ -21,7 +21,7 @@ const SignUp: FC = () => {
       company_name: '',
       date_of_birth: '',
       role_in_company: '',
-      reason: [],
+      reasons: [],
     },
     resolver: zodResolver(SignUpSchemaInput),
   })
@@ -33,7 +33,7 @@ const SignUp: FC = () => {
       mutate(data, {
         onError: (err) => {
           const error = String(err.message)
-          const description = t(error)
+          const description = t(error, { ns: 'common' })
           enqueueSnackbar(t('title_failed'), { variant: 'error', description })
         },
       })
