@@ -14,9 +14,14 @@ const SignUp: FC = () => {
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
   const { control, handleSubmit } = useForm<z.infer<typeof SignUpSchemaInput>>({
     defaultValues: {
-      name: '',
+      first_name: '',
+      last_name: '',
       email: '',
       password: '',
+      company_name: '',
+      date_of_birth: '',
+      role_in_company: '',
+      reason: [],
     },
     resolver: zodResolver(SignUpSchemaInput),
   })

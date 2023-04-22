@@ -34,6 +34,7 @@ const Header = () => {
             alt="logo-header"
             onClick={() => router.push('/')}
             style={{ cursor: 'pointer' }}
+            priority
           />
 
           <InputSearch

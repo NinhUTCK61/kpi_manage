@@ -1,6 +1,5 @@
 import { useTranslateError } from '@/libs/hooks'
-import type { FormControlProps } from '@mui/material'
-import { Box, FormControl } from '@mui/material'
+import { FormControl, FormControlProps, Typography } from '@mui/material'
 import { memo } from 'react'
 import type { FieldError } from 'react-hook-form'
 import { FormHelperText } from './FormHelperText'
@@ -31,12 +30,12 @@ function RawInputControl({
           {required ? (
             <>
               {label}
-              <Box sx={{ marginLeft: '3px' }} component="span" color="red">
+              <Typography ml="3px" component="span" sx={{ color: 'red !important' }}>
                 *
-              </Box>
+              </Typography>
             </>
           ) : (
-            `${label}`
+            label
           )}
         </FormLabel>
       )}

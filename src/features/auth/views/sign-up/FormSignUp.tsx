@@ -1,3 +1,4 @@
+import { api } from '@/libs/api'
 import { SignUpSchemaInput } from '@/libs/schema'
 import { Input, PasswordStateValidation, TextColor } from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
@@ -21,6 +22,8 @@ type FormSignUpTypes = {
 const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoading }) => {
   const router = useRouter()
   const { t } = useTranslation(['sign_up'])
+
+  const { data: reason } = api.reason.list.useQuery()
 
   const password = useWatch({ control, name: 'password' })
 
@@ -50,7 +53,8 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
         <Stack width={{ xs: '100%', md: 460 }} component="form" onSubmit={handleSubmit} spacing={2}>
           <Input
             control={control}
-            name="name"
+            name="first_name"
+            required
             label={t('name') as string}
             fullWidth
             placeholder={t('enter_name') as string}

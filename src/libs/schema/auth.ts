@@ -27,9 +27,14 @@ export const PasswordSchema = z
   .regex(numberRegex, 'Must include at least one number')
 
 export const SignUpSchemaInput = z.object({
+  first_name: z.string().max(255).min(1),
+  last_name: z.string().max(255).min(1),
   email: z.string().email(),
   password: PasswordSchema,
-  name: z.string().max(255).min(1),
+  company_name: z.string().max(255).min(1),
+  role_in_company: z.string().max(255).min(1),
+  date_of_birth: z.string().datetime(),
+  reason: z.array(z.number()),
 })
 
 export const ResetPasswordSchemaInput = z

@@ -84,7 +84,7 @@ const Login: FC = () => {
             sx={{ width: 450, height: '100%', alignItems: 'center', justifyContent: 'flex-start' }}
           >
             <Stack alignItems="center" mb={4}>
-              <CustomImage src={Logo} alt="logo" />
+              <CustomImage src={Logo} priority alt="logo" />
               <Typography variant="h2" mb={0.5} align="center">
                 {t('title')}
               </Typography>
