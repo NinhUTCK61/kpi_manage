@@ -82,6 +82,7 @@ class AuthService {
           prisma.user.create({
             data: {
               ...createUserData,
+              email,
               name: last_name,
               password: hash,
               reasons: {
@@ -226,6 +227,7 @@ class AuthService {
         }),
       ])
     } catch (error) {
+      console.log('verify error', error)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'error.internal_server_error',

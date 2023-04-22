@@ -32,4 +32,11 @@ export const authRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return authService.resetPassword(input.password, input.token)
     }),
+  verify: publicProcedure
+    .meta({ openapi: { method: 'POST', path: '/verify' } })
+    .input(z.object({ token: z.string() }))
+    .output(z.string())
+    .mutation(({ input }) => {
+      return authService.verify(input.token)
+    }),
 })

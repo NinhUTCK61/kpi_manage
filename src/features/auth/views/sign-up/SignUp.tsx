@@ -42,19 +42,13 @@ const SignUp: FC = () => {
   )
 
   return (
-    <>
-      <LayoutUnAuth title={t('seo_title')}>
-        {!isSuccess && (
-          <FormSignUp
-            control={control}
-            handleSubmit={handleSubmit(onSubmit)}
-            isLoading={isLoading}
-          />
-        )}
+    <LayoutUnAuth title={t('seo_title')}>
+      {!isSuccess && (
+        <FormSignUp control={control} handleSubmit={handleSubmit(onSubmit)} isLoading={isLoading} />
+      )}
 
-        {isSuccess && <Success />}
-      </LayoutUnAuth>
-    </>
+      {isSuccess && <Success />}
+    </LayoutUnAuth>
   )
 }
 

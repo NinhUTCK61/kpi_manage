@@ -87,5 +87,9 @@
       "detail_set_thumbnail_2": "PNG, JPG or (max. 800x400px)"
     },
     "submit": "Submit"
-  }
+  },
+  "verify_title": "Verify",
+  "verify_success": "Verified!",
+  "description_verify_success": "Your email's verified successfully. Now you can login to start with us.",
+  "verify_fail": "Verify fail!"
 }

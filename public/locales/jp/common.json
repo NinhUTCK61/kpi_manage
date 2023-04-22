@@ -79,5 +79,9 @@
       "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
     },
     "submit": "登録"
-  }
+  },
+  "verify_title": "確認する",
+  "verify_success": "確認済み！",
+  "description_verify_success": "あなたのメールが正常に確認されました。これで、ログインして私たちと始めることができます。",
+  "verify_fail": "確認に失敗しました！"
 }
