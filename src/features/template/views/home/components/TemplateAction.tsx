@@ -12,7 +12,7 @@ import { z } from 'zod'
 
 type TemplateActionTypes = {
   template: z.infer<typeof TemplateDataSchema>
-  name: string
+  name: string | null
   onSaveName(): void
   handleChangeName(event: React.ChangeEvent<HTMLInputElement>): void
   inputNameRef: Ref<HTMLElement | null>
@@ -43,7 +43,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
           component="form"
           onSubmit={onSaveName}
         >
-          {!!name ? (
+          {name !== null ? (
             <InputRename
               value={name}
               onChange={handleChangeName}

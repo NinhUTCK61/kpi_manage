@@ -30,7 +30,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const inputNameRef = useRef<HTMLElement>(null)
-  const [name, setName] = useState<string>('')
+  const [name, setName] = useState<string | null>(null)
   const mutationRename = useRenameTemplate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,14 +52,18 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
+    if (name === '' || name === null) {
+      setName(null)
+      return
+    }
     mutationRename.mutate(
       {
         id: template.template_id,
-        name,
+        name: name as string,
       },
       {
         onSettled() {
-          setName('')
+          setName(null)
         },
       },
     )
