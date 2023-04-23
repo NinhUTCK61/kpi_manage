@@ -60,7 +60,8 @@ model User {
   sessions        Session[]
   password        String?
   templates       UserTemplate[]
-  comment         Comment[]
+  comments        Comment[]
+  replies         CommentReply[]
   password_reset  PasswordReset?
   reasons         UserReason[]
   created_at      DateTime       @default(now())
@@ -68,19 +69,28 @@ model User {
 }
 
 model Comment {
-  id                String    @id @default(cuid())
-  template          Template  @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  comment           String?   @db.Text
-  user              User?     @relation(fields: [user_id], references: [id])
-  user_id           String?
-  children          Comment[] @relation("CommentToComments")
-  parent_comment    Comment?  @relation("CommentToComments", fields: [parent_comment_id], references: [id], onDelete: Cascade)
-  parent_comment_id String?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
-  x                 Float
-  y                 Float
-  template_id       String
+  id          String         @id @default(cuid())
+  content     String?        @db.Text
+  template_id String
+  template    Template       @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  author      User?          @relation(fields: [author_id], references: [id])
+  author_id   String?
+  x           Float
+  y           Float
+  replies     CommentReply[]
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @updatedAt
+}
+
+model CommentReply {
+  id         String   @id @default(cuid())
+  content    String?
+  comment_id String
+  comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  author     User?    @relation(fields: [author_id], references: [id])
+  author_id  String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model UserTemplate {
@@ -110,7 +120,7 @@ model Template {
   users         UserTemplate[]
   node          Node[]
   speech_ballon SpeechBallon[]
-  comment       Comment[]
+  comments      Comment[]
 }
 
 model Node {
