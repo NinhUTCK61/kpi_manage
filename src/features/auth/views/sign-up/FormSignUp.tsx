@@ -1,6 +1,11 @@
 import { api } from '@/libs/api'
 import { SignUpSchemaInput } from '@/libs/schema'
-import { Input, PasswordStateValidation, TextColor } from '@/libs/shared/components'
+import {
+  DatePickerSeparator,
+  Input,
+  PasswordStateValidation,
+  TextColor,
+} from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -61,6 +66,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
             readOnly={isLoading}
           />
           <Input
+            required
             control={control}
             name="email"
             label={t('email') as string}
@@ -68,7 +74,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
             placeholder={t('enter_email') as string}
             readOnly={isLoading}
           />
+
+          <DatePickerSeparator control={control} name="date_of_birth" fullWidth />
+
           <Input
+            required
             control={control}
             name="password"
             label={t('password') as string}

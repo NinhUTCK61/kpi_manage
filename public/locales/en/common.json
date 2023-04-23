@@ -91,5 +91,11 @@
   "verify_title": "Verify",
   "verify_success": "Verified!",
   "description_verify_success": "Your email's verified successfully. Now you can login to start with us.",
-  "verify_fail": "Verify fail!"
+  "verify_fail": "Verify fail!",
+  "year": "Year",
+  "month": "Month",
+  "day": "Day",
+  "select_year": "Year",
+  "select_month": "Month",
+  "select_day": "Day"
 }

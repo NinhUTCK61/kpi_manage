@@ -19,7 +19,7 @@ const SignUp: FC = () => {
       email: '',
       password: '',
       company_name: '',
-      date_of_birth: '',
+      date_of_birth: null,
       role_in_company: '',
       reasons: [],
     },
