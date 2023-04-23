@@ -74,30 +74,26 @@ export const authOptions: NextAuthOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        try {
-          const { email, password } = await LoginSchema.parseAsync(credentials)
-          const user = await prisma.user.findFirst({
-            where: { email },
-          })
 
-          if (!user) {
+        const { email, password } = await LoginSchema.parseAsync(credentials)
+        const user = await prisma.user.findFirst({
+          where: { email },
+        })
+
+        if (!user) {
+          // TODO: must return i18n message
+          throw new Error('not_found')
+        }
+
+        if (user && user.password) {
+          const isValidPassword = await verify(user.password, password)
+          if (!isValidPassword) {
             // TODO: must return i18n message
-            throw new Error('not_found')
-          }
-
-          if (user && user.password) {
-            const isValidPassword = await verify(user.password, password)
-            if (!isValidPassword) {
-              // TODO: must return i18n message
-              throw new Error('incorrect')
-            }
-
-            return user
-          } else {
             throw new Error('incorrect')
           }
-        } catch (error) {
-          // TODO: must return i18n message
+
+          return user
+        } else {
           throw new Error('incorrect')
         }
       }) as CredentialsConfig['authorize'],
