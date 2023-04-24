@@ -6,13 +6,14 @@ import {
   useRFStore,
 } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
-import { Box } from '@mui/material'
+import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
+import { Box, styled } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Edge, ReactFlow, ReactFlowProvider, useStoreApi } from 'reactflow'
+import { useState } from 'react'
+import { Background, Edge, ReactFlow, ReactFlowProvider } from 'reactflow'
 import 'reactflow/dist/style.css'
-import { LayoutTemplate } from './components'
-import { Toolbar } from './components/Toolbar'
+import { HEIGHT_TOOLBAR, LayoutTemplate, Toolbar } from './components'
 
 const _nodes: ReactFlowKPINode[] = [
   {
@@ -45,6 +46,13 @@ const edgeTypes = {
   kpi: KpiEdge,
 }
 
+export type ActionTypes = {
+  move: boolean
+  pan: boolean
+  comment: boolean
+  speech: boolean
+}
+
 const TemplateView: NextPage = () => {
   return (
     <ReactFlowProvider>
@@ -59,12 +67,27 @@ const Template = () => {
   const router = useRouter()
   const { id } = router.query
   const { nodes, edges, onNodesChange, onEdgesChange } = useRFStore((state) => state)
-  const store = useStoreApi()
+  const [action, setAction] = useState<ActionTypes>({
+    move: true,
+    pan: false,
+    comment: false,
+    speech: false,
+  })
+
+  const handleChangeOption = (key: keyof ActionTypes) => {
+    setAction({
+      move: key === 'move' ? true : false,
+      pan: key === 'pan' ? true : false,
+      comment: key === 'comment' ? true : false,
+      speech: key === 'speech' ? true : false,
+    })
+  }
 
   return (
     <LayoutTemplate>
-      <Toolbar />
-      <Box display="flex" flex={1} height="100%" p={1}>
+      <Toolbar handleChangeOption={handleChangeOption} action={action} />
+
+      <Container display="flex" flex={1}>
         <ReactFlow
           snapGrid={[20, 20]}
           snapToGrid
@@ -76,12 +99,25 @@ const Template = () => {
           edgeTypes={edgeTypes}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          proOptions={{
+            hideAttribution: true,
+          }}
+          panOnDrag={action.pan}
         >
           <KpiControls />
+          <Background
+            style={{
+              cursor: 'cell !important',
+            }}
+          />
         </ReactFlow>
-      </Box>
+      </Container>
     </LayoutTemplate>
   )
 }
+
+const Container = styled(Box)({
+  height: `calc(100vh - ${HEIGHT_HEADER}px - ${HEIGHT_TOOLBAR}px)`,
+})
 
 export { TemplateView }

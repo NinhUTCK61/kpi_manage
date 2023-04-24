@@ -4,32 +4,31 @@ import Image from 'next/image'
 import ZoomInIcon from 'public/assets/svgs/zoom_in.svg'
 import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
 import { useState } from 'react'
-import { ControlButton, Controls, useReactFlow, useViewport } from 'reactflow'
+import { Controls, useReactFlow } from 'reactflow'
 function KpiControls() {
-  const { zoomIn, zoomOut, getZoom } = useReactFlow()
-  const [valueZoom, setValueZoom] = useState<number>(getZoom() * 100)
-  const { zoom } = useViewport()
-  console.log({ zoom })
+  const { setViewport, getViewport } = useReactFlow()
+  const [valueZoom, setValueZoom] = useState<number>(1)
 
-  const handleZoomIn = async () => {
-    await zoomIn()
-    setTimeout(() => {
-      setValueZoom(getZoom() * 100)
-    }, 200)
+  const handleZoom = async (isZoomIn?: boolean) => {
+    const _valueZoom = isZoomIn ? valueZoom + 0.25 : valueZoom - 0.25
+    const { x, y } = getViewport()
+    setViewport({
+      x,
+      y,
+      zoom: _valueZoom,
+    })
+    setValueZoom(_valueZoom)
   }
-  const handleZoomOut = async () => {
-    await zoomOut()
-    setTimeout(() => {
-      setValueZoom(getZoom() * 100)
-    }, 200)
-  }
+
   return (
     <Controls
       style={{
-        bottom: 50,
+        bottom: 44,
+        right: 44,
         border: `1px solid ${greyScale[500]}`,
         borderRadius: 24,
-        padding: '12px 24px',
+        padding: '11px 23px',
+        margin: 0,
       }}
       position="bottom-right"
       showInteractive={false}
@@ -38,14 +37,22 @@ function KpiControls() {
       onZoomIn={() => console.log('zoom in')}
       onZoomOut={() => console.log('zoom out')}
     >
-      <Stack direction="row" spacing={1}>
-        <ControlButton onClick={() => handleZoomOut()} title="-">
-          <Image src={ZoomOutIcon} alt="zoom" />
-        </ControlButton>
-        <Typography>{Math.floor(valueZoom * 10e2) / 10e2}%</Typography>
-        <ControlButton onClick={() => handleZoomIn()} title="+">
-          <Image src={ZoomInIcon} alt="zoom" />
-        </ControlButton>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Image
+          src={ZoomOutIcon}
+          alt="zoom"
+          onClick={() => handleZoom()}
+          style={{ cursor: 'pointer' }}
+        />
+        <Typography width={43} textAlign="center">
+          {valueZoom * 100}%
+        </Typography>
+        <Image
+          src={ZoomInIcon}
+          alt="zoom"
+          onClick={() => handleZoom(true)}
+          style={{ cursor: 'pointer' }}
+        />
       </Stack>
     </Controls>
   )
