@@ -67,6 +67,11 @@ export const Template = () => {
           zoomOnDoubleClick={false}
         >
           <KpiControls />
+          <Background
+            style={{
+              cursor: 'cell !important',
+            }}
+          />
         </ReactFlow>
       </Container>
     </Layout>
