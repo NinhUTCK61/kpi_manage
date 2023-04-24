@@ -291,30 +291,24 @@ class AuthService {
 
     const expires = new Date(Date.now() + ONE_DAY * 30)
 
-    if (checkVerifiToken) {
-      await prisma.verificationToken.updateMany({
-        where: { identifier: email },
-        data: {
-          expires,
-        },
+    if (!checkVerifiToken) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
       })
-      await MailUtils.getInstance().sendVerifyMail(
-        email,
-        checkVerifiToken.token,
-        checkEmail.first_name as string,
-      )
-    } else {
-      const token = nanoid()
-      await prisma.verificationToken.create({
-        data: {
-          identifier: email,
-          token,
-          expires,
-        },
-      })
-      await MailUtils.getInstance().sendVerifyMail(email, token, checkEmail.first_name as string)
     }
 
+    await prisma.verificationToken.updateMany({
+      where: { identifier: email },
+      data: {
+        expires,
+      },
+    })
+
+    await MailUtils.getInstance().sendVerifyMail(
+      email,
+      checkVerifiToken.token,
+      checkEmail.first_name as string,
+    )
     return 'ok!'
   }
 }
