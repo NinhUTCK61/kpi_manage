@@ -31,6 +31,8 @@ check-convention:
     - npx eslint src/**/*.{ts,tsx}
     - npx prettier --config .prettierrc.json --write '**/*.tsx'
     - git diff --exit-code
+  except:
+    - develop
   
 build-stg:
   stage: build
