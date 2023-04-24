@@ -282,25 +282,29 @@ class AuthService {
     }
 
     if (checkEmail?.emailVerified) {
-      return 'email_verified'
+      return 'Email is verifiled!'
     }
 
     const checkVerifiToken = await prisma.verificationToken.findFirst({
       where: { identifier: email },
     })
 
-    const token = nanoid()
     const expires = new Date(Date.now() + ONE_DAY * 30)
 
     if (checkVerifiToken) {
       await prisma.verificationToken.updateMany({
         where: { identifier: email },
         data: {
-          token,
           expires,
         },
       })
+      await MailUtils.getInstance().sendVerifyMail(
+        email,
+        checkVerifiToken.token,
+        checkEmail.first_name as string,
+      )
     } else {
+      const token = nanoid()
       await prisma.verificationToken.create({
         data: {
           identifier: email,
@@ -308,9 +312,8 @@ class AuthService {
           expires,
         },
       })
+      await MailUtils.getInstance().sendVerifyMail(email, token, checkEmail.first_name as string)
     }
-
-    await MailUtils.getInstance().sendVerifyMail(email, token, checkEmail.first_name as string)
 
     return 'ok!'
   }
