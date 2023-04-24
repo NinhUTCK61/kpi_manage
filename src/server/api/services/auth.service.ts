@@ -282,7 +282,7 @@ class AuthService {
     }
 
     if (checkEmail?.emailVerified) {
-      return 'Email is verifiled!'
+      return 'email_verified'
     }
 
     const checkVerifiToken = await prisma.verificationToken.findFirst({
