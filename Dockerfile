@@ -65,7 +65,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_module
 # Copny tsx for run seed
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tsx ./node_modules/tsx
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@esbuild-kit ./node_modules/@esbuild-kit
-
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/esbuild ./node_modules/esbuild
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/source-map-support ./node_modules/source-map-support
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/source-map ./node_modules/source-map
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 

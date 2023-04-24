@@ -1,4 +1,5 @@
 import { PrismaClient, Reason, ReasonType } from '@prisma/client'
+
 const prisma = new PrismaClient()
 
 const KPI_REASON: Reason[] = [
