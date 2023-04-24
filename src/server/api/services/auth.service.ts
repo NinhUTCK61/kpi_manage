@@ -266,6 +266,54 @@ class AuthService {
 
     return checkToken
   }
+
+  async resendVerifyEmail(email: string) {
+    const checkEmail = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    if (!checkEmail) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'error.user_not_found',
+      })
+    }
+
+    if (checkEmail?.emailVerified) {
+      return 'Email is verifiled!'
+    }
+
+    const checkVerifiToken = await prisma.verificationToken.findFirst({
+      where: { identifier: email },
+    })
+
+    const token = nanoid()
+    const expires = new Date(Date.now() + ONE_DAY * 30)
+
+    if (checkVerifiToken) {
+      await prisma.verificationToken.updateMany({
+        where: { identifier: email },
+        data: {
+          token,
+          expires,
+        },
+      })
+    } else {
+      await prisma.verificationToken.create({
+        data: {
+          identifier: email,
+          token,
+          expires,
+        },
+      })
+    }
+
+    await MailUtils.getInstance().sendVerifyMail(email, token, checkEmail.first_name as string)
+
+    return 'ok!'
+  }
 }
 
 export default AuthService
