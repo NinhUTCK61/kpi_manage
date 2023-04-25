@@ -1,5 +1,5 @@
 import { api } from '@/libs/api'
-import { AlertTitle, Typography } from '@mui/material'
+import { AlertTitle, CircularProgress, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import {
@@ -70,7 +70,6 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
           {email && (
             <ButtonStyle
               variant="contained"
-              disabled={isLoading}
               onClick={() => {
                 mutate(
                   { email },
@@ -87,7 +86,7 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
                 )
               }}
             >
-              Resend email
+              {isLoading ? <CircularProgress size="1.2rem" /> : t('verify_resend')}
             </ButtonStyle>
           )}
         </Alert>

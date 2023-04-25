@@ -51,6 +51,7 @@ const ButtonStyle = styled(Button)(() => ({
   fontSize: 13,
   lineHeight: '18px',
   fontWeight: 400,
+  minWidth: '110px',
 }))
 
 export { Alert, ButtonStyle }
