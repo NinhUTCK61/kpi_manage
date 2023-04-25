@@ -1,8 +1,10 @@
+import { env } from '@/env.mjs'
 import { PrismaClient, Template, UserTemplate } from '@prisma/client'
 
-import { env } from '@/env.mjs'
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient
+  middlewareApplied: boolean
+}
 
 export const prisma =
   globalForPrisma.prisma ||
@@ -10,22 +12,26 @@ export const prisma =
     log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
 
-prisma.$use(async (params, next) => {
-  const result = await next(params)
+if (!globalForPrisma.middlewareApplied) {
+  prisma.$use(async (params, next) => {
+    const result = await next(params)
 
-  // handle template image url when get list template
-  if (params.model === 'UserTemplate') {
-    if (params.action === 'findMany') {
-      ;(result as (UserTemplate & { template: Template })[]).forEach((element) => {
-        if (element.template.image_url) {
-          const url = element.template.image_url
-          element.template.image_url = `${env.AWS_S3_ENDPOINT}/${url}`
-        }
-      })
+    // handle template image url when get list template
+    if (params.model === 'UserTemplate') {
+      if (params.action === 'findMany') {
+        ;(result as (UserTemplate & { template: Template })[]).forEach((element) => {
+          if (element.template.image_url) {
+            const url = element.template.image_url
+            element.template.image_url = `${env.AWS_S3_ENDPOINT}/${url}`
+          }
+        })
+      }
     }
-  }
 
-  return result
-})
+    return result
+  })
+
+  globalForPrisma.middlewareApplied = true
+}
 
 if (env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
