@@ -88,6 +88,7 @@
     },
     "submit": "Submit"
   },
+  "email_verified": "Email is verifiled!",
   "verify_title": "Verify",
   "verify_success": "Verified!",
   "description_verify_success": "Your email's verified successfully. Now you can login to start with us.",

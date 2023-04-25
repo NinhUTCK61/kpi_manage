@@ -39,4 +39,11 @@ export const authRouter = createTRPCRouter({
     .mutation(({ input }) => {
       return authService.verify(input.token)
     }),
+  resendVerifyEmail: publicProcedure
+    .meta({ openapi: { method: 'POST', path: '/resend-email' } })
+    .input(z.object({ email: z.string().email() }))
+    .output(z.string())
+    .mutation(({ input }) => {
+      return authService.resendVerifyEmail(input.email)
+    }),
 })
