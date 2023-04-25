@@ -1,14 +1,31 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Template, UserTemplate } from '@prisma/client'
 
-import { env } from "@/env.mjs";
+import { env } from '@/env.mjs'
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log:
-      env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+    log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  })
 
-if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+prisma.$use(async (params, next) => {
+  const result = await next(params)
+
+  // handle template image url when get list template
+  if (params.model === 'UserTemplate') {
+    if (params.action === 'findMany') {
+      ;(result as (UserTemplate & { template: Template })[]).forEach((element) => {
+        if (element.template.image_url) {
+          const url = element.template.image_url
+          element.template.image_url = `${env.AWS_S3_ENDPOINT}/${url}`
+        }
+      })
+    }
+  }
+
+  return result
+})
+
+if (env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
