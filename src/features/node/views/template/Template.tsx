@@ -37,6 +37,30 @@ export const Template = () => {
     event.preventDefault()
   }
 
+  const [color, setColor] = useState<string>('#1A74EE')
+
+  const handleChangeColor = (color: string) => {
+    setColor(color)
+  }
+
+  const [stroke, setStoke] = useState<number>(1)
+
+  const handleChangeStroke = (stroke: number) => {
+    setStoke(stroke)
+  }
+
+  const [colorShape, setColorShape] = useState<string>('#3E19A3')
+
+  const handleChangeColorShape = (color: string) => {
+    setColorShape(color)
+  }
+
+  const [shape, setShape] = useState<string>('1')
+
+  const handleChangeShape = (shape: string) => {
+    setShape(shape)
+  }
+
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
@@ -67,11 +91,6 @@ export const Template = () => {
           zoomOnDoubleClick={false}
         >
           <KpiControls />
-          <Background
-            style={{
-              cursor: 'cell !important',
-            }}
-          />
         </ReactFlow>
       </Container>
     </Layout>
