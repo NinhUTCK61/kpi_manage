@@ -1,4 +1,4 @@
-import { AlertColor, Alert as MuiAlert, styled } from '@mui/material'
+import { AlertColor, Button, Alert as MuiAlert, styled } from '@mui/material'
 
 const colorSeverityMapping: Record<AlertColor, 'red' | 'green'> = {
   success: 'green',
@@ -46,4 +46,11 @@ const Alert = styled(MuiAlert)(({ theme, severity = 'success' }) => ({
   },
 }))
 
-export { Alert }
+const ButtonStyle = styled(Button)(() => ({
+  marginTop: 1.5,
+  fontSize: 13,
+  lineHeight: '18px',
+  fontWeight: 400,
+}))
+
+export { Alert, ButtonStyle }

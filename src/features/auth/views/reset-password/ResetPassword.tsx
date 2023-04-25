@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { FormResetPassword } from './FromResetPassword'
+import { FormResetPassword } from './FormResetPassword'
 import { Success } from './Success'
 
 const ResetPassword: FC = () => {
