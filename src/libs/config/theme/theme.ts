@@ -52,6 +52,7 @@ const defaultTheme: Theme = createTheme({
   palette: {
     common: {
       white: base.white,
+      black: base.black,
     },
     primary: {
       main: blue[600],
@@ -211,6 +212,14 @@ const defaultTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           color: base.black,
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          paddingTop: 0,
+          paddingBottom: 0,
         },
       },
     },

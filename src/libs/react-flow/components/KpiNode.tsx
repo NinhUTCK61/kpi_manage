@@ -1,5 +1,5 @@
 import { InputNode } from '@/libs/shared/components/Form/Input'
-import { Stack, Typography, styled, Box } from '@mui/material'
+import { Box, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import AddIcon from 'public/assets/svgs/add_node.svg'
 import NodeIcon from 'public/assets/svgs/node.svg'
@@ -72,12 +72,10 @@ function KpiNode(props: NodeProps) {
         style={handleStyleLeft}
         isConnectable={isConnectable}
       />
-      <Typography variant="body2" fontWeight={600} mb={0.5}>
+      <Typography variant="body2" mb={0.5}>
         {`${getValues('label')}(${getValues('unit')})`}
       </Typography>
-      <Typography variant="body2" fontWeight={600}>
-        {getValues('formula')}{' '}
-      </Typography>
+      <Typography variant="body2">{getValues('formula')}</Typography>
       <Handle type="source" position={Position.Right} style={handleStyle}>
         {id !== 'root' && <IconImageNode src={NodeIcon} alt="add" />}
       </Handle>

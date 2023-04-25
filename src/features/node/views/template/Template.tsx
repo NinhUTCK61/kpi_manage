@@ -11,7 +11,7 @@ import { Box, styled } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Background, Edge, ReactFlow, ReactFlowProvider } from 'reactflow'
+import { Edge, ReactFlow, ReactFlowProvider } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { HEIGHT_TOOLBAR, LayoutTemplate, Toolbar } from './components'
 
@@ -28,7 +28,7 @@ const _nodes: ReactFlowKPINode[] = [
       input_title: 'root',
       input_value: '',
       is_formula: false,
-      style: null,
+      node_style: null,
       unit: '',
       value2number: 0,
       template_id: 'root',
@@ -83,9 +83,44 @@ const Template = () => {
     })
   }
 
+  const [color, setColor] = useState<string>('#1A74EE')
+
+  const handleChangeColor = (color: string) => {
+    setColor(color)
+  }
+
+  const [stroke, setStoke] = useState<number>(1)
+
+  const handleChangeStroke = (stroke: number) => {
+    setStoke(stroke)
+  }
+
+  const [colorShape, setColorShape] = useState<string>('#3E19A3')
+
+  const handleChangeColorShape = (color: string) => {
+    setColorShape(color)
+  }
+
+  const [shape, setShape] = useState<string>('1')
+
+  const handleChangeShape = (shape: string) => {
+    setShape(shape)
+  }
+
   return (
     <LayoutTemplate>
-      <Toolbar handleChangeOption={handleChangeOption} action={action} />
+      <Toolbar
+        action={action}
+        handleChangeOption={handleChangeOption}
+        color={color}
+        handleChangeColor={handleChangeColor}
+        stroke={stroke}
+        handleChangeStroke={handleChangeStroke}
+        colorShape={colorShape}
+        handleChangeColorShape={handleChangeColorShape}
+        shape={shape}
+        handleChangeShape={handleChangeShape}
+      />
 
       <Container display="flex" flex={1}>
         <ReactFlow
@@ -105,11 +140,6 @@ const Template = () => {
           panOnDrag={action.pan}
         >
           <KpiControls />
-          <Background
-            style={{
-              cursor: 'cell !important',
-            }}
-          />
         </ReactFlow>
       </Container>
     </LayoutTemplate>

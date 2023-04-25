@@ -17,21 +17,41 @@ import MoveIcon from 'public/assets/svgs/move_tools.svg'
 import MoveActiveIcon from 'public/assets/svgs/move_tools_active.svg'
 import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
-
 import { useState } from 'react'
 import { ActionTypes } from '../../Template'
+import { ChoseFontSize } from './ChoseFontSize'
 import { PickColor } from './PickColor'
-import { SelectCustom } from './SelectCustom'
-import { Shape } from './Shape'
 
 const HEIGHT_TOOLBAR = 60
+
+import { ChoseShape } from './ChoseShape'
+import { ChoseStroke } from './ChoseStroke'
 
 type ToolbarTypes = {
   handleChangeOption(option: keyof ActionTypes): void
   action: ActionTypes
+  color: string
+  handleChangeColor(color: string): void
+  stroke: number
+  handleChangeStroke(stroke: number): void
+  colorShape: string
+  handleChangeColorShape(color: string): void
+  shape: string
+  handleChangeShape(shape: string): void
 }
 
-const Toolbar: React.FC<ToolbarTypes> = ({ handleChangeOption, action }) => {
+const Toolbar: React.FC<ToolbarTypes> = ({
+  action,
+  color,
+  shape,
+  colorShape,
+  stroke,
+  handleChangeOption,
+  handleChangeColor,
+  handleChangeColorShape,
+  handleChangeShape,
+  handleChangeStroke,
+}) => {
   const [size, setSize] = useState<string>('12')
   const actions = [
     {
@@ -66,43 +86,6 @@ const Toolbar: React.FC<ToolbarTypes> = ({ handleChangeOption, action }) => {
     { key: 'child', icon: EditorChild },
   ]
 
-  const fontSizes = [
-    {
-      label: '12px',
-      value: '12',
-    },
-    {
-      label: '14px',
-      value: '14',
-    },
-    {
-      label: '16px',
-      value: '16',
-    },
-    {
-      label: '16px',
-      value: '16',
-    },
-  ]
-
-  const [color, setColor] = useState<string>('#1A74EE')
-
-  const handleChangeColor = (color: string) => {
-    setColor(color)
-  }
-
-  const [stroke, setStoke] = useState<string>('1')
-
-  const handleChangeStoke = (stroke: string) => {
-    setStoke(stroke)
-  }
-
-  const [colorShape, setColorShape] = useState<string>('#3E19A3')
-
-  const handleChangeColorShape = (color: string) => {
-    setColorShape(color)
-  }
-
   return (
     <Container>
       <Stack direction="row" alignItems="center">
@@ -112,21 +95,32 @@ const Toolbar: React.FC<ToolbarTypes> = ({ handleChangeOption, action }) => {
           <Image src={RedoIcon} alt="undo" />
         </Stack>
 
-        <SelectCustom value={size} handleChange={handleChangeSize} options={fontSizes} />
+        <ChoseFontSize value={size} handleChange={handleChangeSize} />
 
         <Stack direction="row" spacing={0.5} mr={3}>
           {editors.map((editor) => (
             <Image key={editor.key} src={editor.icon} alt={editor.key} />
           ))}
         </Stack>
+
         <PickColor color={color} handleChangeColor={handleChangeColor} mr={3} />
 
-        <Shape
-          stroke={stroke}
-          handleChangeStroke={handleChangeStoke}
-          colorShape={colorShape}
-          handleChangeColorShape={handleChangeColorShape}
-        />
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{ opacity: action.speech ? 1 : 0.3, pointerEvents: action.speech ? 'auto' : 'none' }}
+        >
+          <ChoseStroke stroke={stroke} handleChangeStroke={handleChangeStroke} />
+
+          <PickColor
+            forShape
+            color={colorShape}
+            handleChangeColor={handleChangeColorShape}
+            mr={1}
+          />
+
+          <ChoseShape shape={shape} handleChangeShape={handleChangeShape} />
+        </Stack>
       </Stack>
 
       <Stack spacing={1} direction="row" alignItems="center">

@@ -33,4 +33,4 @@ function KpiEdge({
   )
 }
 
-export { KpiEdge}
+export { KpiEdge }

@@ -1,6 +1,7 @@
 import { base } from '@/libs/config/theme'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 
 type PickColorTypes = {
   color: string
@@ -9,11 +10,14 @@ type PickColorTypes = {
 } & StackProps
 
 const PickColor: React.FC<PickColorTypes> = ({ color, handleChangeColor, forShape, ...props }) => {
+  const { t } = useTranslation('file')
+
+  const id = forShape ? 'colorShape' : 'color'
   return (
     <Stack direction="row" height={36} alignItems="center" {...props}>
       {!forShape && (
         <Typography variant="body2" color="base.black" mr={1}>
-          Fill
+          {t('fill')}
         </Typography>
       )}
       <Stack
@@ -26,12 +30,12 @@ const PickColor: React.FC<PickColorTypes> = ({ color, handleChangeColor, forShap
           cursor: 'pointer',
         }}
         component="label"
-        htmlFor="color"
+        htmlFor={id}
       />
 
       <Button
         component="label"
-        htmlFor="color"
+        htmlFor={id}
         sx={{
           backgroundColor: base.white,
           color: base.black,
@@ -46,7 +50,7 @@ const PickColor: React.FC<PickColorTypes> = ({ color, handleChangeColor, forShap
       </Button>
 
       <InputStyled
-        id="color"
+        id={id}
         type="color"
         onChange={(e) => handleChangeColor(e.target.value)}
         value={color}
