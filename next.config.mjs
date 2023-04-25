@@ -18,6 +18,9 @@ const config = {
    */
   i18n: configI18n.i18n,
   output: 'standalone',
+  images: {
+    domains: ['kpi-staging.s3.ap-northeast-3.amazonaws.com'],
+  },
 }
 
 export default config
