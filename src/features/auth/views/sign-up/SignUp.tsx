@@ -1,18 +1,17 @@
 import { api } from '@/libs/api'
-import { SignUpSchemaInput } from '@/libs/schema'
+import { SignUpFormType, SignUpInputType, SignUpSchemaForm } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { FC, useCallback } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
 
 const SignUp: FC = () => {
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
-  const { control, handleSubmit } = useForm<z.infer<typeof SignUpSchemaInput>>({
+  const methods = useForm<SignUpFormType>({
     defaultValues: {
       first_name: '',
       last_name: '',
@@ -21,14 +20,16 @@ const SignUp: FC = () => {
       company_name: '',
       date_of_birth: null,
       role_in_company: '',
+      isAcceptLaw: false,
+      reenter_password: '',
       reasons: [],
     },
-    resolver: zodResolver(SignUpSchemaInput),
+    resolver: zodResolver(SignUpSchemaForm),
   })
 
   const { t } = useTranslation('sign_up')
 
-  const onSubmit: SubmitHandler<z.infer<typeof SignUpSchemaInput>> = useCallback(
+  const onSubmit: SubmitHandler<SignUpInputType> = useCallback(
     async (data) => {
       mutate(data, {
         onError: (err) => {
@@ -44,7 +45,9 @@ const SignUp: FC = () => {
   return (
     <LayoutUnAuth title={t('seo_title')}>
       {!isSuccess && (
-        <FormSignUp control={control} handleSubmit={handleSubmit(onSubmit)} isLoading={isLoading} />
+        <FormProvider {...methods}>
+          <FormSignUp handleSubmit={methods.handleSubmit(onSubmit)} isLoading={isLoading} />
+        </FormProvider>
       )}
 
       {isSuccess && <Success />}

@@ -109,6 +109,7 @@ class AuthService {
 
         return userWithoutPassword
       } catch (error) {
+        console.log(error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
         })

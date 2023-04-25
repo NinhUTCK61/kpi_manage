@@ -1,41 +1,30 @@
-import { api } from '@/libs/api'
-import { SignUpSchemaInput } from '@/libs/schema'
-import {
-  DatePickerSeparator,
-  Input,
-  PasswordStateValidation,
-  TextColor,
-} from '@/libs/shared/components'
+import { SignUpFormType } from '@/libs/schema'
+import { DatePickerSeparator, Input } from '@/libs/shared/components'
+import { AcceptLaw } from '@/libs/shared/components/Form/CheckBox/AcceptLaw'
+import { ReasonSection } from '@/libs/shared/components/Reason'
 import { Button, Stack, Typography } from '@mui/material'
+import { ReasonType } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
 import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
-import { Control, useWatch } from 'react-hook-form'
-import { z } from 'zod'
+import { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { CustomImage } from '../../components'
 
 type FormSignUpTypes = {
-  control: Control<z.infer<typeof SignUpSchemaInput>>
   handleSubmit(): void
   isLoading: boolean
 }
 
-const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoading }) => {
-  const router = useRouter()
+const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
   const { t } = useTranslation(['sign_up'])
-
-  const { data: reason } = api.reason.list.useQuery()
-
-  const password = useWatch({ control, name: 'password' })
-
-  const redirectSignIn = () => {
-    router.push('/sign-in')
-  }
-
+  const { control, getValues } = useFormContext<SignUpFormType>()
+  const [isAccept, setIsAccept] = useState<boolean>(false)
+  console.log(getValues('isAcceptLaw'), isAccept, 'ninh')
   return (
     <Stack justifyContent="center" alignItems="center">
       <Stack
@@ -58,11 +47,20 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
         <Stack width={{ xs: '100%', md: 460 }} component="form" onSubmit={handleSubmit} spacing={2}>
           <Input
             control={control}
+            name="last_name"
+            required
+            label={t('last_name') as string}
+            fullWidth
+            placeholder={t('last_name') as string}
+            readOnly={isLoading}
+          />
+          <Input
+            control={control}
             name="first_name"
             required
-            label={t('name') as string}
+            label={t('first_name') as string}
             fullWidth
-            placeholder={t('enter_name') as string}
+            placeholder={t('first_name') as string}
             readOnly={isLoading}
           />
           <Input
@@ -75,8 +73,6 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
             readOnly={isLoading}
           />
 
-          <DatePickerSeparator control={control} name="date_of_birth" fullWidth />
-
           <Input
             required
             control={control}
@@ -88,23 +84,68 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ control, handleSubmit, isLoadin
             readOnly={isLoading}
           />
 
-          <PasswordStateValidation password={password} />
+          <Input
+            required
+            name="reenter_password"
+            control={control}
+            label={t('reenter_password') as string}
+            type="password"
+            fullWidth
+            placeholder={t('reenter_password') as string}
+            readOnly={isLoading}
+          />
 
-          <Button fullWidth variant="contained" disabled={isLoading} type="submit">
+          <Input
+            required
+            control={control}
+            name="company_name"
+            label={t('company_name') as string}
+            type="text"
+            fullWidth
+            placeholder={t('company_name') as string}
+            readOnly={isLoading}
+          />
+
+          <Input
+            required
+            control={control}
+            name="role_in_company"
+            label={t('role') as string}
+            type="text"
+            fullWidth
+            placeholder={t('role') as string}
+            readOnly={isLoading}
+          />
+
+          {/* <PasswordStateValidation password={password} /> */}
+
+          <DatePickerSeparator control={control} name="date_of_birth" fullWidth />
+
+          <ReasonSection type={ReasonType.ISSUE} />
+
+          <ReasonSection type={ReasonType.REASON_KNOW} />
+
+          <Button fullWidth variant="contained" disabled={!isAccept && !isLoading} type="submit">
             {t('submit')}
           </Button>
+          <AcceptLaw changeFeature={{ isAccept, setIsAccept: setIsAccept }} />
 
-          <Stack
-            py={1.5}
-            spacing={0.5}
-            justifyContent="center"
-            direction="row"
-            onClick={redirectSignIn}
-          >
+          <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
             <Typography variant="body2" color="greyScale.600" fontWeight={400}>
               {t('have_account')}
             </Typography>
-            <TextColor>{t('sign_in')}</TextColor>
+            <Typography
+              variant="body2"
+              color={(theme) => theme.palette.customPrimary[500]}
+              component={Link}
+              fontWeight={600}
+              sx={{
+                textDecoration: 'none',
+              }}
+              href="/sign-in"
+            >
+              {t('sign_in')}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

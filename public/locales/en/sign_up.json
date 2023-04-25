@@ -19,5 +19,12 @@
   "enter_name": "Enter your name",
   "enter_email": "Enter your email",
   "enter_password": "Enter your password",
-  "seo_title": "Sign Up"
+  "seo_title": "Sign Up",
+  "last_name": "Last name",
+  "first_name": "First Name",
+  "reenter_password": "Reenter password",
+  "company_name": "Company name",
+  "role": "Role",
+  "text_law": "Agree to Privacy Policy",
+  "resend_email": "Resend email"
 }
