@@ -1,5 +1,6 @@
 import {
   DeleteTemplateSchemaInput,
+  GetTemplateByIdSchema,
   LikeTemplateSchemaInput,
   ListTemplateSchemaInput,
   TemplateDataOutputSchema,
@@ -54,5 +55,12 @@ export const templateRouter = createTRPCRouter({
     .output(z.string())
     .mutation(({ input, ctx }) => {
       return templateService.restore(input.id, ctx.session.user)
+    }),
+  getById: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/template-id', protect: true } })
+    .input(GetTemplateByIdSchema)
+    .output(TemplateSchema)
+    .mutation(({ input, ctx }) => {
+      return templateService.getById(input.template_id, ctx.session.user)
     }),
 })
