@@ -92,6 +92,10 @@ export const authOptions: NextAuthOptions = {
             throw new Error('incorrect')
           }
 
+          if (!user.emailVerified) {
+            throw new Error('verify')
+          }
+
           return user
         } else {
           throw new Error('incorrect')

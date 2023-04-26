@@ -1,15 +1,18 @@
-import { AlertTitle, Typography } from '@mui/material'
+import { api } from '@/libs/api'
+import { AlertTitle, CircularProgress, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import {
   CustomContentProps,
   SnackbarContent,
   SnackbarProviderProps,
   closeSnackbar,
+  enqueueSnackbar,
 } from 'notistack'
 import checked from 'public/assets/svgs/checked.svg'
 import info from 'public/assets/svgs/info.svg'
 import { forwardRef } from 'react'
-import { Alert } from './styled'
+import { Alert, ButtonStyle } from './styled'
 
 declare module 'notistack' {
   interface VariantOverrides {
@@ -21,20 +24,25 @@ declare module 'notistack' {
     }
     error: {
       description?: string
+      verifyEmail?: string
     }
   }
 }
 
 interface CustomSnackbarProps extends CustomContentProps {
   description: string
+  verifyEmail: string
 }
 
 export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
   function CustomComponent(props, ref) {
+    const { mutate, isLoading } = api.auth.resendVerifyEmail.useMutation()
+    const { t } = useTranslation('common')
     const {
       id,
       message,
       description,
+      verifyEmail,
       persist: _persist,
       anchorOrigin: _anchorOrigin,
       iconVariant: _iconVariant,
@@ -59,6 +67,28 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
         >
           <AlertTitle>{message}</AlertTitle>
           {description && <Typography variant="body2">{description}</Typography>}
+          {verifyEmail && (
+            <ButtonStyle
+              variant="contained"
+              onClick={() => {
+                mutate(
+                  { email: verifyEmail },
+                  {
+                    onError(error) {
+                      enqueueSnackbar(t(error.message), {
+                        variant: 'error',
+                      })
+                    },
+                    onSuccess() {
+                      onClose()
+                    },
+                  },
+                )
+              }}
+            >
+              {isLoading ? <CircularProgress size="1.2rem" /> : t('verify_resend')}
+            </ButtonStyle>
+          )}
         </Alert>
       </SnackbarContent>
     )

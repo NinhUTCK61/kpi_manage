@@ -12,5 +12,7 @@
   "enter_password": "パスワードを入力してください",
   "email": "メールアドレス",
   "password": "パスワード",
-  "seo_title": "ログイン"
+  "seo_title": "ログイン",
+  "title_verify": "You need to verified your email to continue",
+  "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
 }

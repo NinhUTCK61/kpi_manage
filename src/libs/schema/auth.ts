@@ -49,3 +49,9 @@ export const ResetPasswordSchemaInput = z
   })
 
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchemaInput>
+
+export const ResendEmailVerify = z.object({
+  email: z.string().email(),
+})
+
+export type ResendEmailVerifyType = z.infer<typeof ResendEmailVerify>
