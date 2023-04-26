@@ -56,11 +56,11 @@ const Login: FC = () => {
       const error = res?.error as string
       const description = t(error)
       error === 'verify'
-        ? enqueueSnackbar('title_verify', {
+        ? enqueueSnackbar(t('title_verify'), {
             variant: 'error',
-            description: 'desc_verify',
-            email,
-            persist: error === 'verify',
+            description: t('desc_verify') as string,
+            verifyEmail: email,
+            persist: true,
           })
         : enqueueSnackbar(t('login_failed'), {
             variant: 'error',

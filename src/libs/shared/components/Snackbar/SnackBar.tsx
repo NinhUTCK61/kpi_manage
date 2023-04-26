@@ -24,14 +24,14 @@ declare module 'notistack' {
     }
     error: {
       description?: string
-      email?: string
+      verifyEmail?: string
     }
   }
 }
 
 interface CustomSnackbarProps extends CustomContentProps {
   description: string
-  email: string
+  verifyEmail: string
 }
 
 export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
@@ -42,7 +42,7 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
       id,
       message,
       description,
-      email,
+      verifyEmail,
       persist: _persist,
       anchorOrigin: _anchorOrigin,
       iconVariant: _iconVariant,
@@ -67,12 +67,12 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
         >
           <AlertTitle>{message}</AlertTitle>
           {description && <Typography variant="body2">{description}</Typography>}
-          {email && (
+          {verifyEmail && (
             <ButtonStyle
               variant="contained"
               onClick={() => {
                 mutate(
-                  { email },
+                  { email: verifyEmail },
                   {
                     onError(error) {
                       enqueueSnackbar(t(error.message), {
