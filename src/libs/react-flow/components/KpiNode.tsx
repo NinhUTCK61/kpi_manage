@@ -1,162 +1,70 @@
-import { InputNode } from '@/libs/shared/components/Form/Input'
-import { Box, Stack, Typography, styled } from '@mui/material'
-import Image from 'next/image'
+import { Typography } from '@mui/material'
 import AddIcon from 'public/assets/svgs/add_node.svg'
 import NodeIcon from 'public/assets/svgs/node.svg'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { Handle, NodeProps, Position } from 'reactflow'
+import { NodeProps, Position } from 'reactflow'
+import { shallow } from 'zustand/shallow'
 import { useRFStore } from '../hooks'
+import { KPINodeType } from '../types'
+import { NodeForm } from './KPINode/NodeForm'
+import {
+  BottomHandler,
+  IconImage,
+  IconImageNode,
+  LeftHandler,
+  NodeUnActiveContainer,
+  RightHandler,
+  StackNodeActive,
+  TextId,
+} from './KPINode/styled'
 
-const handleStyle = {
-  top: '50%',
-  right: '-30px',
-  height: '0px',
-  width: '0px',
-  minWidth: '0px',
-  minHeight: '0px',
-}
-const handleStyleBottom = {
-  bottom: '-30px',
-  cursor: 'pointer',
-  height: '0px',
-  width: '0px',
-  minWidth: '0px',
-  minHeight: '0px',
-}
-const handleStyleLeft = {
-  top: '50%',
-  left: '0px',
-  opacity: '0',
-  height: '0px',
-  width: '0px',
-  minWidth: '0px',
-  minHeight: '0px',
-}
-
-type NodeFormProps = {
-  label: string
-  unit: string
-  formula: string
-}
-
-function KpiNode(props: NodeProps) {
+function KpiNode(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected, id } = props
-  const { control, getValues } = useForm<NodeFormProps>({
-    defaultValues: {
-      label: data?.data?.label,
-      unit: data?.data?.unit,
-      formula: data?.data?.formula,
-    },
-  })
-  const [wasFocus, setWasFocus] = useState<boolean>(false)
-  const { addNode, nodes } = useRFStore((state) => state)
 
-  const checkFocus = () => {
-    if (!wasFocus) {
-      return false
-    } else {
-      if (selected) {
-        return false
-      } else {
-        return true
-      }
-    }
-  }
+  const { addNode, nodeFocused } = useRFStore(
+    (state) => ({
+      addNode: state.addNode,
+      nodeFocused: state.nodeFocused,
+    }),
+    shallow,
+  )
 
-  return checkFocus() ? (
-    <StackNodeUnActive>
-      <Handle
-        type="target"
-        position={Position.Left}
-        style={handleStyleLeft}
-        isConnectable={isConnectable}
-      />
+  const isFocused = nodeFocused === data.id && selected
+
+  return false ? (
+    <NodeUnActiveContainer>
+      <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
+
       <Typography variant="body2" mb={0.5}>
-        {`${getValues('label')}(${getValues('unit')})`}
+        {`${data.input_title}${data.unit && `(${data.unit})`}`}
       </Typography>
-      <Typography variant="body2">{getValues('formula')}</Typography>
-      <Handle type="source" position={Position.Right} style={handleStyle}>
+      <Typography variant="body2">{data.value2number}</Typography>
+
+      <RightHandler type="source" position={Position.Right}>
         {id !== 'root' && <IconImageNode src={NodeIcon} alt="add" />}
-      </Handle>
+      </RightHandler>
+
       <TextId variant="caption">{id}</TextId>
-    </StackNodeUnActive>
+    </NodeUnActiveContainer>
   ) : (
-    <StackNodeActive
-      onClick={() => {
-        setWasFocus(true)
-      }}
-    >
-      <Handle
-        type="target"
-        position={Position.Left}
-        style={handleStyleLeft}
-        isConnectable={isConnectable}
-      />
-      <Stack>
-        <InputNode control={control} name="label" placeholder="Label" />
-        <InputNode control={control} name="formula" placeholder="=" />
-        <InputNode control={control} name="unit" placeholder="Unit" />
-      </Stack>
+    <StackNodeActive>
+      <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
+
+      <NodeForm />
+
       {id !== 'root' && (
-        <Handle
+        <BottomHandler
           type="target"
           position={Position.Bottom}
-          style={handleStyleBottom}
-          onClick={() => addNode(data.parent_node_id)}
+          onClick={() => addNode(data.parent_node_id as string)}
         >
           <IconImage src={AddIcon} alt="add" />
-        </Handle>
+        </BottomHandler>
       )}
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={handleStyle}
-        onClick={() => addNode(data.id)}
-      >
+      <RightHandler type="source" position={Position.Right} onClick={() => addNode(data.id)}>
         <IconImage src={AddIcon} alt="add" />
-      </Handle>
+      </RightHandler>
     </StackNodeActive>
   )
 }
-
-const TextId = styled(Typography)(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  background: theme.palette.blue[0],
-  color: theme.palette.blue[500],
-  padding: theme.spacing(0.5, 1),
-  borderRadius: 4,
-}))
-
-const IconImage = styled(Image)({
-  transform: 'translate(-50%,-50%)',
-  cursor: 'pointer',
-})
-
-const IconImageNode = styled(Image)(({ theme }) => ({
-  transform: 'translate(-50%,-100%)',
-  cursor: 'pointer',
-  pointerEvents: 'none',
-  background: theme.palette.common.white,
-}))
-
-const StackNodeActive = styled(Box)(({ theme }) => ({
-  borderRadius: 8,
-  maxWidth: 190,
-  height: 106,
-  padding: 10,
-  border: `2px solid ${theme.palette.blue[400]}}`,
-  backgroundColor: theme.palette.common.white,
-}))
-
-const StackNodeUnActive = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.common.white,
-  maxWidth: 190,
-  height: 106,
-  justifyContent: 'center',
-  position: 'relative',
-}))
 
 export { KpiNode }

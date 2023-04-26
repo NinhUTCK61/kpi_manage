@@ -1,16 +1,21 @@
 import { base } from '@/libs/config/theme'
+import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { shallow } from 'zustand/shallow'
 
 type PickColorTypes = {
-  color: string
-  handleChangeColor(color: string): void
   forShape?: boolean
 } & StackProps
 
-const PickColor: React.FC<PickColorTypes> = ({ color, handleChangeColor, forShape, ...props }) => {
+const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   const { t } = useTranslation('file')
+  const color = useRFStore((state) => (forShape ? state.colorShape : state.color), shallow)
+  const changeColor = useRFStore(
+    (state) => (forShape ? state.changeColorShape : state.changeColor),
+    shallow,
+  )
 
   const id = forShape ? 'colorShape' : 'color'
   return (
@@ -43,16 +48,17 @@ const PickColor: React.FC<PickColorTypes> = ({ color, handleChangeColor, forShap
           borderRadius: 0,
           fontWeight: 400,
           p: '7px 14px 7px 8px',
+          width: 74,
         }}
         disableRipple
       >
-        {color.replace('#', '')}
+        {color && color.replace('#', '')}
       </Button>
 
       <InputStyled
         id={id}
         type="color"
-        onChange={(e) => handleChangeColor(e.target.value)}
+        onChange={(e) => changeColor(e.target.value)}
         value={color}
         label={color}
         sx={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}

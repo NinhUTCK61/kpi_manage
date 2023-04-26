@@ -67,6 +67,7 @@ export const ReactFlowSchema = z.object({
       source: z.string(),
       target: z.string(),
       animated: z.boolean(),
+      type: z.string(),
     })
     .array(),
 })

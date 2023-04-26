@@ -1,16 +1,17 @@
+import { useRFStore } from '@/libs/react-flow'
 import { IconButton, Stack, styled, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import DownIcon from 'public/assets/svgs/arrow_down_select.svg'
 import UpIcon from 'public/assets/svgs/arrow_up_select.svg'
+import { shallow } from 'zustand/shallow'
 
-type ChoseStrokeTypes = {
-  stroke: number
-  handleChangeStroke(stroke: number): void
-}
-
-const ChoseStroke: React.FC<ChoseStrokeTypes> = ({ stroke, handleChangeStroke }) => {
+const ChoseStroke: React.FC = () => {
   const { t } = useTranslation('file')
+
+  const stroke = useRFStore((state) => state.stroke, shallow)
+  const changeStroke = useRFStore((state) => state.changeStroke, shallow)
+
   const strokes = [
     { value: 1, label: '1px' },
     { value: 2, label: '2px' },
@@ -20,6 +21,7 @@ const ChoseStroke: React.FC<ChoseStrokeTypes> = ({ stroke, handleChangeStroke })
   ]
 
   const handleChangeValueStoke = (isUp?: boolean) => {
+    if (!stroke) return
     const _stroke = stroke
     let value = null
     if (isUp && _stroke < 5) {
@@ -29,7 +31,7 @@ const ChoseStroke: React.FC<ChoseStrokeTypes> = ({ stroke, handleChangeStroke })
     if (!isUp && _stroke > 1) {
       value = _stroke - 1
     }
-    value && handleChangeStroke(value)
+    value && changeStroke(value)
   }
 
   return (

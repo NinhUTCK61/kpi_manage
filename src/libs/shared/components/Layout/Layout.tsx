@@ -1,26 +1,38 @@
-import { Stack, styled } from '@mui/material'
+import { Box, BoxProps, Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
 import { HEIGHT_HEADER, Header } from './Header'
 import { Sidebar } from './Sidebar'
 
-type LayoutType = {
-  title?: string | null
-  description?: string
-  children: React.ReactNode
-}
+type LayoutType = BoxProps<
+  'div',
+  {
+    title?: string | null
+    description?: string
+    children: React.ReactNode
+    HeaderComponent?: React.ReactNode
+    disableSidebar?: boolean
+  }
+>
 
-const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
+const Layout: React.FC<LayoutType> = ({
+  title,
+  description,
+  children,
+  HeaderComponent,
+  disableSidebar = false,
+  ...contentProps
+}) => {
   return (
     <>
       <Head>
         <title>{title || 'KPI master'}</title>
         <meta name="description" content={description} />
       </Head>
-      <Header />
+      {HeaderComponent ? HeaderComponent : <Header />}
       <Stack direction="row">
-        <Sidebar />
-        <ContentPage>{children}</ContentPage>
+        {!disableSidebar && <Sidebar />}
+        <ContentPage {...contentProps}>{children}</ContentPage>
       </Stack>
     </>
   )
@@ -28,7 +40,7 @@ const Layout: React.FC<LayoutType> = ({ title, description, children }) => {
 
 export { Layout }
 
-const ContentPage = styled('div')(({ theme }) => ({
+const ContentPage = styled(Box)(({ theme }) => ({
   marginTop: HEIGHT_HEADER,
   minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
   flex: 1,

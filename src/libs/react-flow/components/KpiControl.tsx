@@ -3,14 +3,26 @@ import { Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import ZoomInIcon from 'public/assets/svgs/zoom_in.svg'
 import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controls, useReactFlow } from 'reactflow'
 function KpiControls() {
-  const { setViewport, getViewport } = useReactFlow()
-  const [valueZoom, setValueZoom] = useState<number>(1)
+  const { setViewport, getViewport, getZoom, fitBounds } = useReactFlow()
+  const [valueZoom, setValueZoom] = useState<number | null>()
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValueZoom(getZoom())
+    }, 200)
+  }, [getZoom])
 
   const handleZoom = async (isZoomIn?: boolean) => {
-    const _valueZoom = isZoomIn ? valueZoom + 0.25 : valueZoom - 0.25
+    if (!valueZoom) return
+    let _valueZoom = valueZoom
+    if (isZoomIn) {
+      _valueZoom = _valueZoom <= 1.75 ? _valueZoom + 0.25 : _valueZoom
+    } else {
+      _valueZoom = _valueZoom > 0.25 ? _valueZoom - 0.25 : _valueZoom
+    }
     const { x, y } = getViewport()
     setViewport({
       x,
@@ -45,7 +57,7 @@ function KpiControls() {
           style={{ cursor: 'pointer' }}
         />
         <Typography width={43} textAlign="center">
-          {valueZoom * 100}%
+          {valueZoom && valueZoom * 100}%
         </Typography>
         <Image
           src={ZoomInIcon}

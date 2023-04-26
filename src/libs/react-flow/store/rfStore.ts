@@ -1,3 +1,4 @@
+import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
 import {
   Connection,
@@ -37,6 +38,13 @@ const DEFAULT_STATE: Partial<RFStore> = {
   nodes: [],
   edges: [],
   d3Root: hierarchy(initialRootNode),
+  viewportAction: ViewPortAction.Move,
+  nodeFocused: null,
+  fontSize: '12',
+  color: '#1A74EE',
+  colorShape: '#3E19A3',
+  stroke: 1,
+  shape: '1',
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -79,6 +87,37 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         return _nodes
+      },
+      changeViewportAction(action) {
+        set({
+          viewportAction: action,
+        })
+      },
+      onNodeClick(_, node) {
+        set({
+          nodeFocused: node.id,
+        })
+      },
+      changeFontSize(fontSize) {
+        set({
+          fontSize,
+        })
+      },
+      changeColor(color) {
+        set({
+          color,
+        })
+      },
+      changeColorShape(colorShape) {
+        set({
+          colorShape,
+        })
+      },
+      changeStroke(stroke) {
+        set({ stroke })
+      },
+      changeShape(shape) {
+        set({ shape })
       },
     })),
   )

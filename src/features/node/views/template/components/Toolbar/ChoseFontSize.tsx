@@ -1,13 +1,14 @@
+import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
-import { DropDownIcon } from './ChoseShape'
+import Image from 'next/image'
+import ArrowDown from 'public/assets/svgs/arrow_down.svg'
+import { shallow } from 'zustand/shallow'
 
-type ChoseFontSizeTypes = {
-  value: string
-  handleChange(value: string): void
-}
+const ChoseFontSize: React.FC = () => {
+  const value = useRFStore((state) => state.fontSize, shallow)
+  const handleChange = useRFStore((state) => state.changeFontSize, shallow)
 
-const ChoseFontSize: React.FC<ChoseFontSizeTypes> = ({ value, handleChange }) => {
   const fontSizes = [
     {
       label: '12px',
@@ -22,8 +23,8 @@ const ChoseFontSize: React.FC<ChoseFontSizeTypes> = ({ value, handleChange }) =>
       value: '16',
     },
     {
-      label: '16px',
-      value: '16',
+      label: '18px',
+      value: '18',
     },
   ]
 
@@ -32,7 +33,7 @@ const ChoseFontSize: React.FC<ChoseFontSizeTypes> = ({ value, handleChange }) =>
       value={value}
       onChange={(event: SelectChangeEvent<unknown>) => handleChange(event.target.value as string)}
       input={<CustomInput />}
-      IconComponent={DropDownIcon}
+      IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
     >
       {fontSizes.map((item) => (
         <MenuItem key={item.value} value={item.value}>
