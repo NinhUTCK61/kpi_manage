@@ -60,7 +60,7 @@ export const templateRouter = createTRPCRouter({
     .meta({ openapi: { method: 'GET', path: '/template/{id}', protect: true } })
     .input(GetTemplateByIdInputSchema)
     .output(TemplateSchema)
-    .mutation(({ input, ctx }) => {
+    .query(({ input, ctx }) => {
       return templateService.getById(input.template_id, ctx.session.user)
     }),
 })
