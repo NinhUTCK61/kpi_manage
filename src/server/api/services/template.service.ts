@@ -201,4 +201,27 @@ export class TemplateService {
 
     return 'template.template_restore_success'
   }
+
+  async getById(template_id: string, user: User) {
+    const getTemplateById = await prisma.userTemplate.findFirst({
+      where: {
+        user_id: user.id,
+        template_id,
+      },
+      select: {
+        template: true,
+      },
+    })
+
+    if (!getTemplateById) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+
+    const { template } = getTemplateById
+
+    return template
+  }
 }
