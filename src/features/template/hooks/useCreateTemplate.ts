@@ -11,7 +11,10 @@ const useCreateTemplate = () => {
 
   const mutation = api.template.create.useMutation({
     onSuccess: (data) => {
-      router.push('/file/' + data.id)
+      router.push({
+        pathname: '/file/' + data.id,
+        query: { root: data.root_note_id },
+      })
     },
     onError: (err) => {
       showError(err, t('create_failed'))

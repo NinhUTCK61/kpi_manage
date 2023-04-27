@@ -52,6 +52,7 @@ const defaultTheme: Theme = createTheme({
   palette: {
     common: {
       white: base.white,
+      black: base.black,
     },
     primary: {
       main: blue[600],
@@ -210,6 +211,30 @@ const defaultTheme: Theme = createTheme({
     MuiInput: {
       styleOverrides: {
         root: {
+          color: base.black,
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        popper: {},
+        tooltip: {
+          backgroundColor: base.black,
+          color: base.white,
+          marginTop: 8,
+          padding: '8px 20px',
+          fontSize: 15,
+          lineHeight: '22px',
+        },
+        arrow: {
           color: base.black,
         },
       },

@@ -1,6 +1,6 @@
 import {
   HierarchyFlowNode,
-  KPINode,
+  KpiNode,
   ReactFlowKPINode,
   TemplateProvider,
   stratifier,
@@ -47,7 +47,7 @@ const _edges: Edge[] = []
 
 const d3Root: HierarchyFlowNode = stratifier(_nodes)
 const nodeTypes = {
-  kpi: KPINode,
+  kpi: KpiNode,
 }
 
 const Home: NextPage = () => {

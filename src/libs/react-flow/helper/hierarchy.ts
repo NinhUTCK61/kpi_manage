@@ -108,7 +108,8 @@ export const convertToReactFlowEdges = (
       id: `${link.source.data.slug}-${link.target.data.slug}`,
       source: link.source.data.id,
       target: link.target.data.id,
-      animated: true,
+      animated: false,
+      type: 'kpi',
     }
   })
 }

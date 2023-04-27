@@ -12,7 +12,7 @@ const green = {
 }
 
 const base = {
-  black: '#071327',
+  black: '#222222',
   white: '#FFFFFF',
   contrastText: '#222222',
 }

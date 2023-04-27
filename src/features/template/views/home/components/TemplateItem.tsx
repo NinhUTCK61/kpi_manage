@@ -110,7 +110,11 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       ]
 
   const redirectTemplate = () => {
-    !template.deleted_at && router.push('file/' + template.template_id)
+    !template.deleted_at &&
+      router.push({
+        pathname: 'file/' + template.template_id,
+        query: { root: template.root_note_id },
+      })
   }
 
   return (
