@@ -208,7 +208,7 @@ export class TemplateService {
         user_id: user.id,
         template_id,
       },
-      select: {
+      include: {
         template: true,
       },
     })
@@ -220,8 +220,20 @@ export class TemplateService {
       })
     }
 
-    const { template } = getTemplateById
+    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
 
-    return template
+    const {
+      template: { ...restTemplate },
+    } = getTemplateById
+
+    templateData.push({
+      template_id: getTemplateById.template_id,
+      can_edit: getTemplateById.can_edit,
+      is_favorite: getTemplateById.is_favorite,
+      is_owner: getTemplateById.is_owner,
+      ...restTemplate,
+    })
+
+    return templateData
   }
 }

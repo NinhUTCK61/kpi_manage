@@ -59,7 +59,7 @@ export const templateRouter = createTRPCRouter({
   getById: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/template/{id}', protect: true } })
     .input(GetTemplateByIdInputSchema)
-    .output(TemplateSchema)
+    .output(TemplateDataOutputSchema)
     .query(({ input, ctx }) => {
       return templateService.getById(input.template_id, ctx.session.user)
     }),
