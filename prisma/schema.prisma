@@ -183,6 +183,7 @@ model Reason {
   text_en    String
   type       ReasonType @default(REASON_KNOW)
   is_enabled Boolean    @default(true)
+  order      Int        @default(1)
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
 
