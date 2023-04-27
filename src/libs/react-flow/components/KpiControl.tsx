@@ -6,11 +6,7 @@ import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
 import { useEffect, useState } from 'react'
 import { Controls, useReactFlow } from 'reactflow'
 function KpiControls() {
-<<<<<<< HEAD
   const { setViewport, getViewport, getZoom } = useReactFlow()
-=======
-  const { setViewport, getViewport, getZoom, fitBounds } = useReactFlow()
->>>>>>> f99caab... chore: refactor store
   const [valueZoom, setValueZoom] = useState<number | null>()
 
   useEffect(() => {
@@ -60,9 +56,11 @@ function KpiControls() {
           onClick={() => handleZoom()}
           style={{ cursor: 'pointer' }}
         />
+
         <Typography width={43} textAlign="center">
           {valueZoom && valueZoom * 100}%
         </Typography>
+
         <Image
           src={ZoomInIcon}
           alt="zoom"

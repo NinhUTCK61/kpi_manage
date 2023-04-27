@@ -12,7 +12,7 @@ import { z } from 'zod'
 export async function getServerSideProps({ locale }: GetServerSidePropsContext) {
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common', 'file'])),
+      ...(await serverSideTranslations(locale as string, ['common', 'file', 'home'])),
     },
   }
 }
@@ -20,6 +20,9 @@ export async function getServerSideProps({ locale }: GetServerSidePropsContext) 
 const NodeCreate: FC = () => {
   const router = useRouter()
   const { id, root } = router.query
+  const { data: template } = api.template.getById.useQuery({
+    template_id: id as string,
+  })
   const { data, isLoading } = api.node.list.useQuery(
     {
       template_id: id as string,
@@ -38,7 +41,7 @@ const NodeCreate: FC = () => {
   return (
     <ReactFlowProvider>
       <TemplateProvider nodes={nodes} edges={edges} d3Root={d3Root}>
-        <Template />
+        {template && <Template template={template} />}
       </TemplateProvider>
     </ReactFlowProvider>
   )

@@ -1,5 +1,5 @@
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
-import { IconButton, ListItemIcon, Tooltip, Typography } from '@mui/material'
+import { IconButton, ListItemIcon, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -58,21 +58,21 @@ const Account = () => {
         width={20}
         style={{ margin: '18px ' }}
       />
-      <Tooltip title="Account settings">
-        <StackName direction="row" spacing={1} onClick={handleClick}>
-          <Avatar>H</Avatar>
-          <Typography variant="body2">{sessionData?.user?.name}</Typography>
-          <IconButton
-            size="small"
-            sx={{ ml: 2, p: 0 }}
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
-          </IconButton>
-        </StackName>
-      </Tooltip>
+      <StackName direction="row" spacing={1} onClick={handleClick}>
+        <Avatar>H</Avatar>
+
+        <Typography variant="body2">{sessionData?.user?.name}</Typography>
+
+        <IconButton
+          size="small"
+          sx={{ ml: 2, p: 0 }}
+          aria-controls={open ? 'account-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+        >
+          <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
+        </IconButton>
+      </StackName>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"

@@ -1,11 +1,12 @@
 import { RFStore, useRFStore } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
+import { TemplateDataSchema } from '@/libs/schema'
 import { Layout } from '@/libs/shared/components'
 import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
-import { WheelEvent } from 'react'
 import { ReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
+import { z } from 'zod'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
 import { HEIGHT_TOOLBAR, Toolbar } from './components'
@@ -27,42 +28,18 @@ const storeSelector = (state: RFStore) => ({
   onNodeClick: state.onNodeClick,
 })
 
-export const Template = () => {
+type TemplateTypes = {
+  template: z.infer<typeof TemplateDataSchema>
+}
+
+export const Template: React.FC<TemplateTypes> = ({ template }) => {
   const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, onNodeClick } = useRFStore(
     storeSelector,
     shallow,
   )
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const [color, setColor] = useState<string>('#1A74EE')
-
-  const handleChangeColor = (color: string) => {
-    setColor(color)
-  }
-
-  const [stroke, setStoke] = useState<number>(1)
-
-  const handleChangeStroke = (stroke: number) => {
-    setStoke(stroke)
-  }
-
-  const [colorShape, setColorShape] = useState<string>('#3E19A3')
-
-  const handleChangeColorShape = (color: string) => {
-    setColorShape(color)
-  }
-
-  const [shape, setShape] = useState<string>('1')
-
-  const handleChangeShape = (shape: string) => {
-    setShape(shape)
-  }
-
   return (
-    <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
+    <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate template={template} />}>
       <Toolbar />
 
       <Container display="flex" flex={1}>
@@ -85,7 +62,6 @@ export const Template = () => {
             y: 0.5,
             zoom: 0.5,
           }}
-          onWheel={handleWheel}
           zoomOnScroll={false}
           zoomOnPinch={false}
           zoomOnDoubleClick={false}

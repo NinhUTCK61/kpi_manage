@@ -13,6 +13,8 @@ import { memo } from 'react'
 import { ChooseFontSize } from './ChooseFontSize'
 import { PickColor } from './PickColor'
 
+import { ViewPortAction } from '@/features/node/constant'
+import { useRFStore } from '@/libs/react-flow'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
 import { ViewportAction } from './ViewportAction'
@@ -30,11 +32,12 @@ const editors = [
 ]
 
 export const ToolbarMemo: React.FC = () => {
+  const viewportAction = useRFStore((state) => state.viewportAction)
   return (
     <Container>
       <Stack direction="row" alignItems="center">
         <Stack direction="row" spacing={2} mr={3}>
-          <Image src={UndoIcon} alt="undo" />
+          <Image src={UndoIcon} alt="undo" style={{ cursor: 'pointer' }} />
 
           <Image src={RedoIcon} alt="undo" />
         </Stack>
@@ -43,13 +46,27 @@ export const ToolbarMemo: React.FC = () => {
 
         <Stack direction="row" spacing={0.5} mr={3}>
           {editors.map((editor) => (
-            <Image key={editor.key} src={editor.icon} alt={editor.key} />
+            <Image
+              key={editor.key}
+              src={editor.icon}
+              alt={editor.key}
+              style={{ cursor: 'pointer' }}
+            />
           ))}
         </Stack>
 
         <PickColor mr={3} />
 
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{
+            ...(viewportAction !== ViewPortAction.SpeechBallon && {
+              opacity: 0.3,
+              pointerEvents: 'none',
+            }),
+          }}
+        >
           <ChooseStroke />
 
           <PickColor forShape mr={1} />

@@ -223,6 +223,22 @@ const defaultTheme: Theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        popper: {},
+        tooltip: {
+          backgroundColor: base.black,
+          color: base.white,
+          marginTop: 8,
+          padding: '8px 20px',
+          fontSize: 15,
+          lineHeight: '22px',
+        },
+        arrow: {
+          color: base.black,
+        },
+      },
+    },
   },
 })
 
