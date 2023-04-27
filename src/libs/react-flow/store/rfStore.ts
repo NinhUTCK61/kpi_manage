@@ -113,7 +113,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           colorShape,
         })
       },
-      changeStroke(stroke) {
+      changeShapeStroke(stroke) {
         set({ stroke })
       },
       changeShapeType(shape) {

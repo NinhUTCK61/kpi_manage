@@ -3,7 +3,6 @@ import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
-import { shallow } from 'zustand/shallow'
 
 const fontSizes = [
   {
@@ -25,7 +24,7 @@ const fontSizes = [
 ]
 
 const ChooseFontSize: React.FC = () => {
-  const value = useRFStore((state) => state.fontSize, shallow)
+  const value = useRFStore((state) => state.fontSize)
   const handleChange = useRFStore((state) => state.changeFontSize)
 
   return (

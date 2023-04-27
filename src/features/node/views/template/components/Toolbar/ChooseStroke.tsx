@@ -9,7 +9,7 @@ const ChooseStroke: React.FC = () => {
   const { t } = useTranslation('file')
 
   const stroke = useRFStore((state) => state.stroke)
-  const changeStroke = useRFStore((state) => state.changeStroke)
+  const changeShapeStroke = useRFStore((state) => state.changeShapeStroke)
 
   const strokes = [
     { value: 1, label: '1px' },
@@ -30,7 +30,7 @@ const ChooseStroke: React.FC = () => {
     if (!isUp && _stroke > 1) {
       value = _stroke - 1
     }
-    value && changeStroke(value)
+    value && changeShapeStroke(value)
   }
 
   return (

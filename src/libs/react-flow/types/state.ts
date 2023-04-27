@@ -23,7 +23,7 @@ export type RFStore = {
   colorShape: string | null
   changeShapeColor: (color: string) => void
   stroke: number | null
-  changeStroke: (stroke: number) => void
+  changeShapeStroke: (stroke: number) => void
   shape: string | null
   changeShapeType: (shape: string) => void
 }
