@@ -4,6 +4,7 @@ import {
   LikeTemplateSchemaInput,
   ListTemplateSchemaInput,
   TemplateDataOutputSchema,
+  TemplateDataSchema,
   UpdateTemplateSchemaInput,
 } from '@/libs/schema'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
@@ -59,7 +60,7 @@ export const templateRouter = createTRPCRouter({
   getById: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/template/{id}', protect: true } })
     .input(GetTemplateByIdInputSchema)
-    .output(TemplateSchema)
+    .output(TemplateDataSchema)
     .query(({ input, ctx }) => {
       return templateService.getById(input.template_id, ctx.session.user)
     }),
