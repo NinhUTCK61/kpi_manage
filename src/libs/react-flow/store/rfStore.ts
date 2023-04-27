@@ -41,7 +41,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   viewportAction: ViewPortAction.Move,
   nodeFocused: null,
   fontSize: '12',
-  color: '#1A74EE',
+  nodeColor: '#1A74EE',
   colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
@@ -103,12 +103,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           fontSize,
         })
       },
-      changeColor(color) {
+      changeNodeColor(nodeColor) {
         set({
-          color,
+          nodeColor,
         })
       },
-      changeColorShape(colorShape) {
+      changeShapeColor(colorShape) {
         set({
           colorShape,
         })
@@ -116,7 +116,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeStroke(stroke) {
         set({ stroke })
       },
-      changeShape(shape) {
+      changeShapeType(shape) {
         set({ shape })
       },
     })),

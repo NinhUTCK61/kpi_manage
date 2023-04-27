@@ -12,7 +12,7 @@ type NodeFormProps = {
 const NodeFormMemo: React.FC = () => {
   const { control } = useForm<NodeFormProps>({
     defaultValues: {
-      label: '11111',
+      label: '',
       unit: '',
       formula: '',
     },

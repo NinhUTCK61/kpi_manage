@@ -10,11 +10,11 @@ import EditorRight from 'public/assets/svgs/editor_right.svg'
 import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
-import { ChoseFontSize } from './ChoseFontSize'
+import { ChooseFontSize } from './ChooseFontSize'
 import { PickColor } from './PickColor'
 
-import { ChoseShape } from './ChoseShape'
-import { ChoseStroke } from './ChoseStroke'
+import { ChooseShape } from './ChooseShape'
+import { ChooseStroke } from './ChooseStroke'
 import { ViewportAction } from './ViewportAction'
 
 const HEIGHT_TOOLBAR = 60
@@ -39,7 +39,7 @@ export const ToolbarMemo: React.FC = () => {
           <Image src={RedoIcon} alt="undo" />
         </Stack>
 
-        <ChoseFontSize />
+        <ChooseFontSize />
 
         <Stack direction="row" spacing={0.5} mr={3}>
           {editors.map((editor) => (
@@ -50,11 +50,11 @@ export const ToolbarMemo: React.FC = () => {
         <PickColor mr={3} />
 
         <Stack direction="row" alignItems="center">
-          <ChoseStroke />
+          <ChooseStroke />
 
           <PickColor forShape mr={1} />
 
-          <ChoseShape />
+          <ChooseShape />
         </Stack>
       </Stack>
 

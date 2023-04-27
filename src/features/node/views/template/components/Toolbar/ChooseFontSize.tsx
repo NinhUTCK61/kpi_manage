@@ -5,28 +5,28 @@ import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { shallow } from 'zustand/shallow'
 
-const ChoseFontSize: React.FC = () => {
-  const value = useRFStore((state) => state.fontSize, shallow)
-  const handleChange = useRFStore((state) => state.changeFontSize, shallow)
+const fontSizes = [
+  {
+    label: '12px',
+    value: '12',
+  },
+  {
+    label: '14px',
+    value: '14',
+  },
+  {
+    label: '16px',
+    value: '16',
+  },
+  {
+    label: '18px',
+    value: '18',
+  },
+]
 
-  const fontSizes = [
-    {
-      label: '12px',
-      value: '12',
-    },
-    {
-      label: '14px',
-      value: '14',
-    },
-    {
-      label: '16px',
-      value: '16',
-    },
-    {
-      label: '18px',
-      value: '18',
-    },
-  ]
+const ChooseFontSize: React.FC = () => {
+  const value = useRFStore((state) => state.fontSize, shallow)
+  const handleChange = useRFStore((state) => state.changeFontSize)
 
   return (
     <Select
@@ -64,4 +64,4 @@ const CustomInput = styled(InputStyled)({
   },
 })
 
-export { ChoseFontSize }
+export { ChooseFontSize }

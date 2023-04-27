@@ -11,9 +11,9 @@ type PickColorTypes = {
 
 const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   const { t } = useTranslation('file')
-  const color = useRFStore((state) => (forShape ? state.colorShape : state.color), shallow)
-  const changeColor = useRFStore(
-    (state) => (forShape ? state.changeColorShape : state.changeColor),
+  const color = useRFStore((state) => (forShape ? state.colorShape : state.nodeColor), shallow)
+  const changeNodeColor = useRFStore(
+    (state) => (forShape ? state.changeShapeColor : state.changeNodeColor),
     shallow,
   )
 
@@ -58,7 +58,7 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
       <InputStyled
         id={id}
         type="color"
-        onChange={(e) => changeColor(e.target.value)}
+        onChange={(e) => changeNodeColor(e.target.value)}
         value={color}
         label={color}
         sx={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}

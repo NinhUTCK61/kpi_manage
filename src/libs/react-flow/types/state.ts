@@ -10,18 +10,20 @@ export type RFStore = {
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
   addNode: (parentId: string) => ReactFlowNode[]
-  viewportAction: ViewPortAction
-  changeViewportAction: (action: ViewPortAction) => void
+
   nodeFocused: string | null
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
+  // Toolbar action
+  viewportAction: ViewPortAction
+  changeViewportAction: (action: ViewPortAction) => void
   fontSize: string | null
   changeFontSize: (fontSize: string) => void
-  color: string | null
-  changeColor: (color: string) => void
+  nodeColor: string | null
+  changeNodeColor: (color: string) => void
   colorShape: string | null
-  changeColorShape: (color: string) => void
+  changeShapeColor: (color: string) => void
   stroke: number | null
   changeStroke: (stroke: number) => void
   shape: string | null
-  changeShape: (shape: string) => void
+  changeShapeType: (shape: string) => void
 }

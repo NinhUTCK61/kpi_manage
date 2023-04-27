@@ -10,18 +10,18 @@ import ShapeType3Icon from 'public/assets/svgs/shape_3.svg'
 import ShapeType4Icon from 'public/assets/svgs/shape_4.svg'
 import { shallow } from 'zustand/shallow'
 
-const ChoseShape: React.FC = () => {
+const shapes = [
+  { value: '1', icon: ShapeType1Icon },
+  { value: '2', icon: ShapeType2Icon },
+  { value: '3', icon: ShapeType3Icon },
+  { value: '4', icon: ShapeType4Icon },
+]
+
+const ChooseShape: React.FC = () => {
   const { t } = useTranslation('file')
 
   const shape = useRFStore((state) => state.shape, shallow)
-  const changeShape = useRFStore((state) => state.changeShape, shallow)
-
-  const shapes = [
-    { value: '1', icon: ShapeType1Icon },
-    { value: '2', icon: ShapeType2Icon },
-    { value: '3', icon: ShapeType3Icon },
-    { value: '4', icon: ShapeType4Icon },
-  ]
+  const changeShapeType = useRFStore((state) => state.changeShapeType, shallow)
 
   return (
     <Stack direction="row" alignItems="center" spacing={1.5}>
@@ -29,7 +29,9 @@ const ChoseShape: React.FC = () => {
 
       <Select
         value={shape}
-        onChange={(event: SelectChangeEvent<unknown>) => changeShape(event.target.value as string)}
+        onChange={(event: SelectChangeEvent<unknown>) =>
+          changeShapeType(event.target.value as string)
+        }
         input={<CustomInput />}
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
       >
@@ -64,4 +66,4 @@ const CustomInput = styled(InputStyled)({
   },
 })
 
-export { ChoseShape }
+export { ChooseShape }
