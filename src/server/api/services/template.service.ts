@@ -1,6 +1,7 @@
 import {
   LikeTemplateSchemaInput,
   TemplateDataOutputSchema,
+  TemplateDataSchema,
   UpdateTemplateSchemaInput,
 } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
@@ -203,7 +204,7 @@ export class TemplateService {
   }
 
   async getById(template_id: string, user: User) {
-    const getTemplateById = await prisma.userTemplate.findFirst({
+    const getUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
         template_id,
@@ -213,26 +214,24 @@ export class TemplateService {
       },
     })
 
-    if (!getTemplateById) {
+    if (!getUserTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
       })
     }
 
-    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
-
     const {
       template: { ...restTemplate },
-    } = getTemplateById
+    } = getUserTemplate
 
-    templateData.push({
-      template_id: getTemplateById.template_id,
-      can_edit: getTemplateById.can_edit,
-      is_favorite: getTemplateById.is_favorite,
-      is_owner: getTemplateById.is_owner,
+    const templateData: z.infer<typeof TemplateDataSchema> = {
+      template_id: getUserTemplate.template_id,
+      can_edit: getUserTemplate.can_edit,
+      is_favorite: getUserTemplate.is_favorite,
+      is_owner: getUserTemplate.is_owner,
       ...restTemplate,
-    })
+    }
 
     return templateData
   }
