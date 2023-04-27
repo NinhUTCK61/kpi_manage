@@ -5,8 +5,6 @@ import {
 } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
@@ -204,7 +202,6 @@ export class TemplateService {
     return 'template.template_restore_success'
   }
 
-<<<<<<< HEAD
   async getById(template_id: string, user: User) {
     const getTemplateById = await prisma.userTemplate.findFirst({
       where: {
@@ -226,29 +223,5 @@ export class TemplateService {
     const { template } = getTemplateById
 
     return template
-=======
-  async uploadImage(path: string) {
-    const region = process.env.AWS_S3_REGION || ''
-    const bucket_key = 'kpi-staging'
-    const key = `${path}`
-    console.log(region, bucket_key, key)
-    return this.createPresignedUrlWithClient({ region, bucket_key, key })
-
-    return '123'
-  }
-
-  createPresignedUrlWithClient = async ({
-    region,
-    bucket_key,
-    key,
-  }: {
-    region: string
-    bucket_key: string
-    key: string
-  }) => {
-    const client = new S3Client({ region })
-    const command = new PutObjectCommand({ Bucket: bucket_key, Key: key })
-    return await getSignedUrl(client, command, { expiresIn: 3600 })
->>>>>>> 5643572 (feat(KM-47): fix require reason checkbox)
   }
 }
