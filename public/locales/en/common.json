@@ -66,7 +66,9 @@
     "internal_server_error": "An internal server error occurred.",
     "invalid_token": "Token not found or expired!",
     "email_conflict": "Email already exists!",
-    "error_match_password": "Passwords don't match"
+    "error_match_password": "Passwords don't match",
+    "kpi_issue_required": "You must choose the KPI Issue",
+    "kpi_reason_required": "You must choose How I learned about KPI Master"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

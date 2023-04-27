@@ -1,7 +1,7 @@
-import { CheckBoxReason } from '@/features/auth/views/sign-up/CheckBoxReason'
+import { CheckBoxReason } from '@/features/auth/components/CheckBoxReason'
 import { api } from '@/libs/api'
-import { useTranslateError } from '@/libs/hooks'
 import { SignUpFormType } from '@/libs/schema'
+import { FormHelperText } from '@/libs/shared/components'
 import { Stack, Typography } from '@mui/material'
 import { ReasonType } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
@@ -13,11 +13,17 @@ type ReasonPropType = {
 }
 
 const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
-  const { t, i18n } = useTranslation(['sign_up'])
+  const { t, i18n } = useTranslation(['sign_up', 'common'])
   const { data: reason = [] } = api.reason.list.useQuery()
-  const { getValues, setValue } = useFormContext<SignUpFormType>()
-  const { handleError } = useTranslateError()
+  const {
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useFormContext<SignUpFormType>()
+
   const currentLangue = i18n.language === 'en' ? 'text_en' : 'text_ja'
+
+  const hasError = !!(errors as Record<string, unknown>)[type]
 
   const handleCheckbox = (id: number) => {
     let checkedReasons = getValues().reasons
@@ -36,6 +42,9 @@ const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
       <Stack justifyContent="center">
         <Typography variant="body1" fontWeight={600}>
           {type === ReasonType.ISSUE ? t('reason_title_issue') : t('reason_title_reason')}
+          <Typography ml={0.5} variant="body2" component="span" sx={{ color: 'red !important' }}>
+            *
+          </Typography>
         </Typography>
         {reason.map((reason: Reason) => {
           return (
@@ -51,6 +60,14 @@ const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
           )
         })}
       </Stack>
+
+      {hasError && (
+        <FormHelperText error>
+          {type === ReasonType.ISSUE
+            ? t('error.kpi_issue_required', { ns: 'common' })
+            : t('error.kpi_reason_required', { ns: 'common' })}
+        </FormHelperText>
+      )}
     </Stack>
   )
 }
