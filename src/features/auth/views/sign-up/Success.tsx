@@ -40,6 +40,11 @@ const Success: React.FC = () => {
               {t('back')}
             </Button>
           </Stack>
+          <Stack width={{ xs: '100%', md: 460 }} spacing={2} mt={3.5} justifyContent="center">
+            <Typography textAlign="center" variant="body2" color="base.contrastText">
+              {t('resend_email')}
+            </Typography>
+          </Stack>
         </Stack>
       </Slide>
     </Fade>

@@ -37,6 +37,18 @@ export const SignUpSchemaInput = z.object({
   reasons: z.array(z.number()),
 })
 
+export type SignUpInputType = z.infer<typeof SignUpSchemaInput>
+
+export const SignUpSchemaForm = SignUpSchemaInput.merge(
+  z.object({
+    reenter_password: passwordPolicySchema,
+  }),
+).refine((data) => data?.password === data?.reenter_password, {
+  message: 'error.error_match_password',
+})
+
+export type SignUpFormType = z.infer<typeof SignUpSchemaForm>
+
 export const ResetPasswordSchemaInput = z
   .object({
     password: passwordPolicySchema,

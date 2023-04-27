@@ -73,7 +73,7 @@ export const errorMap: ZodErrorMap = (issue, _ctx) => {
       }
       break
     case ZodIssueCode.custom:
-      message = `error.invalid_string_format`
+      message = issue.message || ''
       break
     case ZodIssueCode.invalid_intersection_types:
       message = `error.invalid_intersection_types`
