@@ -22,10 +22,7 @@ type FormSignUpTypes = {
 
 const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
   const { t } = useTranslation(['sign_up', 'common'])
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<SignUpFormType>()
+  const { control } = useFormContext<SignUpFormType>()
 
   const [isAccept, setIsAccept] = useState<boolean>(false)
 
@@ -158,7 +155,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
         spacing={5.25}
         justifyContent="center"
       >
-        <Stack direction="row" spacing={5}>
+        <Stack direction="row" spacing={5} pb={4}>
           <Image src={Hand1} alt="hand 1" />
           <Image src={Hand2} alt="hand 2" />
           <Image src={Hand3} alt="hand 3" />
