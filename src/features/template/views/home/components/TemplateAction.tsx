@@ -1,6 +1,6 @@
 import { useLikeTemplate } from '@/features/template/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
-import { Input, CardActions as MuiCardActions, Stack, Typography, styled } from '@mui/material'
+import { InputBase, CardActions as MuiCardActions, Stack, Typography, styled } from '@mui/material'
 import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
@@ -80,22 +80,11 @@ const CardActions = styled(MuiCardActions)(({ theme }) => ({
   background: theme.palette.greyScale[200],
 }))
 
-const InputRename = styled(Input)(({ theme }) => ({
+const InputRename = styled(InputBase)(({ theme }) => ({
   height: 24,
   background: theme.palette.customPrimary[100],
   fontWeight: 600,
-  ':hover': {
-    borderBottom: 'none !important',
-    '&:before': {
-      borderBottom: 'none !important',
-    },
-  },
-  ':before': {
-    borderBottom: 'none !important',
-  },
-  ':after': {
-    borderBottom: 'none',
-  },
+  color: theme.palette.common.black,
 }))
 
 const TextName = styled(Typography)(({ theme }) => ({
