@@ -9,18 +9,18 @@ import ShapeType2Icon from 'public/assets/svgs/shape_2.svg'
 import ShapeType3Icon from 'public/assets/svgs/shape_3.svg'
 import ShapeType4Icon from 'public/assets/svgs/shape_4.svg'
 
+const shapes = [
+  { value: '1', icon: ShapeType1Icon },
+  { value: '2', icon: ShapeType2Icon },
+  { value: '3', icon: ShapeType3Icon },
+  { value: '4', icon: ShapeType4Icon },
+]
+
 const ChooseShape: React.FC = () => {
   const { t } = useTranslation('file')
 
   const shape = useRFStore((state) => state.shape)
   const changeShape = useRFStore((state) => state.changeShapeType)
-
-  const shapes = [
-    { value: '1', icon: ShapeType1Icon },
-    { value: '2', icon: ShapeType2Icon },
-    { value: '3', icon: ShapeType3Icon },
-    { value: '4', icon: ShapeType4Icon },
-  ]
 
   return (
     <Tooltip title={t('shape')} arrow>
