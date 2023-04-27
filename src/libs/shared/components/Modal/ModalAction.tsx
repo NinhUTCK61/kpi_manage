@@ -5,35 +5,33 @@ import React, { useEffect, useState } from 'react'
 import ICON from '/public/assets/svgs/icon_stroke.svg'
 
 type ModalActionTypes = {
-  files: File[]
+  image: File[]
   isOpen: boolean
+  onClose: () => void
 }
 
-const ModalAction: React.FC<ModalActionTypes> = ({ files, isOpen }) => {
-  const [open, setOpen] = useState(false)
-  const handleClose = () => setOpen(false)
-  const handleOpen = () => setOpen(true)
+const ModalAction: React.FC<ModalActionTypes> = ({ image, isOpen, onClose }) => {
   const [thumb, setThumb] = useState<(File & { preview: string })[]>([])
 
   useEffect(() => {
     setThumb(
-      files.map((file) =>
+      image.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
         }),
       ),
     )
-  }, [files])
+  }, [image])
 
   return (
     <>
-      <Modal open={isOpen}>
+      <Modal open={isOpen} onClose={onClose}>
         <Box sx={style}>
           <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
             <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
               Set thumbnail for this file?
             </Typography>
-            <CloseButton onClick={handleClose}>
+            <CloseButton onClick={() => onClose()}>
               <CustomImage alt="icon" src={ICON} sx={{ mb: 0 }} />
             </CloseButton>
           </Stack>
@@ -55,7 +53,12 @@ const ModalAction: React.FC<ModalActionTypes> = ({ files, isOpen }) => {
             </BoxImage>
           </Stack>
           <Stack flexDirection="row">
-            <Button variant="outlined" fullWidth sx={{ marginRight: '12px' }} onClick={handleClose}>
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{ marginRight: '12px' }}
+              onClick={() => onClose()}
+            >
               Cancel
             </Button>
             <Button variant="contained" fullWidth sx={{ marginLeft: '12px' }}>
