@@ -204,7 +204,7 @@ export class TemplateService {
   }
 
   async getById(template_id: string, user: User) {
-    const getUserTemplate = await prisma.userTemplate.findFirst({
+    const userTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
         template_id,
@@ -214,23 +214,21 @@ export class TemplateService {
       },
     })
 
-    if (!getUserTemplate) {
+    if (!userTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
       })
     }
 
-    const {
-      template: { ...restTemplate },
-    } = getUserTemplate
+    const { template } = userTemplate
 
     const templateData: z.infer<typeof TemplateDataSchema> = {
-      template_id: getUserTemplate.template_id,
-      can_edit: getUserTemplate.can_edit,
-      is_favorite: getUserTemplate.is_favorite,
-      is_owner: getUserTemplate.is_owner,
-      ...restTemplate,
+      template_id: userTemplate.template_id,
+      can_edit: userTemplate.can_edit,
+      is_favorite: userTemplate.is_favorite,
+      is_owner: userTemplate.is_owner,
+      ...template,
     }
 
     return templateData
