@@ -31,7 +31,7 @@
   "minimum_number": "Must include at least one number",
   "error": {
     "invalid_value": "This is a required field.",
-    "invalid_tyoe_undifined": "Required",
+    "invalid_value_undefined": "Required",
     "invalid_type": "Expected {{expected}}, received {{received}}",
     "invalid_literal": "Invalid literal value, expected ${{expected}}",
     "unrecognized_keys": "Unrecognized key(s) in object: {{keys}}",
@@ -65,7 +65,8 @@
     "template_deleted": "The template has been deleted",
     "internal_server_error": "An internal server error occurred.",
     "invalid_token": "Token not found or expired!",
-    "email_conflict": "Email already exists!"
+    "email_conflict": "Email already exists!",
+    "error_match_password": "Passwords don't match"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

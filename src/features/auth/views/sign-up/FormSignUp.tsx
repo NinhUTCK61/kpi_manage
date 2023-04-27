@@ -1,6 +1,6 @@
 import { SignUpFormType } from '@/libs/schema'
 import { DatePickerSeparator, Input } from '@/libs/shared/components'
-import { AcceptLaw } from '@/libs/shared/components/Form/CheckBox/AcceptLaw'
+
 import { ReasonSection } from '@/libs/shared/components/Reason'
 import { Button, Stack, Typography } from '@mui/material'
 import { ReasonType } from '@prisma/client'
@@ -14,6 +14,7 @@ import Logo from 'public/assets/svgs/logo.svg'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { CustomImage } from '../../components'
+import { AcceptLaw } from './AcceptLaw'
 
 type FormSignUpTypes = {
   handleSubmit(): void
@@ -21,10 +22,12 @@ type FormSignUpTypes = {
 }
 
 const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
-  const { t } = useTranslation(['sign_up'])
-  const { control, getValues } = useFormContext<SignUpFormType>()
+  const { t } = useTranslation(['sign_up', 'common'])
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<SignUpFormType>()
   const [isAccept, setIsAccept] = useState<boolean>(false)
-  console.log(getValues('isAcceptLaw'), isAccept, 'ninh')
   return (
     <Stack justifyContent="center" alignItems="center">
       <Stack
@@ -124,6 +127,19 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
           <ReasonSection type={ReasonType.ISSUE} />
 
           <ReasonSection type={ReasonType.REASON_KNOW} />
+
+          {errors.reasons?.message && (
+            <Typography
+              variant="body2"
+              sx={(themes) => ({
+                color: themes.palette.red[400],
+              })}
+            >
+              {errors.reasons?.message.includes('issue')
+                ? t(errors.reasons?.message)
+                : t(errors.reasons?.message)}
+            </Typography>
+          )}
 
           <Button fullWidth variant="contained" disabled={!isAccept && !isLoading} type="submit">
             {t('submit')}

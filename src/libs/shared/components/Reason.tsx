@@ -1,11 +1,12 @@
+import { CheckBoxReason } from '@/features/auth/views/sign-up/CheckBoxReason'
 import { api } from '@/libs/api'
+import { useTranslateError } from '@/libs/hooks'
 import { SignUpFormType } from '@/libs/schema'
 import { Stack, Typography } from '@mui/material'
 import { ReasonType } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
 import { Reason } from 'prisma/generated/zod'
 import { useFormContext } from 'react-hook-form'
-import { CheckBoxReason } from './Form'
 
 type ReasonPropType = {
   type: ReasonType
@@ -15,7 +16,7 @@ const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
   const { t, i18n } = useTranslation(['sign_up'])
   const { data: reason = [] } = api.reason.list.useQuery()
   const { getValues, setValue } = useFormContext<SignUpFormType>()
-
+  const { handleError } = useTranslateError()
   const currentLangue = i18n.language === 'en' ? 'text_en' : 'text_ja'
 
   const handleCheckbox = (id: number) => {
@@ -43,7 +44,7 @@ const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
                 <CheckBoxReason
                   label={reason[currentLangue]}
                   reason={reason}
-                  onClick={handleCheckbox}
+                  onClick={() => handleCheckbox(reason.id)}
                 />
               </Stack>
             )

@@ -7,8 +7,8 @@ import {
   styled,
   type SvgIconProps,
 } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { Dispatch, SetStateAction } from 'react'
-import { useTranslation } from 'react-i18next'
 
 function CheckedICon(props: SvgIconProps) {
   return (
@@ -67,7 +67,6 @@ const AcceptLaw: React.FC<PropChangeFeature> = ({ changeFeature }) => {
           <Checkbox
             disableRipple
             value={changeFeature.isAccept}
-            name="is_accept_law"
             onChange={handleCheckbox}
             icon={
               <CheckICon
@@ -93,7 +92,7 @@ const AcceptLaw: React.FC<PropChangeFeature> = ({ changeFeature }) => {
             }
           />
         }
-        label={<Typography variant="body2">{t('text_law')}</Typography>}
+        label={<Typography variant="body2">{t('text_law1')}</Typography>}
       />
     </FormGroup>
   )

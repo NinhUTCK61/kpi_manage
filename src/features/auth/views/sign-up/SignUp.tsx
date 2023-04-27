@@ -2,6 +2,7 @@ import { api } from '@/libs/api'
 import { SignUpFormType, SignUpInputType, SignUpSchemaForm } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Reason } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { FC, useCallback } from 'react'
@@ -9,8 +10,42 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
 
+const getInputType = (reasons: Reason[] = [], input: number[]) => {
+  const restReasons = reasons
+    .filter((rs) => {
+      return input.includes(rs.id)
+    })
+    .map((rs) => {
+      return rs.type
+    })
+  return restReasons
+}
+const createSignUpFormSchema = (reasons: Reason[] = []) =>
+  SignUpSchemaForm.refine(
+    (data) => {
+      const arrType = getInputType(reasons, data.reasons)
+      console.log(data, 'fuv')
+      return arrType.includes('ISSUE')
+    },
+    {
+      message: 'reason_issue',
+      path: ['reasons'],
+    },
+  ).refine(
+    (data) => {
+      const arrType = getInputType(reasons, data.reasons)
+      return arrType.includes('REASON_KNOW')
+    },
+    {
+      message: 'reason_know',
+      path: ['reasons'],
+    },
+  )
+
 const SignUp: FC = () => {
   const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
+  const { data: reasons } = api.reason.list.useQuery()
+
   const methods = useForm<SignUpFormType>({
     defaultValues: {
       first_name: '',
@@ -20,13 +55,11 @@ const SignUp: FC = () => {
       company_name: '',
       date_of_birth: null,
       role_in_company: '',
-      isAcceptLaw: false,
       reenter_password: '',
       reasons: [],
     },
-    resolver: zodResolver(SignUpSchemaForm),
+    resolver: zodResolver(createSignUpFormSchema(reasons)),
   })
-
   const { t } = useTranslation('sign_up')
 
   const onSubmit: SubmitHandler<SignUpInputType> = useCallback(

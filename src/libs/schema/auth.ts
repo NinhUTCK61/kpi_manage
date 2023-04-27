@@ -42,12 +42,9 @@ export type SignUpInputType = z.infer<typeof SignUpSchemaInput>
 export const SignUpSchemaForm = SignUpSchemaInput.merge(
   z.object({
     reenter_password: passwordPolicySchema,
-    isAcceptLaw: z.boolean().default(false)
-
-  })
+  }),
 ).refine((data) => data?.password === data?.reenter_password, {
-  message: "Passwords don't match",
-  path: ['reenter_password'],
+  message: 'error.error_match_password',
 })
 
 export type SignUpFormType = z.infer<typeof SignUpSchemaForm>

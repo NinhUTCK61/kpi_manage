@@ -9,7 +9,7 @@
   "submit": "Submit",
   "have_account": "Already have an account?",
   "sign_in": "Login",
-  "description_success": "You've become a member of KPI Master",
+  "description_success": "You've become a member of KPI Master. We sent you an email to verify your account.",
   "title_success": "Sign Up Successfully!",
   "title_failed": "Sign Up failed",
   "back": "Back to log in",
@@ -25,6 +25,11 @@
   "reenter_password": "Reenter password",
   "company_name": "Company name",
   "role": "Role",
-  "text_law": "Agree to Privacy Policy",
-  "resend_email": "Resend email"
+  "text_law1": "Agree to Privacy Policy",
+  "resend_email": "Resend email",
+  "error_match_password": "Passwords don't match",
+  "reason_issue": "Please choose issue!",
+  "reason_know": "Please choose reason!",
+  "reason_title_reason":"How I learned about KPI Master",
+  "reason_title_issue": "KPI issues"
 }

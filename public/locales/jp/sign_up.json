@@ -9,7 +9,7 @@
   "submit": "登録",
   "have_account": "既にアカウントがある場合、",
   "sign_in": "ログインはこちら",
-  "description_success": "KPI Masterのユーザーになりました！",
+  "description_success": "あなたはKPIマスターのメンバーになりました。アカウントを確認するためにメールを送信しました。",
   "title_success": "登録に成功しました！",
   "title_failed": "登録に失敗しました。",
   "back": "ログイン画面に戻る",
@@ -34,6 +34,6 @@
   "reason_label6": "その他",
   "reason_title_issue": "KPIに関する課題",
   "reason_title_reason": "KPI Masterを知ったきっかけ",
-  "text_law" : "プライバシー規約への同意",
+  "text_law1" : "プライバシー規約への同意",
   "resend_email": "メールを再送"
 }
