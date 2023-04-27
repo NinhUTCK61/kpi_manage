@@ -8,19 +8,21 @@ import {
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ThumbnailIcon from 'public/assets/svgs/thumbnail.svg'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { DialogBaseProps } from '../../types/utils'
+import ModalAction from '../Modal/ModalAction'
 
 type DialogThumbnailTypes = DialogBaseProps<{
   handleConfirm: () => void
 }>
 
 const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, handleConfirm }) => {
+  const [file, setFile] = useState<File[]>()
   const { t } = useTranslation()
   const onDrop = useCallback(
     (_acceptedFiles: File[]) => {
-      handleConfirm()
+      handleConfirm(), setFile(_acceptedFiles)
     },
     [handleConfirm],
   )
@@ -50,6 +52,7 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, ha
           </Stack>
           <input {...getInputProps()} />
         </Stack>
+        {file && <ModalAction files={file} isOpen={true} />}
       </DialogContent>
     </Dialog>
   )
