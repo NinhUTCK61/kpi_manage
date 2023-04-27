@@ -124,6 +124,11 @@ function DatePickerSeparator<T extends FieldValues>({
                 placeholder={t('year') as string}
                 {...params.InputProps}
                 inputProps={params.inputProps}
+                sx={{
+                  '& input::placeholder': {
+                    fontSize: 15,
+                  },
+                }}
               />
             )}
           />
@@ -141,6 +146,11 @@ function DatePickerSeparator<T extends FieldValues>({
                 placeholder={t('month') as string}
                 {...params.InputProps}
                 inputProps={params.inputProps}
+                sx={{
+                  '& input::placeholder': {
+                    fontSize: 15,
+                  },
+                }}
               />
             )}
           />

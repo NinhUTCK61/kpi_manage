@@ -111,6 +111,11 @@ const Login: FC = () => {
                 label={t('email') as string}
                 fullWidth
                 placeholder={t('enter_email') as string}
+                sx={{
+                  '& input::placeholder': {
+                    fontSize: 15,
+                  },
+                }}
               />
 
               <Input
@@ -120,6 +125,11 @@ const Login: FC = () => {
                 type="password"
                 fullWidth
                 placeholder={t('enter_password') as string}
+                sx={{
+                  '& input::placeholder': {
+                    fontSize: 15,
+                  },
+                }}
               />
 
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>

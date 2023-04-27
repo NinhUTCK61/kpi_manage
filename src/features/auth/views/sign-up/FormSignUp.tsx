@@ -54,6 +54,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('last_name') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
           <Input
             control={control}
@@ -63,6 +68,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('first_name') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
           <Input
             required
@@ -72,6 +82,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('enter_email') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
 
           <Input
@@ -83,6 +98,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('enter_password') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
 
           <Input
@@ -94,6 +114,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('reenter_password') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
 
           <Input
@@ -105,6 +130,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('company_name') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
 
           <Input
@@ -116,6 +146,11 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             fullWidth
             placeholder={t('role') as string}
             readOnly={isLoading}
+            sx={{
+              '& input::placeholder': {
+                fontSize: 15,
+              },
+            }}
           />
 
           <DatePickerSeparator control={control} name="date_of_birth" fullWidth />
