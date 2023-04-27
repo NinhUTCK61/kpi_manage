@@ -93,7 +93,7 @@ const Home = () => {
       variant: 'success',
       description: t('description_set_thumbnail_success') as string,
     })
-    closeDialogThumbnail()
+    // closeDialogThumbnail()
   }
 
   return (

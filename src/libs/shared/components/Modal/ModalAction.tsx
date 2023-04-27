@@ -1,4 +1,5 @@
 import { CustomImage } from '@/features/auth/components'
+import styled from '@emotion/styled'
 import { Box, Button, Modal, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ICON from '/public/assets/svgs/icon_stroke.svg'
@@ -32,32 +33,26 @@ const ModalAction: React.FC<ModalActionTypes> = ({ files, isOpen }) => {
             <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
               Set thumbnail for this file?
             </Typography>
-            <Button sx={{ display: 'flex', justifyContent: 'flex-end' }} onClick={handleClose}>
+            <CloseButton onClick={handleClose}>
               <CustomImage alt="icon" src={ICON} sx={{ mb: 0 }} />
-            </Button>
+            </CloseButton>
           </Stack>
           <Typography mt={1}>Are you sure to upload this photo?</Typography>
-          <Stack
-            width={268}
-            height={206}
-            marginY={3}
-            justifyContent="center"
-            marginX="auto"
-            borderRadius="12px"
-            sx={{ background: '#D9D9D9' }}
-          >
-            {thumb.map((item) => (
-              <CustomImage
-                key={item.name}
-                src={item.preview}
-                alt={item.name}
-                width={200}
-                height={200}
-                onLoad={() => {
-                  URL.revokeObjectURL(item.preview)
-                }}
-              />
-            ))}
+          <Stack flexDirection="row" justifyContent="center" marginY={3}>
+            <BoxImage>
+              {thumb.map((item) => (
+                <CustomImage
+                  key={item.name}
+                  src={item.preview}
+                  alt={item.name}
+                  width={200}
+                  height={200}
+                  onLoad={() => {
+                    URL.revokeObjectURL(item.preview)
+                  }}
+                />
+              ))}
+            </BoxImage>
           </Stack>
           <Stack flexDirection="row">
             <Button variant="outlined" fullWidth sx={{ marginRight: '12px' }} onClick={handleClose}>
@@ -84,5 +79,21 @@ const style = {
   p: 3,
   borderRadius: '12px',
 }
+
+const CloseButton = styled(Button)({
+  ':hover': {
+    color: 'inherit',
+  },
+  display: 'flex',
+  justifyContent: 'flex-end',
+})
+
+const BoxImage = styled(Stack)({
+  width: 268,
+  height: 206,
+  justifyContent: 'center',
+  borderRadius: '12px',
+  background: '#D9D9D9',
+})
 
 export default ModalAction
