@@ -59,7 +59,8 @@
     "invalid_token": "トークンが見つからないか、期限切れです。",
     "email_conflict": "メールアドレスは既に存在します！",
     "kpi_issue_required": "KPIの問題を選択しなければなりません。",
-    "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。"
+    "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。",
+    "error_match_password": "パスワードとパスワードの確認が一致しません。"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
@@ -87,11 +88,11 @@
   "verify_success": "確認済み！",
   "description_verify_success": "あなたのメールが正常に確認されました。これで、ログインして私たちと始めることができます。",
   "verify_fail": "確認に失敗しました！",
-  "year": "年。",
-  "month": "月。",
-  "day": "日。",
-  "select_year": "生年月日（年）。",
-  "select_month": "生年月日（月）。",
-  "select_day": "生年月日（日）。",
+  "year": "年",
+  "month": "月",
+  "day": "日",
+  "select_year": "生年月日（年）",
+  "select_month": "生年月日（月）",
+  "select_day": "生年月日（日）",
   "verify_resend": "Resend email"
 }
