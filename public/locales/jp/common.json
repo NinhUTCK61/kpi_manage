@@ -23,7 +23,7 @@
   },
   "error": {
     "invalid_value": "この項目は必須です。",
-    "invalid_value_undefined": "必須",
+    "invalid_value_undefined": "必須。",
     "invalid_type": "{{expected}}が期待されますが, {{received}}が出ました。",
     "invalid_literal": "無効なリテラル値です。{{expected}}を入力してください。",
     "unrecognized_keys": "{{keys}}オブジェクトのキーが識別できません。",
@@ -70,28 +70,28 @@
     "template_restore_success": "Template restore success!"
   },
   "node": {
-    "delete_success": "Delete node succcess!"
+    "delete_success": "Delete node success!"
   },
   "dialog": {
-    "cancel": "キャンセル",
-    "delete": "削除",
+    "cancel": "キャンセル。",
+    "delete": "削除。",
     "thumbnail": {
-      "click_to_upload": "クリックしてアップロード",
-      "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
+      "click_to_upload": "クリックしてアップロード。",
+      "detail_set_thumbnail_1": "ドラッグ＆ドロップ。",
       "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
     },
-    "submit": "登録"
+    "submit": "登録。"
   },
-  "email_verified": "Email is verifiled!",
-  "verify_title": "確認する",
+  "email_verified": "Email is verified!",
+  "verify_title": "確認する。",
   "verify_success": "確認済み！",
   "description_verify_success": "あなたのメールが正常に確認されました。これで、ログインして私たちと始めることができます。",
   "verify_fail": "確認に失敗しました！",
-  "year": "年",
-  "month": "月",
-  "day": "日",
-  "select_year": "生年月日（年）",
-  "select_month": "生年月日（月）",
-  "select_day": "生年月日（日）",
+  "year": "年。",
+  "month": "月。",
+  "day": "日。",
+  "select_year": "生年月日（年）。",
+  "select_month": "生年月日（月）。",
+  "select_day": "生年月日（日）。",
   "verify_resend": "Resend email"
 }

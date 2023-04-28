@@ -212,6 +212,9 @@ const defaultTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           color: base.black,
+          '& input::placeholder': {
+            fontSize: 15,
+          },
         },
       },
     },

@@ -57,7 +57,7 @@
     "too_big_string_false": "{{maximum}} character must be smaller.",
     "too_big_number_false": "Must be or less.",
     "too_big_number_true": "Must be small.",
-    "too_big_result": "This is not a valid input",
+    "too_big_result": "This is not a valid input.",
     "invalid_intersection_types": "Intersection results could not be merged.",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of.",
     "not_finite": "Number must be finite.",
