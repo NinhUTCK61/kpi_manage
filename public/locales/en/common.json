@@ -2,11 +2,11 @@
   "language": "English",
   "english": "English",
   "japan": "Japanese",
-  "password_err_min": "Minimum length of 8 characters",
-  "password_err_special": "Must include at least one special character (!,@,#,$,%,^,&,*,(,))",
-  "password_err_upper": "Must include at least one uppercase letter",
-  "password_err_lower": "Must include at least one lowercase letter",
-  "password_err_number": "Must include at least one number",
+  "password_err_min": "Minimum length of 8 characters.",
+  "password_err_special": "Must include at least one special character (!,@,#,$,%,^,&,*,(,)).",
+  "password_err_upper": "Must include at least one uppercase letter.",
+  "password_err_lower": "Must include at least one lowercase letter.",
+  "password_err_number": "Must include at least one number.",
   "sidebar": {
     "home": "Home",
     "favorite": "Favorite",
@@ -24,14 +24,14 @@
 
   "limit_name": "Maximum length of 250 characters",
   "incorrect": "Email or password is incorrect.",
-  "limit_password": "Minimun length of 8 characters",
-  "minimum_special_character": "Must include at least one special character (!,@,#,$,%,^,&,*,(,))",
-  "minimum_uppercase": "Must include at least one uppercase letter",
-  "minimum_lowercase": "Must include at least one lowercase letter",
-  "minimum_number": "Must include at least one number",
+  "limit_password": "Minimun length of 8 characters.",
+  "minimum_special_character": "Must include at least one special character (!,@,#,$,%,^,&,*,(,)).",
+  "minimum_uppercase": "Must include at least one uppercase letter.",
+  "minimum_lowercase": "Must include at least one lowercase letter.",
+  "minimum_number": "Must include at least one number.",
   "error": {
     "invalid_value": "This is a required field.",
-    "invalid_value_undefined": "Required.",
+    "invalid_value_undefined": "Required",
     "invalid_type": "Expected {{expected}}, received {{received}}.",
     "invalid_literal": "Invalid literal value, expected ${{expected}}.",
     "unrecognized_keys": "Unrecognized key(s) in object: {{keys}}.",
@@ -40,7 +40,7 @@
     "invalid_enum_value": "Invalid enum value. Expected {{option}}, received '{{received}}.",
     "invalid_arguments": "Invalid function arguments.",
     "invalid_return_type": "Invalid function return type.",
-    "invalid_date": "Invalid date.",
+    "invalid_date": "Invalid date",
     "invalid_string_email": "This field must not be empty.",
     "invalid_string_format": "Invalid format.",
     "too_small_array_true": "Array must contain at least {{minimum}} element(s).",
@@ -73,7 +73,7 @@
   "template": {
     "move_to_trash": "Move to trash success!",
     "delete_template": "Delete template success!",
-    "template_deleted": "The template has been deleted",
+    "template_deleted": "The template has been deleted.",
     "template_not_found": "Template not found!",
     "template_not_deleted": "Template not deleted yet!",
     "template_restore_success": "Template restore success!"
@@ -104,3 +104,4 @@
   "select_day": "Day",
   "verify_resend": "Resend email"
 }
+ 

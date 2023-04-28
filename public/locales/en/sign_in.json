@@ -1,8 +1,8 @@
 {
   "login_failed": "Login failed!",
-  "not_found": "User not found",
+  "not_found": "User not found.",
   "incorrect": "Email or password is incorrect.",
-  "title": "Log in to your account",
+  "title": "Log in to your account.",
   "child_title": "Welcome! Please enter your details.",
   "forgot": "Forgot password?",
   "login": "Log in",
@@ -13,6 +13,6 @@
   "email": "Email",
   "password": "Password",
   "seo_title": "Sign In",
-  "title_verify": "You need to verified your email to continue",
+  "title_verify": "You need to verified your email to continue.",
   "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
 }
