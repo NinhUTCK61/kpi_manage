@@ -65,8 +65,8 @@ const KPI_REASON: Reason[] = [
   },
   {
     id: 7,
-    text_ja: 'Word of mouth and referrals from acquaintances',
-    text_en: '口コミ・知り合いの紹介',
+    text_ja: '口コミ・知り合いの紹介',
+    text_en: 'Word of mouth and referrals from acquaintances',
     type: ReasonType.REASON_KNOW,
     is_enabled: true,
     order: 1,
