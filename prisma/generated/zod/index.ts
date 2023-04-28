@@ -22,7 +22,7 @@ export const PasswordResetScalarFieldEnumSchema = z.enum(['id','user_id','token'
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
 
-export const ReasonScalarFieldEnumSchema = z.enum(['id','text_ja','text_en','type','is_enabled','created_at','updated_at']);
+export const ReasonScalarFieldEnumSchema = z.enum(['id','text_ja','text_en','type','is_enabled','order','created_at','updated_at']);
 
 export const SessionScalarFieldEnumSchema = z.enum(['id','sessionToken','userId','expires']);
 
@@ -248,6 +248,7 @@ export const ReasonSchema = z.object({
   text_ja: z.string(),
   text_en: z.string(),
   is_enabled: z.boolean(),
+  order: z.number().int(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
 })
@@ -635,6 +636,7 @@ export const ReasonSelectSchema: z.ZodType<Prisma.ReasonSelect> = z.object({
   text_en: z.boolean().optional(),
   type: z.boolean().optional(),
   is_enabled: z.boolean().optional(),
+  order: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
   users: z.union([z.boolean(),z.lazy(() => UserReasonFindManyArgsSchema)]).optional(),
@@ -1379,6 +1381,7 @@ export const ReasonWhereInputSchema: z.ZodType<Prisma.ReasonWhereInput> = z.obje
   text_en: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   type: z.union([ z.lazy(() => EnumReasonTypeFilterSchema),z.lazy(() => ReasonTypeSchema) ]).optional(),
   is_enabled: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  order: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   users: z.lazy(() => UserReasonListRelationFilterSchema).optional()
@@ -1390,6 +1393,7 @@ export const ReasonOrderByWithRelationInputSchema: z.ZodType<Prisma.ReasonOrderB
   text_en: z.lazy(() => SortOrderSchema).optional(),
   type: z.lazy(() => SortOrderSchema).optional(),
   is_enabled: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   users: z.lazy(() => UserReasonOrderByRelationAggregateInputSchema).optional()
@@ -1405,6 +1409,7 @@ export const ReasonOrderByWithAggregationInputSchema: z.ZodType<Prisma.ReasonOrd
   text_en: z.lazy(() => SortOrderSchema).optional(),
   type: z.lazy(() => SortOrderSchema).optional(),
   is_enabled: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => ReasonCountOrderByAggregateInputSchema).optional(),
@@ -1423,6 +1428,7 @@ export const ReasonScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Reason
   text_en: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   type: z.union([ z.lazy(() => EnumReasonTypeWithAggregatesFilterSchema),z.lazy(() => ReasonTypeSchema) ]).optional(),
   is_enabled: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
+  order: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
@@ -2370,6 +2376,7 @@ export const ReasonCreateInputSchema: z.ZodType<Prisma.ReasonCreateInput> = z.ob
   text_en: z.string(),
   type: z.lazy(() => ReasonTypeSchema).optional(),
   is_enabled: z.boolean().optional(),
+  order: z.number().int().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   users: z.lazy(() => UserReasonCreateNestedManyWithoutReasonInputSchema).optional()
@@ -2381,6 +2388,7 @@ export const ReasonUncheckedCreateInputSchema: z.ZodType<Prisma.ReasonUncheckedC
   text_en: z.string(),
   type: z.lazy(() => ReasonTypeSchema).optional(),
   is_enabled: z.boolean().optional(),
+  order: z.number().int().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   users: z.lazy(() => UserReasonUncheckedCreateNestedManyWithoutReasonInputSchema).optional()
@@ -2391,6 +2399,7 @@ export const ReasonUpdateInputSchema: z.ZodType<Prisma.ReasonUpdateInput> = z.ob
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   users: z.lazy(() => UserReasonUpdateManyWithoutReasonNestedInputSchema).optional()
@@ -2402,6 +2411,7 @@ export const ReasonUncheckedUpdateInputSchema: z.ZodType<Prisma.ReasonUncheckedU
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   users: z.lazy(() => UserReasonUncheckedUpdateManyWithoutReasonNestedInputSchema).optional()
@@ -2413,6 +2423,7 @@ export const ReasonCreateManyInputSchema: z.ZodType<Prisma.ReasonCreateManyInput
   text_en: z.string(),
   type: z.lazy(() => ReasonTypeSchema).optional(),
   is_enabled: z.boolean().optional(),
+  order: z.number().int().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
 }).strict();
@@ -2422,6 +2433,7 @@ export const ReasonUpdateManyMutationInputSchema: z.ZodType<Prisma.ReasonUpdateM
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -2432,6 +2444,7 @@ export const ReasonUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ReasonUnchec
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -3275,12 +3288,14 @@ export const ReasonCountOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonCoun
   text_en: z.lazy(() => SortOrderSchema).optional(),
   type: z.lazy(() => SortOrderSchema).optional(),
   is_enabled: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const ReasonAvgOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonAvgOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional()
+  id: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const ReasonMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonMaxOrderByAggregateInput> = z.object({
@@ -3289,6 +3304,7 @@ export const ReasonMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonMaxOrd
   text_en: z.lazy(() => SortOrderSchema).optional(),
   type: z.lazy(() => SortOrderSchema).optional(),
   is_enabled: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
 }).strict();
@@ -3299,12 +3315,14 @@ export const ReasonMinOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonMinOrd
   text_en: z.lazy(() => SortOrderSchema).optional(),
   type: z.lazy(() => SortOrderSchema).optional(),
   is_enabled: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const ReasonSumOrderByAggregateInputSchema: z.ZodType<Prisma.ReasonSumOrderByAggregateInput> = z.object({
-  id: z.lazy(() => SortOrderSchema).optional()
+  id: z.lazy(() => SortOrderSchema).optional(),
+  order: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const EnumReasonTypeWithAggregatesFilterSchema: z.ZodType<Prisma.EnumReasonTypeWithAggregatesFilter> = z.object({
@@ -6400,6 +6418,7 @@ export const ReasonCreateWithoutUsersInputSchema: z.ZodType<Prisma.ReasonCreateW
   text_en: z.string(),
   type: z.lazy(() => ReasonTypeSchema).optional(),
   is_enabled: z.boolean().optional(),
+  order: z.number().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
 }).strict();
@@ -6410,6 +6429,7 @@ export const ReasonUncheckedCreateWithoutUsersInputSchema: z.ZodType<Prisma.Reas
   text_en: z.string(),
   type: z.lazy(() => ReasonTypeSchema).optional(),
   is_enabled: z.boolean().optional(),
+  order: z.number().optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional()
 }).strict();
@@ -6476,6 +6496,7 @@ export const ReasonUpdateWithoutUsersInputSchema: z.ZodType<Prisma.ReasonUpdateW
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
@@ -6486,6 +6507,7 @@ export const ReasonUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.Reas
   text_en: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.lazy(() => ReasonTypeSchema),z.lazy(() => EnumReasonTypeFieldUpdateOperationsInputSchema) ]).optional(),
   is_enabled: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  order: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();

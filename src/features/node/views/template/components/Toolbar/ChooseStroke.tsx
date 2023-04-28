@@ -5,19 +5,19 @@ import Image from 'next/image'
 import DownIcon from 'public/assets/svgs/arrow_down_select.svg'
 import UpIcon from 'public/assets/svgs/arrow_up_select.svg'
 
+const strokes = [
+  { value: 1, label: '1px' },
+  { value: 2, label: '2px' },
+  { value: 3, label: '3px' },
+  { value: 4, label: '4px' },
+  { value: 5, label: '5px' },
+]
+
 const ChooseStroke: React.FC = () => {
   const { t } = useTranslation('file')
 
   const stroke = useRFStore((state) => state.stroke)
   const changeShapeStroke = useRFStore((state) => state.changeShapeStroke)
-
-  const strokes = [
-    { value: 1, label: '1px' },
-    { value: 2, label: '2px' },
-    { value: 3, label: '3px' },
-    { value: 4, label: '4px' },
-    { value: 5, label: '5px' },
-  ]
 
   const handleChangeValueStoke = (isUp?: boolean) => {
     if (!stroke) return
