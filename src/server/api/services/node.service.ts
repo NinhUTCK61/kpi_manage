@@ -1,4 +1,5 @@
 import {
+  GetCommentType,
   KPINodeType,
   convertToReactFlowComments,
   convertToReactFlowEdges,
@@ -119,24 +120,38 @@ export class NodeService {
       },
     })
 
-    const getComment = await prisma.comment.findMany({
-      where: {
-        template_id,
-      },
+    const getComment = await prisma.user.findMany({
       include: {
-        replies: true,
+        comments: {
+          where: {
+            template_id,
+          },
+          include: {
+            replies: true,
+          },
+        },
       },
     })
+
+    const newFormComments = getComment.map((ownerComment) => {
+      const { name, image } = ownerComment
+      return ownerComment.comments.map((comment) => {
+        const replies = comment.replies.map((rl) => {
+          return { ...rl, name, image, userid: user.id }
+        })
+        return { ...comment, replies, name, image, userid: user.id }
+      })
+    })[0]
 
     const edges = convertToReactFlowEdges(d3Root)
     const kpiNodes = convertToReactFlowNodes(d3Root)
     const speechBallon = convertToReactFlowSpeechBallon(getSpeechBallon)
-    const comments = convertToReactFlowComments(getComment)
-    console.log(comments)
+    const comments = convertToReactFlowComments(newFormComments as GetCommentType[])
 
     const nodes = [...kpiNodes, ...speechBallon, ...comments]
 
-    return { nodes, edges }
+    console.log(comments)
+    return nodes
   }
 
   handleFormValues = (nodes: Node[]) => {
