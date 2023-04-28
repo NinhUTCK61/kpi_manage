@@ -27,7 +27,7 @@
   "role": "Role",
   "text_law1": "Agree to Privacy Policy",
   "resend_email": "Resend email",
-  "error_match_password": "Passwords don't match.",
+  "error_match_password": "Password and Confirm Password does not match.",
   "reason_issue": "Please choose issue!",
   "reason_know": "Please choose reason!",
   "reason_title_reason":"How I learned about KPI Master.",
