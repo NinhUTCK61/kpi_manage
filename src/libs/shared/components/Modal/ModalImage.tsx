@@ -7,7 +7,7 @@ import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
 import ICON from '/public/assets/svgs/icon_stroke.svg'
 
-type ModalActionTypes = {
+type ModalImageTypes = {
   image: File[]
   isOpen: boolean
   onClose: () => void
@@ -15,16 +15,11 @@ type ModalActionTypes = {
   idTemplate: string
 }
 
-const ModalAction: React.FC<ModalActionTypes> = ({
-  image,
-  isOpen,
-  onClose,
-  onOpen,
-  idTemplate,
-}) => {
+const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen, idTemplate }) => {
   const KEY_IMAGE = `template/${idTemplate}.${image[0]?.name}`
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
+  const utils = api.useContext()
 
   useEffect(() => {
     if (image && image.length > 0 && image[0]) {
@@ -60,6 +55,7 @@ const ModalAction: React.FC<ModalActionTypes> = ({
             id: idTemplate,
             image_url: `template/${idTemplate}.${nameImage}`,
           },
+
           {
             onSuccess() {
               enqueueSnackbar({
@@ -72,6 +68,9 @@ const ModalAction: React.FC<ModalActionTypes> = ({
               enqueueSnackbar(error.message, {
                 variant: 'error',
               })
+            },
+            onSettled: () => {
+              utils.template.list.invalidate()
             },
           },
         )
@@ -103,17 +102,19 @@ const ModalAction: React.FC<ModalActionTypes> = ({
           <Typography mt={1}>Are you sure to upload this photo?</Typography>
           <Stack flexDirection="row" justifyContent="center" marginY={3}>
             <ImagePreview>
-              <CustomImage
-                key={nameImage}
-                src={previewURL}
-                alt={nameImage}
-                width={286}
-                height={206}
-                style={{ objectFit: 'cover', marginBottom: 0 }}
-                onLoad={() => {
-                  URL.revokeObjectURL(previewURL)
-                }}
-              />
+              {previewURL && (
+                <CustomImage
+                  key={nameImage}
+                  src={previewURL}
+                  alt={nameImage}
+                  width={286}
+                  height={206}
+                  style={{ objectFit: 'cover', marginBottom: 0 }}
+                  onLoad={() => {
+                    URL.revokeObjectURL(previewURL)
+                  }}
+                />
+              )}
             </ImagePreview>
           </Stack>
           <Stack flexDirection="row">
@@ -166,4 +167,4 @@ const ImagePreview = styled(Stack)({
   overflow: 'hidden',
 })
 
-export default ModalAction
+export default ModalImage

@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { DialogThumbnail } from '../Dialog'
-import ModalAction from '../Modal/ModalAction'
+import ModalImage from '../Modal/ModalImage'
 
-type ThumbnailActionType = {
+type ThumbnailActionTypes = {
   isOpen: boolean
   onClose: () => void
   onOpen: () => void
   idTemplate: string
 }
 
-const ThumbnailAction: React.FC<ThumbnailActionType> = ({
+const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
   isOpen,
   onClose,
   onOpen,
@@ -29,7 +29,7 @@ const ThumbnailAction: React.FC<ThumbnailActionType> = ({
     <>
       <DialogThumbnail onDrop={onSelectImage} open={isOpen} handleClose={onClose} />
 
-      <ModalAction
+      <ModalImage
         image={image || []}
         isOpen={!!image}
         onClose={onCloseModal}
