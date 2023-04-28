@@ -62,7 +62,7 @@ export const StackNodeActive = styled(Box)(({ theme }) => ({
   borderRadius: 8,
   maxWidth: 190,
   height: 106,
-  padding: 10,
+  padding: theme.spacing(2, 2.25),
   border: `2px solid ${theme.palette.blue[400]}}`,
   backgroundColor: theme.palette.common.white,
 }))

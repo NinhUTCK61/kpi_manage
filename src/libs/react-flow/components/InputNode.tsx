@@ -2,40 +2,41 @@ import { InputBase, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { InputProps } from '../../shared/components/Form/Input/Input'
-import { InputControl } from '../../shared/components/Form/Input/InputControl'
+import { InputControlNode } from './KPINode/InputControlNode'
 
 function InputNode<T extends FieldValues>({
   name,
   control,
   defaultValue,
-  fullWidth,
   label,
-  helperText,
   controlProps,
   required,
   ...props
 }: InputProps<T>) {
   const {
-    field: { ref, ...inputProps },
+    field: { ref, value, ...inputProps },
     fieldState: { error },
   } = useController({ name, control, defaultValue })
-
   return (
-    <InputControl
+    <InputControlNode
       fieldError={error}
-      fullWidth={fullWidth}
       label={label}
       required={required}
-      helperText={helperText}
+      value={value}
       {...controlProps}
     >
-      <InputStyled {...inputProps} {...props} inputRef={ref} />
-    </InputControl>
+      <InputStyled {...inputProps} {...props} inputRef={ref} value={value} />
+    </InputControlNode>
   )
 }
 
 const InputStyled = styled(InputBase)({
-  width: 140,
+  '& .MuiInputBase-input': {
+    width: 140,
+    fontSize: 15,
+    lineHeight: '22px',
+    padding: 0,
+  },
 })
 
 export { InputNode }

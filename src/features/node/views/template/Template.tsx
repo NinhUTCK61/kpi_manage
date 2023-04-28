@@ -4,7 +4,8 @@ import { TemplateDataSchema } from '@/libs/schema'
 import { Layout } from '@/libs/shared/components'
 import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
-import { ReactFlow } from 'reactflow'
+import { useEffect, useRef } from 'react'
+import { ReactFlow, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { z } from 'zod'
 import { shallow } from 'zustand/shallow'
@@ -38,11 +39,25 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
     shallow,
   )
 
+  const containerRef = useRef<HTMLElement>(null)
+
+  const { setViewport } = useReactFlow()
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setViewport({
+        x: 10,
+        y: (containerRef.current.clientHeight - 79) * 0.5,
+        zoom: 0.75,
+      })
+    }
+  }, [setViewport])
+
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate template={template} />}>
       <Toolbar />
 
-      <Container display="flex" flex={1}>
+      <Container display="flex" flex={1} ref={containerRef}>
         <ReactFlow
           maxZoom={2}
           minZoom={0.5}
@@ -57,14 +72,10 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
           }}
           panOnDrag={viewportAction === ViewPortAction.Pan}
           onNodeClick={onNodeClick}
-          defaultViewport={{
-            x: 0,
-            y: 0.5,
-            zoom: 0.5,
-          }}
           zoomOnScroll={false}
           zoomOnPinch={false}
           zoomOnDoubleClick={false}
+          nodesDraggable={false}
         >
           <KpiControls />
         </ReactFlow>

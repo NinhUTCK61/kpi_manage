@@ -3,6 +3,7 @@ import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { shallow } from 'zustand/shallow'
 
 type PickColorTypes = {
   forShape?: boolean
@@ -10,12 +11,14 @@ type PickColorTypes = {
 
 const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   const { t } = useTranslation('file')
-  const color = useRFStore((state) => (forShape ? state.colorShape : state.nodeColor))
-  const changeNodeColor = useRFStore((state) =>
-    forShape ? state.changeShapeColor : state.changeNodeColor,
+  const color = useRFStore((state) => (forShape ? state.colorShape : state.nodeColor), shallow)
+  const changeNodeColor = useRFStore(
+    (state) => (forShape ? state.changeShapeColor : state.changeNodeColor),
+    shallow,
   )
 
   const id = forShape ? 'colorShape' : 'color'
+
   return (
     <Tooltip title={t(forShape ? 'fill' : 'text_color')} arrow>
       <Stack direction="row" height={36} alignItems="center" {...props}>

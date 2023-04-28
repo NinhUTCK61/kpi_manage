@@ -46,8 +46,6 @@ function KpiControls() {
       showInteractive={false}
       showFitView={false}
       showZoom={false}
-      onZoomIn={() => console.log('zoom in')}
-      onZoomOut={() => console.log('zoom out')}
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Image

@@ -9,19 +9,25 @@ type NodeFormProps = {
   formula: string
 }
 
-const NodeFormMemo: React.FC = () => {
+type NodeFormMemoTypes = {
+  input_title: string
+  input_value: string | null
+  unit: string | null
+}
+
+const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ input_title, input_value, unit }) => {
   const { control } = useForm<NodeFormProps>({
     defaultValues: {
-      label: '',
-      unit: '',
-      formula: '',
+      label: input_title,
+      unit: unit || '',
+      formula: input_value || '',
     },
   })
   return (
-    <Stack>
-      <InputNode control={control} name="label" placeholder="Label" />
-      <InputNode control={control} name="formula" placeholder="=" />
-      <InputNode control={control} name="unit" placeholder="Unit" />
+    <Stack spacing={0.5}>
+      <InputNode control={control} name="label" required label="Label" />
+      <InputNode control={control} name="formula" label="=" />
+      <InputNode control={control} name="unit" label="Unit" />
     </Stack>
   )
 }

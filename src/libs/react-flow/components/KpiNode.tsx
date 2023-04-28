@@ -28,9 +28,12 @@ function KpiNode(props: NodeProps<KPINodeType>) {
     shallow,
   )
 
+  const { input_title, input_value, unit } = data
+  console.log(123, input_title)
+
   const isFocused = nodeFocused === data.id && selected
 
-  return false ? (
+  return !isFocused ? (
     <NodeUnActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
@@ -43,15 +46,15 @@ function KpiNode(props: NodeProps<KPINodeType>) {
         {id !== 'root' && <IconImageNode src={NodeIcon} alt="add" />}
       </RightHandler>
 
-      <TextId variant="caption">{id}</TextId>
+      <TextId variant="caption">{data.slug}</TextId>
     </NodeUnActiveContainer>
   ) : (
     <StackNodeActive>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <NodeForm />
+      <NodeForm input_title={input_title} input_value={input_value} unit={unit} />
 
-      {id !== 'root' && (
+      {data.slug !== 'root' && (
         <BottomHandler
           type="target"
           position={Position.Bottom}

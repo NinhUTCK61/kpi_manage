@@ -10,7 +10,7 @@ export type RFStore = {
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
   addNode: (parentId: string) => ReactFlowNode[]
-
+  updateNode: (node: ReactFlowNode) => void
   nodeFocused: string | null
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   // Toolbar action
