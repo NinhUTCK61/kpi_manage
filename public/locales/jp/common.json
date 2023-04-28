@@ -59,7 +59,8 @@
     "invalid_token": "トークンが見つからないか、期限切れです。",
     "email_conflict": "メールアドレスは既に存在します！",
     "kpi_issue_required": "KPIの問題を選択しなければなりません。",
-    "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。"
+    "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。",
+    "error_match_password": "パスワードとパスワードの確認が一致しません。"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
