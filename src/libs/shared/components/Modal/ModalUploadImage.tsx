@@ -72,7 +72,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
             onError() {
               enqueueSnackbar({
                 variant: 'error',
-                message: t('upload_success'),
+                message: t('upload_fail'),
               })
             },
             onSettled: () => {
@@ -84,7 +84,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
       .catch(() => {
         enqueueSnackbar({
           variant: 'error',
-          message: t('upload_success'),
+          message: t('upload_fail'),
         })
       })
   }
@@ -105,7 +105,9 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
               <CustomImage alt="icon" src={ICON_CLOSE} sx={{ mb: 0 }} />
             </CloseButton>
           </Stack>
+
           <Typography mt={1}>{t('upload_question')}</Typography>
+
           <Stack flexDirection="row" justifyContent="center" marginY={3}>
             <ImagePreview>
               {previewURL && (
@@ -123,6 +125,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
               )}
             </ImagePreview>
           </Stack>
+
           <Stack flexDirection="row">
             <Button variant="text" fullWidth sx={{ marginRight: '8px' }} onClick={onReturnUpload}>
               {t('cancel')}
