@@ -21,13 +21,17 @@ export const createSignUpFormSchema = (reasons: Reason[] = []) =>
       message: 'reason_issue',
       path: [ReasonType.ISSUE],
     },
-  ).refine(
-    (data) => {
-      const arrType = getInputType(reasons, data.reasons)
-      return arrType.includes('REASON_KNOW')
-    },
-    {
-      message: 'reason_know',
-      path: [ReasonType.REASON_KNOW],
-    },
   )
+    .refine(
+      (data) => {
+        const arrType = getInputType(reasons, data.reasons)
+        return arrType.includes('REASON_KNOW')
+      },
+      {
+        message: 'reason_know',
+        path: [ReasonType.REASON_KNOW],
+      },
+    )
+    .refine((data) => data?.password === data?.reenter_password, {
+      message: 'error.error_match_password',
+    })

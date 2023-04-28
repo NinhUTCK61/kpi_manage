@@ -43,8 +43,9 @@ export const SignUpSchemaForm = SignUpSchemaInput.merge(
   z.object({
     reenter_password: passwordPolicySchema,
   }),
-).refine((data) => data?.password === data?.reenter_password, {
+).refine((data) => data.password === data.reenter_password, {
   message: 'error.error_match_password',
+  path: ['reenter_password'],
 })
 
 export type SignUpFormType = z.infer<typeof SignUpSchemaForm>
@@ -56,7 +57,7 @@ export const ResetPasswordSchemaInput = z
     token: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: 'error.error_match_password',
     path: ['confirmPassword'],
   })
 
