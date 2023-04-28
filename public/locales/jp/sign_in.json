@@ -10,9 +10,9 @@
   "sign_up": " 登録はこちら",
   "enter_email": "メールアドレスを入力してください。",
   "enter_password": "パスワードを入力してください。",
-  "email": "メールアドレス。",
-  "password": "パスワード。",
-  "seo_title": "ログイン。",
+  "email": "メールアドレス",
+  "password": "パスワード",
+  "seo_title": "ログイン",
   "title_verify": "You need to verified your email to continue",
   "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
 }
