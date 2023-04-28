@@ -124,7 +124,12 @@ const Home = () => {
         />
       )}
 
-      <ThumbnailAction isOpen={isOpenThumbnail} onClose={closeDialogThumbnail} />
+      <ThumbnailAction
+        isOpen={isOpenThumbnail}
+        onClose={closeDialogThumbnail}
+        onOpen={openDialogThumbnail}
+        idTemplate={String(nodeId)}
+      />
     </Layout>
   )
 }

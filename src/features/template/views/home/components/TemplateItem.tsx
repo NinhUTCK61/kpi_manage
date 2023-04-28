@@ -158,9 +158,11 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
       <CardContent sx={{ p: 0 }} onClick={redirectTemplate}>
         <Image
-          src={ImageFile}
+          src={template.image_url || ImageFile}
           alt="file"
-          style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
+          style={{ cursor: template.deleted_at ? 'default' : 'pointer', objectFit: 'cover' }}
+          width={268}
+          height={206}
         />
       </CardContent>
 

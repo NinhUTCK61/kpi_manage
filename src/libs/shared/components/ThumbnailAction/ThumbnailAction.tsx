@@ -5,9 +5,16 @@ import ModalAction from '../Modal/ModalAction'
 type ThumbnailActionType = {
   isOpen: boolean
   onClose: () => void
+  onOpen: () => void
+  idTemplate: string
 }
 
-const ThumbnailAction: React.FC<ThumbnailActionType> = ({ isOpen, onClose }) => {
+const ThumbnailAction: React.FC<ThumbnailActionType> = ({
+  isOpen,
+  onClose,
+  onOpen,
+  idTemplate,
+}) => {
   const [image, setImage] = useState<File[] | null>()
   const onSelectImage = (_acceptedFiles: File[]) => {
     setImage(_acceptedFiles)
@@ -22,7 +29,13 @@ const ThumbnailAction: React.FC<ThumbnailActionType> = ({ isOpen, onClose }) => 
     <>
       <DialogThumbnail onDrop={onSelectImage} open={isOpen} handleClose={onClose} />
 
-      <ModalAction image={image || []} isOpen={!!image} onClose={onCloseModal} />
+      <ModalAction
+        image={image || []}
+        isOpen={!!image}
+        onClose={onCloseModal}
+        idTemplate={idTemplate}
+        onOpen={onOpen}
+      />
     </>
   )
 }
