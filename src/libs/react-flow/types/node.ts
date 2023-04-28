@@ -1,4 +1,4 @@
-import { Comment, Node as PNode, SpeechBallon } from '@prisma/client'
+import { Comment, CommentReply, Node as PNode, SpeechBallon } from '@prisma/client'
 import { HierarchyNode } from 'd3-hierarchy'
 import { Node } from 'reactflow'
 
@@ -19,3 +19,14 @@ export type ReactFlowCommentNode = Node<CommentNodeType>
 export type ReactFlowNode = Node<KPINodeType | SpeechBallonNodeType | CommentNodeType>
 
 export type HierarchyFlowNode = HierarchyNode<ReactFlowKPINode>
+
+export type GetCommentType = Comment & {
+  userid: string
+  name: string | null
+  image: string | null
+  replies: (CommentReply & {
+    name: string | null
+    image: string | null
+    userid: string
+  })[]
+}
