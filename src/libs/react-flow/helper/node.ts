@@ -26,12 +26,13 @@ export const generateNextReactFlowNode = (
     position: { x: 0, y: 0 },
     type: 'kpi',
     draggable: false,
+    selected: true,
   }
 
   parentNode.children = [...(parentNode.children ?? []), hierarchy(node)]
 
   const edge: Edge = {
-    id: `${parentId}-${nextFlowNode.id}`,
+    id: `${parentNode.data.data.slug}-${nextFlowNode.slug}`,
     source: parentId,
     target: nextFlowNode.id,
     type: 'kpi',

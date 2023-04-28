@@ -39,7 +39,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   edges: [],
   d3Root: hierarchy(initialRootNode),
   viewportAction: ViewPortAction.Move,
-  nodeFocused: null,
+  nodeFocused: 'root',
   fontSize: '12',
   nodeColor: '#1A74EE',
   colorShape: '#3E19A3',
@@ -73,13 +73,24 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)
-        nodes.push(node)
+        console.log('new node', node)
+        const _node = node
+        _node.data = {
+          ..._node.data,
+          node_style: JSON.stringify({
+            fontSize: get().fontSize,
+            color: get().nodeColor,
+          }),
+        }
+        nodes.push(_node)
         edges.push(edge)
 
         const d3Updated = stratifier(nodes)
         const _nodes = getLayoutElements(d3Updated)
 
         const _newNode = _nodes.find((n) => n.id === node.id)
+
+        get().setNodeFocused(node.data.slug)
 
         set({
           nodes: _nodes,
@@ -88,14 +99,26 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _nodes
       },
+      removeNodes(nodeId: string, parentId: string) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.id === parentId)
+        get().setNodeFocused(String(_node?.data.data.slug))
+        set({ nodes: get().nodes.filter((n) => n.id !== nodeId) })
+      },
       changeViewportAction(action) {
         set({
           viewportAction: action,
         })
       },
-      onNodeClick(_, node) {
+      setNodeFocused(nodeSlug) {
         set({
-          nodeFocused: node.id,
+          nodeFocused: nodeSlug,
+        })
+      },
+      onNodeClick(_, node) {
+        console.log('node click', node)
+        set({
+          nodeFocused: node.data.slug,
         })
       },
       changeFontSize(fontSize) {
@@ -118,6 +141,20 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       changeShapeType(shape) {
         set({ shape })
+      },
+      isHasChild(nodeId: string) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.id === nodeId)
+        return !!_node?.children?.length
+      },
+      updateNode(nodeSlug, data) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === nodeSlug)
+        if (_node) {
+          _node.data.data = { ..._node.data.data, ...data }
+          const _nodes = getLayoutElements(_d3)
+          set({ nodes: _nodes })
+        }
       },
     })),
   )

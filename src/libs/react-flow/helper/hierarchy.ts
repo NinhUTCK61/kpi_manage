@@ -1,4 +1,5 @@
 import { HierarchyNode } from 'd3-hierarchy'
+import { nanoid } from 'nanoid'
 import { Edge as ReactFlowEdge } from 'reactflow'
 import { DEFAULT_NODE_ATTRIBUTES } from '../constant'
 import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from '../types'
@@ -17,41 +18,41 @@ export function generateIds(d3Node: HierarchyFlowNode): void {
 }
 
 export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
-  if (parentNode.data.id === 'root') {
+  if (parentNode.data.data.slug === 'root') {
     let nextLetter = ''
     let index = parentNode.children?.length ?? 0
     do {
       nextLetter = String.fromCharCode(65 + index)
       index++
-    } while (parentNode.children?.some((child) => child.id === nextLetter))
+    } while (parentNode.children?.some((child) => child.data.data.slug === nextLetter))
     return nextLetter
   } else {
     let nextNumber = ''
     let index = parentNode.children?.length ?? 0 + 1
     do {
-      nextNumber = `${parentNode.id}${index}`
+      nextNumber = `${parentNode.data.data.slug}${index}`
       index++
-    } while (parentNode.children?.some((child) => child.id === nextNumber))
+    } while (parentNode.children?.some((child) => child.data.data.slug === nextNumber))
     return nextNumber
   }
 }
 
 export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
-  if (parentNode.data.id === 'root') {
+  if (parentNode.data.data.slug === 'root') {
     let nextLetter = ''
     let index = parentNode.children?.length ?? 0
     do {
       nextLetter = String.fromCharCode(65 + index)
       index++
-    } while (parentNode.children?.some((child) => child.data.id === nextLetter))
+    } while (parentNode.children?.some((child) => child.data.data.slug === nextLetter))
     return nextLetter
   } else {
     let nextNumber = ''
     let index = parentNode.children?.length ?? 0 + 1
     do {
-      nextNumber = `${parentNode.data.id}${index}`
+      nextNumber = `${parentNode.data.data.slug}${index}`
       index++
-    } while (parentNode.children?.some((child) => child.data.id === nextNumber))
+    } while (parentNode.children?.some((child) => child.data.data.slug === nextNumber))
     return nextNumber
   }
 }
@@ -60,7 +61,7 @@ export const generateNextId = generateNextIdByFill
 
 export const generateNextNode = (parentNode: HierarchyFlowNode): KPINodeType => {
   return {
-    id: generateNextId(parentNode),
+    id: nanoid(),
     slug: generateNextId(parentNode),
     parent_node_id: parentNode.data.id,
     ...DEFAULT_NODE_ATTRIBUTES,

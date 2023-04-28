@@ -63,8 +63,9 @@ export const StackNodeActive = styled(Box)(({ theme }) => ({
   maxWidth: 190,
   height: 106,
   padding: theme.spacing(2, 2.25),
-  border: `2px solid ${theme.palette.blue[400]}}`,
+  border: `2px solid`,
   backgroundColor: theme.palette.common.white,
+  borderColor: theme.palette.blue[500],
 }))
 
 export const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
@@ -73,5 +74,4 @@ export const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
   height: 106,
   justifyContent: 'center',
   position: 'relative',
-  width: 190,
 }))

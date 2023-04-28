@@ -71,7 +71,6 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
             hideAttribution: true,
           }}
           panOnDrag={viewportAction === ViewPortAction.Pan}
-          onNodeClick={onNodeClick}
           zoomOnScroll={false}
           zoomOnPinch={false}
           zoomOnDoubleClick={false}
