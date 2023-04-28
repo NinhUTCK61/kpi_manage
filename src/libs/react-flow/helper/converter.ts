@@ -1,8 +1,9 @@
-import { SpeechBallon } from '@prisma/client'
+import { Comment, SpeechBallon } from '@prisma/client'
 import { stratify } from 'd3-hierarchy'
 import { Edge } from 'reactflow'
 import {
   HierarchyFlowNode,
+  ReactFlowCommentNode,
   ReactFlowKPINode,
   ReactFlowNode,
   ReactFlowSpeechBallonNode,
@@ -87,6 +88,20 @@ export const convertToReactFlowSpeechBallon = (
       },
       position: { x: sb.x, y: sb.y },
       type: 'speech_ballon',
+    }
+  })
+}
+
+export const convertToReactFlowComments = (comments: Comment[]): ReactFlowCommentNode[] => {
+  return comments.map((comment) => {
+    return {
+      id: comment.id,
+      data: {
+        ...comment,
+        type: 'comment',
+      },
+      position: { x: comment.x, y: comment.y },
+      type: 'comment',
     }
   })
 }
