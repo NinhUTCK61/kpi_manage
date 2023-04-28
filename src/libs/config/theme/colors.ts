@@ -14,6 +14,7 @@ const green = {
 const base = {
   black: '#222222',
   white: '#FFFFFF',
+  gray: '#D9D9D9',
   contrastText: '#222222',
 }
 

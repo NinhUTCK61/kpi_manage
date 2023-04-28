@@ -32,6 +32,12 @@
   "create_failed": "ファイルの作成に失敗しました。",
   "like_failed": "お気に入りに登録できませんでした。",
   "description_restore_success": "ファイルを復元しました。",
-  "restore success": "復元完了。",
-  "restore_failed": "ファイルの復元に失敗しました。"
+  "restore success": "復元完了",
+  "restore_failed": "ファイルの復元に失敗しました。",
+  "upload_question": "Are you sure to upload this photo?",
+  "title_upload": "Set thumbnail for this file?",
+  "upload_success": "Successfully set a thumbnail for this file!",
+  "upload_fail": "Upload image fail!",
+  "ok": "Ok",
+  "cancel": "Cancel"
 }

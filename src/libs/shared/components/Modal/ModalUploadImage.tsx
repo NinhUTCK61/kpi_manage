@@ -1,13 +1,12 @@
 import { CustomImage } from '@/features/auth/components'
 import { api } from '@/libs/api'
-import styled from '@emotion/styled'
-import { Box, Button, Modal, Stack, Typography } from '@mui/material'
-import axios from 'axios'
+import { Box, Button, Modal, Stack, Typography, styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import ICON from '/public/assets/svgs/icon_stroke.svg'
+import ICON_CLOSE from '/public/assets/svgs/icon_stroke.svg'
 
-type ModalImageTypes = {
+type ModalUploadImageTypes = {
   image: File[]
   isOpen: boolean
   onClose: () => void
@@ -15,11 +14,18 @@ type ModalImageTypes = {
   idTemplate: string
 }
 
-const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen, idTemplate }) => {
+const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
+  image,
+  isOpen,
+  onClose,
+  onOpen,
+  idTemplate,
+}) => {
   const KEY_IMAGE = `template/${idTemplate}.${image[0]?.name}`
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
   const utils = api.useContext()
+  const { t } = useTranslation(['home'])
 
   useEffect(() => {
     if (image && image.length > 0 && image[0]) {
@@ -43,13 +49,12 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
   )
   const { mutate } = api.template.update.useMutation()
 
-  async function handleUploadImage(data: string, image: File | undefined) {
-    try {
-      axios({
-        method: 'put',
-        url: data,
-        data: image,
-      }).then(function () {
+  async function handleUploadImage(url: string, image: File | undefined) {
+    fetch(url, {
+      method: 'PUT',
+      body: image,
+    })
+      .then(() => {
         mutate(
           {
             id: idTemplate,
@@ -60,13 +65,14 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
             onSuccess() {
               enqueueSnackbar({
                 variant: 'success',
-                message: 'Upload image success!',
+                message: t('upload_success'),
               })
               onClose()
             },
-            onError(error) {
-              enqueueSnackbar(error.message, {
+            onError() {
+              enqueueSnackbar({
                 variant: 'error',
+                message: t('upload_success'),
               })
             },
             onSettled: () => {
@@ -75,12 +81,12 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
           },
         )
       })
-    } catch (error) {
-      enqueueSnackbar({
-        message: 'Upload image failed!',
-        variant: 'error',
+      .catch(() => {
+        enqueueSnackbar({
+          variant: 'error',
+          message: t('upload_success'),
+        })
       })
-    }
   }
 
   const onReturnUpload = () => {
@@ -90,16 +96,16 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
   return (
     <>
       <Modal open={isOpen} onClose={onClose}>
-        <Box sx={style}>
+        <BoxContainer>
           <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
             <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
-              Set thumbnail for this file?
+              {t('upload_title')}
             </Typography>
             <CloseButton onClick={() => onClose()}>
-              <CustomImage alt="icon" src={ICON} sx={{ mb: 0 }} />
+              <CustomImage alt="icon" src={ICON_CLOSE} sx={{ mb: 0 }} />
             </CloseButton>
           </Stack>
-          <Typography mt={1}>Are you sure to upload this photo?</Typography>
+          <Typography mt={1}>{t('upload_question')}</Typography>
           <Stack flexDirection="row" justifyContent="center" marginY={3}>
             <ImagePreview>
               {previewURL && (
@@ -119,7 +125,7 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
           </Stack>
           <Stack flexDirection="row">
             <Button variant="text" fullWidth sx={{ marginRight: '8px' }} onClick={onReturnUpload}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               variant="contained"
@@ -127,44 +133,42 @@ const ModalImage: React.FC<ModalImageTypes> = ({ image, isOpen, onClose, onOpen,
               sx={{ marginLeft: '8px' }}
               onClick={() => handleUploadImage(data as string, image[0])}
             >
-              Ok
+              {t('ok')}
             </Button>
           </Stack>
-        </Box>
+        </BoxContainer>
       </Modal>
     </>
   )
 }
 
-const style = {
+const BoxContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 3,
+  boxShadow: '0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)',
+  padding: 24,
   borderRadius: '12px',
-}
+  background: theme.palette.base.white,
+}))
 
 const CloseButton = styled(Button)({
   ':hover': {
     color: 'inherit',
   },
-  display: 'flex',
-  justifyContent: 'flex-end',
   padding: 0,
   minWidth: 0,
 })
 
-const ImagePreview = styled(Stack)({
+const ImagePreview = styled(Stack)(({ theme }) => ({
   width: 268,
   height: 206,
   justifyContent: 'center',
   borderRadius: '12px',
-  background: '#D9D9D9',
+  background: theme.palette.base.gray,
   overflow: 'hidden',
-})
+}))
 
-export default ModalImage
+export { ModalUploadImage }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DialogThumbnail } from '../Dialog'
-import ModalImage from '../Modal/ModalImage'
+import { ModalUploadImage } from '../Modal/ModalUploadImage'
 
 type ThumbnailActionTypes = {
   isOpen: boolean
@@ -29,7 +29,7 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
     <>
       <DialogThumbnail onDrop={onSelectImage} open={isOpen} handleClose={onClose} />
 
-      <ModalImage
+      <ModalUploadImage
         image={image || []}
         isOpen={!!image}
         onClose={onCloseModal}

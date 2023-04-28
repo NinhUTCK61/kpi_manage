@@ -32,6 +32,12 @@
   "create_failed": "Create failed",
   "like_failed": "Like Failed",
   "description_restore_success": "Successfully restore this file",
-  "restore_success":"Restore success",
-  "restore_failed": "Restore failed"
+  "restore_success": "Restore success",
+  "restore_failed": "Restore failed",
+  "upload_question": "Are you sure to upload this photo?",
+  "upload_title": "Set thumbnail for this file?",
+  "upload_success": "Successfully set a thumbnail for this file!",
+  "upload_fail": "Upload image fail!",
+  "ok": "Ok",
+  "cancel": "Cancel"
 }

@@ -1,1 +1,1 @@
-export * from './ModalImage'
+export * from './ModalUploadImage'
