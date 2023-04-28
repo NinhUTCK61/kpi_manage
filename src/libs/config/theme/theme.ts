@@ -17,6 +17,15 @@ import {
   yellow,
 } from './colors'
 
+import { Noto_Sans } from 'next/font/google'
+
+export const notoSan = Noto_Sans({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+})
+
 declare module '@mui/material' {
   //add color
   interface Palette {
@@ -136,7 +145,7 @@ const defaultTheme: Theme = createTheme({
     button: {
       fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
     },
-    fontFamily: ['Noto Sans', 'sans-serif'].join(', '),
+    fontFamily: notoSan.style.fontFamily,
   },
   shape: {
     borderRadius: 6,

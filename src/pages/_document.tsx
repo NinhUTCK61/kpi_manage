@@ -1,15 +1,17 @@
 import createEmotionCache from '@/libs/config/createEmotionCache'
+import { defaultTheme, notoSan } from '@/libs/config/theme'
 import createEmotionServer from '@emotion/server/create-instance'
-import type { AppType } from 'next/app'
+import { AppType } from 'next/app'
 import Document, {
+  DocumentContext,
+  DocumentProps,
   Head,
   Html,
   Main,
   NextScript,
-  type DocumentContext,
-  type DocumentProps,
 } from 'next/document'
-import type { MyAppProps } from './_app'
+import * as React from 'react'
+import { MyAppProps } from './_app'
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[]
@@ -17,15 +19,11 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en">
+    <Html lang="en" className={notoSan.className}>
       <Head>
         {/* PWA primary color */}
+        <meta name="theme-color" content={defaultTheme.palette.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
-          rel="stylesheet"
-        />
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>
@@ -37,7 +35,31 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   )
 }
 
+// `getInitialProps` belongs to `_document` (instead of `_app`),
+// it's compatible with static-site generation (SSG).
 MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  // Resolution order
+  //
+  // On the server:
+  // 1. app.getInitialProps
+  // 2. page.getInitialProps
+  // 3. document.getInitialProps
+  // 4. app.render
+  // 5. page.render
+  // 6. document.render
+  //
+  // On the server with error:
+  // 1. document.getInitialProps
+  // 2. app.render
+  // 3. page.render
+  // 4. document.render
+  //
+  // On the client
+  // 1. app.getInitialProps
+  // 2. page.getInitialProps
+  // 3. app.render
+  // 4. page.render
+
   const originalRenderPage = ctx.renderPage
 
   // You can consider sharing the same Emotion cache between all the SSR requests to speed up performance.

@@ -38,7 +38,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
         }}
       >
         <Stack alignItems="center" mb={4}>
-          <CustomImage src={Logo} alt="logo" />
+          <CustomImage src={Logo} alt="logo" priority />
           <Typography variant="h2" mb={0.5}>
             {t('title')}
           </Typography>

@@ -2,7 +2,7 @@ import { api } from '@/libs/api'
 import createEmotionCache from '@/libs/config/createEmotionCache'
 import { defaultTheme } from '@/libs/config/theme'
 import { customComponents, defaultAnchor } from '@/libs/shared/components/Snackbar'
-import { CacheProvider, type EmotionCache } from '@emotion/react'
+import { type EmotionCache } from '@emotion/react'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
@@ -17,23 +17,24 @@ export interface MyAppProps extends AppProps {
 
 const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> = ({
   Component,
-  pageProps: { session, emotionCache = clientSideEmotionCache, ...pageProps },
+  pageProps: { session, emotionCache: _ = clientSideEmotionCache, ...pageProps },
 }) => {
   return (
-    <CacheProvider value={emotionCache}>
-      <SessionProvider session={session}>
-        <ThemeProvider theme={defaultTheme}>
-          <SnackbarProvider
-            anchorOrigin={defaultAnchor}
-            autoHideDuration={1000}
-            Components={customComponents}
-          >
-            <CssBaseline />
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </ThemeProvider>
-      </SessionProvider>
-    </CacheProvider>
+    // temporarily disable emotion cache
+    // <CacheProvider value={emotionCache}>
+    <SessionProvider session={session}>
+      <ThemeProvider theme={defaultTheme}>
+        <SnackbarProvider
+          anchorOrigin={defaultAnchor}
+          autoHideDuration={1000}
+          Components={customComponents}
+        >
+          <CssBaseline />
+          <Component {...pageProps} />
+        </SnackbarProvider>
+      </ThemeProvider>
+    </SessionProvider>
+    // </CacheProvider>
   )
 }
 
