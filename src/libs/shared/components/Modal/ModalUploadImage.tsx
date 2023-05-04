@@ -4,24 +4,23 @@ import { Box, Button, Modal, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import ICON_CLOSE from '/public/assets/svgs/icon_stroke.svg'
+import closeIcon from '/public/assets/svgs/icon_stroke.svg'
 
 type ModalUploadImageTypes = {
   image: File[]
   isOpen: boolean
-  onClose: () => void
-  onOpen: () => void
+  onCloseModalUploadImage: () => void
+  onOpenDialogThumbnail: () => void
   idTemplate: string
 }
 
 const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   image,
   isOpen,
-  onClose,
-  onOpen,
+  onCloseModalUploadImage,
+  onOpenDialogThumbnail,
   idTemplate,
 }) => {
-  const KEY_IMAGE = `template/${idTemplate}.${image[0]?.name}`
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
   const utils = api.useContext()
@@ -37,7 +36,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
 
   const { data } = api.utils.createPresignUrl.useQuery(
     {
-      key: KEY_IMAGE,
+      key: `template/${idTemplate}`,
     },
     {
       onError(error) {
@@ -60,14 +59,13 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
             id: idTemplate,
             image_url: `template/${idTemplate}.${nameImage}`,
           },
-
           {
             onSuccess() {
               enqueueSnackbar({
                 variant: 'success',
                 message: t('upload_success'),
               })
-              onClose()
+              onCloseModalUploadImage()
             },
             onError() {
               enqueueSnackbar({
@@ -90,58 +88,58 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   }
 
   const onReturnUpload = () => {
-    onClose(), onOpen()
+    onCloseModalUploadImage() // close modal upload,
+    onOpenDialogThumbnail() // open dialog choose image
   }
 
   return (
-    <>
-      <Modal open={isOpen} onClose={onClose}>
-        <BoxContainer>
-          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
-              {t('upload_title')}
-            </Typography>
-            <CloseButton onClick={() => onClose()}>
-              <CustomImage alt="icon" src={ICON_CLOSE} sx={{ mb: 0 }} />
-            </CloseButton>
-          </Stack>
+    <Modal open={isOpen} onClose={onCloseModalUploadImage}>
+      <BoxContainer>
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
+            {t('upload_title')}
+          </Typography>
+          <CloseButton onClick={() => onCloseModalUploadImage()}>
+            <CustomImage alt="icon" src={closeIcon} sx={{ mb: 0 }} />
+          </CloseButton>
+        </Stack>
 
-          <Typography mt={1}>{t('upload_question')}</Typography>
+        <Typography fontSize={14} lineHeight="20px" mt={1}>
+          {t('upload_question')}
+        </Typography>
 
-          <Stack flexDirection="row" justifyContent="center" marginY={3}>
-            <ImagePreview>
-              {previewURL && (
-                <CustomImage
-                  key={nameImage}
-                  src={previewURL}
-                  alt={nameImage}
-                  width={286}
-                  height={206}
-                  style={{ objectFit: 'cover', marginBottom: 0 }}
-                  onLoad={() => {
-                    URL.revokeObjectURL(previewURL)
-                  }}
-                />
-              )}
-            </ImagePreview>
-          </Stack>
+        <Stack flexDirection="row" justifyContent="center" marginY={3}>
+          <ImagePreview>
+            {previewURL && (
+              <CustomImage
+                key={nameImage}
+                src={previewURL}
+                alt={nameImage}
+                width={286}
+                height={206}
+                style={{ objectFit: 'cover', marginBottom: 0 }}
+                onLoad={() => {
+                  URL.revokeObjectURL(previewURL)
+                }}
+              />
+            )}
+          </ImagePreview>
+        </Stack>
 
-          <Stack flexDirection="row">
-            <Button variant="text" fullWidth sx={{ marginRight: '8px' }} onClick={onReturnUpload}>
-              {t('cancel')}
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ marginLeft: '8px' }}
-              onClick={() => handleUploadImage(data as string, image[0])}
-            >
-              {t('ok')}
-            </Button>
-          </Stack>
-        </BoxContainer>
-      </Modal>
-    </>
+        <Stack flexDirection="row" spacing={1}>
+          <Button variant="text" fullWidth onClick={onReturnUpload}>
+            {t('cancel')}
+          </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => handleUploadImage(data as string, image[0])}
+          >
+            {t('ok')}
+          </Button>
+        </Stack>
+      </BoxContainer>
+    </Modal>
   )
 }
 
@@ -151,7 +149,7 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  boxShadow: '0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)',
+  boxShadow: theme.shadows[2],
   padding: 24,
   borderRadius: '12px',
   background: theme.palette.base.white,

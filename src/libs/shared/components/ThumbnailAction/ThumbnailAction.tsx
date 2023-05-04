@@ -32,9 +32,9 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
       <ModalUploadImage
         image={image || []}
         isOpen={!!image}
-        onClose={onCloseModal}
+        onCloseModalUploadImage={onCloseModal}
         idTemplate={idTemplate}
-        onOpen={onOpen}
+        onOpenDialogThumbnail={onOpen}
       />
     </>
   )
