@@ -1,10 +1,11 @@
 import { CustomImage } from '@/features/auth/components'
 import { api } from '@/libs/api'
 import { Box, Button, Modal, Stack, Typography, styled } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import closeIcon from '/public/assets/svgs/icon_stroke.svg'
+import closeIcon from '/public/assets/svgs/close.svg'
 
 type ModalUploadImageTypes = {
   image: File[]
@@ -34,62 +35,65 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     }
   }, [image])
 
-  const { data } = api.utils.createPresignUrl.useQuery(
-    {
-      key: `template/${idTemplate}`,
-    },
-    {
-      onError(error) {
-        enqueueSnackbar(error.message, {
-          variant: 'error',
-        })
-      },
-    },
-  )
-  const { mutate } = api.template.update.useMutation()
+  const { mutate: mutateTemplate } = api.template.update.useMutation()
+  const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
 
-  async function handleUploadImage(url: string, image: File | undefined) {
-    fetch(url, {
-      method: 'PUT',
-      body: image,
-    })
-      .then(() => {
-        mutate(
-          {
-            id: idTemplate,
-            image_url: `template/${idTemplate}.${nameImage}`,
-          },
-          {
-            onSuccess() {
-              enqueueSnackbar({
-                variant: 'success',
-                message: t('upload_success'),
-              })
-              onCloseModalUploadImage()
-            },
-            onError() {
-              enqueueSnackbar({
-                variant: 'error',
-                message: t('upload_fail'),
-              })
-            },
-            onSettled: () => {
-              utils.template.list.invalidate()
-            },
-          },
-        )
+  const mutation = useMutation({
+    mutationFn: (url: string) => {
+      return fetch(url, {
+        method: 'PUT',
+        body: image[0],
       })
-      .catch(() => {
-        enqueueSnackbar({
-          variant: 'error',
-          message: t('upload_fail'),
+        .then(() => {
+          mutateTemplate(
+            {
+              id: idTemplate,
+              image_url: `template/${idTemplate}.${nameImage.split('.')[1]}`,
+            },
+            {
+              onSuccess() {
+                enqueueSnackbar({
+                  variant: 'success',
+                  message: t('upload_success'),
+                })
+                onCloseModalUploadImage()
+              },
+              onError() {
+                enqueueSnackbar({
+                  variant: 'error',
+                  message: t('upload_fail'),
+                })
+              },
+              onSettled: () => {
+                utils.template.list.invalidate()
+              },
+            },
+          )
         })
+        .catch(() => {
+          enqueueSnackbar({
+            variant: 'error',
+            message: t('upload_fail'),
+          })
+        })
+    },
+  })
+
+  async function handleUploadImage() {
+    const key = `template/${idTemplate}.${image[0]?.name.split('.')[1]}`
+
+    if (data && data?.key === key && data.expires > Date.now() + 10) {
+      mutation.mutate(data.url)
+    } else {
+      const res = await mutateAsync({
+        key,
       })
+      mutation.mutate(res.url)
+    }
   }
 
   const onReturnUpload = () => {
-    onCloseModalUploadImage() // close modal upload,
-    onOpenDialogThumbnail() // open dialog choose image
+    onCloseModalUploadImage(), onOpenDialogThumbnail()
   }
 
   return (
@@ -99,12 +103,13 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
             {t('upload_title')}
           </Typography>
+
           <CloseButton onClick={() => onCloseModalUploadImage()}>
             <CustomImage alt="icon" src={closeIcon} sx={{ mb: 0 }} />
           </CloseButton>
         </Stack>
 
-        <Typography fontSize={14} lineHeight="20px" mt={1}>
+        <Typography mt={1} fontSize="14px" fontWeight="20px">
           {t('upload_question')}
         </Typography>
 
@@ -126,15 +131,12 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           </ImagePreview>
         </Stack>
 
-        <Stack flexDirection="row" spacing={1}>
-          <Button variant="text" fullWidth onClick={onReturnUpload}>
+        <Stack flexDirection="row">
+          <Button variant="text" fullWidth sx={{ mr: 1 }} onClick={onReturnUpload}>
             {t('cancel')}
           </Button>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => handleUploadImage(data as string, image[0])}
-          >
+
+          <Button variant="contained" fullWidth sx={{ ml: 1 }} onClick={handleUploadImage}>
             {t('ok')}
           </Button>
         </Stack>
@@ -149,7 +151,7 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  boxShadow: theme.shadows[2],
+  boxShadow: theme.shadows[1],
   padding: 24,
   borderRadius: '12px',
   background: theme.palette.base.white,

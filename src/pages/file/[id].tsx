@@ -1,6 +1,6 @@
 import { Template } from '@/features/node/views'
 import { api } from '@/libs/api'
-import { HierarchyFlowNode, TemplateProvider, stratifier } from '@/libs/react-flow'
+import { HierarchyFlowNode, ReactFlowNode, TemplateProvider, stratifier } from '@/libs/react-flow'
 import { ReactFlowSchema } from '@/libs/schema/node'
 import { GetServerSidePropsContext } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -36,11 +36,11 @@ const NodeCreate: FC = () => {
   if (isLoading) return null
 
   const { nodes, edges } = data as z.infer<typeof ReactFlowSchema>
-  const d3Root: HierarchyFlowNode = stratifier(nodes)
+  const d3Root: HierarchyFlowNode = stratifier(nodes as ReactFlowNode[])
 
   return (
     <ReactFlowProvider>
-      <TemplateProvider nodes={nodes} edges={edges} d3Root={d3Root}>
+      <TemplateProvider nodes={nodes as ReactFlowNode[]} edges={edges} d3Root={d3Root}>
         {template && <Template template={template} />}
       </TemplateProvider>
     </ReactFlowProvider>
