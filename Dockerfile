@@ -71,6 +71,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/source-map ./node_mo
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/server/edge-chunks ./.next/server/edge-chunks
 
 USER nextjs
 EXPOSE 3000
