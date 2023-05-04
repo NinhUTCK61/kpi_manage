@@ -1,5 +1,5 @@
 import {
-  GetCommentType,
+  CommentType,
   KPINodeType,
   convertToReactFlowComments,
   convertToReactFlowEdges,
@@ -114,7 +114,7 @@ export class NodeService {
       .id((n) => n.id)
       .parentId((n) => n.parent_node_id)(node)
 
-    const getSpeechBallon = await prisma.speechBallon.findMany({
+    const speechBallon = await prisma.speechBallon.findMany({
       where: {
         template_id,
       },
@@ -136,14 +136,12 @@ export class NodeService {
 
     const edges = convertToReactFlowEdges(d3Root)
     const kpiNodes = convertToReactFlowNodes(d3Root)
-    const speechBallonNodes = convertToReactFlowSpeechBallon(getSpeechBallon)
-    const commentNodes = convertToReactFlowComments(comments as GetCommentType[])
+    const speechBallonNodes = convertToReactFlowSpeechBallon(speechBallon)
+    const commentNodes = convertToReactFlowComments(comments as CommentType[])
 
     const nodes = [...kpiNodes, ...speechBallonNodes, ...commentNodes]
-    console.log(JSON.stringify(commentNodes, null, 2))
 
-    console.log(comments)
-    return nodes
+    return { nodes, edges }
   }
 
   handleFormValues = (nodes: Node[]) => {

@@ -6,7 +6,7 @@ export type NodeType = 'kpi' | 'speech_ballon' | 'comment'
 
 export type KPINodeType = PNode & { type: 'kpi' }
 export type SpeechBallonNodeType = SpeechBallon & { type: 'speech_ballon' }
-export type CommentNodeType = GetCommentType & { type: 'comment' }
+export type CommentNodeType = CommentType & { type: 'comment' }
 
 export type RootNode = KPINodeType & {
   children: RootNode[]
@@ -20,7 +20,7 @@ export type ReactFlowNode = Node<KPINodeType | SpeechBallonNodeType | CommentNod
 
 export type HierarchyFlowNode = HierarchyNode<ReactFlowKPINode>
 
-export type GetCommentType = Comment & {
+export type CommentType = Comment & {
   replies: (CommentReply & {
     author: User | null
   })[]
