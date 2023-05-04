@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import { memo } from 'react'
+import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRFStore } from '../../hooks'
 import { InputNode } from '../InputNode'
@@ -11,8 +11,8 @@ type NodeFormProps = {
 }
 
 type NodeFormMemoTypes = {
-  input_title: string
-  input_value: string | null
+  inputTitle: string
+  inputValue: string | null
   unit: string | null
   nodeSlug: string
   handleFocus(): void
@@ -20,8 +20,8 @@ type NodeFormMemoTypes = {
 }
 
 const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
-  input_title,
-  input_value,
+  inputTitle,
+  inputValue,
   unit,
   nodeSlug,
   handleFocus,
@@ -29,43 +29,48 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
 }) => {
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
-      input_title: input_title,
+      input_title: inputTitle,
       unit: unit || '',
-      input_value: input_value || '',
+      input_value: inputValue || '',
     },
   })
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+
   const updateNode = useRFStore((state) => state.updateNode)
 
-  const saveInput = () => {
+  const saveInput = (event?: FormEvent<HTMLFormElement>) => {
+    event && event.preventDefault()
     updateNode(nodeSlug, getValues())
     handleCancelFocus()
   }
 
   return (
-    <Stack spacing={0.5} onClick={() => setNodeFocused(nodeSlug)}>
+    <Stack component="form" onSubmit={saveInput} spacing={0.5}>
       <InputNode
         control={control}
         name="input_title"
         required
         label="Label"
-        onBlur={saveInput}
+        onBlur={() => saveInput()}
         onFocus={() => handleFocus()}
       />
+
       <InputNode
         control={control}
         name="input_value"
         label="="
-        onBlur={saveInput}
+        onBlur={() => saveInput()}
         onFocus={() => handleFocus()}
       />
+
       <InputNode
         control={control}
         name="unit"
         label="Unit"
-        onBlur={saveInput}
+        onBlur={() => saveInput()}
         onFocus={() => handleFocus()}
       />
+
+      <input type="submit" hidden />
     </Stack>
   )
 }

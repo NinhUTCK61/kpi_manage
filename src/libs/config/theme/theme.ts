@@ -237,7 +237,6 @@ const defaultTheme: Theme = createTheme({
     },
     MuiTooltip: {
       styleOverrides: {
-        popper: {},
         tooltip: {
           backgroundColor: base.black,
           color: base.white,

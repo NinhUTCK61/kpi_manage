@@ -4,7 +4,7 @@ import { TemplateDataSchema } from '@/libs/schema'
 import { Layout } from '@/libs/shared/components'
 import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
-import { useEffect, useRef } from 'react'
+import { MouseEvent, useEffect, useRef } from 'react'
 import { useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { z } from 'zod'
@@ -27,14 +27,17 @@ const storeSelector = (state: RFStore) => ({
   onEdgesChange: state.onEdgesChange,
   viewportAction: state.viewportAction,
   onNodeClick: state.onNodeClick,
+  setNodeFocused: state.setNodeFocused,
 })
 
 type TemplateTypes = {
   template: z.infer<typeof TemplateDataSchema>
 }
 
+const HEIGHT_NODE = 79
+
 export const Template: React.FC<TemplateTypes> = ({ template }) => {
-  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction } = useRFStore(
+  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, setNodeFocused } = useRFStore(
     storeSelector,
     shallow,
   )
@@ -43,11 +46,14 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
 
   const { setViewport } = useReactFlow()
 
+  const onPaneClick = (_: MouseEvent<Element>) => setNodeFocused('')
+
   useEffect(() => {
     if (containerRef.current) {
+      // set viewport to center like figma
       setViewport({
         x: 10,
-        y: (containerRef.current.clientHeight - 79) * 0.5,
+        y: (containerRef.current.clientHeight - HEIGHT_NODE) * 0.5,
         zoom: 0.75,
       })
     }
@@ -76,6 +82,7 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
           zoomOnDoubleClick={false}
           nodesDraggable={false}
           action={viewportAction}
+          onPaneClick={onPaneClick}
         >
           <KpiControls />
         </KpiReactFlow>

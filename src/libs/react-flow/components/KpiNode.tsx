@@ -41,7 +41,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
     shallow,
   )
 
-  const { input_title, input_value, unit } = data
+  const { input_title: inputTitle, input_value: inputValue, unit } = data
 
   const checkFocused = () => {
     if (data.slug === 'root' && nodeFocused === 'root') {
@@ -51,7 +51,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
     }
   }
 
-  if (!selected && !input_title) {
+  if (!selected && !inputTitle) {
     removeNodes(data.id, data.parent_node_id as string)
   }
 
@@ -82,15 +82,15 @@ function KpiNode(props: NodeProps<KPINodeType>) {
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
       <NodeForm
-        input_title={input_title}
-        input_value={input_value}
+        inputTitle={inputTitle}
+        inputValue={inputValue}
         unit={unit}
         nodeSlug={data.slug}
         handleFocus={handleFocus}
         handleCancelFocus={handleCancelFocus}
       />
 
-      {data.slug !== 'root' && (
+      {data.slug !== 'root' && data.input_title && (
         <BottomHandler
           sx={{ ...(focus && { opacity: 0 }) }}
           type="target"
@@ -101,14 +101,16 @@ function KpiNode(props: NodeProps<KPINodeType>) {
         </BottomHandler>
       )}
 
-      <RightHandler
-        sx={{ ...(focus && { opacity: 0 }) }}
-        type="source"
-        position={Position.Right}
-        onClick={() => addNode(data.id)}
-      >
-        <IconImage src={AddIcon} alt="add" />
-      </RightHandler>
+      {!!data.input_title && (
+        <RightHandler
+          sx={{ ...(focus && { opacity: 0 }) }}
+          type="source"
+          position={Position.Right}
+          onClick={() => addNode(data.id)}
+        >
+          <IconImage src={AddIcon} alt="add" />
+        </RightHandler>
+      )}
     </StackNodeActive>
   )
 }

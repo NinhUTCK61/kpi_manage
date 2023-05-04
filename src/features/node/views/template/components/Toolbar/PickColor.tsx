@@ -3,6 +3,7 @@ import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { useState, useTransition } from 'react'
 import { shallow } from 'zustand/shallow'
 
 type PickColorTypes = {
@@ -17,7 +18,13 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
     shallow,
   )
 
+  const [isPen, startTransition] = useTransition()
+
+  const [pickColor, setPickColor] = useState<string>('#000000')
+
   const id = forShape ? 'colorShape' : 'color'
+
+  console.log('color', color)
 
   return (
     <Tooltip title={t(forShape ? 'fill' : 'text_color')} arrow>
@@ -55,9 +62,14 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
         <InputStyled
           id={id}
           type="color"
-          onChange={(e) => changeNodeColor(e.target.value)}
-          value={color}
-          label={color}
+          onChange={(e) => {
+            setPickColor(e.target.value)
+            startTransition(() => {
+              changeNodeColor(e.target.value)
+            })
+          }}
+          value={pickColor}
+          label={isPen ? 'load' : color}
           sx={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}
         />
       </Stack>
