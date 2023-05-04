@@ -3,7 +3,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export class UtilsService {
-  async createPresignedUrl(key: string) {
+  async createPreSignedUrl(key: string) {
     const client = new S3Client({
       region: env.AWS_S3_REGION,
       credentials: {

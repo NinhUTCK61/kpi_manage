@@ -4,6 +4,6 @@ export const NonEmptyString = z.string().refine((value) => value.trim() !== '', 
   message: 'error.invalid_string_email',
 })
 
-export const InputPresignUrlSchema = z.object({
+export const InputPreSignUrlInputSchema = z.object({
   key: z.string(),
 })
