@@ -13,7 +13,7 @@ export class UtilsService {
     })
 
     const command = new PutObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key })
-    const result = await getSignedUrl(client, command, { expiresIn: 1800 })
-    return result
+    const url = await getSignedUrl(client, command, { expiresIn: 1800 })
+    return { url, expires: Date.now() + 1800 * 1000 }
   }
 }
