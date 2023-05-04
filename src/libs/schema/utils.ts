@@ -11,4 +11,5 @@ export const PreSignUrlInputSchema = z.object({
 export const PreSignUrlOutputSchema = z.object({
   url: z.string(),
   expires: z.number(),
+  key: z.string(),
 })
