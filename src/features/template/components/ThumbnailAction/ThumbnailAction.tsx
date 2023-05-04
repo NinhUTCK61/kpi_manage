@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { DialogThumbnail } from '../Dialog'
-import { ModalUploadImage } from '../Modal/ModalUploadImage'
+import { DialogThumbnail } from '../../../../libs/shared/components/Dialog'
+import { ModalUploadImage } from '../ModalUploadImage/ModalUploadImage'
 
 type ThumbnailActionTypes = {
   isOpen: boolean

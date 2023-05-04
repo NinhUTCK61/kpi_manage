@@ -1,7 +1,7 @@
+import ThumbnailAction from '@/features/template/components/ThumbnailAction/ThumbnailAction'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
 import { DialogAction, Layout } from '@/libs/shared/components'
-import ThumbnailAction from '@/libs/shared/components/ThumbnailAction/ThumbnailAction'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'next-i18next'

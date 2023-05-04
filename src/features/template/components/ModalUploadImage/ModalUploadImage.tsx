@@ -35,7 +35,24 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     }
   }, [image])
 
-  const { mutate: mutateTemplate } = api.template.update.useMutation()
+  const { mutate: mutateTemplate } = api.template.update.useMutation({
+    onSuccess() {
+      enqueueSnackbar({
+        variant: 'success',
+        message: t('upload_success'),
+      })
+      onCloseModalUploadImage()
+    },
+    onError() {
+      enqueueSnackbar({
+        variant: 'error',
+        message: t('upload_fail'),
+      })
+    },
+    onSettled: () => {
+      utils.template.list.invalidate()
+    },
+  })
   const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
 
   const mutation = useMutation({
@@ -44,43 +61,23 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
         method: 'PUT',
         body: image[0],
       })
-        .then(() => {
-          mutateTemplate(
-            {
-              id: idTemplate,
-              image_url: `template/${idTemplate}.${nameImage.split('.')[1]}`,
-            },
-            {
-              onSuccess() {
-                enqueueSnackbar({
-                  variant: 'success',
-                  message: t('upload_success'),
-                })
-                onCloseModalUploadImage()
-              },
-              onError() {
-                enqueueSnackbar({
-                  variant: 'error',
-                  message: t('upload_fail'),
-                })
-              },
-              onSettled: () => {
-                utils.template.list.invalidate()
-              },
-            },
-          )
-        })
-        .catch(() => {
-          enqueueSnackbar({
-            variant: 'error',
-            message: t('upload_fail'),
-          })
-        })
+    },
+    onSuccess: () => {
+      mutateTemplate({
+        id: idTemplate,
+        image_url: `template/${idTemplate}.${nameImage.split('.').pop()}`,
+      })
+    },
+    onError: () => {
+      enqueueSnackbar({
+        variant: 'error',
+        message: t('upload_fail'),
+      })
     },
   })
 
   async function handleUploadImage() {
-    const key = `template/${idTemplate}.${image[0]?.name.split('.')[1]}`
+    const key = `template/${idTemplate}.${image[0]?.name.split('.').pop()}`
 
     if (data && data?.key === key && data.expires > Date.now() + 10) {
       mutation.mutate(data.url)
@@ -104,7 +101,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
             {t('upload_title')}
           </Typography>
 
-          <CloseButton onClick={() => onCloseModalUploadImage()}>
+          <CloseButton onClick={onCloseModalUploadImage}>
             <CustomImage alt="icon" src={closeIcon} sx={{ mb: 0 }} />
           </CloseButton>
         </Stack>
@@ -113,7 +110,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           {t('upload_question')}
         </Typography>
 
-        <Stack flexDirection="row" justifyContent="center" marginY={3}>
+        <Stack flexDirection="row" justifyContent="center" my={3}>
           <ImagePreview>
             {previewURL && (
               <CustomImage
@@ -131,12 +128,12 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           </ImagePreview>
         </Stack>
 
-        <Stack flexDirection="row">
-          <Button variant="text" fullWidth sx={{ mr: 1 }} onClick={onReturnUpload}>
+        <Stack flexDirection="row" direction="row" spacing={2}>
+          <Button variant="text" fullWidth onClick={onReturnUpload}>
             {t('cancel')}
           </Button>
 
-          <Button variant="contained" fullWidth sx={{ ml: 1 }} onClick={handleUploadImage}>
+          <Button variant="contained" fullWidth onClick={handleUploadImage}>
             {t('ok')}
           </Button>
         </Stack>
