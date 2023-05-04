@@ -20,7 +20,7 @@ export const getYearsOption = () => {
   const currentYear = new Date().getFullYear()
   const years = []
 
-  for (let i = currentYear; i >= 1940; i--) {
+  for (let i = currentYear; i >= 1980; i--) {
     years.push(i.toString())
   }
 

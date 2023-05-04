@@ -34,7 +34,22 @@ export const SignUpInputSchema = z.object({
   password: passwordPolicySchema,
   company_name: z.string().max(255).min(1),
   role_in_company: z.string().max(255).min(1),
-  date_of_birth: z.string().datetime().nullable(),
+  date_of_birth: z
+    .string()
+    .datetime()
+    .nullable()
+    .refine(
+      (data) => {
+        if (!data) return true
+        const now = new Date()
+        const dob = new Date(data)
+        return dob < now
+      },
+      {
+        message: '?????????',
+        path: ['date_of_birth'],
+      },
+    ),
   reasons: z.array(z.number()),
 })
 
