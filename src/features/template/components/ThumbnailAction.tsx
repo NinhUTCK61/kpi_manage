@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { DialogThumbnail } from '../../../../libs/shared/components/Dialog'
-import { ModalUploadImage } from '../ModalUploadImage/ModalUploadImage'
+import { DialogThumbnail } from '../../../libs/shared/components/Dialog'
+import { ModalUploadImage } from './ModalUploadImage'
 
 type ThumbnailActionTypes = {
   isOpen: boolean
@@ -40,4 +40,4 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
   )
 }
 
-export default ThumbnailAction
+export { ThumbnailAction }

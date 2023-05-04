@@ -160,7 +160,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         <Image
           src={template.image_url || ImageFile}
           alt="file"
-          style={{ cursor: template.deleted_at ? 'default' : 'pointer', objectFit: 'cover' }}
+          style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
           width={268}
           height={206}
         />

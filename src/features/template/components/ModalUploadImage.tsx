@@ -90,13 +90,15 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   }
 
   const onReturnUpload = () => {
-    onCloseModalUploadImage(), onOpenDialogThumbnail()
+    onCloseModalUploadImage()
+    onOpenDialogThumbnail()
+    setPreviewURL('')
   }
 
   return (
     <Modal open={isOpen} onClose={onCloseModalUploadImage}>
       <BoxContainer>
-        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
             {t('upload_title')}
           </Typography>
@@ -110,7 +112,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           {t('upload_question')}
         </Typography>
 
-        <Stack flexDirection="row" justifyContent="center" my={3}>
+        <Stack direction="row" justifyContent="center" my={3}>
           <ImagePreview>
             {previewURL && (
               <CustomImage
@@ -128,7 +130,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           </ImagePreview>
         </Stack>
 
-        <Stack flexDirection="row" direction="row" spacing={2}>
+        <Stack direction="row" spacing={2}>
           <Button variant="text" fullWidth onClick={onReturnUpload}>
             {t('cancel')}
           </Button>

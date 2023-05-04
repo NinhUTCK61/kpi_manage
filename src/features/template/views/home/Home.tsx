@@ -1,4 +1,4 @@
-import ThumbnailAction from '@/features/template/components/ThumbnailAction/ThumbnailAction'
+import { ThumbnailAction } from '@/features/template/components'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
 import { DialogAction, Layout } from '@/libs/shared/components'

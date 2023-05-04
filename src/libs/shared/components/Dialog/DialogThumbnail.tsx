@@ -21,7 +21,7 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, on
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/png': ['.png', '.jpg'],
+      'image/jpeg': ['.jpeg', '.png'],
     },
     multiple: false,
   })
