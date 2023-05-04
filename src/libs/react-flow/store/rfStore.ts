@@ -73,7 +73,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)
-        console.log('new node', node)
         const _node = node
         _node.data = {
           ..._node.data,
@@ -116,7 +115,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
       },
       onNodeClick(_, node) {
-        console.log('node click', node)
         set({
           nodeFocused: node.data.slug,
         })

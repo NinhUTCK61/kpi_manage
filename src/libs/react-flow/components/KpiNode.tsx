@@ -55,11 +55,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
     removeNodes(data.id, data.parent_node_id as string)
   }
 
-  console.log('data', data.node_style)
-
   const style = JSON.parse(data.node_style as string)
-
-  console.log('style', style)
 
   return !checkFocused() ? (
     <NodeUnActiveContainer onClick={() => setNodeFocused(data.slug)}>
@@ -69,7 +65,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
         {`${data.input_title}${data.unit && `(${data.unit})`}`}
       </Typography>
 
-      {data.value2number && (
+      {!!data.value2number && (
         <Typography variant="body2" sx={{ color: style?.color }}>
           {data.value2number}
         </Typography>

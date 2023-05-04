@@ -5,12 +5,12 @@ import { Layout } from '@/libs/shared/components'
 import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
 import { useEffect, useRef } from 'react'
-import { ReactFlow, useReactFlow } from 'reactflow'
+import { useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { z } from 'zod'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
-import { HEIGHT_TOOLBAR, Toolbar } from './components'
+import { HEIGHT_TOOLBAR, KpiReactFlow, Toolbar } from './components'
 import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
@@ -34,7 +34,7 @@ type TemplateTypes = {
 }
 
 export const Template: React.FC<TemplateTypes> = ({ template }) => {
-  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, onNodeClick } = useRFStore(
+  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction } = useRFStore(
     storeSelector,
     shallow,
   )
@@ -58,7 +58,7 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
       <Toolbar />
 
       <Container display="flex" flex={1} ref={containerRef}>
-        <ReactFlow
+        <KpiReactFlow
           maxZoom={2}
           minZoom={0.5}
           nodes={nodes}
@@ -75,9 +75,10 @@ export const Template: React.FC<TemplateTypes> = ({ template }) => {
           zoomOnPinch={false}
           zoomOnDoubleClick={false}
           nodesDraggable={false}
+          action={viewportAction}
         >
           <KpiControls />
-        </ReactFlow>
+        </KpiReactFlow>
       </Container>
     </Layout>
   )

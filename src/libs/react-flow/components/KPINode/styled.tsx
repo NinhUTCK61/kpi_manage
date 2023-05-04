@@ -74,4 +74,6 @@ export const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
   height: 106,
   justifyContent: 'center',
   position: 'relative',
+  padding: theme.spacing(0.5),
+  cursor: 'pointer !important',
 }))
