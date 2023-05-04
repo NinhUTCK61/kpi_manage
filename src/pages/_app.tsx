@@ -20,6 +20,7 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
   pageProps: { session, emotionCache: _ = clientSideEmotionCache, ...pageProps },
 }) => {
   return (
+    // <CacheProvider value={emotionCache}>
     <SessionProvider session={session}>
       <ThemeProvider theme={defaultTheme}>
         <SnackbarProvider
@@ -32,6 +33,7 @@ const MyApp: AppType<{ session: Session | null; emotionCache?: EmotionCache }> =
         </SnackbarProvider>
       </ThemeProvider>
     </SessionProvider>
+    // </CacheProvider>
   )
 }
 

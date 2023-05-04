@@ -120,38 +120,29 @@ export class NodeService {
       },
     })
 
-    const getComment = await prisma.user.findMany({
+    const comments = await prisma.comment.findMany({
+      where: {
+        template_id,
+      },
       include: {
-        comments: {
-          where: {
-            template_id,
-          },
+        replies: {
           include: {
-            replies: true,
+            author: true,
           },
         },
+        author: true,
       },
     })
 
-    const newFormComments = getComment.map((ownerComment) => {
-      const { name, image } = ownerComment
-      return ownerComment.comments.map((comment) => {
-        const replies = comment.replies.map((rl) => {
-          return { ...rl, name, image, userid: user.id }
-        })
-        return { ...comment, replies, name, image, userid: user.id }
-      })
-    })[0]
-
     const edges = convertToReactFlowEdges(d3Root)
     const kpiNodes = convertToReactFlowNodes(d3Root)
-    const speechBallon = convertToReactFlowSpeechBallon(getSpeechBallon)
-    const comments = convertToReactFlowComments(newFormComments as GetCommentType[])
+    const speechBallonNodes = convertToReactFlowSpeechBallon(getSpeechBallon)
+    const commentNodes = convertToReactFlowComments(comments as GetCommentType[])
 
-    const nodes = [...kpiNodes, ...speechBallon, ...comments]
+    const nodes = [...kpiNodes, ...speechBallonNodes, ...commentNodes]
+    console.log(JSON.stringify(commentNodes, null, 2))
 
-    console.log(comments)
-    return nodes
+    return { nodes, edges }
   }
 
   handleFormValues = (nodes: Node[]) => {

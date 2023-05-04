@@ -3,6 +3,7 @@ import {
   CommentSchema,
   NodeSchema,
   SpeechBallonSchema,
+  UserSchema,
 } from 'prisma/generated/zod'
 import { z } from 'zod'
 
@@ -41,9 +42,7 @@ export const DeleteNodeSchemaInput = z.object({
 
 const kpiNodeSchema = NodeSchema.merge(z.object({ type: z.literal('kpi') }))
 const speechBallonSchema = SpeechBallonSchema.merge(z.object({ type: z.literal('speech_ballon') }))
-const commentSchema = CommentSchema.merge(
-  z.object({ replies: z.array(CommentReplySchema), type: z.literal('comment') }),
-)
+const commentSchema = CommentSchema.merge(z.object({ type: z.literal('comment') }))
 
 const reactFlowSchema = z.object({
   id: z.string(),
@@ -69,13 +68,20 @@ const reactFlowSpeechBallonNode = reactFlowSchema.merge(
 
 const reactFlowCommentNode = reactFlowSchema.merge(
   z.object({
-    data: commentSchema,
+    data: commentSchema.merge(
+      z.object({
+        replies: z.array(
+          CommentReplySchema.merge(z.object({ author: UserSchema.omit({ password: true }) })),
+        ),
+        author: UserSchema.omit({ password: true }),
+      }),
+    ),
     type: z.literal('comment'),
   }),
 )
 
 export const ReactFlowSchema = z.object({
-  nodes: z.array(reactFlowKPINode || reactFlowSpeechBallonNode || reactFlowCommentNode),
+  nodes: z.array(z.union([reactFlowKPINode, reactFlowSpeechBallonNode, reactFlowCommentNode])),
   edges: z
     .object({
       id: z.string(),
