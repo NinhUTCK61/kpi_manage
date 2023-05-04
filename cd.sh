@@ -11,12 +11,12 @@ docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 # Pull latest image
 docker pull $CI_REGISTRY_IMAGE:latest
 
-# Deploy prisma
-docker run --rm $CI_REGISTRY_IMAGE yarn prisma migrate deploy
-
 # Stop old container and start new one
 docker stop $APP_NAME || true
 docker run --rm --name $APP_NAME -d -p $PORT:3000 $CI_REGISTRY_IMAGE:latest
+
+# Deploy prisma
+docker run --rm $CI_REGISTRY_IMAGE yarn prisma migrate deploy
 
 # Remove old images
 docker images "$CI_REGISTRY_IMAGE" --format '{{.Repository}}:{{.Tag}} {{.ID}}' \
