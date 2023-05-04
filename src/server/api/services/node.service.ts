@@ -142,7 +142,8 @@ export class NodeService {
     const nodes = [...kpiNodes, ...speechBallonNodes, ...commentNodes]
     console.log(JSON.stringify(commentNodes, null, 2))
 
-    return { nodes, edges }
+    console.log(comments)
+    return nodes
   }
 
   handleFormValues = (nodes: Node[]) => {
