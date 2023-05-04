@@ -144,6 +144,17 @@ export class NodeService {
     return { nodes, edges }
   }
 
+  async searchSlug(template_id: string, slug: string) {
+    const nodes = await prisma.node.findMany({
+      where: {
+        template_id,
+        slug: { contains: slug },
+      },
+    })
+
+    return nodes
+  }
+
   handleFormValues = (nodes: Node[]) => {
     const arrayField: (keyof Node)[] = [
       'slug',

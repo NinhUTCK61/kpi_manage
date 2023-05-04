@@ -7,7 +7,7 @@
   "error_lower": "最少1桁の小文字を含める必要があります。",
   "error_number": "最少1桁の数字を含める必要があります。",
   "submit": "登録",
-  "have_account": "既にアカウントがある場合、?",
+  "have_account": "既にアカウントがある場合、",
   "sign_in": "ログインはこちら",
   "description_success": "あなたはKPIマスターのメンバーになりました。アカウントを確認するためにメールを送信しました。",
   "title_success": "登録に成功しました！",
