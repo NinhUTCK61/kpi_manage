@@ -244,4 +244,45 @@ export class TemplateService {
 
     return !!userTemplate
   }
+
+  async favorite(user: User, isTrash: boolean) {
+    const deletedOpt = isTrash ? { not: null } : null
+    const listTemplate = await prisma.userTemplate.findMany({
+      where: {
+        user_id: user.id,
+        is_favorite: true,
+        template: {
+          deleted_at: deletedOpt,
+        },
+      },
+      orderBy: {
+        template: {
+          created_at: 'desc',
+        },
+      },
+      include: {
+        template: true,
+      },
+    })
+
+    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
+
+    if (listTemplate.length) {
+      listTemplate.forEach((item) => {
+        const {
+          template: { id: _, ...restTemplate },
+        } = item
+
+        templateData.push({
+          template_id: item.template_id,
+          can_edit: item.can_edit,
+          is_favorite: item.is_favorite,
+          is_owner: item.is_owner,
+          ...restTemplate,
+        })
+      })
+    }
+
+    return templateData
+  }
 }
