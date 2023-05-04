@@ -48,7 +48,7 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
   '& .MuiInputAdornment-positionStart': {
     marginRight: 0,
   },
-  fontSize: 14,
+  fontSize: 15,
 }))
 
 export { InputSearch }
