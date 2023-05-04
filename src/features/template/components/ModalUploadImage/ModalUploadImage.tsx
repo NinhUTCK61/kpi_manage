@@ -76,10 +76,10 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     },
   })
 
-  async function handleUploadImage() {
+  const handleUploadImage = async () => {
     const key = `template/${idTemplate}.${image[0]?.name.split('.').pop()}`
 
-    if (data && data?.key === key && data.expires > Date.now() + 10) {
+    if (data && data?.key === key && data.expires > Date.now() + 600) {
       mutation.mutate(data.url)
     } else {
       const res = await mutateAsync({
