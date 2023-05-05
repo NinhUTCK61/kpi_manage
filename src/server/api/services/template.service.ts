@@ -252,7 +252,7 @@ export class TemplateService {
         user_id: user.id,
         is_favorite: true,
         template: {
-          deleted_at: deletedOpt,
+          deleted_at: null,
         },
       },
       orderBy: {

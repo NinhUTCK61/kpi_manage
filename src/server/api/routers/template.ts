@@ -76,6 +76,6 @@ export const templateRouter = createTRPCRouter({
     .input(ListTemplateSchemaInput)
     .output(TemplateDataOutputSchema)
     .query(({ input, ctx }) => {
-      return templateService.favorite(ctx.session.user, input.isTrash)
+      return templateService.favorite(ctx.session.user)
     }),
 })
