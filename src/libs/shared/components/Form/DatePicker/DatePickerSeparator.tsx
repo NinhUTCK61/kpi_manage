@@ -51,7 +51,7 @@ function DatePickerSeparator<T extends FieldValues>({
 
   const { t } = useTranslation('common')
 
-  const [year, setYear] = useState<string | null>(null)
+  const [year, setYear] = useState<string | null>('1980')
   const [month, setMonth] = useState<string | null>(null)
   const [date, setDate] = useState<string | null>(null)
 
