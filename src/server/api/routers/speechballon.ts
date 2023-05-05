@@ -1,4 +1,8 @@
-import { z } from 'zod'
+import {
+  CreateSpeechBallonInputSchema,
+  UpdateSpeechBallonInputSchema,
+} from '@/libs/schema/speechballon'
+import { SpeechBallonSchema } from 'prisma/generated/zod'
 import { SpeechBallonService } from '../services/speechballon.service'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -6,15 +10,20 @@ const speechBallonService = new SpeechBallonService()
 export const speechBallonRoute = createTRPCRouter({
   create: protectedProcedure
     .meta({
-      openapi: { method: 'POST', path: '/speechballon', protect: true },
+      openapi: { method: 'POST', path: '/create', protect: true },
     })
-    .input(
-      z.object({
-        template_id: z.string(),
-      }),
-    )
-    .output(z.any())
-    .mutation(({ input }) => {
-      return speechBallonService.create(input.template_id)
+    .input(CreateSpeechBallonInputSchema)
+    .output(SpeechBallonSchema)
+    .mutation(({ input, ctx }) => {
+      return speechBallonService.create(ctx.session.user, input)
+    }),
+  update: protectedProcedure
+    .meta({
+      openapi: { method: 'PUT', path: '/update', protect: true },
+    })
+    .input(UpdateSpeechBallonInputSchema)
+    .output(SpeechBallonSchema)
+    .mutation(({ input, ctx }) => {
+      return speechBallonService.update(ctx.session.user, input)
     }),
 })
