@@ -42,6 +42,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
         message: t('upload_success'),
       })
       onCloseModalUploadImage()
+      setPreviewURL('')
     },
     onError() {
       enqueueSnackbar({
@@ -89,21 +90,25 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     }
   }
 
-  const onReturnUpload = () => {
+  const handelCloseModalUploadImage = () => {
     onCloseModalUploadImage()
-    onOpenDialogThumbnail()
     setPreviewURL('')
   }
 
+  const onReturnUpload = () => {
+    handelCloseModalUploadImage()
+    onOpenDialogThumbnail()
+  }
+
   return (
-    <Modal open={isOpen} onClose={onCloseModalUploadImage}>
+    <Modal open={isOpen} onClose={handelCloseModalUploadImage}>
       <BoxContainer>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
             {t('upload_title')}
           </Typography>
 
-          <CloseButton onClick={onCloseModalUploadImage}>
+          <CloseButton onClick={handelCloseModalUploadImage}>
             <CustomImage alt="icon" src={closeIcon} sx={{ mb: 0 }} />
           </CloseButton>
         </Stack>
@@ -121,7 +126,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
                 alt={nameImage}
                 width={286}
                 height={206}
-                style={{ objectFit: 'cover', marginBottom: 0 }}
+                style={{ marginBottom: 0 }}
                 onLoad={() => {
                   URL.revokeObjectURL(previewURL)
                 }}
