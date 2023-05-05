@@ -1,11 +1,11 @@
+import { ThumbnailAction } from '@/features/template/components'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
-import { DialogAction, DialogThumbnail, Layout } from '@/libs/shared/components'
+import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { enqueueSnackbar } from 'notistack'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
@@ -88,14 +88,6 @@ const Home = () => {
     },
   )
 
-  const handleConfirmThumbnail = () => {
-    enqueueSnackbar('', {
-      variant: 'success',
-      description: t('description_set_thumbnail_success') as string,
-    })
-    closeDialogThumbnail()
-  }
-
   return (
     <Layout title={t('seo_title')}>
       <ButtonCreate
@@ -132,10 +124,11 @@ const Home = () => {
         />
       )}
 
-      <DialogThumbnail
-        open={isOpenThumbnail}
-        handleClose={closeDialogThumbnail}
-        handleConfirm={handleConfirmThumbnail}
+      <ThumbnailAction
+        isOpen={isOpenThumbnail}
+        onClose={closeDialogThumbnail}
+        onOpen={openDialogThumbnail}
+        idTemplate={String(nodeId)}
       />
     </Layout>
   )

@@ -8,24 +8,23 @@ import {
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ThumbnailIcon from 'public/assets/svgs/thumbnail.svg'
-import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { DialogBaseProps } from '../../types/utils'
 
 type DialogThumbnailTypes = DialogBaseProps<{
-  handleConfirm: () => void
+  onDrop: (file: File[]) => void
 }>
 
-const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, handleConfirm }) => {
+const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, onDrop }) => {
   const { t } = useTranslation()
-  const onDrop = useCallback(
-    (_acceptedFiles: File[]) => {
-      handleConfirm()
-    },
-    [handleConfirm],
-  )
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      'image/jpeg': ['.jpeg', '.png'],
+    },
+    multiple: false,
+  })
 
   return (
     <Dialog open={open} onClose={handleClose}>
