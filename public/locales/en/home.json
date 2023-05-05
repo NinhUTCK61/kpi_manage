@@ -1,6 +1,7 @@
 {
   "create": "Create new file",
   "my_files": "MY FILES",
+  "deleted_file_title": "DELETED FILES",
   "all_file": "All files",
   "deleted_file": "Deleted files",
   "open": "Open",
