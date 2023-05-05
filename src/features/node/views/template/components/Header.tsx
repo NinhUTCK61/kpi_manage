@@ -69,7 +69,7 @@ const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    if (name === '' || name === null) {
+    if (name === '' || name === null || name === template.name) {
       setName(null)
       return
     }

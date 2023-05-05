@@ -76,7 +76,6 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
   const newNodes: ReactFlowNode[] = []
 
   tree.each((node) => {
-    console.log('node', node)
     node.data.position = {
       x: node.y,
       y: node.x,

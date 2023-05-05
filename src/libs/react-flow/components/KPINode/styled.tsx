@@ -58,7 +58,7 @@ export const IconImageNode = styled(Image)(({ theme }) => ({
   background: theme.palette.common.white,
 }))
 
-export const StackNodeActive = styled(Box)(({ theme }) => ({
+export const NodeActiveContainer = styled(Box)(({ theme }) => ({
   borderRadius: 8,
   maxWidth: 190,
   height: 106,

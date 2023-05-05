@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import { FormEvent, memo } from 'react'
+import { CSSProperties, FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRFStore } from '../../hooks'
 import { InputNode } from '../InputNode'
@@ -17,6 +17,7 @@ type NodeFormMemoTypes = {
   nodeSlug: string
   handleFocus(): void
   handleCancelFocus(): void
+  style?: CSSProperties
 }
 
 const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
@@ -26,6 +27,7 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
   nodeSlug,
   handleFocus,
   handleCancelFocus,
+  style,
 }) => {
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
@@ -51,7 +53,10 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         required
         label="Label"
         onBlur={() => saveInput()}
-        onFocus={() => handleFocus()}
+        onFocus={handleFocus}
+        inputProps={{
+          style,
+        }}
       />
 
       <InputNode
@@ -59,7 +64,10 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         name="input_value"
         label="="
         onBlur={() => saveInput()}
-        onFocus={() => handleFocus()}
+        onFocus={handleFocus}
+        inputProps={{
+          style,
+        }}
       />
 
       <InputNode
@@ -67,7 +75,10 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         name="unit"
         label="Unit"
         onBlur={() => saveInput()}
-        onFocus={() => handleFocus()}
+        onFocus={handleFocus}
+        inputProps={{
+          style,
+        }}
       />
 
       <input type="submit" hidden />

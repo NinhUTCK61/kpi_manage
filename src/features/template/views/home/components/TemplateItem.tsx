@@ -52,7 +52,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    if (name === '' || name === null) {
+    if (name === '' || name === null || name === template.name) {
       setName(null)
       return
     }
@@ -92,7 +92,11 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     : [
         {
           title: t('open'),
-          action: () => router.push('file/' + template.template_id),
+          action: () =>
+            router.push({
+              pathname: 'file/' + template.template_id,
+              query: { root: template.root_note_id },
+            }),
         },
         {
           title: t('thumbnail'),

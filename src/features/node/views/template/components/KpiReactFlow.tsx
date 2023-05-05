@@ -1,10 +1,10 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { styled } from '@mui/material'
-import AddSpeechIcon from 'public/assets/svgs/add_speech.svg'
-import CommentIcon from 'public/assets/svgs/comment_tools.svg'
-import HandDragIcon from 'public/assets/svgs/hand_drag.svg'
-import HandIcon from 'public/assets/svgs/hand_tools.svg'
-import MoveIcon from 'public/assets/svgs/move_tools.svg'
+import CommentIcon from 'public/assets/svgs/cursor/comment.svg'
+import HandIcon from 'public/assets/svgs/cursor/hand.svg'
+import HandDragIcon from 'public/assets/svgs/cursor/hand_drag.svg'
+import MoveIcon from 'public/assets/svgs/cursor/move.svg'
+import AddSpeechIcon from 'public/assets/svgs/cursor/speech.svg'
 import { ReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 
@@ -34,7 +34,12 @@ const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) 
     },
     ...(action === ViewPortAction.Pan && {
       '& .react-flow__pane.dragging': {
-        cursor: `url(${HandDragIcon.src}) 0 0 ,auto`,
+        cursor: `url(${HandDragIcon.src}),auto`,
+      },
+    }),
+    ...(action !== ViewPortAction.Move && {
+      '& .react-flow__node': {
+        cursor: 'unset',
       },
     }),
   }

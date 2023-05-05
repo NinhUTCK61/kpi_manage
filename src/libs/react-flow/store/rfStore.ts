@@ -108,11 +108,20 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           viewportAction: action,
         })
+        set({
+          nodeFocused: '',
+        })
       },
       setNodeFocused(nodeSlug) {
         set({
           nodeFocused: nodeSlug,
         })
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === nodeSlug && !!n.data.selected)
+        if (_node) {
+          const style = JSON.parse(_node.data.data.node_style as string)
+          set({ nodeColor: style.color })
+        }
       },
       onNodeClick(_, node) {
         set({
@@ -153,6 +162,21 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           const _nodes = getLayoutElements(_d3)
           set({ nodes: _nodes })
         }
+      },
+      updateStyleNode(nodeSlug, style) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === nodeSlug && !!n.data.selected)
+        if (_node) {
+          const newStyle = { ...JSON.parse(_node.data.data.node_style as string), ...style }
+          _node.data.data.node_style = JSON.stringify(newStyle)
+          const _nodes = getLayoutElements(_d3)
+          set({ nodes: _nodes })
+        }
+      },
+      findNodeBySlug(nodeSlug) {
+        const _d3 = get().nodes
+        const _node = _d3.find((n) => n.data.type === 'kpi' && n.data.slug === nodeSlug)
+        return _node
       },
     })),
   )
