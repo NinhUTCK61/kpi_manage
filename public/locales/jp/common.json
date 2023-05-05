@@ -72,6 +72,9 @@
     "unauthorized": "認証されていません。",
     "dob_invalid": "生年月日は、現在の日付より後にすることはできません。",
     "create_node": "ノードを作成できませんでした。"
+    "error_date": "The date of birth cannot be later than the current date."
+    "error_match_password": "パスワードとパスワードの確認が一致しません。",
+    "speechballon_not_found": "Speech ballon not found!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
