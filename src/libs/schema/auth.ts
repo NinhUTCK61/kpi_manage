@@ -27,42 +27,43 @@ export const passwordPolicySchema = z
   .regex(lowercaseRegex, 'password_err_lower')
   .regex(numberRegex, 'password_err_number')
 
-export const SignUpInputSchema = z.object({
-  first_name: z.string().max(255).min(1),
-  last_name: z.string().max(255).min(1),
-  email: z.string().email(),
-  password: passwordPolicySchema,
-  company_name: z.string().max(255).min(1),
-  role_in_company: z.string().max(255).min(1),
-  date_of_birth: z
-    .string()
-    .datetime()
-    .nullable()
-    .refine(
-      (data) => {
-        if (!data) return true
-        const now = new Date()
-        const dob = new Date(data)
-        return dob < now
-      },
-      {
-        message: '?????????',
-        path: ['date_of_birth'],
-      },
-    ),
-  reasons: z.array(z.number()),
-})
+export const SignUpSchemaInput = z
+  .object({
+    first_name: z.string().max(255).min(1),
+    last_name: z.string().max(255).min(1),
+    email: z.string().email(),
+    password: passwordPolicySchema,
+    company_name: z.string().max(255).min(1),
+    role_in_company: z.string().max(255).min(1),
+    date_of_birth: z.string().datetime().nullable(),
+    reasons: z.array(z.number()),
+  })
+  .refine(
+    (data) => {
+      if (!data.date_of_birth) return true
+      const now = new Date()
+      const dob = new Date(data.date_of_birth as string)
+      return dob < now
+    },
+    {
+      message: 'error.error_date',
+      path: ['date_of_birth'],
+    },
+  )
 
-export type SignUpInputType = z.infer<typeof SignUpInputSchema>
+export type SignUpInputType = z.infer<typeof SignUpSchemaInput>
 
-export const SignUpSchemaForm = SignUpInputSchema.merge(
-  z.object({
-    reenter_password: passwordPolicySchema,
-  }),
-).refine((data) => data.password === data.reenter_password, {
-  message: 'error.error_match_password',
-  path: ['reenter_password'],
-})
+export const SignUpSchemaForm = z
+  .intersection(
+    SignUpSchemaInput,
+    z.object({
+      reenter_password: passwordPolicySchema,
+    }),
+  )
+  .refine((data) => data.password === data.reenter_password, {
+    message: 'error.error_match_password',
+    path: ['reenter_password'],
+  })
 
 export type SignUpFormType = z.infer<typeof SignUpSchemaForm>
 

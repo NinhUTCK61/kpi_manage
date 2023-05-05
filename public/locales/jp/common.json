@@ -62,7 +62,8 @@
     "kpi_issue_required": "KPIの問題を選択しなければなりません。",
     "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。",
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
-    "unauthorized": "認証されていません。"
+    "unauthorized": "認証されていません。",
+    "error_date": "The date of birth cannot be later than the current date."
   },
   "template": {
     "move_to_trash": "Move to trash success!",

@@ -13,6 +13,6 @@
   "email": "メールアドレス",
   "password": "パスワード",
   "seo_title": "ログイン",
-  "title_verify": "You need to verified your email to continue",
-  "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
+  "title_verify": "続行するには、まずメールアドレスを認証する必要があります。",
+  "desc_verify": "認証メールがまだ届かない場合、「再送信」ボタンを押してください。"
 }
