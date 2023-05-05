@@ -1,5 +1,6 @@
 import { createTRPCRouter } from '@/server/api/trpc'
 import { authRouter } from './routers/auth'
+import { commentRouter } from './routers/comment'
 import { nodeRouter } from './routers/node'
 import { reasonRouter } from './routers/reason'
 import { templateRouter } from './routers/template'
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   node: nodeRouter,
   reason: reasonRouter,
   utils: utilsRouter,
+  comment: commentRouter,
 })
 
 // export type definition of API
