@@ -1,17 +1,16 @@
 import {
-  CreateCommentReplyType,
-  CreateCommentType,
-  InputComment,
-  InputCommentReplyType,
-  InputUpdateCommentReplyType,
-  InputUpdateCommentType,
+  CreateCommentInputType,
+  CreateCommentRepliesInput,
+  CreateCommentRepliesWithoutPasswordOutputType,
+  CreateCommentWithoutPasswordOutputType,
+  UpdateCommentInputType,
+  UpdateCommentReplyInputType,
 } from '@/libs/schema/comment'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
-import { User } from 'prisma/generated/zod'
 
 export class CommentService {
-  async create(comment: InputComment, user: User) {
+  async create(comment: CreateCommentInputType, userId: string) {
     const itemTemplate = await prisma.template.findFirst({
       where: {
         id: comment.template_id,
@@ -21,12 +20,14 @@ export class CommentService {
     if (itemTemplate) {
       const newComment = await prisma.comment.create({
         data: {
-          author_id: user.id,
           ...comment,
+          author_id: userId,
+        },
+        include: {
+          author: true,
         },
       })
-      const { created_at, updated_at, password, id, ...userRest } = user
-      return { ...newComment, ...userRest } as CreateCommentType
+      return newComment as CreateCommentWithoutPasswordOutputType
     } else {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -35,7 +36,7 @@ export class CommentService {
     }
   }
 
-  async createReply(commentRl: InputCommentReplyType, user: User) {
+  async createReply(commentRl: CreateCommentRepliesInput, userId: string) {
     const itemTemplate = await prisma.comment.findFirst({
       where: {
         id: commentRl.comment_id,
@@ -45,12 +46,14 @@ export class CommentService {
     if (itemTemplate) {
       const newComment = await prisma.commentReply.create({
         data: {
-          author_id: user.id,
+          author_id: userId,
           ...commentRl,
         },
+        include: {
+          author: true,
+        },
       })
-      const { created_at, updated_at, password, id, ...userRest } = user
-      return { ...newComment, ...userRest } as CreateCommentReplyType
+      return newComment as CreateCommentRepliesWithoutPasswordOutputType
     } else {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -59,43 +62,36 @@ export class CommentService {
     }
   }
 
-  async update(comment: InputUpdateCommentType, user: User) {
+  async update(comment: UpdateCommentInputType, userId: string) {
     const commentUpdate = await prisma.comment.update({
       where: {
         id: comment.id,
       },
       data: {
         ...comment,
+        author_id: userId,
+      },
+      include: {
+        author: true,
       },
     })
 
-    const { created_at, updated_at, password, id, ...userRest } = user
-    return { ...commentUpdate, ...userRest }
+    return commentUpdate as CreateCommentWithoutPasswordOutputType
   }
 
-  async updateReply(commentRl: InputUpdateCommentReplyType, user: User) {
-    const itemTemplate = await prisma.comment.findFirst({
+  async updateReply(commentRl: UpdateCommentReplyInputType, userId: string) {
+    const commentUpdate = await prisma.commentReply.update({
       where: {
-        id: commentRl.comment_id,
+        id: commentRl.id,
+      },
+      data: {
+        ...commentRl,
+        author_id: userId,
+      },
+      include: {
+        author: true,
       },
     })
-
-    if (itemTemplate) {
-      const commentUpdate = await prisma.commentReply.update({
-        where: {
-          id: commentRl.id,
-        },
-        data: {
-          ...commentRl,
-        },
-      })
-      const { created_at, updated_at, password, id, ...userRest } = user
-      return { ...commentUpdate, ...userRest }
-    } else {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'error.template_not_found',
-      })
-    }
+    return commentUpdate as CreateCommentRepliesWithoutPasswordOutputType
   }
 }

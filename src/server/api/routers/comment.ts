@@ -1,12 +1,12 @@
 import {
-  CreateCommentReplySchema,
-  CreateCommentSchema,
-  InputCommentReplySchema,
-  InputCommentSchema,
-  InputUpdateCommentReplySchema,
-  InputUpdateCommentSchema,
+  CreateCommentInputSchema,
+  CreateCommentRepliesInputSchema,
+  CreateCommentRepliesWithoutPasswordOutput,
+  CreateCommentWithoutPasswordOutput,
+  UpdateCommentInputSchema,
+  UpdateCommentRepliesInputSchema,
 } from '@/libs/schema/comment'
-import { User } from 'prisma/generated/zod'
+
 import { CommentService } from '../services/comment.service'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -15,30 +15,30 @@ const commentService = new CommentService()
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/comment' } })
-    .input(InputCommentSchema)
-    .output(CreateCommentSchema)
+    .input(CreateCommentInputSchema)
+    .output(CreateCommentWithoutPasswordOutput)
     .mutation(({ input, ctx }) => {
-      return commentService.create(input, ctx.session?.user as User)
+      return commentService.create(input, ctx.session.user.id)
     }),
   createReply: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/comment-reply' } })
-    .input(InputCommentReplySchema)
-    .output(CreateCommentReplySchema)
+    .input(CreateCommentRepliesInputSchema)
+    .output(CreateCommentRepliesWithoutPasswordOutput)
     .mutation(({ input, ctx }) => {
-      return commentService.createReply(input, ctx.session?.user as User)
+      return commentService.createReply(input, ctx.session.user.id)
     }),
   update: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/comment' } })
-    .input(InputUpdateCommentSchema)
-    .output(CreateCommentSchema)
+    .input(UpdateCommentInputSchema)
+    .output(CreateCommentWithoutPasswordOutput)
     .mutation(({ input, ctx }) => {
-      return commentService.update(input, ctx.session.user as User)
+      return commentService.update(input, ctx.session.user.id)
     }),
   updateReply: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/comment' } })
-    .input(InputUpdateCommentReplySchema)
-    .output(CreateCommentReplySchema)
+    .input(UpdateCommentRepliesInputSchema)
+    .output(CreateCommentRepliesWithoutPasswordOutput)
     .mutation(({ input, ctx }) => {
-      return commentService.updateReply(input, ctx.session.user as User)
+      return commentService.updateReply(input, ctx.session.user.id)
     }),
 })
