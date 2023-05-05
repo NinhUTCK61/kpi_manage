@@ -33,8 +33,8 @@ export const SignUpSchemaInput = z
     last_name: z.string().max(255).min(1),
     email: z.string().email(),
     password: passwordPolicySchema,
-    company_name: z.string().max(255).min(1),
-    role_in_company: z.string().max(255).min(1),
+    company_name: z.string().min(1),
+    role_in_company: z.string().min(1),
     date_of_birth: z.string().datetime().nullable(),
     reasons: z.array(z.number()),
   })
