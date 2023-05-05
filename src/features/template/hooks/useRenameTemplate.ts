@@ -6,7 +6,7 @@ import { enqueueSnackbar } from 'notistack'
 const useRenameTemplate = () => {
   const { t } = useTranslation('home')
   const utils = api.useContext()
-  const { showError } = useTranslateError()
+  const { showError, handleError } = useTranslateError()
 
   const mutation = api.template.update.useMutation({
     onMutate: async (template) => {
@@ -26,6 +26,16 @@ const useRenameTemplate = () => {
       })
     },
     onError: (err, _, ctx) => {
+      if (err.data?.zodError) {
+        const errorMes = JSON.parse(err.message)[0].message
+        enqueueSnackbar(t('rename_failed'), {
+          variant: 'error',
+          description: handleError(errorMes),
+        })
+
+        return
+      }
+
       showError(err, t('rename_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
     },
