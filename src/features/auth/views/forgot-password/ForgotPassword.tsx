@@ -1,5 +1,5 @@
 import { api } from '@/libs/api'
-import { ForgotPasswordSchemaInput, ForgotPasswordType } from '@/libs/schema'
+import { ForgotPasswordInputSchema, ForgotPasswordType } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
@@ -17,7 +17,7 @@ const ForgotPassword: FC = () => {
     defaultValues: {
       email: '',
     },
-    resolver: zodResolver(ForgotPasswordSchemaInput),
+    resolver: zodResolver(ForgotPasswordInputSchema),
   })
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = (data) => {

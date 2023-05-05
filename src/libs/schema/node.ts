@@ -21,7 +21,7 @@ export const KpiNodeSchema = z.object({
   parent_node_id: z.string().nullable(),
 })
 
-export const NodeSchemaInput = z.object({
+export const NodeInputSchema = z.object({
   id: z.string(),
   slug: z.string(),
   input_title: z.string(),
@@ -36,7 +36,7 @@ export const NodeSchemaInput = z.object({
   parent_node_id: z.string().nullable(),
 })
 
-export const DeleteNodeSchemaInput = z.object({
+export const DeleteNodeInputSchema = z.object({
   id: z.string().array(),
 })
 
@@ -95,7 +95,7 @@ export const ReactFlowSchema = z.object({
 
 export type ReactFlowType = z.infer<typeof ReactFlowSchema>
 
-export const GetListNodesSchemaInput = z.object({
+export const GetListNodeInputSchema = z.object({
   template_id: z.string(),
   root_node_id: z.string(),
 })

@@ -1,8 +1,8 @@
 import {
-  DeleteNodeSchemaInput,
-  GetListNodesSchemaInput,
+  DeleteNodeInputSchema,
+  GetListNodeInputSchema,
   KpiNodeSchema,
-  NodeSchemaInput,
+  NodeInputSchema,
   ReactFlowSchema,
 } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
@@ -22,21 +22,21 @@ export const nodeRouter = createTRPCRouter({
     }),
   updateMultiple: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/node' } })
-    .input(NodeSchemaInput.array())
+    .input(NodeInputSchema.array())
     .output(NodeSchema.array() || z.string())
     .mutation(({ input }) => {
       return nodeService.update(input)
     }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })
-    .input(DeleteNodeSchemaInput)
+    .input(DeleteNodeInputSchema)
     .output(z.string())
     .mutation(({ input, ctx }) => {
       return nodeService.delete(input.id, ctx.session.user)
     }),
   list: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })
-    .input(GetListNodesSchemaInput)
+    .input(GetListNodeInputSchema)
     .output(ReactFlowSchema)
     .query(({ input, ctx }) => {
       return nodeService.list(
@@ -49,7 +49,7 @@ export const nodeRouter = createTRPCRouter({
     .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })
     .input(NodeSchema.pick({ template_id: true, slug: true }))
     .output(NodeSchema.array())
-    .query(({ input, ctx }) => {
+    .query(({ input }) => {
       return nodeService.searchSlug(input.template_id, input.slug)
     }),
 })

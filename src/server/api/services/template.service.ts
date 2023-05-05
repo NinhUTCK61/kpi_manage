@@ -1,8 +1,8 @@
 import {
-  LikeTemplateSchemaInput,
+  LikeTemplateInputSchema,
   TemplateDataOutputSchema,
   TemplateDataSchema,
-  UpdateTemplateSchemaInput,
+  UpdateTemplateInputSchema,
 } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
@@ -53,7 +53,7 @@ export class TemplateService {
     return templateData
   }
 
-  async update({ id, ...restUpdate }: z.infer<typeof UpdateTemplateSchemaInput>, user: User) {
+  async update({ id, ...restUpdate }: z.infer<typeof UpdateTemplateInputSchema>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -109,7 +109,7 @@ export class TemplateService {
     })
   }
 
-  async like({ id, is_favorite }: z.infer<typeof LikeTemplateSchemaInput>, user: User) {
+  async like({ id, is_favorite }: z.infer<typeof LikeTemplateInputSchema>, user: User) {
     const checkUserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,

@@ -6,12 +6,12 @@ export const LoginSchema = z.object({
   password: NonEmptyString,
 })
 
-export const ForgotPasswordSchemaInput = z.object({
+export const ForgotPasswordInputSchema = z.object({
   email: z.string().email(),
 })
 
 export type SignInType = z.infer<typeof LoginSchema>
-export type ForgotPasswordType = z.infer<typeof ForgotPasswordSchemaInput>
+export type ForgotPasswordType = z.infer<typeof ForgotPasswordInputSchema>
 
 const uppercaseRegex = /[A-Z]/
 const lowercaseRegex = /[a-z]/
@@ -26,7 +26,7 @@ export const passwordPolicySchema = z
   .regex(lowercaseRegex, 'password_err_lower')
   .regex(numberRegex, 'password_err_number')
 
-export const SignUpSchemaInput = z.object({
+export const SignUpInputSchema = z.object({
   first_name: z.string().max(255).min(1),
   last_name: z.string().max(255).min(1),
   email: z.string().email(),
@@ -37,9 +37,9 @@ export const SignUpSchemaInput = z.object({
   reasons: z.array(z.number()),
 })
 
-export type SignUpInputType = z.infer<typeof SignUpSchemaInput>
+export type SignUpInputType = z.infer<typeof SignUpInputSchema>
 
-export const SignUpSchemaForm = SignUpSchemaInput.merge(
+export const SignUpSchemaForm = SignUpInputSchema.merge(
   z.object({
     reenter_password: passwordPolicySchema,
   }),
@@ -50,7 +50,7 @@ export const SignUpSchemaForm = SignUpSchemaInput.merge(
 
 export type SignUpFormType = z.infer<typeof SignUpSchemaForm>
 
-export const ResetPasswordSchemaInput = z
+export const ResetPasswordInputSchema = z
   .object({
     password: passwordPolicySchema,
     confirmPassword: passwordPolicySchema,
@@ -61,7 +61,7 @@ export const ResetPasswordSchemaInput = z
     path: ['confirmPassword'],
   })
 
-export type ResetPasswordType = z.infer<typeof ResetPasswordSchemaInput>
+export type ResetPasswordType = z.infer<typeof ResetPasswordInputSchema>
 
 export const ResendEmailVerify = z.object({
   email: z.string().email(),

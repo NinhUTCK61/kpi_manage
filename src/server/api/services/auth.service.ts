@@ -1,4 +1,4 @@
-import { SignUpSchemaInput } from '@/libs/schema'
+import { SignUpInputSchema } from '@/libs/schema'
 import MailUtils from '@/libs/utils/mail'
 import { prisma } from '@/server/db'
 import { Prisma } from '@prisma/client'
@@ -60,7 +60,7 @@ class AuthService {
     return 'ok!'
   }
 
-  async signUp(userInfo: z.infer<typeof SignUpSchemaInput>) {
+  async signUp(userInfo: z.infer<typeof SignUpInputSchema>) {
     const { email, password, last_name, reasons, ...createUserData } = userInfo
     const user = await prisma.user.findUnique({
       where: {
