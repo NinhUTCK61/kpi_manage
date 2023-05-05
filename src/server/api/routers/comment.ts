@@ -35,7 +35,7 @@ export const commentRouter = createTRPCRouter({
       return commentService.update(input, ctx.session.user.id)
     }),
   updateReply: protectedProcedure
-    .meta({ openapi: { method: 'PUT', path: '/comment' } })
+    .meta({ openapi: { method: 'PUT', path: '/comment-reply' } })
     .input(UpdateCommentRepliesInputSchema)
     .output(CreateCommentRepliesWithoutPasswordOutput)
     .mutation(({ input, ctx }) => {
