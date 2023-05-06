@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
-import { Stack, Tooltip, styled } from '@mui/material'
+import { Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
@@ -54,11 +54,8 @@ export const ToolbarMemo: React.FC = () => {
           ))}
         </Stack>
 
-        <Tooltip title={t('text_color')} arrow>
-          <div>
-            <PickColor mr={3} />
-          </div>
-        </Tooltip>
+        <PickColor mr={3} />
+
         <Stack
           direction="row"
           alignItems="center"
@@ -71,11 +68,7 @@ export const ToolbarMemo: React.FC = () => {
         >
           <ChooseStroke />
 
-          <Tooltip title={t('fill')} arrow>
-            <div>
-              <PickColor forShape mr={1} />
-            </div>
-          </Tooltip>
+          <PickColor forShape mr={1} />
 
           <ChooseShape />
         </Stack>

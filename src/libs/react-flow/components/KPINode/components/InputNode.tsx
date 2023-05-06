@@ -18,13 +18,7 @@ function InputNode<T extends FieldValues>({
     fieldState: { error },
   } = useController({ name, control, defaultValue })
   return (
-    <InputControlNode
-      fieldError={error}
-      label={label}
-      required={required}
-      value={value}
-      {...controlProps}
-    >
+    <InputControlNode label={label} required={required} value={value} {...controlProps}>
       <InputStyled {...inputProps} {...props} inputRef={ref} value={value} />
     </InputControlNode>
   )
