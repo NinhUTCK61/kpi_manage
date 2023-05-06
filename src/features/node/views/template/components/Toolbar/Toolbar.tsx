@@ -1,4 +1,7 @@
-import { Stack, styled } from '@mui/material'
+import { ViewPortAction } from '@/features/node/constant'
+import { useRFStore } from '@/libs/react-flow'
+import { Stack, Tooltip, styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorCenter from 'public/assets/svgs/editor_center.svg'
@@ -11,12 +14,9 @@ import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
 import { ChooseFontSize } from './ChooseFontSize'
-import { PickColor } from './PickColor'
-
-import { ViewPortAction } from '@/features/node/constant'
-import { useRFStore } from '@/libs/react-flow'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
+import { PickColor } from './PickColor'
 import { ViewportAction } from './ViewportAction'
 
 const HEIGHT_TOOLBAR = 60
@@ -32,6 +32,7 @@ const editors = [
 ]
 
 export const ToolbarMemo: React.FC = () => {
+  const { t } = useTranslation('file')
   const viewportAction = useRFStore((state) => state.viewportAction)
   return (
     <Container>
@@ -41,9 +42,7 @@ export const ToolbarMemo: React.FC = () => {
 
           <Image src={RedoIcon} alt="undo" />
         </Stack>
-
         <ChooseFontSize />
-
         <Stack direction="row" spacing={0.5} mr={3}>
           {editors.map((editor) => (
             <Image
@@ -55,8 +54,11 @@ export const ToolbarMemo: React.FC = () => {
           ))}
         </Stack>
 
-        <PickColor mr={3} />
-
+        <Tooltip title={t('text_color')} arrow>
+          <div>
+            <PickColor mr={3} />
+          </div>
+        </Tooltip>
         <Stack
           direction="row"
           alignItems="center"
@@ -69,7 +71,11 @@ export const ToolbarMemo: React.FC = () => {
         >
           <ChooseStroke />
 
-          <PickColor forShape mr={1} />
+          <Tooltip title={t('fill')} arrow>
+            <div>
+              <PickColor forShape mr={1} />
+            </div>
+          </Tooltip>
 
           <ChooseShape />
         </Stack>

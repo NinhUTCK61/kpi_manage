@@ -3,6 +3,7 @@ import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
 import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from './node'
 
 export type RFStore = {
+  template_id: string
   nodes: ReactFlowNode[]
   edges: Edge[]
   d3Root: HierarchyFlowNode

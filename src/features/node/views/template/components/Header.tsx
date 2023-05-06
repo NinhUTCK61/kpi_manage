@@ -1,6 +1,7 @@
 import { useLikeTemplate, useRenameTemplateById } from '@/features/template/hooks'
+import { api } from '@/libs/api'
 import { base } from '@/libs/config/theme'
-import { TemplateDataSchema } from '@/libs/schema'
+import { useRFStore } from '@/libs/react-flow'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import { Account } from '@/libs/shared/components/Layout/Header/Account'
 import { AppBar } from '@/libs/shared/components/Layout/Header/AppBar'
@@ -14,13 +15,8 @@ import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
 import { FormEvent, useRef, useState } from 'react'
-import { z } from 'zod'
 
-type TemplateHeaderTypes = {
-  template: z.infer<typeof TemplateDataSchema>
-}
-
-const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
+const HeaderTemplate: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation('file')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -28,6 +24,9 @@ const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
   const mutationRename = useRenameTemplateById()
   const mutationLike = useLikeTemplate()
   const inputNameRef = useRef<HTMLElement>(null)
+  const template_id = useRFStore((state) => state.template_id)
+  const { data: template } = api.template.getById.useQuery({ template_id })
+  if (!template) return null
 
   const openMenu = Boolean(anchorEl)
 

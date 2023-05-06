@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material'
-import { CSSProperties, FormEvent, memo } from 'react'
+import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRFStore } from '../../hooks'
-import { InputNode } from '../InputNode'
+import { useRFStore } from '../../../hooks'
+import { InputNode } from './InputNode'
 
 type NodeFormProps = {
   input_title: string
@@ -17,7 +17,6 @@ type NodeFormMemoTypes = {
   nodeSlug: string
   handleFocus(): void
   handleCancelFocus(): void
-  style?: CSSProperties
 }
 
 const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({

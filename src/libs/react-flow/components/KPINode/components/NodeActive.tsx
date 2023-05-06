@@ -1,8 +1,8 @@
 import AddIcon from 'public/assets/svgs/add_node.svg'
-import { CSSProperties, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Position } from 'reactflow'
-import { useRFStore } from '../../hooks'
-import { KPINodeType } from '../../types'
+import { useRFStore } from '../../../hooks'
+import { KPINodeType } from '../../../types'
 import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
@@ -11,7 +11,6 @@ type NodeActiveTypes = {
   inputTitle: string
   inputValue: string | null
   unit: string | null
-  style?: CSSProperties
   data: KPINodeType
 }
 
@@ -20,7 +19,6 @@ const NodeActive: React.FC<NodeActiveTypes> = ({
   inputTitle,
   inputValue,
   unit,
-  style,
   data,
 }) => {
   const addNode = useRFStore((state) => state.addNode)
@@ -46,7 +44,6 @@ const NodeActive: React.FC<NodeActiveTypes> = ({
         nodeSlug={data.slug}
         handleFocus={handleFocus}
         handleCancelFocus={handleCancelFocus}
-        style={style}
       />
 
       {data.slug !== 'root' && data.input_title && (

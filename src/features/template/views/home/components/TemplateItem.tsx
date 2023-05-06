@@ -92,11 +92,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     : [
         {
           title: t('open'),
-          action: () =>
-            router.push({
-              pathname: 'file/' + template.template_id,
-              query: { root: template.root_note_id },
-            }),
+          action: () => router.push('file/' + template.template_id),
         },
         {
           title: t('thumbnail'),

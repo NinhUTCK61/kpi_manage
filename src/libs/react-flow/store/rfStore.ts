@@ -107,8 +107,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeViewportAction(action) {
         set({
           viewportAction: action,
-        })
-        set({
           nodeFocused: '',
         })
       },
@@ -116,12 +114,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodeFocused: nodeSlug,
         })
-        const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.slug === nodeSlug && !!n.data.selected)
-        if (_node) {
-          const style = JSON.parse(_node.data.data.node_style as string)
-          set({ nodeColor: style.color })
-        }
       },
       onNodeClick(_, node) {
         set({

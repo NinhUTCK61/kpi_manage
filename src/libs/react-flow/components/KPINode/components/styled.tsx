@@ -2,7 +2,7 @@ import { Box, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { Handle } from 'reactflow'
 
-export const LeftHandler = styled(Handle)({
+const LeftHandler = styled(Handle)({
   '&.react-flow__handle-left': {
     top: '50%',
     left: 0,
@@ -14,7 +14,7 @@ export const LeftHandler = styled(Handle)({
   },
 })
 
-export const BottomHandler = styled(Handle)({
+const BottomHandler = styled(Handle)({
   '&.react-flow__handle-bottom': {
     bottom: -20,
     cursor: 'pointer',
@@ -25,7 +25,7 @@ export const BottomHandler = styled(Handle)({
   },
 })
 
-export const RightHandler = styled(Handle)({
+const RightHandler = styled(Handle)({
   '&.react-flow__handle-right': {
     top: '50%',
     right: -20,
@@ -36,7 +36,7 @@ export const RightHandler = styled(Handle)({
   },
 })
 
-export const TextId = styled(Typography)(({ theme }) => ({
+const TextId = styled(Typography)(({ theme }) => ({
   position: 'absolute',
   top: 0,
   right: 0,
@@ -46,19 +46,19 @@ export const TextId = styled(Typography)(({ theme }) => ({
   borderRadius: 4,
 }))
 
-export const IconImage = styled(Image)({
+const IconImage = styled(Image)({
   transform: 'translate(-50%,-50%)',
   cursor: 'pointer',
 })
 
-export const IconImageNode = styled(Image)(({ theme }) => ({
+const IconImageNode = styled(Image)(({ theme }) => ({
   transform: 'translate(-50%,-100%)',
   cursor: 'pointer',
   pointerEvents: 'none',
   background: theme.palette.common.white,
 }))
 
-export const NodeActiveContainer = styled(Box)(({ theme }) => ({
+const NodeActiveContainer = styled(Box)(({ theme }) => ({
   borderRadius: 8,
   maxWidth: 190,
   height: 106,
@@ -68,7 +68,7 @@ export const NodeActiveContainer = styled(Box)(({ theme }) => ({
   borderColor: theme.palette.blue[500],
 }))
 
-export const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
+const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   maxWidth: 190,
   height: 106,
@@ -77,3 +77,14 @@ export const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0.5),
   cursor: 'pointer !important',
 }))
+
+export {
+  LeftHandler,
+  BottomHandler,
+  RightHandler,
+  TextId,
+  IconImage,
+  IconImageNode,
+  NodeActiveContainer,
+  NodeUnActiveContainer,
+}

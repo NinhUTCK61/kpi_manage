@@ -16,3 +16,5 @@ export const DEFAULT_NODE_ATTRIBUTES = {
   template_id: '',
   type: 'kpi' as const,
 }
+
+export const NODE_HEIGHT_TEMPLATE = 79

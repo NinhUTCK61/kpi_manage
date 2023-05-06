@@ -6,28 +6,16 @@ import HandDragIcon from 'public/assets/svgs/cursor/hand_drag.svg'
 import MoveIcon from 'public/assets/svgs/cursor/move.svg'
 import AddSpeechIcon from 'public/assets/svgs/cursor/speech.svg'
 import { ReactFlow } from 'reactflow'
-import 'reactflow/dist/style.css'
+
+const cursorIconMap = {
+  [ViewPortAction.Move]: MoveIcon.src,
+  [ViewPortAction.Pan]: HandIcon.src,
+  [ViewPortAction.Comment]: CommentIcon.src,
+  [ViewPortAction.SpeechBallon]: AddSpeechIcon.src,
+}
 
 const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) => {
-  let cursorIcon = ''
-  switch (action) {
-    case ViewPortAction.Move:
-      cursorIcon = MoveIcon.src
-      break
-    case ViewPortAction.Pan:
-      cursorIcon = HandIcon.src
-      break
-    case ViewPortAction.Comment:
-      cursorIcon = CommentIcon.src
-      break
-    case ViewPortAction.SpeechBallon:
-      cursorIcon = AddSpeechIcon.src
-      break
-    default:
-      cursorIcon = MoveIcon.src
-      break
-  }
-
+  const cursorIcon = cursorIconMap[action]
   return {
     '& .react-flow__pane': {
       cursor: `url(${cursorIcon}),auto`,

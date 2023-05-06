@@ -1,8 +1,8 @@
 import { InputBase, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
-import { InputProps } from '../../shared/components/Form/Input/Input'
-import { InputControlNode } from './ComponentNode/InputControlNode'
+import { InputProps } from '../../../../shared/components/Form/Input/Input'
+import { InputControlNode } from './InputControlNode'
 
 function InputNode<T extends FieldValues>({
   name,
@@ -30,13 +30,14 @@ function InputNode<T extends FieldValues>({
   )
 }
 
-const InputStyled = styled(InputBase)({
+const InputStyled = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     width: 140,
     fontSize: 15,
     lineHeight: '22px',
     padding: 0,
+    color: theme.palette.base.black,
   },
-})
+}))
 
 export { InputNode }

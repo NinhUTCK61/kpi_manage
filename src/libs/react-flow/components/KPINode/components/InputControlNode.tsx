@@ -1,18 +1,13 @@
 import { FormControl, FormControlProps, Typography } from '@mui/material'
-import { memo } from 'react'
-import type { FieldError } from 'react-hook-form'
 
 export type AddControlProps = {
-  helperText?: string | JSX.Element
   label?: string
-  fieldError?: FieldError | boolean
   value?: string
 }
 
 export type InputControlProps = FormControlProps<'div', AddControlProps>
 
-function RawInputControl({
-  fieldError,
+function InputControlNode({
   fullWidth,
   label,
   children,
@@ -21,7 +16,7 @@ function RawInputControl({
   ...props
 }: InputControlProps) {
   return (
-    <FormControl fullWidth={fullWidth} error={!!fieldError} {...props}>
+    <FormControl fullWidth={fullWidth} {...props}>
       {!value && (
         <Typography
           variant="body2"
@@ -44,7 +39,5 @@ function RawInputControl({
     </FormControl>
   )
 }
-
-const InputControlNode = memo(RawInputControl) as typeof RawInputControl
 
 export { InputControlNode }
