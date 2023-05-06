@@ -37,8 +37,8 @@ const SelectStatus: React.FC<SelectStatusTypes> = ({ isTrash, setIsTrash }) => {
   }
   return (
     <Stack direction="row" justifyContent="space-between" mb={1.5}>
-      <Typography variant="h5" fontWeight={700}>
-        {t('my_files')}
+      <Typography variant="h3" fontWeight={700}>
+        {isTrash ? t('deleted_file_title') : t('my_files')}
       </Typography>
       <Button
         aria-controls={openMenu ? 'status-menu' : undefined}

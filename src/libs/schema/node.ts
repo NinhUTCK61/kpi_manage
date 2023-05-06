@@ -21,8 +21,7 @@ export const KpiNodeSchema = z.object({
   parent_node_id: z.string().nullable(),
 })
 
-export const NodeInputSchema = z.object({
-  id: z.string(),
+export const CreateNodeInputSchema = z.object({
   slug: z.string(),
   input_title: z.string(),
   input_value: z.string().nullable(),
@@ -35,6 +34,16 @@ export const NodeInputSchema = z.object({
   template_id: z.string(),
   parent_node_id: z.string().nullable(),
 })
+
+export type CreateNodeInputType = z.infer<typeof CreateNodeInputSchema>
+
+// export const UpdateNodeInputSchema = CreateNodeInputSchema.merge(
+//   z.object({
+//     id: z.string(),
+//   }),
+// )
+
+// export type UpdateNodeInputType = z.infer<typeof UpdateNodeInputSchema>
 
 export const DeleteNodeInputSchema = z.object({
   id: z.string().array(),

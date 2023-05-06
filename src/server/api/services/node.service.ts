@@ -6,41 +6,44 @@ import {
   convertToReactFlowNodes,
   convertToReactFlowSpeechBallon,
 } from '@/libs/react-flow'
-import { KpiNodeSchema } from '@/libs/schema/node'
+import { CreateNodeInputType } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { stratify } from 'd3-hierarchy'
 import { User } from 'next-auth'
-import { z } from 'zod'
 import { NodeHelper } from './helper/node.helper'
 
-type NodeCustom = z.infer<typeof KpiNodeSchema>
 export class NodeService extends NodeHelper {
-  async create(node: Node) {
-    const itemTemplate = await prisma.template.findFirst({
+  async create(node: CreateNodeInputType, user: User) {
+    const template = await prisma.template.findFirst({
       where: {
         id: node.template_id,
       },
     })
 
-    if (itemTemplate) {
-      const newNode = await prisma.node.create({
-        data: node,
-      })
-      return newNode as NodeCustom
-    } else {
+    if (!template) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
       })
     }
+
+    await this.validateUserTemplate(node.template_id, user.id)
+
+    const newNode = await prisma.node.create({
+      data: node,
+    })
+
+    return newNode
   }
 
-  async update(nodes: Node[]) {
+  async update(nodes: Node[], user: User) {
     const nodeIds: string[] = nodes.map((node: Node) => {
       return node.id
     })
+
+    await this.validateNodeOfUser(nodeIds, user.id)
 
     await prisma.$executeRaw(this.buildUpdateNodeQuery(nodes, nodeIds))
     const resultData: Node[] = await prisma.node.findMany({
@@ -54,28 +57,7 @@ export class NodeService extends NodeHelper {
   }
 
   async delete([...nodeIds], user: User) {
-    const validNodeCount = await prisma.node.findMany({
-      where: {
-        id: { in: nodeIds },
-        template: {
-          users: {
-            some: {
-              user_id: user.id,
-            },
-          },
-        },
-      },
-      select: {
-        id: true,
-      },
-    })
-
-    if (validNodeCount.length !== nodeIds.length) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'error.template_not_found',
-      })
-    }
+    await this.validateNodeOfUser(nodeIds, user.id)
 
     await prisma.node.deleteMany({
       where: {

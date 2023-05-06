@@ -70,7 +70,8 @@
     "error_match_password": "Password and Confirm Password does not match.",
     "kpi_issue_required": "You must choose the KPI Issue.",
     "kpi_reason_required": "You must choose How I learned about KPI Master.",
-    "unauthorized": "Unauthorized!"
+    "unauthorized": "Unauthorized!",
+    "error_date": "The date of birth cannot be later than the current date."
   },
   "template": {
     "move_to_trash": "Move to trash success!",

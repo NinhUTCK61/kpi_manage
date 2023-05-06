@@ -1,8 +1,9 @@
 {
-  "create": "新しいファイルを作成",
-  "my_files": "マイファイル",
-  "all_file": "全てのファイル",
-  "deleted_file": "ファイルを削除しました",
+  "create": "新しいファイルを作成。",
+  "my_files": "マイファイル。",
+  "deleted_file_title": "削除したファイル",
+  "all_file": "全てのファイル。",
+  "deleted_file": "削除されたファイル。",
   "open": "開く。",
   "duplicate": "ファイルを複製。",
   "copy": "リンクをコピー。",
