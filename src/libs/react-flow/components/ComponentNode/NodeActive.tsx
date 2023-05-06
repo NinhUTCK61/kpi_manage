@@ -36,7 +36,7 @@ const NodeActive: React.FC<NodeActiveTypes> = ({
   }, [])
 
   return (
-    <NodeActiveContainer sx={{ borderColor: style?.color }}>
+    <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
       <NodeForm

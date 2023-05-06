@@ -27,7 +27,6 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
   nodeSlug,
   handleFocus,
   handleCancelFocus,
-  style,
 }) => {
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
@@ -54,9 +53,6 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         label="Label"
         onBlur={() => saveInput()}
         onFocus={handleFocus}
-        inputProps={{
-          style,
-        }}
       />
 
       <InputNode
@@ -65,9 +61,6 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         label="="
         onBlur={() => saveInput()}
         onFocus={handleFocus}
-        inputProps={{
-          style,
-        }}
       />
 
       <InputNode
@@ -76,9 +69,6 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
         label="Unit"
         onBlur={() => saveInput()}
         onFocus={handleFocus}
-        inputProps={{
-          style,
-        }}
       />
 
       <input type="submit" hidden />

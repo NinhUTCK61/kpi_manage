@@ -34,6 +34,8 @@ const NodeCreate: FC = () => {
 
   if (isLoading) return null
 
+  if (!data) return null
+
   const { nodes, edges } = data as z.infer<typeof ReactFlowSchema>
   const d3Root: HierarchyFlowNode = stratifier(nodes as ReactFlowNode[])
 

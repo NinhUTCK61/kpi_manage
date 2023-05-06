@@ -2,7 +2,7 @@ import { InputBase, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { InputProps } from '../../shared/components/Form/Input/Input'
-import { InputControlNode } from './KPINode/InputControlNode'
+import { InputControlNode } from './ComponentNode/InputControlNode'
 
 function InputNode<T extends FieldValues>({
   name,

@@ -3,7 +3,7 @@ import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { shallow } from 'zustand/shallow'
 
 type PickColorTypes = {
@@ -18,19 +18,13 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
     shallow,
   )
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const updateStyleNode = useRFStore((state) => state.updateStyleNode)
-
+  const [pickColor, setPickColor] = useState<string>(color as string)
   const [isPen, startTransition] = useTransition()
 
-  const changeColor = useCallback(
-    (color: string) => {
-      if (forShape) return
-      if (isPen) return
-      changeNodeColor(color)
-      if (nodeFocused) updateStyleNode(nodeFocused as string, { color })
-    },
-    [changeNodeColor, forShape, isPen, nodeFocused, updateStyleNode],
-  )
+  useEffect(() => {
+    if (isPen) return
+    changeNodeColor(pickColor)
+  }, [changeNodeColor, forShape, isPen, nodeFocused])
 
   const id = forShape ? 'colorShape' : 'color'
 
@@ -72,7 +66,7 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
           type="color"
           onChange={(e) => {
             startTransition(() => {
-              changeColor(e.target.value)
+              setPickColor(e.target.value)
             })
           }}
           value={color}

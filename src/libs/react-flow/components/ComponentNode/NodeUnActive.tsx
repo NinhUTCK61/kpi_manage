@@ -29,15 +29,11 @@ const NodeUnActive: React.FC<NodeUnActiveTypes> = ({ isConnectable, style, data 
     >
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <Typography variant="body2" mb={0.5} sx={{ color: style?.color }}>
+      <Typography variant="body2" mb={0.5}>
         {`${data.input_title}${data.unit && `(${data.unit})`}`}
       </Typography>
 
-      {!!data.value2number && (
-        <Typography variant="body2" sx={{ color: style?.color }}>
-          {data.value2number}
-        </Typography>
-      )}
+      {!!data.value2number && <Typography variant="body2">{data.value2number}</Typography>}
 
       <RightHandler type="source" position={Position.Right}>
         {data.slug !== 'root' && isHasChild(data.id) && <IconImageNode src={NodeIcon} alt="add" />}

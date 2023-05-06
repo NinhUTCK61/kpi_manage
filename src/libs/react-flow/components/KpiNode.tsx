@@ -3,7 +3,7 @@ import { NodeProps } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import { useRFStore } from '../hooks'
 import { KPINodeType, RFStore } from '../types'
-import { NodeActive, NodeUnActive } from './KPINode'
+import { NodeActive, NodeUnActive } from './ComponentNode'
 
 const selector = (state: RFStore) => ({
   addNode: state.addNode,

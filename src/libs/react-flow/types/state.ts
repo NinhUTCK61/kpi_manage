@@ -1,5 +1,4 @@
 import { ViewPortAction } from '@/features/node/constant'
-import { CSSProperties } from 'react'
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
 import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from './node'
 
@@ -24,8 +23,6 @@ export type RFStore = {
       unit: string | null
     },
   ) => void
-  updateStyleNode: (nodeSlug: string, style: CSSProperties) => void
-  findNodeBySlug: (nodeSlug: string) => ReactFlowNode | undefined
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
