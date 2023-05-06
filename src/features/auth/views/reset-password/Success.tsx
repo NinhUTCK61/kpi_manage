@@ -35,7 +35,7 @@ const Success: React.FC = () => {
 
           <Stack width={{ xs: '100%', md: 460 }} spacing={2}>
             <Button fullWidth variant="contained" onClick={redirectSignIn}>
-              Back to log in
+              Back to login
             </Button>
           </Stack>
         </Stack>

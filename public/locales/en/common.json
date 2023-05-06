@@ -61,6 +61,7 @@
     "invalid_intersection_types": "Intersection results could not be merged.",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of.",
     "not_finite": "Number must be finite.",
+
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted.",
     "internal_server_error": "An internal server error occurred.",
@@ -68,7 +69,8 @@
     "email_conflict": "Email already exists!",
     "error_match_password": "Password and Confirm Password does not match.",
     "kpi_issue_required": "You must choose the KPI Issue.",
-    "kpi_reason_required": "You must choose How I learned about KPI Master."
+    "kpi_reason_required": "You must choose How I learned about KPI Master.",
+    "unauthorized": "Unauthorized!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
@@ -104,4 +106,3 @@
   "select_day": "Day",
   "verify_resend": "Resend email"
 }
- 

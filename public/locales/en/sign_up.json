@@ -12,7 +12,7 @@
   "description_success": "You've become a member of KPI Master. We sent you an email to verify your account.",
   "title_success": "Sign Up Successfully!",
   "title_failed": "Sign Up failed!",
-  "back": "Back to log in.",
+  "back": "Back to login",
   "name": "Your name",
   "email": "Email",
   "password": "Password",
@@ -30,6 +30,6 @@
   "error_match_password": "Password and Confirm Password does not match.",
   "reason_issue": "Please choose issue!",
   "reason_know": "Please choose reason!",
-  "reason_title_reason":"How I learned about KPI Master.",
+  "reason_title_reason": "How I learned about KPI Master.",
   "reason_title_issue": "KPI issues"
 }

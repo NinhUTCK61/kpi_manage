@@ -70,11 +70,11 @@ model User {
 
 model Comment {
   id          String         @id @default(cuid())
-  content     String?        @db.Text
+  content     String         @db.Text
   template_id String
   template    Template       @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  author      User?          @relation(fields: [author_id], references: [id])
-  author_id   String?
+  author      User           @relation(fields: [author_id], references: [id])
+  author_id   String
   x           Float
   y           Float
   replies     CommentReply[]
@@ -84,11 +84,11 @@ model Comment {
 
 model CommentReply {
   id         String   @id @default(cuid())
-  content    String?
+  content    String
   comment_id String
   comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
-  author     User?    @relation(fields: [author_id], references: [id])
-  author_id  String?
+  author     User     @relation(fields: [author_id], references: [id])
+  author_id  String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

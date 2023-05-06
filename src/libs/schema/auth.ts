@@ -1,3 +1,4 @@
+import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NonEmptyString } from './utils'
 
@@ -68,3 +69,7 @@ export const ResendEmailVerify = z.object({
 })
 
 export type ResendEmailVerifyType = z.infer<typeof ResendEmailVerify>
+
+export const UserWithoutPasswordSchema = UserSchema.omit({
+  password: true,
+})
