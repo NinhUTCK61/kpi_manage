@@ -35,7 +35,7 @@ export const nodeRouter = createTRPCRouter({
       return nodeService.delete(input.id, session.user)
     }),
   list: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })
+    .meta({ openapi: { method: 'GET', path: '/node' }, protect: true })
     .input(GetListNodeInputSchema)
     .output(ReactFlowSchema)
     .query(({ input, ctx }) => {
@@ -44,7 +44,7 @@ export const nodeRouter = createTRPCRouter({
       >
     }),
   searchSlug: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })
+    .meta({ openapi: { method: 'GET', path: '/search' }, protect: true })
     .input(NodeSchema.pick({ template_id: true, slug: true }))
     .output(NodeSchema.array())
     .query(({ input }) => {
