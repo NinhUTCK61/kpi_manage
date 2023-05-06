@@ -15,7 +15,7 @@ export type RFStore = {
   onNodeClick: (e: React.MouseEvent, n: Node<KPINodeType>) => void
   setNodeFocused: (nodeSlug: string) => void
   isHasChild(nodeId: string): boolean
-  removeNodes: (nodeId: string, parentId: string) => void
+  removeNodeNull: () => void
   updateNode: (
     nodeSlug: string,
     data: {

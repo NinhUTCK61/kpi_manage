@@ -3,7 +3,6 @@ import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { Layout } from '@/libs/shared/components'
 import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
-import { useRouter } from 'next/router'
 import { MouseEvent, useLayoutEffect, useRef } from 'react'
 import { useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
@@ -27,19 +26,28 @@ const storeSelector = (state: RFStore) => ({
   viewportAction: state.viewportAction,
   onNodeClick: state.onNodeClick,
   setNodeFocused: state.setNodeFocused,
+  removeNodeNull: state.removeNodeNull,
 })
 
 export const Template: React.FC = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, setNodeFocused } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    viewportAction,
+    setNodeFocused,
+    removeNodeNull,
+  } = useRFStore(storeSelector, shallow)
 
   const containerRef = useRef<HTMLElement>(null)
 
   const { setViewport } = useReactFlow()
 
-  const onPaneClick = (_: MouseEvent<Element>) => setNodeFocused('')
+  const onPaneClick = (_: MouseEvent<Element>) => {
+    setNodeFocused('')
+    removeNodeNull()
+  }
 
   useLayoutEffect(() => {
     if (containerRef.current) {
@@ -51,10 +59,6 @@ export const Template: React.FC = () => {
       })
     }
   }, [setViewport])
-
-  const router = useRouter()
-  const { id } = router.query
-  console.log(id)
 
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>

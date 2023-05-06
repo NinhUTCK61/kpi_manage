@@ -98,11 +98,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _nodes
       },
-      removeNodes(nodeId: string, parentId: string) {
-        const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.id === parentId)
-        get().setNodeFocused(String(_node?.data.data.slug))
-        set({ nodes: get().nodes.filter((n) => n.id !== nodeId) })
+      removeNodeNull() {
+        const _d3 = get().nodes
+        const nodes = get().nodes
+
+        const nodeNull = _d3.find((n) => n.data.type === 'kpi' && !n.data.input_title)
+        const _nodes = nodes.filter((node) => node.id !== nodeNull?.id)
+        const d3Updated = stratifier(_nodes)
+        const nodeFilter = getLayoutElements(d3Updated)
+        set({ nodes: nodeFilter })
       },
       changeViewportAction(action) {
         set({
