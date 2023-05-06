@@ -27,7 +27,7 @@ export const passwordPolicySchema = z
   .regex(lowercaseRegex, 'password_err_lower')
   .regex(numberRegex, 'password_err_number')
 
-export const SignUpSchemaInput = z
+export const SignUpInputSchema = z
   .object({
     first_name: z.string().max(255).min(1),
     last_name: z.string().max(255).min(1),
@@ -51,11 +51,11 @@ export const SignUpSchemaInput = z
     },
   )
 
-export type SignUpInputType = z.infer<typeof SignUpSchemaInput>
+export type SignUpInputType = z.infer<typeof SignUpInputSchema>
 
 export const SignUpSchemaForm = z
   .intersection(
-    SignUpSchemaInput,
+    SignUpInputSchema,
     z.object({
       reenter_password: passwordPolicySchema,
     }),

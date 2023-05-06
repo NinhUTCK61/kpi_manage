@@ -1,6 +1,35 @@
+import { prisma } from '@/server/db'
 import { Node, Prisma } from '@prisma/client'
+import { TRPCError } from '@trpc/server'
+import { CommonHelper } from './common.hepler'
 
-export class NodeHelper {
+export class NodeHelper extends CommonHelper {
+  // Validation
+  async validateNodeOfUser(nodeIds: string[], user_id: string) {
+    const validNodeCount = await prisma.node.findMany({
+      where: {
+        id: { in: nodeIds },
+        template: {
+          users: {
+            some: {
+              user_id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (validNodeCount.length !== nodeIds.length) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+  }
+
   handleFormValues(nodes: Node[]) {
     const arrayField: (keyof Node)[] = [
       'slug',

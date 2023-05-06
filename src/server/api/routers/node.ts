@@ -1,12 +1,12 @@
 import {
+  CreateNodeInputSchema,
   DeleteNodeInputSchema,
   GetListNodeInputSchema,
   KpiNodeSchema,
-  NodeInputSchema,
   ReactFlowSchema,
 } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
-import { Node, NodeSchema } from 'prisma/generated/zod'
+import { NodeSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NodeService } from '../services/node.service'
 
@@ -15,24 +15,24 @@ const nodeService = new NodeService()
 export const nodeRouter = createTRPCRouter({
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/node' } })
-    .input(NodeSchema.omit({ id: true }))
+    .input(CreateNodeInputSchema)
     .output(KpiNodeSchema)
-    .mutation(({ input }) => {
-      return nodeService.create(input as Node)
+    .mutation(({ input, ctx: { session } }) => {
+      return nodeService.create(input, session.user)
     }),
   updateMultiple: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/node' } })
-    .input(NodeInputSchema.array())
+    .input(NodeSchema.array())
     .output(NodeSchema.array() || z.string())
-    .mutation(({ input }) => {
-      return nodeService.update(input)
+    .mutation(({ input, ctx: { session } }) => {
+      return nodeService.update(input, session.user)
     }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })
     .input(DeleteNodeInputSchema)
     .output(z.string())
-    .mutation(({ input, ctx }) => {
-      return nodeService.delete(input.id, ctx.session.user)
+    .mutation(({ input, ctx: { session } }) => {
+      return nodeService.delete(input.id, session.user)
     }),
   list: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })
