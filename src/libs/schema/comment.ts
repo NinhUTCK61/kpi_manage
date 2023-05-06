@@ -1,5 +1,6 @@
-import { CommentReplySchema, CommentSchema, UserSchema } from 'prisma/generated/zod'
+import { CommentReplySchema, CommentSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
+import { UserWithoutPasswordSchema } from './auth'
 
 // Type Create Comment
 export const CreateCommentInputSchema = CommentSchema.omit({
@@ -11,32 +12,28 @@ export const CreateCommentInputSchema = CommentSchema.omit({
 
 export type CreateCommentInputType = z.infer<typeof CreateCommentInputSchema>
 
-export const CreateCommentWithoutPasswordOutput = CommentSchema.merge(
-  z.object({ author: UserSchema.omit({ password: true }) }),
+export const CreateCommentOutputSchema = CommentSchema.merge(
+  z.object({ author: UserWithoutPasswordSchema }),
 )
 
-export type CreateCommentWithoutPasswordOutputType = z.infer<
-  typeof CreateCommentWithoutPasswordOutput
->
+export type CreateCommentOutputType = z.infer<typeof CreateCommentOutputSchema>
 
 // Type Create Comment Reply
 
-export const CreateCommentRepliesInputSchema = CommentReplySchema.omit({
+export const CreateCommentReplyInputSchema = CommentReplySchema.omit({
   id: true,
   created_at: true,
   updated_at: true,
   author_id: true,
 })
 
-export const CreateCommentRepliesWithoutPasswordOutput = CommentReplySchema.merge(
-  z.object({ author: UserSchema.omit({ password: true }) }),
+export const CreateCommentRepliesOutputSchema = CommentReplySchema.merge(
+  z.object({ author: UserWithoutPasswordSchema }),
 )
 
-export type CreateCommentRepliesWithoutPasswordOutputType = z.infer<
-  typeof CreateCommentRepliesWithoutPasswordOutput
->
+export type CreateCommentRepliesOutputType = z.infer<typeof CreateCommentRepliesOutputSchema>
 
-export type CreateCommentRepliesInput = z.infer<typeof CreateCommentRepliesInputSchema>
+export type CreateCommentReplyInput = z.infer<typeof CreateCommentReplyInputSchema>
 
 // Type Update Comment
 
@@ -44,7 +41,8 @@ export const UpdateCommentInputSchema = CreateCommentInputSchema.merge(
   z.object({
     id: z.string().cuid(),
   }),
-)
+).omit({ template_id: true })
+
 export type UpdateCommentInputType = z.infer<typeof UpdateCommentInputSchema>
 
 // Type Update Comment Reply
@@ -53,6 +51,7 @@ export const UpdateCommentRepliesInputSchema = CommentReplySchema.omit({
   created_at: true,
   updated_at: true,
   author_id: true,
+  comment_id: true,
 })
 
 export type UpdateCommentReplyInputType = z.infer<typeof UpdateCommentRepliesInputSchema>

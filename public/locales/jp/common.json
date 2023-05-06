@@ -53,6 +53,7 @@
     "invalid_intersection_types": "交差結果をマージできませんでした。",
     "not_multiple_of": "数値は{{multipleOf}}の倍数である必要があります。",
     "not_finite": "数値は有限数である必要があります。",
+
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted",
     "internal_server_error": "内部サーバーエラーが発生しました。",
@@ -60,7 +61,8 @@
     "email_conflict": "メールアドレスは既に存在します！",
     "kpi_issue_required": "KPIの問題を選択しなければなりません。",
     "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。",
-    "error_match_password": "パスワードとパスワードの確認が一致しません。"
+    "error_match_password": "パスワードとパスワードの確認が一致しません。",
+    "unauthorized": "認証されていません。"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
