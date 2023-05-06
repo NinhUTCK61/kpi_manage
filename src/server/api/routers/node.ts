@@ -39,11 +39,9 @@ export const nodeRouter = createTRPCRouter({
     .input(GetListNodeInputSchema)
     .output(ReactFlowSchema)
     .query(({ input, ctx }) => {
-      return nodeService.list(
-        input.template_id,
-        input.root_node_id,
-        ctx.session.user,
-      ) as unknown as z.infer<typeof ReactFlowSchema>
+      return nodeService.list(input.template_id, ctx.session.user) as unknown as z.infer<
+        typeof ReactFlowSchema
+      >
     }),
   searchSlug: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/nodes' }, protect: true })

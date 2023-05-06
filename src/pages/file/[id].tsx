@@ -19,17 +19,16 @@ export async function getServerSideProps({ locale }: GetServerSidePropsContext) 
 
 const NodeCreate: FC = () => {
   const router = useRouter()
-  const { id, root } = router.query
+  const { id } = router.query
   const { data: template } = api.template.getById.useQuery({
     template_id: id as string,
   })
   const { data, isLoading } = api.node.list.useQuery(
     {
       template_id: id as string,
-      root_node_id: root as string,
     },
     {
-      enabled: !!id && !!root,
+      enabled: !!id,
     },
   )
 

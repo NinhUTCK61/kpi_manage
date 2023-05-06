@@ -97,5 +97,4 @@ export type ReactFlowType = z.infer<typeof ReactFlowSchema>
 
 export const GetListNodeInputSchema = z.object({
   template_id: z.string(),
-  root_node_id: z.string(),
 })
