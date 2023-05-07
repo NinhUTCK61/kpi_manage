@@ -32,7 +32,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
   }
 
   const saveForm = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault
+    event.preventDefault()
     saveValue()
   }
 
