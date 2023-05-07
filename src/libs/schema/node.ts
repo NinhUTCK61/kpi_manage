@@ -22,6 +22,7 @@ export const KpiNodeSchema = z.object({
 })
 
 export const CreateNodeInputSchema = z.object({
+  id: z.string(),
   slug: z.string(),
   input_title: z.string(),
   input_value: z.string().nullable(),

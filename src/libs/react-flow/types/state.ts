@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
-import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from './node'
+import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode } from './node'
 
 export type RFStore = {
   templateId: string
@@ -10,13 +10,15 @@ export type RFStore = {
   onNodesChange: OnNodesChange
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
-  addNode: (parentId: string) => ReactFlowNode[]
+  addKPINode: (parentId: string) => ReactFlowKPINode
   nodeFocused: string | null
   onNodeClick: (e: React.MouseEvent, n: Node<KPINodeType>) => void
   setNodeFocused: (slug: string) => void
   isHasChild(nodeId: string): boolean
   removeEmptyNode: () => void
   updateKPINode: (node: KPINodeType) => void
+  removeNode: (nodeId: string) => void
+  removeEdgeByNodeId: (nodeId: string) => Edge[]
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

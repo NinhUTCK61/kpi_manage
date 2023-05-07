@@ -67,7 +67,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           edges: addEdge(connection, get().edges),
         })
       },
-      addNode(parentNodeId: string) {
+      addKPINode(parentNodeId: string) {
         const _d3 = get().d3Root
 
         const nodes = get().nodes
@@ -87,7 +87,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const d3Updated = stratifier(nodes)
         const _nodes = getLayoutElements(d3Updated)
 
-        const _newNode = _nodes.find((n) => n.id === node.id)
+        const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
         get().setNodeFocused(node.data.slug)
 
@@ -96,22 +96,51 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           edges: [...edges],
         })
 
-        return _nodes
+        return _newNode
+      },
+      // TODO: update kpi node
+      updateKPINode(kpiNodeData) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
+        if (_node) {
+          _node.data.data = { ..._node.data.data, ...kpiNodeData }
+          const _nodes = getLayoutElements(_d3)
+          set({ nodes: _nodes })
+        }
+      },
+      removeNode(nodeId: string) {
+        // TODO: remove hierarchy node
+        const oldNodes = get().nodes
+        const nodes = oldNodes.filter((n) => n.id !== nodeId)
+        const d3Updated = stratifier(nodes)
+        const _nodes = getLayoutElements(d3Updated)
+        const edges = get().removeEdgeByNodeId(nodeId)
+        set({ nodes: _nodes, edges })
+      },
+      removeEdgeByNodeId(nodeId) {
+        const oldEdges = get().edges
+        const edges = oldEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+        return edges
       },
       removeEmptyNode() {
         const oldNodes = get().nodes
+        const oldEdges = get().edges
 
         const emptyNode = oldNodes.find((n) => n.data.type === 'kpi' && !n.data.input_title)
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
         const d3Updated = stratifier(_nodes)
-        const nodeFilter = getLayoutElements(d3Updated)
-        set({ nodes: nodeFilter })
+        const nodes = getLayoutElements(d3Updated)
+        const edges = oldEdges.filter(
+          (edge) => edge.source !== emptyNode?.id && edge.target !== emptyNode?.id,
+        )
+
+        set({ nodes, edges })
       },
-      changeViewportAction(action) {
-        set({
-          viewportAction: action,
-          nodeFocused: '',
-        })
+
+      isHasChild(nodeId: string) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.id === nodeId)
+        return !!_node?.children?.length
       },
       setNodeFocused(slug) {
         set({
@@ -125,6 +154,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       onNodeClick(_, node) {
         set({
           nodeFocused: node.data.slug,
+        })
+      },
+
+      changeViewportAction(action) {
+        set({
+          viewportAction: action,
+          nodeFocused: '',
         })
       },
       changeFontSize(fontSize) {
@@ -147,21 +183,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       changeShapeType(shape) {
         set({ shape })
-      },
-      isHasChild(nodeId: string) {
-        const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.id === nodeId)
-        return !!_node?.children?.length
-      },
-      // TODO: update kpi node
-      updateKPINode(kpiNodeData) {
-        const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
-        if (_node) {
-          _node.data.data = { ..._node.data.data, ...kpiNodeData }
-          const _nodes = getLayoutElements(_d3)
-          set({ nodes: _nodes })
-        }
       },
     })),
   )

@@ -7,7 +7,7 @@ import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
 const NodeActive: React.FC = () => {
-  const addNode = useRFStore((state) => state.addNode)
+  const addKPINode = useRFStore((state) => state.addKPINode)
   const { data, isConnectable } = useKPINodeContext()
   const [focus, setFocus] = useState<boolean>(false)
 
@@ -29,7 +29,7 @@ const NodeActive: React.FC = () => {
           sx={{ ...(focus && { opacity: 0 }) }}
           type="target"
           position={Position.Bottom}
-          onClick={() => addNode(data.parent_node_id as string)}
+          onClick={() => addKPINode(data.parent_node_id as string)}
         >
           <IconImage src={AddIcon} alt="add" />
         </BottomHandler>
@@ -40,7 +40,7 @@ const NodeActive: React.FC = () => {
           sx={{ ...(focus && { opacity: 0 }) }}
           type="source"
           position={Position.Right}
-          onClick={() => addNode(data.id)}
+          onClick={() => addKPINode(data.id)}
         >
           <IconImage src={AddIcon} alt="add" />
         </RightHandler>

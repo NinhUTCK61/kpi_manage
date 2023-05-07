@@ -15,7 +15,6 @@ function InputNode<T extends FieldValues>({
 }: InputProps<T>) {
   const {
     field: { ref, value, ...inputProps },
-    fieldState: { error },
   } = useController({ name, control, defaultValue })
   return (
     <InputControlNode label={label} required={required} value={value} {...controlProps}>

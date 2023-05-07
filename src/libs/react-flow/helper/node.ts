@@ -81,6 +81,9 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
       y: node.x,
     }
 
+    node.data.data.x = node.y
+    node.data.data.y = node.x
+
     newNodes.push(node.data)
   })
 

@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material'
 import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRFStore } from '../../../hooks'
 import { useKPINodeContext } from '../context'
+import { useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
 
 type NodeFormProps = {
@@ -16,7 +16,6 @@ type NodeFormMemoTypes = {
 }
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
-  const updateNode = useRFStore((state) => state.updateKPINode)
   const { data } = useKPINodeContext()
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
@@ -26,8 +25,11 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
     },
   })
 
+  const { saveHandler } = useNodeHandler()
+
   const saveValue = () => {
-    updateNode({ ...data, ...getValues() })
+    const nodeData = { ...data, ...getValues() }
+    saveHandler(nodeData)
     changeFocusState(false)
   }
 

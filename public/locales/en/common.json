@@ -71,7 +71,8 @@
     "kpi_issue_required": "You must choose the KPI Issue.",
     "kpi_reason_required": "You must choose How I learned about KPI Master.",
     "unauthorized": "Unauthorized!",
-    "error_date": "The date of birth cannot be later than the current date."
+    "dob_invalid": "The date of birth cannot be later than the current date.",
+    "create_node": "Create node error!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
