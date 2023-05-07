@@ -18,9 +18,6 @@ const useNodeUpdateMutation = () => {
         variant: 'error',
       })
     },
-    onSuccess() {
-      // TODO: update node position after re-layout
-    },
     onSettled() {
       utils.node.list.invalidate()
     },

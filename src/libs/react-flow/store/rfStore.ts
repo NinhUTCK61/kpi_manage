@@ -126,16 +126,17 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEmptyNode() {
         const oldNodes = get().nodes
         const oldEdges = get().edges
-
         const emptyNode = oldNodes.find((n) => n.data.type === 'kpi' && !n.data.input_title)
+        if (!emptyNode) return
+
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
-        const d3Updated = stratifier(_nodes)
-        const nodes = getLayoutElements(d3Updated)
+        // const d3Updated = stratifier(_nodes)
+        // const nodes = getLayoutElements(d3Updated)
         const edges = oldEdges.filter(
           (edge) => edge.source !== emptyNode?.id && edge.target !== emptyNode?.id,
         )
 
-        set({ nodes, edges })
+        set({ nodes: _nodes, edges })
       },
 
       isHasChild(nodeId: string) {
