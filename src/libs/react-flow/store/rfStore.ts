@@ -85,8 +85,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         edges.push(edge)
 
         const d3Updated = stratifier(nodes)
-        const _nodes = getLayoutElements(d3Updated)
 
+        const _nodes = getLayoutElements(d3Updated)
+        // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
         get().setNodeFocused(node.data.slug)

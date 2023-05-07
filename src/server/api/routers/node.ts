@@ -20,12 +20,19 @@ export const nodeRouter = createTRPCRouter({
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.create(input, session.user)
     }),
-  updateMultiple: protectedProcedure
+  update: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/node' } })
+    .input(NodeSchema)
+    .output(NodeSchema)
+    .mutation(({ input, ctx: { session } }) => {
+      return nodeService.update(input, session.user)
+    }),
+  multipleUpdate: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/nodes' } })
     .input(NodeSchema.array())
     .output(NodeSchema.array() || z.string())
     .mutation(({ input, ctx: { session } }) => {
-      return nodeService.update(input, session.user)
+      return nodeService.multipleUpdate(input, session.user)
     }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })

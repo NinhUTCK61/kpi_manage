@@ -38,7 +38,7 @@ export class NodeService extends NodeHelper {
     return newNode
   }
 
-  async update(nodes: Node[], user: User) {
+  async multipleUpdate(nodes: Node[], user: User) {
     const nodeIds: string[] = nodes.map((node: Node) => {
       return node.id
     })
@@ -54,6 +54,19 @@ export class NodeService extends NodeHelper {
       },
     })
     return resultData
+  }
+
+  async update(node: Node, user: User) {
+    await this.validateNodeOfUser([node.id], user.id)
+
+    const newNode = await prisma.node.update({
+      where: {
+        id: node.id,
+      },
+      data: node,
+    })
+
+    return newNode
   }
 
   async delete([...nodeIds], user: User) {
