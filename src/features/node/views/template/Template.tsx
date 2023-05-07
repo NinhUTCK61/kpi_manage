@@ -42,6 +42,8 @@ export const Template: React.FC = () => {
     setNodeFocused('')
   }
 
+  // TODO: Maybe subscribe nodes re-layout and update node position
+
   useLayoutEffect(() => {
     if (containerRef.current) {
       // set viewport to center like figma

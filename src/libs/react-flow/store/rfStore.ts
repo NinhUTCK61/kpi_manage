@@ -130,13 +130,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         if (!emptyNode) return
 
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
-        // const d3Updated = stratifier(_nodes)
-        // const nodes = getLayoutElements(d3Updated)
+        const d3Updated = stratifier(_nodes)
+        const nodes = getLayoutElements(d3Updated)
         const edges = oldEdges.filter(
           (edge) => edge.source !== emptyNode?.id && edge.target !== emptyNode?.id,
         )
 
-        set({ nodes: _nodes, edges })
+        set({ nodes, edges })
       },
 
       isHasChild(nodeId: string) {
