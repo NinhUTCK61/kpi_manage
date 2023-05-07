@@ -1,20 +1,17 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType } from '@/libs/react-flow/types'
 import { Typography } from '@mui/material'
 import NodeIcon from 'public/assets/svgs/node.svg'
 import { Position } from 'reactflow'
+import { useKPINodeContext } from '../context'
 import { IconImageNode, LeftHandler, NodeUnActiveContainer, RightHandler, TextId } from './styled'
 
-type NodeUnActiveTypes = {
-  isConnectable: boolean
-  data: KPINodeType
-}
-
-const NodeUnActive: React.FC<NodeUnActiveTypes> = ({ isConnectable, data }) => {
+const NodeUnActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const isHasChild = useRFStore((state) => state.isHasChild)
+
+  const { data, isConnectable } = useKPINodeContext()
 
   return (
     <NodeUnActiveContainer

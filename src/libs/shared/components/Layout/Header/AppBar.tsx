@@ -1,8 +1,8 @@
 import { AppBar as MuiAppBar, styled } from '@mui/material'
-import { HEIGHT_HEADER } from './Header'
+import { HEADER_HEIGHT } from './Header'
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
-  height: HEIGHT_HEADER,
+  height: HEADER_HEIGHT,
   backgroundColor: theme.palette.common.white,
   borderBottom: `1px solid ${theme.palette.greyScale[200]}`,
 }))

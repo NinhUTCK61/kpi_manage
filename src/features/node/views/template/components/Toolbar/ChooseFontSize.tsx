@@ -54,9 +54,6 @@ const Select = styled(MuiSelect)(({ theme }) => ({
 }))
 
 const CustomInput = styled(InputBase)(({ theme }) => ({
-  '& fieldset': {
-    border: 'none',
-  },
   fontSize: 15,
   lineHeight: '22px',
   color: theme.palette.base.black,

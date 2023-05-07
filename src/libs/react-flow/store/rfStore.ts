@@ -98,12 +98,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _nodes
       },
-      removeNodeNull() {
-        const _d3 = get().nodes
-        const nodes = get().nodes
+      removeEmptyNode() {
+        const oldNodes = get().nodes
 
-        const nodeNull = _d3.find((n) => n.data.type === 'kpi' && !n.data.input_title)
-        const _nodes = nodes.filter((node) => node.id !== nodeNull?.id)
+        const emptyNode = oldNodes.find((n) => n.data.type === 'kpi' && !n.data.input_title)
+        const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
         const d3Updated = stratifier(_nodes)
         const nodeFilter = getLayoutElements(d3Updated)
         set({ nodes: nodeFilter })
@@ -114,10 +113,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           nodeFocused: '',
         })
       },
-      setNodeFocused(nodeSlug) {
+      setNodeFocused(slug) {
         set({
-          nodeFocused: nodeSlug,
+          nodeFocused: slug,
         })
+
+        if (slug === '') {
+          get().removeEmptyNode()
+        }
       },
       onNodeClick(_, node) {
         set({
@@ -150,11 +153,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
-      updateNode(nodeSlug, data) {
+      // TODO: update kpi node
+      updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.slug === nodeSlug)
+        const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
         if (_node) {
-          _node.data.data = { ..._node.data.data, ...data }
+          _node.data.data = { ..._node.data.data, ...kpiNodeData }
           const _nodes = getLayoutElements(_d3)
           set({ nodes: _nodes })
         }

@@ -2,6 +2,7 @@ import { Stack } from '@mui/material'
 import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRFStore } from '../../../hooks'
+import { useKPINodeContext } from '../context'
 import { InputNode } from './InputNode'
 
 type NodeFormProps = {
@@ -11,35 +12,26 @@ type NodeFormProps = {
 }
 
 type NodeFormMemoTypes = {
-  inputTitle: string
-  inputValue: string | null
-  unit: string | null
-  nodeSlug: string
   handleFocus(): void
   handleCancelFocus(): void
 }
 
-const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({
-  inputTitle,
-  inputValue,
-  unit,
-  nodeSlug,
-  handleFocus,
-  handleCancelFocus,
-}) => {
+const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFocus }) => {
+  const { data } = useKPINodeContext()
+
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
-      input_title: inputTitle,
-      unit: unit || '',
-      input_value: inputValue || '',
+      input_title: data.input_title || '',
+      unit: data.unit || '',
+      input_value: data.input_value || '',
     },
   })
 
-  const updateNode = useRFStore((state) => state.updateNode)
+  const updateNode = useRFStore((state) => state.updateKPINode)
 
   const saveInput = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    updateNode(nodeSlug, getValues())
+    updateNode({ ...data, ...getValues() })
     handleCancelFocus()
   }
 

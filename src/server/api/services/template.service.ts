@@ -203,7 +203,7 @@ export class TemplateService {
     return 'template.template_restore_success'
   }
 
-  async getById(template_id: string, user: User) {
+  async byId(template_id: string, user: User) {
     const userTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -232,5 +232,16 @@ export class TemplateService {
     }
 
     return templateData
+  }
+
+  async exists(template_id: string, user: User) {
+    const userTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        user_id: user.id,
+        template_id,
+      },
+    })
+
+    return !!userTemplate
   }
 }

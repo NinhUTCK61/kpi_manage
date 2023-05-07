@@ -2,26 +2,14 @@ import AddIcon from 'public/assets/svgs/add_node.svg'
 import { useCallback, useState } from 'react'
 import { Position } from 'reactflow'
 import { useRFStore } from '../../../hooks'
-import { KPINodeType } from '../../../types'
+import { useKPINodeContext } from '../context'
 import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
-type NodeActiveTypes = {
-  isConnectable: boolean
-  inputTitle: string
-  inputValue: string | null
-  unit: string | null
-  data: KPINodeType
-}
-
-const NodeActive: React.FC<NodeActiveTypes> = ({
-  isConnectable,
-  inputTitle,
-  inputValue,
-  unit,
-  data,
-}) => {
+const NodeActive: React.FC = () => {
   const addNode = useRFStore((state) => state.addNode)
+
+  const { data, isConnectable } = useKPINodeContext()
 
   const [focus, setFocus] = useState<boolean>(false)
 
@@ -37,14 +25,7 @@ const NodeActive: React.FC<NodeActiveTypes> = ({
     <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <NodeForm
-        inputTitle={inputTitle}
-        inputValue={inputValue}
-        unit={unit}
-        nodeSlug={data.slug}
-        handleFocus={handleFocus}
-        handleCancelFocus={handleCancelFocus}
-      />
+      <NodeForm handleFocus={handleFocus} handleCancelFocus={handleCancelFocus} />
 
       {data.slug !== 'root' && data.input_title && (
         <BottomHandler

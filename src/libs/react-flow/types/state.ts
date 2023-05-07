@@ -3,7 +3,7 @@ import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
 import { HierarchyFlowNode, KPINodeType, ReactFlowNode } from './node'
 
 export type RFStore = {
-  template_id: string
+  templateId: string
   nodes: ReactFlowNode[]
   edges: Edge[]
   d3Root: HierarchyFlowNode
@@ -13,17 +13,10 @@ export type RFStore = {
   addNode: (parentId: string) => ReactFlowNode[]
   nodeFocused: string | null
   onNodeClick: (e: React.MouseEvent, n: Node<KPINodeType>) => void
-  setNodeFocused: (nodeSlug: string) => void
+  setNodeFocused: (slug: string) => void
   isHasChild(nodeId: string): boolean
-  removeNodeNull: () => void
-  updateNode: (
-    nodeSlug: string,
-    data: {
-      input_title: string
-      input_value: string | null
-      unit: string | null
-    },
-  ) => void
+  removeEmptyNode: () => void
+  updateKPINode: (node: KPINodeType) => void
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

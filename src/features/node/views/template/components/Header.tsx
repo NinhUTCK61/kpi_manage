@@ -24,9 +24,18 @@ const HeaderTemplate: React.FC = () => {
   const mutationRename = useRenameTemplateById()
   const mutationLike = useLikeTemplate()
   const inputNameRef = useRef<HTMLElement>(null)
-  const template_id = useRFStore((state) => state.template_id)
-  const { data: template } = api.template.getById.useQuery({ template_id })
-  if (!template) return null
+  const templateId = useRFStore((state) => state.templateId)
+
+  const { data: template } = api.template.byId.useQuery(
+    {
+      id: templateId,
+    },
+    {
+      initialData: {
+        name: 'New Template',
+      },
+    },
+  )
 
   const openMenu = Boolean(anchorEl)
 
@@ -36,7 +45,7 @@ const HeaderTemplate: React.FC = () => {
       if (inputNameRef.current) {
         inputNameRef.current.focus()
       }
-    }, 200)
+    }, 0)
   }
 
   const handleLike = () => {

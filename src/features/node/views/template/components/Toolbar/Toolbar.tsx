@@ -1,7 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
-import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorCenter from 'public/assets/svgs/editor_center.svg'
@@ -19,7 +18,7 @@ import { ChooseStroke } from './ChooseStroke'
 import { PickColor } from './PickColor'
 import { ViewportAction } from './ViewportAction'
 
-const HEIGHT_TOOLBAR = 60
+const TOOLBAR_HEIGHT = 60
 
 const editors = [
   { key: 'bold', icon: EditorBold },
@@ -32,7 +31,6 @@ const editors = [
 ]
 
 export const ToolbarMemo: React.FC = () => {
-  const { t } = useTranslation('file')
   const viewportAction = useRFStore((state) => state.viewportAction)
   return (
     <Container>
@@ -80,7 +78,7 @@ export const ToolbarMemo: React.FC = () => {
 }
 
 const Container = styled(Stack)(({ theme }) => ({
-  height: HEIGHT_TOOLBAR,
+  height: TOOLBAR_HEIGHT,
   backgroundColor: theme.palette.greyScale[100],
   padding: theme.spacing(2.5),
   flexDirection: 'row',
@@ -90,4 +88,4 @@ const Container = styled(Stack)(({ theme }) => ({
 
 const Toolbar = memo(ToolbarMemo) as typeof ToolbarMemo
 
-export { Toolbar, HEIGHT_TOOLBAR }
+export { Toolbar, TOOLBAR_HEIGHT }

@@ -1,14 +1,14 @@
 import { NODE_HEIGHT_TEMPLATE, RFStore, useRFStore } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { Layout } from '@/libs/shared/components'
-import { HEIGHT_HEADER } from '@/libs/shared/components/Layout/Header'
+import { HEADER_HEIGHT } from '@/libs/shared/components/Layout/Header'
 import { Box, styled } from '@mui/material'
 import { MouseEvent, useLayoutEffect, useRef } from 'react'
 import { useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
-import { HEIGHT_TOOLBAR, KpiReactFlow, Toolbar } from './components'
+import { KpiReactFlow, TOOLBAR_HEIGHT, Toolbar } from './components'
 import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
@@ -26,19 +26,13 @@ const storeSelector = (state: RFStore) => ({
   viewportAction: state.viewportAction,
   onNodeClick: state.onNodeClick,
   setNodeFocused: state.setNodeFocused,
-  removeNodeNull: state.removeNodeNull,
 })
 
 export const Template: React.FC = () => {
-  const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    viewportAction,
-    setNodeFocused,
-    removeNodeNull,
-  } = useRFStore(storeSelector, shallow)
+  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, setNodeFocused } = useRFStore(
+    storeSelector,
+    shallow,
+  )
 
   const containerRef = useRef<HTMLElement>(null)
 
@@ -46,7 +40,6 @@ export const Template: React.FC = () => {
 
   const onPaneClick = (_: MouseEvent<Element>) => {
     setNodeFocused('')
-    removeNodeNull()
   }
 
   useLayoutEffect(() => {
@@ -93,5 +86,5 @@ export const Template: React.FC = () => {
 }
 
 const Container = styled(Box)({
-  height: `calc(100vh - ${HEIGHT_HEADER}px - ${HEIGHT_TOOLBAR}px)`,
+  height: `calc(100vh - ${HEADER_HEIGHT}px - ${TOOLBAR_HEIGHT}px)`,
 })

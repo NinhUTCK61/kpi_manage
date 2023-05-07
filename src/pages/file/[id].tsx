@@ -16,9 +16,14 @@ import SuperJSON from 'superjson'
 import { z } from 'zod'
 
 export async function getServerSideProps({ locale, req, res, query }: GetServerSidePropsContext) {
-  const { id } = query
-
   const session = await getServerSession(req, res, authOptions)
+
+  const { id } = query
+  if (!id) {
+    return {
+      notFound: true,
+    }
+  }
 
   const helpers = createServerSideHelpers({
     router: appRouter,
@@ -29,9 +34,17 @@ export async function getServerSideProps({ locale, req, res, query }: GetServerS
     transformer: SuperJSON, // optional - adds superjson serialization
   })
 
-  await helpers.template.getById.prefetch({
-    template_id: String(id),
+  const templateExist = await helpers.template.exists.fetch({ id: String(id) })
+  if (!templateExist) {
+    return {
+      notFound: true,
+    }
+  }
+
+  await helpers.template.byId.prefetch({
+    id: String(id),
   })
+
   return {
     props: {
       ...(await serverSideTranslations(locale as string, ['common', 'file', 'home'])),
@@ -64,7 +77,7 @@ const NodeCreate: FC = () => {
         nodes={nodes as ReactFlowNode[]}
         edges={edges}
         d3Root={d3Root}
-        template_id={String(id)}
+        templateId={String(id)}
       >
         <Template />
       </TemplateProvider>
