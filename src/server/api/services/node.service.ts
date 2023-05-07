@@ -107,7 +107,12 @@ export class NodeService extends NodeHelper {
         FROM "Node" n
         JOIN node_tree nt ON n."parent_node_id" = nt.id
       )
-      SELECT * FROM node_tree;`
+      SELECT * FROM node_tree
+      ORDER BY 
+        CASE
+          WHEN slug = 'root' THEN 0
+          ELSE 1
+        END, slug;`
 
     const d3Root = stratify<KPINodeType>()
       .id((n) => n.id)

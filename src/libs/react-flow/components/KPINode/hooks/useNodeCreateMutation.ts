@@ -1,5 +1,6 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { KPINodeType } from '@/libs/react-flow/types'
 import { differenceWith, isEqual } from 'lodash'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
@@ -36,9 +37,9 @@ const useNodeCreateMutation = () => {
       const diff = differenceWith(kpiNodes, nodesQuery, (a, b) => isEqual(a.position, b.position))
 
       console.log(diff)
-      // if (diff.length) {
-      //   mulUpdate(diff.map((n) => n.data) as KPINodeType[])
-      // }
+      if (diff.length) {
+        mulUpdate(diff.map((n) => n.data) as KPINodeType[])
+      }
     },
     onSettled() {
       utils.node.list.invalidate()
