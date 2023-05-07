@@ -8,26 +8,23 @@ import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandle
 
 const NodeActive: React.FC = () => {
   const addNode = useRFStore((state) => state.addNode)
-
   const { data, isConnectable } = useKPINodeContext()
-
   const [focus, setFocus] = useState<boolean>(false)
 
-  const handleFocus = useCallback(() => {
-    setFocus(true)
+  const changeFocusState = useCallback((state: boolean) => {
+    setFocus(state)
   }, [])
 
-  const handleCancelFocus = useCallback(() => {
-    setFocus(false)
-  }, [])
+  const isHasBottomHandler = data.slug !== 'root' && data.input_title
+  const isHasRightHandler = !!data.input_title
 
   return (
     <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <NodeForm handleFocus={handleFocus} handleCancelFocus={handleCancelFocus} />
+      <NodeForm changeFocusState={changeFocusState} />
 
-      {data.slug !== 'root' && data.input_title && (
+      {isHasBottomHandler && (
         <BottomHandler
           sx={{ ...(focus && { opacity: 0 }) }}
           type="target"
@@ -38,7 +35,7 @@ const NodeActive: React.FC = () => {
         </BottomHandler>
       )}
 
-      {!!data.input_title && (
+      {isHasRightHandler && (
         <RightHandler
           sx={{ ...(focus && { opacity: 0 }) }}
           type="source"

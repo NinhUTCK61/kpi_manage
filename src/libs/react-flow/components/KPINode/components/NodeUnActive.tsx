@@ -16,7 +16,7 @@ const NodeUnActive: React.FC = () => {
   return (
     <NodeUnActiveContainer
       onClick={() => setNodeFocused(data.slug)}
-      style={{
+      sx={{
         ...(viewportAction !== ViewPortAction.Move && {
           pointerEvents: 'none',
         }),

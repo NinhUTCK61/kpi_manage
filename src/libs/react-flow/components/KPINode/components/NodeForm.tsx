@@ -12,13 +12,12 @@ type NodeFormProps = {
 }
 
 type NodeFormMemoTypes = {
-  handleFocus(): void
-  handleCancelFocus(): void
+  changeFocusState(state: boolean): void
 }
 
-const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFocus }) => {
+const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
+  const updateNode = useRFStore((state) => state.updateKPINode)
   const { data } = useKPINodeContext()
-
   const { control, getValues } = useForm<NodeFormProps>({
     defaultValues: {
       input_title: data.input_title || '',
@@ -27,22 +26,28 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFo
     },
   })
 
-  const updateNode = useRFStore((state) => state.updateKPINode)
-
-  const saveInput = (event?: FormEvent<HTMLFormElement>) => {
-    event && event.preventDefault()
+  const saveValue = () => {
     updateNode({ ...data, ...getValues() })
-    handleCancelFocus()
+    changeFocusState(false)
+  }
+
+  const saveForm = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault
+    saveValue()
+  }
+
+  const handleFocus = () => {
+    changeFocusState(true)
   }
 
   return (
-    <Stack component="form" onSubmit={saveInput} spacing={0.5}>
+    <Stack component="form" onSubmit={saveForm} spacing={0.5}>
       <InputNode
         control={control}
         name="input_title"
         required
         label="Label"
-        onBlur={() => saveInput()}
+        onBlur={saveValue}
         onFocus={handleFocus}
       />
 
@@ -50,7 +55,7 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFo
         control={control}
         name="input_value"
         label="="
-        onBlur={() => saveInput()}
+        onBlur={saveValue}
         onFocus={handleFocus}
       />
 
@@ -58,7 +63,7 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFo
         control={control}
         name="unit"
         label="Unit"
-        onBlur={() => saveInput()}
+        onBlur={saveValue}
         onFocus={handleFocus}
       />
 
@@ -67,6 +72,6 @@ const NodeFormMemo: React.FC<NodeFormMemoTypes> = ({ handleFocus, handleCancelFo
   )
 }
 
-const NodeForm = memo(NodeFormMemo) as typeof NodeFormMemo
+const NodeForm = memo(NodeFormInner) as typeof NodeFormInner
 
 export { NodeForm }

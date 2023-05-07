@@ -30,7 +30,7 @@ const editors = [
   { key: 'child', icon: EditorChild },
 ]
 
-export const ToolbarMemo: React.FC = () => {
+export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
   return (
     <Container>
@@ -86,6 +86,6 @@ const Container = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-between',
 }))
 
-const Toolbar = memo(ToolbarMemo) as typeof ToolbarMemo
+const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
 
 export { Toolbar, TOOLBAR_HEIGHT }

@@ -7,16 +7,16 @@ import { KPINodeProvider } from './context'
 
 function KpiNode(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
-  const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const focusedSlug = useRFStore((state) => state.nodeFocused)
 
-  const isFocus =
-    (data.slug === 'root' && nodeFocused === 'root') || (nodeFocused === data.slug && selected)
+  const slug = data.slug
+  const isActive = (slug === 'root' && focusedSlug === 'root') || (focusedSlug === slug && selected)
 
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
 
   return (
     <KPINodeProvider value={contextValue}>
-      {isFocus ? <NodeActive /> : <NodeUnActive />}
+      {isActive ? <NodeActive /> : <NodeUnActive />}
     </KPINodeProvider>
   )
 }
