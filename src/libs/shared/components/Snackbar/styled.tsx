@@ -47,7 +47,7 @@ const Alert = styled(MuiAlert)(({ theme, severity = 'success' }) => ({
 }))
 
 const ButtonStyle = styled(Button)(() => ({
-  marginTop: 1.5,
+  marginTop: 12,
   fontSize: 13,
   lineHeight: '18px',
   fontWeight: 400,
