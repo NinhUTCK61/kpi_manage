@@ -1,4 +1,5 @@
-import { KPINodeType } from '../../types'
+import { differenceWith } from 'lodash'
+import { KPINodeType, ReactFlowNode } from '../../types'
 
 export enum SaveAction {
   CREATE = 'CREATE',
@@ -19,4 +20,15 @@ export const getSaveAction = (data: KPINodeType): SaveAction => {
   }
 
   return SaveAction.UPDATE
+}
+
+export const getDifferenceNodeByPosition = (
+  nodes: ReactFlowNode[],
+  queryNodes: ReactFlowNode[],
+) => {
+  const diff = differenceWith(nodes, queryNodes, (a, b) => {
+    return a.id === b.id && a.position.x === b.position.x && a.position.y === b.position.y
+  })
+
+  return diff
 }

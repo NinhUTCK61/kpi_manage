@@ -19,7 +19,6 @@ const rootNode: RootNode = {
   children: [],
   x: 0,
   y: 0,
-  type: 'kpi',
 }
 
 // const d3Root = createD3Hierarchy(rootNode)

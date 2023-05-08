@@ -35,7 +35,6 @@ export function flattenHierarchy(rootNode: RootNode): {
         is_formula: node.is_formula,
         unit: node.unit,
         template_id: node.template_id,
-        type: node.type,
       },
       position: { x: node.x, y: node.y },
       type: 'kpi',
@@ -67,7 +66,7 @@ export function flattenHierarchy(rootNode: RootNode): {
 }
 
 export function stratifier(nodes: ReactFlowNode[]): HierarchyFlowNode {
-  const kpiNodes = nodes.filter((n) => n.data.type === 'kpi') as ReactFlowKPINode[]
+  const kpiNodes = nodes.filter((n) => n.type === 'kpi') as ReactFlowKPINode[]
 
   const fn = stratify<ReactFlowKPINode>()
     .id((d) => d.data.id)
@@ -83,10 +82,7 @@ export const convertToReactFlowSpeechBallon = (
   return speechBallon.map((sb) => {
     return {
       id: sb.id,
-      data: {
-        ...sb,
-        type: 'speech_ballon',
-      },
+      data: sb,
       position: { x: sb.x, y: sb.y },
       type: 'speech_ballon',
     }
@@ -97,10 +93,7 @@ export const convertToReactFlowComments = (comments: CommentType[]): ReactFlowCo
   return comments.map((comment) => {
     return {
       id: comment.id,
-      data: {
-        ...comment,
-        type: 'comment',
-      },
+      data: comment,
       position: { x: comment.x, y: comment.y },
       type: 'comment',
     }

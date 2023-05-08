@@ -10,7 +10,7 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
-import { RFStore, ReactFlowKPINode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -28,7 +28,6 @@ const initialRootNode: ReactFlowKPINode = {
     unit: '',
     value2number: 0,
     template_id: '',
-    type: 'kpi',
   },
   position: { x: 0, y: 0 },
   type: 'kpi',
@@ -54,7 +53,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       ...initialState,
       onNodesChange(changes: NodeChange[]) {
         set({
-          nodes: applyNodeChanges(changes, get().nodes),
+          nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
         })
       },
       onEdgesChange(changes: EdgeChange[]) {
@@ -127,7 +126,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEmptyNode() {
         const oldNodes = get().nodes
         const oldEdges = get().edges
-        const emptyNode = oldNodes.find((n) => n.data.type === 'kpi' && !n.data.input_title)
+        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && !n.data.input_title)
         if (!emptyNode) return
 
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
@@ -155,9 +154,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         }
       },
       onNodeClick(_, node) {
-        set({
-          nodeFocused: node.data.slug,
-        })
+        if (node.type === 'kpi') {
+          set({
+            nodeFocused: node.data.slug,
+          })
+        }
       },
 
       changeViewportAction(action) {

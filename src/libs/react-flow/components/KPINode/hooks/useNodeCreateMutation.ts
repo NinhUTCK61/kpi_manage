@@ -1,9 +1,9 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType } from '@/libs/react-flow/types'
-import { differenceWith, isEqual } from 'lodash'
+import { KPINodeType, ReactFlowNode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
+import { getDifferenceNodeByPosition } from '../utils'
 
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
@@ -16,7 +16,7 @@ const useNodeCreateMutation = () => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode({ ...variables, type: 'kpi' })
+      updateNode(variables)
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {
@@ -27,13 +27,16 @@ const useNodeCreateMutation = () => {
     },
     onSuccess(_, variables) {
       // TODO: update node position after re-layout
-      const nodesQuery =
+      const queryNodes =
         utils.node.list
           .getData({ template_id: variables.template_id })
-          ?.nodes.filter((node) => node.data.type === 'kpi') || []
-      const kpiNodes = nodes.filter((node) => node.data.type === 'kpi')
+          ?.nodes.filter((node) => node.type === 'kpi') || []
+
+      const kpiNodes = nodes.filter((node) => node.type === 'kpi' && node.data.id !== variables.id)
+
+      console.log(122112, kpiNodes, queryNodes)
       // Get difference node position
-      const diff = differenceWith(kpiNodes, nodesQuery, (a, b) => isEqual(a.position, b.position))
+      const diff = getDifferenceNodeByPosition(kpiNodes, queryNodes as ReactFlowNode[])
 
       if (diff.length) {
         mulUpdate(diff.map((n) => n.data) as KPINodeType[])

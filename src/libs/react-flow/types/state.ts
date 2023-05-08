@@ -1,5 +1,5 @@
 import { ViewPortAction } from '@/features/node/constant'
-import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
+import { Edge, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
 import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode } from './node'
 
 export type RFStore = {
@@ -12,7 +12,7 @@ export type RFStore = {
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
   nodeFocused: string | null
-  onNodeClick: (e: React.MouseEvent, n: Node<KPINodeType>) => void
+  onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   setNodeFocused: (slug: string) => void
   isHasChild(nodeId: string): boolean
   removeEmptyNode: () => void

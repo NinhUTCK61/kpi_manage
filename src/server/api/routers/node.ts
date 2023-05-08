@@ -4,6 +4,7 @@ import {
   GetListNodeInputSchema,
   KpiNodeSchema,
   ReactFlowSchema,
+  UpdateNodeInputSchema,
 } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { NodeSchema } from 'prisma/generated/zod'
@@ -22,7 +23,7 @@ export const nodeRouter = createTRPCRouter({
     }),
   update: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/node' } })
-    .input(NodeSchema)
+    .input(UpdateNodeInputSchema)
     .output(NodeSchema)
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.update(input, session.user)
@@ -30,7 +31,7 @@ export const nodeRouter = createTRPCRouter({
   multipleUpdate: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/nodes' } })
     .input(NodeSchema.array())
-    .output(NodeSchema.array() || z.string())
+    .output(NodeSchema.array())
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.multipleUpdate(input, session.user)
     }),

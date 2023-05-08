@@ -6,7 +6,7 @@ import {
   convertToReactFlowNodes,
   convertToReactFlowSpeechBallon,
 } from '@/libs/react-flow'
-import { CreateNodeInputType } from '@/libs/schema/node'
+import { CreateNodeInputType, UpdateNodeInputType } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
@@ -56,7 +56,7 @@ export class NodeService extends NodeHelper {
     return resultData
   }
 
-  async update(node: Node, user: User) {
+  async update(node: UpdateNodeInputType, user: User) {
     await this.validateNodeOfUser([node.id], user.id)
 
     const newNode = await prisma.node.update({

@@ -12,7 +12,7 @@ export const DEFAULT_NODE_ATTRIBUTES = {
   is_formula: false,
   node_style: null,
   unit: '',
-  value2number: 0,
+  value2number: null,
   template_id: '',
   type: 'kpi' as const,
 }

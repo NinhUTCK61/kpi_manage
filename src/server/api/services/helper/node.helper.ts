@@ -1,3 +1,4 @@
+import { UpdateNodeInputType } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node, Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
@@ -30,7 +31,7 @@ export class NodeHelper extends CommonHelper {
     }
   }
 
-  handleFormValues(nodes: Node[]) {
+  handleFormValues(nodes: (Node | UpdateNodeInputType)[]) {
     const arrayField: (keyof Node)[] = [
       'slug',
       'id',
@@ -45,10 +46,12 @@ export class NodeHelper extends CommonHelper {
       'template_id',
       'parent_node_id',
     ]
-    const valueStrings = nodes.map((node: Node) => {
+    const valueStrings = nodes.map((node: Node | UpdateNodeInputType) => {
       const valueItems: unknown[] = []
       arrayField.map((field) => {
-        valueItems.push(node[field])
+        if (field in node) {
+          valueItems.push(node[field])
+        }
       })
       return valueItems
     })
@@ -65,7 +68,7 @@ export class NodeHelper extends CommonHelper {
           input_title = new_values.input_title,
           input_value = new_values.input_value,
           is_formula = new_values.is_formula,
-          value2number = new_values.value2number,
+          value2number = CAST(new_values.value2number AS double precision),
           node_style = new_values.node_style,
           x = new_values.x,
           y = new_values.y,

@@ -38,21 +38,13 @@ export const CreateNodeInputSchema = z.object({
 
 export type CreateNodeInputType = z.infer<typeof CreateNodeInputSchema>
 
-// export const UpdateNodeInputSchema = CreateNodeInputSchema.merge(
-//   z.object({
-//     id: z.string(),
-//   }),
-// )
+export const UpdateNodeInputSchema = NodeSchema.partial().required({ id: true, template_id: true })
 
-// export type UpdateNodeInputType = z.infer<typeof UpdateNodeInputSchema>
+export type UpdateNodeInputType = z.infer<typeof UpdateNodeInputSchema>
 
 export const DeleteNodeInputSchema = z.object({
   id: z.string().array(),
 })
-
-const kpiNodeSchema = NodeSchema.merge(z.object({ type: z.literal('kpi') }))
-const speechBallonSchema = SpeechBallonSchema.merge(z.object({ type: z.literal('speech_ballon') }))
-const commentSchema = CommentSchema.merge(z.object({ type: z.literal('comment') }))
 
 const reactFlowSchema = z.object({
   id: z.string(),
@@ -64,21 +56,21 @@ const reactFlowSchema = z.object({
 
 const reactFlowKPINode = reactFlowSchema.merge(
   z.object({
-    data: kpiNodeSchema,
+    data: NodeSchema,
     type: z.literal('kpi'),
   }),
 )
 
 const reactFlowSpeechBallonNode = reactFlowSchema.merge(
   z.object({
-    data: speechBallonSchema,
+    data: SpeechBallonSchema,
     type: z.literal('speech_ballon'),
   }),
 )
 
 const reactFlowCommentNode = reactFlowSchema.merge(
   z.object({
-    data: commentSchema.merge(
+    data: CommentSchema.merge(
       z.object({
         replies: z.array(
           CommentReplySchema.merge(z.object({ author: UserSchema.omit({ password: true }) })),
