@@ -26,13 +26,13 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
 
   useEffect(() => {
     if (!nodeFocus) return
-    if (nodeFocus.data.type === 'kpi' && nodeFocus.data.node_style) {
+    if (nodeFocus.type === 'kpi' && nodeFocus.data.node_style) {
       setPickColor(JSON.parse(nodeFocus.data.node_style as string).color)
     }
-  }, [nodeFocus])s
+  }, [nodeFocus])
 
   const handleUpdate = useCallback(() => {
-    if (nodeFocus && nodeFocus.data.type === 'kpi') {
+    if (nodeFocus && nodeFocus.type === 'kpi') {
       const _nodeFocus = nodeFocus?.data as unknown as KPINodeType
 
       update({
