@@ -81,14 +81,12 @@ export const authOptions: NextAuthOptions = {
         })
 
         if (!user) {
-          // TODO: must return i18n message
           throw new Error('not_found')
         }
 
         if (user && user.password) {
           const isValidPassword = await verify(user.password, password)
           if (!isValidPassword) {
-            // TODO: must return i18n message
             throw new Error('incorrect')
           }
 
