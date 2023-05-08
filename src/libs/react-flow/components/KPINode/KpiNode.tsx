@@ -12,6 +12,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
   const slug = data.slug
   const isActive = (slug === 'root' && focusedSlug === 'root') || (focusedSlug === slug && selected)
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
+  console.log(slug, data.node_style)
 
   return (
     <KPINodeProvider value={contextValue}>

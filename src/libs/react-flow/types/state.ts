@@ -8,6 +8,7 @@ export type RFStore = {
   nodes: ReactFlowNode[]
   edges: Edge[]
   d3Root: HierarchyFlowNode
+  nodeFocus : ReactFlowNode | null
   onNodesChange: OnNodesChange
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
@@ -20,6 +21,8 @@ export type RFStore = {
   updateKPINode: (node: UpdateNodeInputType) => void
   removeNode: (nodeId: string) => void
   removeEdgeByNodeId: (nodeId: string) => Edge[]
+  updateStyleKPINodeBySlug: (slug: string | null) => void
+  getCurrentColorNodeFocused: () => string 
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

@@ -17,7 +17,7 @@ const NodeActive: React.FC = () => {
 
   const isHasBottomHandler = data.slug !== 'root' && data.input_title
   const isHasRightHandler = !!data.input_title
-
+  
   return (
     <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />

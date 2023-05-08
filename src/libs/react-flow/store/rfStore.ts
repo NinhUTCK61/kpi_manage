@@ -40,7 +40,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   viewportAction: ViewPortAction.Move,
   nodeFocused: 'root',
   fontSize: '12',
-  nodeColor: '#1A74EE',
+  nodeColor: '#000000',
   colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
@@ -108,6 +108,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ nodes: _nodes })
         }
       },
+      updateStyleKPINodeBySlug(slug) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === slug)
+        if (_node) {
+          _node.data.data.node_style = JSON.stringify({
+            color: get().nodeColor,
+            fontSize: get().fontSize,
+          })
+          const _nodes = getLayoutElements(_d3)
+          set({ nodes: _nodes })
+        }
+      },
       removeNode(nodeId: string) {
         // TODO: remove hierarchy node
         const oldNodes = get().nodes
@@ -138,7 +150,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes, edges })
       },
-
+      getCurrentColorNodeFocused() {
+        const style = get().d3Root.find((n) => n.data.data.slug === get().nodeFocused)?.data.data
+          .node_style
+        console.log('slug', style)
+        return style ? JSON.parse(style).color : get().nodeColor
+      },
       isHasChild(nodeId: string) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.id === nodeId)
@@ -147,7 +164,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       setNodeFocused(slug) {
         set({
           nodeFocused: slug,
+          nodeFocus: get().nodes.find((n) => n.data.type === 'kpi' && n.data.slug === slug),
         })
+
+        const style = get().d3Root.find((n) => n.data.data.slug === slug)?.data.data.node_style
+
+        if (style) {
+          set({ nodeColor: JSON.parse(style).color })
+          console.log('new node color', slug, JSON.parse(style).color)
+        }
 
         if (slug === '') {
           get().removeEmptyNode()
