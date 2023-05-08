@@ -97,5 +97,5 @@
   "select_year": "生年月日（年）",
   "select_month": "生年月日（月）",
   "select_day": "生年月日（日）",
-  "verify_resend": "Resend email"
+  "verify_resend": "メールを再送"
 }

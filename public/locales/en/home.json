@@ -38,7 +38,7 @@
   "upload_question": "Are you sure to upload this photo?",
   "upload_title": "Set thumbnail for this file?",
   "upload_success": "Successfully set a thumbnail for this file!",
-  "upload_fail": "Upload image fail!",
+  "upload_fail": "Sorry, there was an error uploading your image. Please try again later.",
   "ok": "Ok",
   "cancel": "Cancel"
 }
