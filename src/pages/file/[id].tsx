@@ -1,7 +1,6 @@
 import { Template } from '@/features/node/views'
 import { api } from '@/libs/api'
 import { HierarchyFlowNode, ReactFlowNode, TemplateProvider, stratifier } from '@/libs/react-flow'
-import { ReactFlowSchema } from '@/libs/schema/node'
 import { appRouter } from '@/server/api/root'
 import { authOptions } from '@/server/auth'
 import { prisma } from '@/server/db'
@@ -13,7 +12,6 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { ReactFlowProvider } from 'reactflow'
 import SuperJSON from 'superjson'
-import { z } from 'zod'
 
 export async function getServerSideProps({ locale, req, res, query }: GetServerSidePropsContext) {
   const session = await getServerSession(req, res, authOptions)
@@ -57,7 +55,7 @@ const NodeCreate: FC = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const { data, isLoading } = api.node.list.useQuery(
+  const { data } = api.node.list.useQuery(
     {
       template_id: id as string,
     },
@@ -66,9 +64,9 @@ const NodeCreate: FC = () => {
     },
   )
 
-  if (isLoading) return null
+  if (!data) return null
 
-  const { nodes, edges } = data as z.infer<typeof ReactFlowSchema>
+  const { nodes, edges } = data
   const d3Root: HierarchyFlowNode = stratifier(nodes as ReactFlowNode[])
 
   return (

@@ -1,11 +1,6 @@
-import {
-  CommentReplySchema,
-  CommentSchema,
-  NodeSchema,
-  SpeechBallonSchema,
-  UserSchema,
-} from 'prisma/generated/zod'
+import { NodeSchema, SpeechBallonSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
+import { CommentWithAuthorSchema } from './comment'
 
 export const KpiNodeSchema = z.object({
   slug: z.string(),
@@ -46,7 +41,9 @@ export const DeleteNodeInputSchema = z.object({
   id: z.string().array(),
 })
 
-const reactFlowSchema = z.object({
+// React Flow Schema
+
+const BaseReactFlowSchema = z.object({
   id: z.string(),
   position: z.object({
     x: z.number(),
@@ -54,48 +51,54 @@ const reactFlowSchema = z.object({
   }),
 })
 
-const reactFlowKPINode = reactFlowSchema.merge(
+const ReactFlowKPINode = BaseReactFlowSchema.merge(
   z.object({
     data: NodeSchema,
     type: z.literal('kpi'),
   }),
 )
 
-const reactFlowSpeechBallonNode = reactFlowSchema.merge(
+const ReactFlowSpeechBallonNode = BaseReactFlowSchema.merge(
   z.object({
     data: SpeechBallonSchema,
     type: z.literal('speech_ballon'),
   }),
 )
 
-const reactFlowCommentNode = reactFlowSchema.merge(
+const ReactFlowCommentNode = BaseReactFlowSchema.merge(
   z.object({
-    data: CommentSchema.merge(
-      z.object({
-        replies: z.array(
-          CommentReplySchema.merge(z.object({ author: UserSchema.omit({ password: true }) })),
-        ),
-        author: UserSchema.omit({ password: true }),
-      }),
-    ),
+    data: CommentWithAuthorSchema,
     type: z.literal('comment'),
   }),
 )
 
-export const ReactFlowSchema = z.object({
-  nodes: z.array(z.union([reactFlowKPINode, reactFlowSpeechBallonNode, reactFlowCommentNode])),
-  edges: z
-    .object({
-      id: z.string(),
-      source: z.string(),
-      target: z.string(),
-      animated: z.boolean(),
-      type: z.string(),
-    })
-    .array(),
+export const ReactFlowEdgeSchema = z.object({
+  id: z.string(),
+  source: z.string(),
+  target: z.string(),
+  animated: z.boolean(),
+  type: z.string(),
 })
 
-export type ReactFlowType = z.infer<typeof ReactFlowSchema>
+export const ReactFlowNodeOutputSchema = z.union([
+  ReactFlowKPINode,
+  ReactFlowSpeechBallonNode,
+  ReactFlowCommentNode,
+])
+
+export const NodesOutputSchema = z.object({
+  nodes: z.array(ReactFlowNodeOutputSchema),
+  edges: ReactFlowEdgeSchema.array(),
+})
+
+export type NodesOutputType = z.infer<typeof NodesOutputSchema>
+export type ReactFlowKPINodeOutputType = z.infer<typeof ReactFlowKPINode>
+export type ReactFlowSpeechBallonNodeOutputType = z.infer<typeof ReactFlowSpeechBallonNode>
+export type ReactFlowCommentNodeOutputType = z.infer<typeof ReactFlowCommentNode>
+export type ReactFlowNodeOutputType = z.infer<typeof ReactFlowNodeOutputSchema>
+export type ReactFlowOutputEdge = z.infer<typeof ReactFlowEdgeSchema>
+
+// ---------------------------------------------------------
 
 export const GetListNodeInputSchema = z.object({
   template_id: z.string(),

@@ -1,11 +1,11 @@
 import {
-  CommentType,
   KPINodeType,
   convertToReactFlowComments,
   convertToReactFlowEdges,
-  convertToReactFlowNodes,
+  convertToReactFlowKPINodes,
   convertToReactFlowSpeechBallon,
 } from '@/libs/react-flow'
+import { CommentWithAuthorType } from '@/libs/schema/comment'
 import { CreateNodeInputType, UpdateNodeInputType } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
@@ -139,9 +139,9 @@ export class NodeService extends NodeHelper {
     })
 
     const edges = convertToReactFlowEdges(d3Root)
-    const kpiNodes = convertToReactFlowNodes(d3Root)
+    const kpiNodes = convertToReactFlowKPINodes(d3Root)
     const speechBallonNodes = convertToReactFlowSpeechBallon(speechBallon)
-    const commentNodes = convertToReactFlowComments(comments as CommentType[])
+    const commentNodes = convertToReactFlowComments(comments as CommentWithAuthorType[])
 
     const nodes = [...kpiNodes, ...speechBallonNodes, ...commentNodes]
 

@@ -1,10 +1,7 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType } from '@/libs/react-flow/types'
-import { ReactFlowSchema } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { z } from 'zod'
 
 const useNodeUpdateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
@@ -14,17 +11,19 @@ const useNodeUpdateMutation = () => {
 
   const mutation = api.node.update.useMutation({
     async onMutate(variables) {
-      updateNode({ ...(variables as KPINodeType) })
+      updateNode(variables)
 
       const prevData = utils.node.list.getData({ template_id: variables.template_id })
 
       utils.node.list.setData({ template_id: variables.template_id }, (old) => {
+        if (!old) return old
+        const { nodes: _nodes = [], edges } = old
         return {
-          nodes: old?.nodes.map((node) =>
+          nodes: _nodes.map((node) =>
             variables.id === node.data.id ? { ...node, ...variables } : node,
           ),
-          edges: old?.edges,
-        } as unknown as z.infer<typeof ReactFlowSchema>
+          edges,
+        }
       })
 
       const templateId = variables.template_id

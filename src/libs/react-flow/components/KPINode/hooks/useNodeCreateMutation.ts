@@ -1,9 +1,10 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType, ReactFlowNode } from '@/libs/react-flow/types'
+import { ReactFlowKPINode } from '@/libs/react-flow/types'
+import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { getDifferenceNodeByPosition } from '../utils'
+import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
 
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
@@ -26,20 +27,21 @@ const useNodeCreateMutation = () => {
       removeNode(variables.id)
     },
     onSuccess(_, variables) {
-      // TODO: update node position after re-layout
-      const queryNodes =
-        utils.node.list
-          .getData({ template_id: variables.template_id })
-          ?.nodes.filter((node) => node.type === 'kpi') || []
-
-      const kpiNodes = nodes.filter((node) => node.type === 'kpi' && node.data.id !== variables.id)
-
-      console.log(122112, kpiNodes, queryNodes)
-      // Get difference node position
-      const diff = getDifferenceNodeByPosition(kpiNodes, queryNodes as ReactFlowNode[])
+      // update node position after re-layout
+      const nodesData = utils.node.list.getData({ template_id: variables.template_id })
+      const queryNodes = nodesData?.nodes || []
+      // nodes in query before re-layout
+      const kpiQueryNodes = filterKpiNodes<ReactFlowKPINodeOutputType>(queryNodes)
+      // node after re-layout with new position
+      const kpiNodes = nodes.filter<ReactFlowKPINode>(
+        (node): node is ReactFlowKPINode => node.type === 'kpi' && node.data.id !== variables.id,
+      )
+      // get difference nodes by position
+      const diff = getDifferenceNodesByPosition(kpiNodes, kpiQueryNodes)
 
       if (diff.length) {
-        mulUpdate(diff.map((n) => n.data) as KPINodeType[])
+        // TODO: handle error when update multiple nodes
+        mulUpdate(diff.map((n) => n.data))
       }
     },
     onSettled() {

@@ -3,7 +3,7 @@ import {
   DeleteNodeInputSchema,
   GetListNodeInputSchema,
   KpiNodeSchema,
-  ReactFlowSchema,
+  NodesOutputSchema,
   UpdateNodeInputSchema,
 } from '@/libs/schema/node'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
@@ -45,11 +45,9 @@ export const nodeRouter = createTRPCRouter({
   list: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/node' }, protect: true })
     .input(GetListNodeInputSchema)
-    .output(ReactFlowSchema)
+    .output(NodesOutputSchema)
     .query(({ input, ctx }) => {
-      return nodeService.list(input.template_id, ctx.session.user) as unknown as z.infer<
-        typeof ReactFlowSchema
-      >
+      return nodeService.list(input.template_id, ctx.session.user)
     }),
   searchSlug: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/search' }, protect: true })

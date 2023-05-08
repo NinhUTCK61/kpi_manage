@@ -1,22 +1,21 @@
-import { SpeechBallon } from '@prisma/client'
-import { stratify } from 'd3-hierarchy'
-import { Edge } from 'reactflow'
+import { CommentWithAuthorType } from '@/libs/schema/comment'
 import {
-  CommentType,
-  HierarchyFlowNode,
-  ReactFlowCommentNode,
-  ReactFlowKPINode,
-  ReactFlowNode,
-  ReactFlowSpeechBallonNode,
-  RootNode,
-} from '../types'
+  ReactFlowCommentNodeOutputType,
+  ReactFlowKPINodeOutputType,
+  ReactFlowOutputEdge,
+  ReactFlowSpeechBallonNodeOutputType,
+} from '@/libs/schema/node'
+import { SpeechBallon } from '@prisma/client'
+import { HierarchyNode, stratify } from 'd3-hierarchy'
+import { Edge as ReactFlowEdge } from 'reactflow'
+import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode, RootNode } from '../types'
 
 export function flattenHierarchy(rootNode: RootNode): {
   nodes: ReactFlowNode[]
-  edges: Edge[]
+  edges: ReactFlowEdge[]
 } {
   const nodes: ReactFlowNode[] = []
-  const edges: Edge[] = []
+  const edges: ReactFlowEdge[] = []
 
   function traverse(node: RootNode, parent?: RootNode): void {
     // Thêm node hiện tại vào mảng kết quả
@@ -76,9 +75,56 @@ export function stratifier(nodes: ReactFlowNode[]): HierarchyFlowNode {
   return d3Root
 }
 
+// Convert d3-hierarchy nodes to reactflow nodes
+export const convertToReactFlowKPINodes = (
+  hierarchyNode: HierarchyNode<KPINodeType>,
+): ReactFlowKPINodeOutputType[] => {
+  const descendants = hierarchyNode.descendants()
+
+  return descendants.map((node) => {
+    return {
+      id: node.data.id,
+      data: {
+        parent_node_id: node.data.parent_node_id,
+        id: node.data.id,
+        slug: node.data.slug,
+        x: node.data.x,
+        y: node.data.y,
+        input_title: node.data.input_title,
+        input_value: node.data.input_value,
+        value2number: node.data.value2number,
+        node_style: node.data.node_style,
+        is_formula: node.data.is_formula,
+        unit: node.data.unit,
+        template_id: node.data.template_id,
+        type: 'kpi',
+      },
+      position: { x: node.data.x, y: node.data.y },
+      type: 'kpi',
+    }
+  })
+}
+
+// Convert d3-hierarchy links to reactflow edges
+export const convertToReactFlowEdges = (
+  hierarchyNode: HierarchyNode<KPINodeType>,
+): ReactFlowOutputEdge[] => {
+  const links = hierarchyNode.links()
+
+  return links.map((link) => {
+    return {
+      id: `${link.source.data.slug}-${link.target.data.slug}`,
+      source: link.source.data.id,
+      target: link.target.data.id,
+      animated: false,
+      type: 'kpi',
+    }
+  })
+}
+
 export const convertToReactFlowSpeechBallon = (
   speechBallon: SpeechBallon[],
-): ReactFlowSpeechBallonNode[] => {
+): ReactFlowSpeechBallonNodeOutputType[] => {
   return speechBallon.map((sb) => {
     return {
       id: sb.id,
@@ -89,7 +135,9 @@ export const convertToReactFlowSpeechBallon = (
   })
 }
 
-export const convertToReactFlowComments = (comments: CommentType[]): ReactFlowCommentNode[] => {
+export const convertToReactFlowComments = (
+  comments: CommentWithAuthorType[],
+): ReactFlowCommentNodeOutputType[] => {
   return comments.map((comment) => {
     return {
       id: comment.id,

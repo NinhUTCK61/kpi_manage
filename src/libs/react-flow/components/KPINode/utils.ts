@@ -1,3 +1,4 @@
+import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith } from 'lodash'
 import { KPINodeType, ReactFlowNode } from '../../types'
 
@@ -22,13 +23,17 @@ export const getSaveAction = (data: KPINodeType): SaveAction => {
   return SaveAction.UPDATE
 }
 
-export const getDifferenceNodeByPosition = (
-  nodes: ReactFlowNode[],
-  queryNodes: ReactFlowNode[],
-) => {
+export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {
   const diff = differenceWith(nodes, queryNodes, (a, b) => {
     return a.id === b.id && a.position.x === b.position.x && a.position.y === b.position.y
   })
 
   return diff
+}
+
+export function filterKpiNodes<
+  V extends T,
+  T extends ReactFlowNode | ReactFlowNodeOutputType = ReactFlowNode | ReactFlowNodeOutputType,
+>(nodes: T[]) {
+  return nodes.filter<V>((node): node is V => node.type === 'kpi')
 }
