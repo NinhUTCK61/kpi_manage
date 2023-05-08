@@ -1,7 +1,7 @@
 import { Box, BoxProps, Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { HEIGHT_HEADER, Header } from './Header'
+import { HEADER_HEIGHT, Header } from './Header'
 import { Sidebar } from './Sidebar'
 
 type LayoutType = BoxProps<
@@ -41,8 +41,8 @@ const Layout: React.FC<LayoutType> = ({
 export { Layout }
 
 const ContentPage = styled(Box)(({ theme }) => ({
-  marginTop: HEIGHT_HEADER,
-  minHeight: `calc(100vh - ${HEIGHT_HEADER}px)`,
+  marginTop: HEADER_HEIGHT,
+  minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',

@@ -10,7 +10,7 @@ import { Account } from './Account'
 import { AppBar } from './AppBar'
 import { Language } from './Language'
 
-const HEIGHT_HEADER = 60
+const HEADER_HEIGHT = 60
 
 type SearchType = {
   search: string
@@ -57,4 +57,4 @@ const Header = () => {
   )
 }
 
-export { Header, HEIGHT_HEADER }
+export { Header, HEADER_HEIGHT }

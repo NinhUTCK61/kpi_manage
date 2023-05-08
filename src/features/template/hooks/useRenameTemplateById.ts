@@ -11,9 +11,9 @@ const useRenameTemplateById = () => {
   const mutation = api.template.update.useMutation({
     onMutate: async (template) => {
       await utils.template.list.cancel()
-      const prevData = utils.template.getById.getData({ template_id: template.id })
+      const prevData = utils.template.byId.getData({ id: template.id })
 
-      utils.template.getById.setData({ template_id: template.id }, (old) =>
+      utils.template.byId.setData({ id: template.id }, (old) =>
         old ? { ...old, name: String(template.name) } : old,
       )
 
@@ -29,8 +29,7 @@ const useRenameTemplateById = () => {
     },
     onError: (err, _, ctx) => {
       showError(err, t('rename_failed'))
-      ctx?.prevData &&
-        utils.template.getById.setData({ template_id: ctx?.template_id }, ctx?.prevData)
+      ctx?.prevData && utils.template.byId.setData({ id: ctx?.template_id }, ctx?.prevData)
     },
     onSettled: () => {
       utils.template.list.invalidate()

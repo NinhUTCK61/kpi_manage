@@ -46,7 +46,7 @@ export const SignUpInputSchema = z
       return dob < now
     },
     {
-      message: 'error.error_date',
+      message: 'error.dob_invalid',
       path: ['date_of_birth'],
     },
   )

@@ -1,8 +1,8 @@
 import { useRFStore } from '@/libs/react-flow'
-import { InputStyled, MenuItem } from '@/libs/shared/components'
-import { Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
+import { MenuItem } from '@/libs/shared/components'
+import { InputBase, Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
 import Image from 'next/image'
-import ArrowDown from 'public/assets/svgs/arrow_down.svg'
+import ArrowDown from 'public/assets/svgs/arrow_down_select.svg'
 
 const fontSizes = [
   {
@@ -53,14 +53,15 @@ const Select = styled(MuiSelect)(({ theme }) => ({
   },
 }))
 
-const CustomInput = styled(InputStyled)({
-  '& fieldset': {
-    border: 'none',
-  },
-  '& .MuiOutlinedInput-input': {
-    fontSize: 15,
-    lineHeight: '22px',
-  },
-})
+const CustomInput = styled(InputBase)(({ theme }) => ({
+  fontSize: 15,
+  lineHeight: '22px',
+  color: theme.palette.base.black,
+  paddingLeft: 12,
+  border: `1px solid ${theme.palette.greyScale[400]}`,
+  borderRadius: 4,
+  gap: 8,
+  height: 34,
+}))
 
 export { ChooseFontSize }

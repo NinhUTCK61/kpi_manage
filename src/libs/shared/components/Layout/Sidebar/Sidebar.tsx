@@ -1,5 +1,5 @@
 import { Box, List } from '@mui/material'
-import { HEIGHT_HEADER } from '../Header/Header'
+import { HEADER_HEIGHT } from '../Header/Header'
 
 import { useTranslation } from 'next-i18next'
 import KnowledgeIcon from 'public/assets/svgs/blog.svg'
@@ -26,7 +26,7 @@ const Sidebar = () => {
   return (
     <Box
       sx={{
-        marginTop: `${HEIGHT_HEADER}px`,
+        marginTop: `${HEADER_HEIGHT}px`,
         borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
         width: SIDE_BAR_WIDTH,
       }}

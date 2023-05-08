@@ -1,3 +1,5 @@
+import { ViewPortAction } from '@/features/node/constant'
+import { useRFStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
@@ -11,15 +13,12 @@ import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
 import { ChooseFontSize } from './ChooseFontSize'
-import { PickColor } from './PickColor'
-
-import { ViewPortAction } from '@/features/node/constant'
-import { useRFStore } from '@/libs/react-flow'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
+import { PickColor } from './PickColor'
 import { ViewportAction } from './ViewportAction'
 
-const HEIGHT_TOOLBAR = 60
+const TOOLBAR_HEIGHT = 60
 
 const editors = [
   { key: 'bold', icon: EditorBold },
@@ -31,7 +30,7 @@ const editors = [
   { key: 'child', icon: EditorChild },
 ]
 
-export const ToolbarMemo: React.FC = () => {
+export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
   return (
     <Container>
@@ -41,9 +40,7 @@ export const ToolbarMemo: React.FC = () => {
 
           <Image src={RedoIcon} alt="undo" />
         </Stack>
-
         <ChooseFontSize />
-
         <Stack direction="row" spacing={0.5} mr={3}>
           {editors.map((editor) => (
             <Image
@@ -81,7 +78,7 @@ export const ToolbarMemo: React.FC = () => {
 }
 
 const Container = styled(Stack)(({ theme }) => ({
-  height: HEIGHT_TOOLBAR,
+  height: TOOLBAR_HEIGHT,
   backgroundColor: theme.palette.greyScale[100],
   padding: theme.spacing(2.5),
   flexDirection: 'row',
@@ -89,6 +86,6 @@ const Container = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-between',
 }))
 
-const Toolbar = memo(ToolbarMemo) as typeof ToolbarMemo
+const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
 
-export { Toolbar, HEIGHT_TOOLBAR }
+export { Toolbar, TOOLBAR_HEIGHT }

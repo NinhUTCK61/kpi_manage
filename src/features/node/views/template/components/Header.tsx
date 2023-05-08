@@ -1,6 +1,7 @@
 import { useLikeTemplate, useRenameTemplateById } from '@/features/template/hooks'
+import { api } from '@/libs/api'
 import { base } from '@/libs/config/theme'
-import { TemplateDataSchema } from '@/libs/schema'
+import { useRFStore } from '@/libs/react-flow'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import { Account } from '@/libs/shared/components/Layout/Header/Account'
 import { AppBar } from '@/libs/shared/components/Layout/Header/AppBar'
@@ -14,13 +15,8 @@ import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
 import { FormEvent, useRef, useState } from 'react'
-import { z } from 'zod'
 
-type TemplateHeaderTypes = {
-  template: z.infer<typeof TemplateDataSchema>
-}
-
-const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
+const HeaderTemplate: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation('file')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -28,6 +24,18 @@ const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
   const mutationRename = useRenameTemplateById()
   const mutationLike = useLikeTemplate()
   const inputNameRef = useRef<HTMLElement>(null)
+  const templateId = useRFStore((state) => state.templateId)
+
+  const { data: template } = api.template.byId.useQuery(
+    {
+      id: templateId,
+    },
+    {
+      initialData: {
+        name: 'New Template',
+      },
+    },
+  )
 
   const openMenu = Boolean(anchorEl)
 
@@ -37,7 +45,7 @@ const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
       if (inputNameRef.current) {
         inputNameRef.current.focus()
       }
-    }, 200)
+    }, 0)
   }
 
   const handleLike = () => {
@@ -69,7 +77,7 @@ const HeaderTemplate: React.FC<TemplateHeaderTypes> = ({ template }) => {
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    if (name === '' || name === null) {
+    if (name === '' || name === null || name === template.name) {
       setName(null)
       return
     }

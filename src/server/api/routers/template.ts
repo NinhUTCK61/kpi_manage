@@ -57,11 +57,18 @@ export const templateRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return templateService.restore(input.id, ctx.session.user)
     }),
-  getById: protectedProcedure
+  byId: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/template/{id}', protect: true } })
     .input(GetTemplateByIdInputSchema)
     .output(TemplateDataSchema)
     .query(({ input, ctx }) => {
-      return templateService.getById(input.template_id, ctx.session.user)
+      return templateService.byId(input.id, ctx.session.user)
+    }),
+  exists: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/template/{id}/exists', protect: true } })
+    .input(GetTemplateByIdInputSchema)
+    .output(z.boolean())
+    .query(({ input, ctx }) => {
+      return templateService.exists(input.id, ctx.session.user)
     }),
 })

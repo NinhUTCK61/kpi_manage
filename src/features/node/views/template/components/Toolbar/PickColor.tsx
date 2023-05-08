@@ -3,6 +3,7 @@ import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { useEffect, useState, useTransition } from 'react'
 
 type PickColorTypes = {
   forShape?: boolean
@@ -14,14 +15,22 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   const changeNodeColor = useRFStore((state) =>
     forShape ? state.changeShapeColor : state.changeNodeColor,
   )
+  const [pickColor, setPickColor] = useState<string>(color as string)
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    if (isPending) return
+    changeNodeColor(pickColor)
+  }, [changeNodeColor, isPending, pickColor])
 
   const id = forShape ? 'colorShape' : 'color'
+
   return (
     <Tooltip title={t(forShape ? 'fill' : 'text_color')} arrow>
       <Stack direction="row" height={36} alignItems="center" {...props}>
         <Stack
           sx={{
-            backgroundColor: color,
+            backgroundColor: pickColor,
             borderRadius: '2px 0px 0px 2px',
             height: 36,
             width: 36,
@@ -46,15 +55,19 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
           }}
           disableRipple
         >
-          {color && color.replace('#', '')}
+          {pickColor && pickColor.replace('#', '')}
         </Button>
 
         <InputStyled
           id={id}
           type="color"
-          onChange={(e) => changeNodeColor(e.target.value)}
-          value={color}
-          label={color}
+          onChange={(e) => {
+            startTransition(() => {
+              setPickColor(e.target.value)
+            })
+          }}
+          value={pickColor}
+          label={pickColor}
           sx={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}
         />
       </Stack>

@@ -2,6 +2,15 @@ import { CommentReplySchema, CommentSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { UserWithoutPasswordSchema } from './auth'
 
+export const CommentWithAuthorSchema = CommentSchema.merge(
+  z.object({
+    replies: z.array(CommentReplySchema.merge(z.object({ author: UserWithoutPasswordSchema }))),
+    author: UserWithoutPasswordSchema,
+  }),
+)
+
+export type CommentWithAuthorType = z.infer<typeof CommentWithAuthorSchema>
+
 // Type Create Comment
 export const CreateCommentInputSchema = CommentSchema.omit({
   id: true,

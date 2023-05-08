@@ -10,7 +10,7 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
-import { RFStore, ReactFlowKPINode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -28,7 +28,6 @@ const initialRootNode: ReactFlowKPINode = {
     unit: '',
     value2number: 0,
     template_id: '',
-    type: 'kpi',
   },
   position: { x: 0, y: 0 },
   type: 'kpi',
@@ -39,7 +38,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   edges: [],
   d3Root: hierarchy(initialRootNode),
   viewportAction: ViewPortAction.Move,
-  nodeFocused: null,
+  nodeFocused: 'root',
   fontSize: '12',
   nodeColor: '#1A74EE',
   colorShape: '#3E19A3',
@@ -54,7 +53,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       ...initialState,
       onNodesChange(changes: NodeChange[]) {
         set({
-          nodes: applyNodeChanges(changes, get().nodes),
+          nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
         })
       },
       onEdgesChange(changes: EdgeChange[]) {
@@ -67,35 +66,105 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           edges: addEdge(connection, get().edges),
         })
       },
-      addNode(parentNodeId: string) {
+      addKPINode(parentNodeId: string) {
         const _d3 = get().d3Root
 
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)
-        nodes.push(node)
+        const _node = node
+        _node.data = {
+          ..._node.data,
+          node_style: JSON.stringify({
+            fontSize: get().fontSize,
+            color: get().nodeColor,
+          }),
+        }
+        nodes.push(_node)
         edges.push(edge)
 
         const d3Updated = stratifier(nodes)
-        const _nodes = getLayoutElements(d3Updated)
 
-        const _newNode = _nodes.find((n) => n.id === node.id)
+        const _nodes = getLayoutElements(d3Updated)
+        // TODO: update node position after re-layout
+        const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
+
+        get().setNodeFocused(node.data.slug)
 
         set({
           nodes: _nodes,
           edges: [...edges],
         })
 
-        return _nodes
+        return _newNode
       },
+      // TODO: update kpi node
+      updateKPINode(kpiNodeData) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
+        if (_node) {
+          _node.data.data = { ..._node.data.data, ...kpiNodeData }
+          const _nodes = getLayoutElements(_d3)
+          set({ nodes: _nodes })
+        }
+      },
+      removeNode(nodeId: string) {
+        // TODO: remove hierarchy node
+        const oldNodes = get().nodes
+        const nodes = oldNodes.filter((n) => n.id !== nodeId)
+        const d3Updated = stratifier(nodes)
+        const _nodes = getLayoutElements(d3Updated)
+        const edges = get().removeEdgeByNodeId(nodeId)
+        set({ nodes: _nodes, edges })
+      },
+      removeEdgeByNodeId(nodeId) {
+        const oldEdges = get().edges
+        const edges = oldEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+        set({ edges })
+        return edges
+      },
+      removeEmptyNode() {
+        const oldNodes = get().nodes
+        const oldEdges = get().edges
+        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && !n.data.input_title)
+        if (!emptyNode) return
+
+        const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
+        const d3Updated = stratifier(_nodes)
+        const nodes = getLayoutElements(d3Updated)
+        const edges = oldEdges.filter(
+          (edge) => edge.source !== emptyNode?.id && edge.target !== emptyNode?.id,
+        )
+
+        set({ nodes, edges })
+      },
+
+      isHasChild(nodeId: string) {
+        const _d3 = get().d3Root
+        const _node = _d3.find((n) => n.data.id === nodeId)
+        return !!_node?.children?.length
+      },
+      setNodeFocused(slug) {
+        set({
+          nodeFocused: slug,
+        })
+
+        if (slug === '') {
+          get().removeEmptyNode()
+        }
+      },
+      onNodeClick(_, node) {
+        if (node.type === 'kpi') {
+          set({
+            nodeFocused: node.data.slug,
+          })
+        }
+      },
+
       changeViewportAction(action) {
         set({
           viewportAction: action,
-        })
-      },
-      onNodeClick(_, node) {
-        set({
-          nodeFocused: node.id,
+          nodeFocused: '',
         })
       },
       changeFontSize(fontSize) {

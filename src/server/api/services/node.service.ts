@@ -1,12 +1,12 @@
 import {
-  CommentType,
   KPINodeType,
   convertToReactFlowComments,
   convertToReactFlowEdges,
-  convertToReactFlowNodes,
+  convertToReactFlowKPINodes,
   convertToReactFlowSpeechBallon,
 } from '@/libs/react-flow'
-import { CreateNodeInputType } from '@/libs/schema/node'
+import { CommentWithAuthorType } from '@/libs/schema/comment'
+import { CreateNodeInputType, UpdateNodeInputType } from '@/libs/schema/node'
 import { prisma } from '@/server/db'
 import { Node } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
@@ -38,7 +38,7 @@ export class NodeService extends NodeHelper {
     return newNode
   }
 
-  async update(nodes: Node[], user: User) {
+  async multipleUpdate(nodes: Node[], user: User) {
     const nodeIds: string[] = nodes.map((node: Node) => {
       return node.id
     })
@@ -54,6 +54,19 @@ export class NodeService extends NodeHelper {
       },
     })
     return resultData
+  }
+
+  async update(node: UpdateNodeInputType, user: User) {
+    await this.validateNodeOfUser([node.id], user.id)
+
+    const newNode = await prisma.node.update({
+      where: {
+        id: node.id,
+      },
+      data: node,
+    })
+
+    return newNode
   }
 
   async delete([...nodeIds], user: User) {
@@ -94,7 +107,12 @@ export class NodeService extends NodeHelper {
         FROM "Node" n
         JOIN node_tree nt ON n."parent_node_id" = nt.id
       )
-      SELECT * FROM node_tree;`
+      SELECT * FROM node_tree
+      ORDER BY 
+        CASE
+          WHEN slug = 'root' THEN 0
+          ELSE 1
+        END, slug;`
 
     const d3Root = stratify<KPINodeType>()
       .id((n) => n.id)
@@ -121,9 +139,9 @@ export class NodeService extends NodeHelper {
     })
 
     const edges = convertToReactFlowEdges(d3Root)
-    const kpiNodes = convertToReactFlowNodes(d3Root)
+    const kpiNodes = convertToReactFlowKPINodes(d3Root)
     const speechBallonNodes = convertToReactFlowSpeechBallon(speechBallon)
-    const commentNodes = convertToReactFlowComments(comments as CommentType[])
+    const commentNodes = convertToReactFlowComments(comments as CommentWithAuthorType[])
 
     const nodes = [...kpiNodes, ...speechBallonNodes, ...commentNodes]
 

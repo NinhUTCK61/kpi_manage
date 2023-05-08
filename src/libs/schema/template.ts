@@ -35,5 +35,5 @@ export const TemplateDataSchema = z.object({
 export const TemplateDataOutputSchema = z.array(TemplateDataSchema)
 
 export const GetTemplateByIdInputSchema = z.object({
-  template_id: z.string(),
+  id: z.string(),
 })

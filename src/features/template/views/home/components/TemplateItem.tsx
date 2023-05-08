@@ -47,12 +47,12 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       if (inputNameRef.current) {
         inputNameRef.current.focus()
       }
-    }, 200)
+    }, 0)
   }
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    if (name === '' || name === null) {
+    if (name === '' || name === null || name === template.name) {
       setName(null)
       return
     }

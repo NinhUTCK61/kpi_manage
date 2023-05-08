@@ -5,6 +5,7 @@ import ZoomInIcon from 'public/assets/svgs/zoom_in.svg'
 import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
 import { useEffect, useState } from 'react'
 import { Controls, useReactFlow } from 'reactflow'
+
 function KpiControls() {
   const { setViewport, getViewport, getZoom } = useReactFlow()
   const [valueZoom, setValueZoom] = useState<number | null>()
@@ -46,8 +47,6 @@ function KpiControls() {
       showInteractive={false}
       showFitView={false}
       showZoom={false}
-      onZoomIn={() => console.log('zoom in')}
-      onZoomOut={() => console.log('zoom out')}
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Image
