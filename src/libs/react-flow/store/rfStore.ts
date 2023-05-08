@@ -121,6 +121,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEdgeByNodeId(nodeId) {
         const oldEdges = get().edges
         const edges = oldEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+        set({ edges })
         return edges
       },
       removeEmptyNode() {

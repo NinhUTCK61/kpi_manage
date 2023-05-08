@@ -32,11 +32,9 @@ const useNodeCreateMutation = () => {
           .getData({ template_id: variables.template_id })
           ?.nodes.filter((node) => node.data.type === 'kpi') || []
       const kpiNodes = nodes.filter((node) => node.data.type === 'kpi')
-      console.log(122112, kpiNodes, nodesQuery)
       // Get difference node position
       const diff = differenceWith(kpiNodes, nodesQuery, (a, b) => isEqual(a.position, b.position))
 
-      console.log(diff)
       if (diff.length) {
         mulUpdate(diff.map((n) => n.data) as KPINodeType[])
       }

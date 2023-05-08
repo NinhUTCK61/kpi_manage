@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material'
+import { isEqual } from 'lodash'
 import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
@@ -29,6 +30,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   const saveValue = () => {
     const nodeData = { ...data, ...getValues() }
+    const hasChange = !isEqual(nodeData, data)
+    if (!hasChange) return
     saveHandler(nodeData)
     changeFocusState(false)
   }

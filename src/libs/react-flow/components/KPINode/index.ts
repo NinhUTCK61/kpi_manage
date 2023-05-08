@@ -1,2 +1,2 @@
-export * from './KPINode'
+export * from './KpiNode'
 export * from './components'
