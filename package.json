@@ -52,7 +52,7 @@
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.2",
     "reactflow": "^11.7.0",
-    "sharp": "^0.32.0",
+    "sharp": "^0.32.1",
     "superjson": "1.12.2",
     "trpc-openapi": "^1.1.2",
     "trpc-panel": "^1.2.13",
