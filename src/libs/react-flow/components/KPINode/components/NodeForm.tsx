@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material'
-import { FormEvent, memo } from 'react'
+import { ClickAwayListener, Stack } from '@mui/material'
+import { FormEvent, KeyboardEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
 import { useNodeHandler } from '../hooks'
@@ -17,11 +17,11 @@ type NodeFormMemoTypes = {
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
   const { data } = useKPINodeContext()
-  const { control, getValues } = useForm<NodeFormProps>({
+  const { control, getValues, setFocus } = useForm<NodeFormProps>({
     defaultValues: {
       input_title: data.input_title || '',
-      unit: data.unit || '',
       input_value: data.input_value || '',
+      unit: data.unit || '',
     },
   })
 
@@ -56,38 +56,48 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   const style = JSON.parse(data.node_style || '{}')
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.shiftKey && e.key === 'Enter') {
+      e.preventDefault()
+      const name = (e.target as HTMLInputElement).name
+      const inputArr = Object.keys(getValues())
+      const currentIndex = inputArr.indexOf(name)
+      const nextIndex = currentIndex === inputArr.length - 1 ? 0 : currentIndex + 1
+      setFocus(inputArr[nextIndex] as keyof NodeFormProps)
+    }
+  }
+
   return (
-    <Stack component="form" onSubmit={saveForm} spacing={0.5}>
-      <InputNode
-        control={control}
-        name="input_title"
-        required
-        label="Label"
-        onBlur={saveValue}
-        onFocus={handleFocus}
-        inputProps={{ style }}
-      />
+    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={saveValue}>
+      <Stack component="form" onSubmit={saveForm} onKeyDown={handleKeyDown} spacing={0.5}>
+        <InputNode
+          control={control}
+          name="input_title"
+          required
+          label="Label"
+          onFocus={handleFocus}
+          inputProps={{ style }}
+        />
 
-      <InputNode
-        control={control}
-        name="input_value"
-        label="="
-        onBlur={saveValue}
-        onFocus={handleFocus}
-        inputProps={{ style }}
-      />
+        <InputNode
+          control={control}
+          name="input_value"
+          label="="
+          onFocus={handleFocus}
+          inputProps={{ style }}
+        />
 
-      <InputNode
-        control={control}
-        name="unit"
-        label="Unit"
-        onBlur={saveValue}
-        onFocus={handleFocus}
-        inputProps={{ style }}
-      />
+        <InputNode
+          control={control}
+          name="unit"
+          label="Unit"
+          onFocus={handleFocus}
+          inputProps={{ style }}
+        />
 
-      <input type="submit" hidden />
-    </Stack>
+        <input type="submit" hidden />
+      </Stack>
+    </ClickAwayListener>
   )
 }
 
