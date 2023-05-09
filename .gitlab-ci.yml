@@ -33,6 +33,7 @@ check-convention:
     - git diff --exit-code
   except:
     - develop
+    - /^dependabot-*$/
   
 build-stg:
   stage: build
