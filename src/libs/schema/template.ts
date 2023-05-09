@@ -37,5 +37,3 @@ export const TemplateDataOutputSchema = z.array(TemplateDataSchema)
 export const GetTemplateByIdInputSchema = z.object({
   id: z.string(),
 })
-
-export const FavoriteTemplateInputSchema = z.object({})
