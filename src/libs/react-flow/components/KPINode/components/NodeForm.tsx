@@ -27,7 +27,11 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   const { saveHandler } = useNodeHandler()
 
-  const saveValue = () => {
+  const saveValueInput = () => {
+    saveValue(true)
+  }
+
+  const saveValue = (isBlur?: boolean) => {
     const nodeData = { ...data, ...getValues() }
     const input_value = Number(nodeData.input_value?.replace('=', ''))
     if (!!input_value) {
@@ -35,7 +39,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
     } else {
       nodeData.value2number = 0
     }
-    saveHandler(nodeData)
+    saveHandler(nodeData, isBlur)
     changeFocusState(false)
   }
 
@@ -57,7 +61,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         name="input_title"
         required
         label="Label"
-        onBlur={saveValue}
+        onBlur={saveValueInput}
         onFocus={handleFocus}
         inputProps={{ style }}
       />
@@ -66,7 +70,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         control={control}
         name="input_value"
         label="="
-        onBlur={saveValue}
+        onBlur={saveValueInput}
         onFocus={handleFocus}
         inputProps={{ style }}
       />
@@ -75,7 +79,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         control={control}
         name="unit"
         label="Unit"
-        onBlur={saveValue}
+        onBlur={saveValueInput}
         onFocus={handleFocus}
         inputProps={{ style }}
       />

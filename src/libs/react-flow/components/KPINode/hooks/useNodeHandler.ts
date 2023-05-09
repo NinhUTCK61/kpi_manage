@@ -8,8 +8,9 @@ const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
 
-  const saveHandler = (data: KPINodeType) => {
+  const saveHandler = (data: KPINodeType, isBlur?: boolean) => {
     const action = getSaveAction(data)
 
     switch (action) {
@@ -17,7 +18,14 @@ const useNodeHandler = () => {
         create({ ...data, template_id: templateId })
         break
       case 'UPDATE':
-        update({ ...data })
+        update(
+          { ...data },
+          {
+            onSuccess() {
+              !isBlur && setNodeFocused('')
+            },
+          },
+        )
         break
       case 'DELETE':
         break
