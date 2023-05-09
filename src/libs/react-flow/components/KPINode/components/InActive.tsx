@@ -6,12 +6,13 @@ import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { IconImageNode, LeftHandler, NodeUnActiveContainer, RightHandler, TextId } from './styled'
 
-const NodeUnActive: React.FC = () => {
+const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const isHasChild = useRFStore((state) => state.isHasChild)
 
   const { data, isConnectable } = useKPINodeContext()
+  const style = JSON.parse(data.node_style || '{}')
 
   return (
     <NodeUnActiveContainer
@@ -24,11 +25,15 @@ const NodeUnActive: React.FC = () => {
     >
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <Typography variant="body2" mb={0.5}>
-        {`${data.input_title}${data.unit && `(${data.unit})`}`}
+      <Typography variant="body2" mb={0.5} style={style} align="center">
+        {`${data.input_title}`}
       </Typography>
 
-      {!!data.value2number && <Typography variant="body2">{data.value2number}</Typography>}
+      {!!data.value2number && (
+        <Typography variant="body2" style={style} align="center">
+          {`${data.value2number} ${data.unit && `(${data.unit})`} `}
+        </Typography>
+      )}
 
       <RightHandler type="source" position={Position.Right}>
         {data.slug !== 'root' && isHasChild(data.id) && <IconImageNode src={NodeIcon} alt="add" />}
@@ -39,4 +44,4 @@ const NodeUnActive: React.FC = () => {
   )
 }
 
-export { NodeUnActive }
+export { InActive }

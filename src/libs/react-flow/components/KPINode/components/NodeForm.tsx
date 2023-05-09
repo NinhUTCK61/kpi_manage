@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material'
-import { isEqual } from 'lodash'
 import { FormEvent, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
@@ -29,9 +28,19 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
   const { saveHandler } = useNodeHandler()
 
   const saveValue = () => {
+    // TODO: write function handle node data
     const nodeData = { ...data, ...getValues() }
-    const hasChange = !isEqual(nodeData, data)
-    if (!hasChange) return
+    const input_value = nodeData.input_value || ''
+    const is_formula = input_value.includes('=')
+
+    if (!is_formula) {
+      nodeData.value2number = Number(input_value)
+    } else {
+      // TODO: handler calculate formula here
+      nodeData.value2number = null
+    }
+
+    nodeData.is_formula = is_formula
     saveHandler(nodeData)
     changeFocusState(false)
   }
@@ -45,6 +54,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
     changeFocusState(true)
   }
 
+  const style = JSON.parse(data.node_style || '{}')
+
   return (
     <Stack component="form" onSubmit={saveForm} spacing={0.5}>
       <InputNode
@@ -54,6 +65,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         label="Label"
         onBlur={saveValue}
         onFocus={handleFocus}
+        inputProps={{ style }}
       />
 
       <InputNode
@@ -62,6 +74,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         label="="
         onBlur={saveValue}
         onFocus={handleFocus}
+        inputProps={{ style }}
       />
 
       <InputNode
@@ -70,6 +83,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         label="Unit"
         onBlur={saveValue}
         onFocus={handleFocus}
+        inputProps={{ style }}
       />
 
       <input type="submit" hidden />

@@ -6,7 +6,7 @@ import { useKPINodeContext } from '../context'
 import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
-const NodeActive: React.FC = () => {
+const Active: React.FC = () => {
   const addKPINode = useRFStore((state) => state.addKPINode)
   const { data, isConnectable } = useKPINodeContext()
   const [focus, setFocus] = useState<boolean>(false)
@@ -49,4 +49,4 @@ const NodeActive: React.FC = () => {
   )
 }
 
-export { NodeActive }
+export { Active }

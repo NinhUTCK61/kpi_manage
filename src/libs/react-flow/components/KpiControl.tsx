@@ -3,35 +3,28 @@ import { Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import ZoomInIcon from 'public/assets/svgs/zoom_in.svg'
 import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
-import { useEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 import { Controls, useReactFlow } from 'reactflow'
+import { useRFStore } from '../hooks'
 
 function KpiControls() {
-  const { setViewport, getViewport, getZoom } = useReactFlow()
-  const [valueZoom, setValueZoom] = useState<number | null>()
+  const { setViewport, getViewport } = useReactFlow()
+  const zoom = useRFStore((state) => state.zoom)
+  const handleZoom = useRFStore((state) => state.handleZoom)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTimeout(() => {
-      setValueZoom(getZoom())
-    }, 200)
-  }, [getZoom])
-
-  const handleZoom = async (isZoomIn?: boolean) => {
-    if (!valueZoom) return
-    let _valueZoom = valueZoom
-    if (isZoomIn) {
-      _valueZoom = _valueZoom <= 1.75 ? _valueZoom + 0.25 : _valueZoom
-    } else {
-      _valueZoom = _valueZoom > 0.25 ? _valueZoom - 0.25 : _valueZoom
-    }
-    const { x, y } = getViewport()
-    setViewport({
-      x,
-      y,
-      zoom: _valueZoom,
-    })
-    setValueZoom(_valueZoom)
-  }
+      if (zoom) {
+        const { x, y } = getViewport()
+        // get current x y to set viewport after zoom
+        setViewport({
+          x,
+          y,
+          zoom,
+        })
+      }
+    }, 100)
+  }, [getViewport, setViewport, zoom])
 
   return (
     <Controls
@@ -57,7 +50,7 @@ function KpiControls() {
         />
 
         <Typography width={43} textAlign="center">
-          {valueZoom && valueZoom * 100}%
+          {zoom && (zoom * 100).toFixed(0)}%
         </Typography>
 
         <Image

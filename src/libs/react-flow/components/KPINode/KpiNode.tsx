@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { NodeProps } from 'reactflow'
 import { useRFStore } from '../../hooks'
 import { KPINodeType } from '../../types'
-import { NodeActive, NodeUnActive } from './components'
+import { Active, InActive } from './components'
 import { KPINodeProvider } from './context'
 
 function KpiNode(props: NodeProps<KPINodeType>) {
@@ -14,9 +14,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
 
   return (
-    <KPINodeProvider value={contextValue}>
-      {isActive ? <NodeActive /> : <NodeUnActive />}
-    </KPINodeProvider>
+    <KPINodeProvider value={contextValue}>{isActive ? <Active /> : <InActive />}</KPINodeProvider>
   )
 }
 
