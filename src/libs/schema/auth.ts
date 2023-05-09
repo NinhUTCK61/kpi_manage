@@ -89,3 +89,12 @@ export type ResendEmailVerifyType = z.infer<typeof ResendEmailVerify>
 export const UserWithoutPasswordSchema = UserSchema.omit({
   password: true,
 })
+
+export const ChangePasswordInputSchema = z
+  .object({
+    password: z.string(),
+    newPassword: z.string(),
+  })
+  .refine((data) => data.password !== data.newPassword, {
+    message: 'error.error_same_password',
+  })

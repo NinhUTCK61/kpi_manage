@@ -1,9 +1,10 @@
 import {
+  ChangePasswordInputSchema,
   ForgotPasswordInputSchema,
   ResetPasswordInputSchema,
   SignUpInputSchema,
 } from '@/libs/schema'
-import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc'
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import AuthService from '../services/auth.service'
@@ -45,5 +46,12 @@ export const authRouter = createTRPCRouter({
     .output(z.string())
     .mutation(({ input }) => {
       return authService.resendVerifyEmail(input.email)
+    }),
+  changePassword: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/change-passsword' } })
+    .input(ChangePasswordInputSchema)
+    .output(UserSchema)
+    .mutation(({ input, ctx }) => {
+      return authService.changePassword(input.password, input.newPassword, ctx.session.user.id)
     }),
 })

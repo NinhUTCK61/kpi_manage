@@ -312,6 +312,38 @@ class AuthService {
     )
     return 'ok!'
   }
+
+  async changePassword(password: string, newPassword: string, userId: string) {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    })
+    if (!user) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'error.error_user_not_found',
+      })
+    }
+    const isVerify = await argon2.verify(user.password as string, password)
+    if (isVerify) {
+      const hashNewPassword = await argon2.hash(newPassword)
+      const userChangePassword = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          password: hashNewPassword,
+        },
+      })
+      return userChangePassword
+    } else {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'error.error_incorrect_password',
+      })
+    }
+  }
 }
 
 export default AuthService
