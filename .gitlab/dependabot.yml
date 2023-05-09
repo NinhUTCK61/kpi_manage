@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Fetch and update latest `npm` packages
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+    rebase-strategy: 'auto'
+    open-pull-requests-limit: 10
+    reviewers:
+      - trungnh99
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
