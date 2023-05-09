@@ -1,10 +1,9 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
+import { useNodeCreateMutation, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
-import { useNodeCreateMutation } from './useNodeCreateMutation'
-import { useNodeUpdateMutation } from './useNodeUpdateMutation'
 
 const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)

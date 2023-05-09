@@ -68,7 +68,7 @@ const NodeActiveContainer = styled(Box)(({ theme }) => ({
   borderColor: theme.palette.blue[500],
 }))
 
-const NodeUnActiveContainer = styled(Stack)(({ theme }) => ({
+const NodeInActiveContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   maxWidth: 190,
   height: 106,
@@ -86,5 +86,5 @@ export {
   IconImage,
   IconImageNode,
   NodeActiveContainer,
-  NodeUnActiveContainer,
+  NodeInActiveContainer,
 }

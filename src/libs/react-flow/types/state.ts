@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { UpdateNodeInputType } from '@/libs/schema/node'
-import { Edge, OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow'
+import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete } from 'reactflow'
 import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from './node'
 
 export type RFStore = {
@@ -8,8 +8,9 @@ export type RFStore = {
   nodes: ReactFlowNode[]
   edges: Edge[]
   d3Root: HierarchyFlowNode
-  onNodesChange: OnNodesChange
-  onEdgesChange: OnEdgesChange
+  handleNodesChange: OnNodesChange
+  handleEdgesChange: OnEdgesChange
+  deleteNodes: OnNodesDelete
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
   nodeFocused: string | null

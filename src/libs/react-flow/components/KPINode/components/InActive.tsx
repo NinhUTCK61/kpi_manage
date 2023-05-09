@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 import NodeIcon from 'public/assets/svgs/node.svg'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
-import { IconImageNode, LeftHandler, NodeUnActiveContainer, RightHandler, TextId } from './styled'
+import { IconImageNode, LeftHandler, NodeInActiveContainer, RightHandler, TextId } from './styled'
 
 const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
@@ -15,7 +15,7 @@ const InActive: React.FC = () => {
   const style = JSON.parse(data.node_style || '{}')
 
   return (
-    <NodeUnActiveContainer
+    <NodeInActiveContainer
       onClick={() => setNodeFocused(data.slug)}
       sx={{
         ...(viewportAction !== ViewPortAction.Move && {
@@ -40,7 +40,7 @@ const InActive: React.FC = () => {
       </RightHandler>
 
       <TextId variant="caption">{data.slug}</TextId>
-    </NodeUnActiveContainer>
+    </NodeInActiveContainer>
   )
 }
 

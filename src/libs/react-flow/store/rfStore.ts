@@ -52,12 +52,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
     d3RootMiddleware((set, get) => ({
       ...(DEFAULT_STATE as RFStore),
       ...initialState,
-      onNodesChange(changes: NodeChange[]) {
+      handleNodesChange(changes: NodeChange[]) {
+        console.log('handleNodesChange', changes)
+        if (changes[0]?.type === 'remove') {
+          get().removeNode(changes[0].id)
+          return
+        }
+
         set({
           nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
         })
       },
-      onEdgesChange(changes: EdgeChange[]) {
+      handleEdgesChange(changes: EdgeChange[]) {
         set({
           edges: applyEdgeChanges(changes, get().edges),
         })
@@ -99,6 +105,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _newNode
       },
+      deleteNodes(nodes) {
+        console.log('onNodesDelete', nodes)
+      },
       // TODO: update kpi node
       updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
@@ -111,7 +120,17 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       removeNode(nodeId: string) {
         // TODO: remove hierarchy node
-        const oldNodes = get().nodes
+        let oldNodes = get().nodes
+        const d3Node = get().d3Root.find((n) => n.data.id === nodeId)
+        if (!d3Node) return
+        d3Node.descendants().forEach((n) => {
+          const _node = oldNodes.find((node) => node.id === n.data.id)
+          oldNodes = oldNodes.filter((node) => node.id !== n.data.id)
+          if (_node) {
+            get().removeEdgeByNodeId(_node.id)
+          }
+        })
+
         const nodes = oldNodes.filter((n) => n.id !== nodeId)
         const d3Updated = stratifier(nodes)
         const _nodes = getLayoutElements(d3Updated)
