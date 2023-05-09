@@ -5,7 +5,7 @@ updates:
     directory: '/'
     schedule:
       interval: daily
-    rebase-strategy: 'auto'
+    rebase-strategy: all
     open-pull-requests-limit: 10
     reviewers:
       - trungnh99
