@@ -111,6 +111,14 @@ const Success: React.FC<PropType> = ({ email }) => {
                 {count} {t('seconds')}
               </Typography>
             </Typography>
+            <Typography
+              textAlign="center"
+              variant="body2"
+              color="base.contrastText"
+              visibility={isVisibleCount() ? 'visible' : 'hidden'}
+            >
+              {count}
+            </Typography>
           </Stack>
         </Stack>
       </Slide>
