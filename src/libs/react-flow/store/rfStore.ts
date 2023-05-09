@@ -109,18 +109,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ nodes: _nodes })
         }
       },
-      updateStyleKPINodeBySlug(slug) {
-        const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.slug === slug)
-        if (_node) {
-          _node.data.data.node_style = JSON.stringify({
-            color: get().nodeColor,
-            fontSize: get().fontSize,
-          })
-          const _nodes = getLayoutElements(_d3)
-          set({ nodes: _nodes })
-        }
-      },
       removeNode(nodeId: string) {
         // TODO: remove hierarchy node
         const oldNodes = get().nodes
