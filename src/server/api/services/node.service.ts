@@ -69,7 +69,7 @@ export class NodeService extends NodeHelper {
     return newNode
   }
 
-  async delete([...nodeIds], user: User) {
+  async multipleDelete(nodeIds: string[], user: User) {
     await this.validateNodeOfUser(nodeIds, user.id)
 
     await prisma.node.deleteMany({
@@ -77,6 +77,18 @@ export class NodeService extends NodeHelper {
         id: {
           in: nodeIds,
         },
+      },
+    })
+
+    return 'node.delete_success'
+  }
+
+  async delete(id: string, user: User) {
+    await this.validateNodeOfUser([id], user.id)
+
+    await prisma.node.delete({
+      where: {
+        id,
       },
     })
 

@@ -35,9 +35,16 @@ export const nodeRouter = createTRPCRouter({
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.multipleUpdate(input, session.user)
     }),
+  multipleDelete: protectedProcedure
+    .meta({ openapi: { method: 'POST', path: '/bulk-node' }, protect: true })
+    .input(DeleteNodeInputSchema)
+    .output(z.string())
+    .mutation(({ input, ctx: { session } }) => {
+      return nodeService.multipleDelete(input.id, session.user)
+    }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })
-    .input(DeleteNodeInputSchema)
+    .input(z.object({ id: z.string() }))
     .output(z.string())
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.delete(input.id, session.user)
