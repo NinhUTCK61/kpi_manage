@@ -74,6 +74,9 @@
     "create_node": "ノードを作成できませんでした。"
     "error_date": "The date of birth cannot be later than the current date."
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
+    "dob_invalid": "The date of birth cannot be later than the current date.",
+    "create_node": "ノードを作成できませんでした。",
+    "error_date": "The date of birth cannot be later than the current date.",
     "speechballon_not_found": "Speech ballon not found!"
   },
   "template": {

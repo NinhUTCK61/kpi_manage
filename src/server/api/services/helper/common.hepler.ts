@@ -7,6 +7,9 @@ export class CommonHelper {
       where: {
         template_id,
         user_id,
+        template: {
+          deleted_at: null,
+        },
       },
     })
 
