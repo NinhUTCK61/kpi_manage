@@ -10,7 +10,7 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
-import { HierarchyFlowNode, RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -139,20 +139,19 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes, edges })
       },
-      getNodeById(id) {
+      getKPINodeById(id) {
         const node = get().nodes.find((n) => n.type === 'kpi' && n.data.id === id)
         if (!node) return null
         return node
       },
       isHasChild(nodeId: string) {
-        const _d3 = get().d3Root as HierarchyFlowNode
+        const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
       setNodeFocused(slug) {
         set({
           nodeFocused: slug,
-          nodeFocus: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
         })
 
         const style = get().d3Root.find((n) => n.data.data.slug === slug)?.data.data.node_style
@@ -204,7 +203,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
 
-        let _valueZoom = get().zoom
+        let _zoomValue = get().zoom
 
         for (
           let i = isZoomIn ? 0 : list_value_zoom.length - 1;
@@ -214,19 +213,19 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           const value = list_value_zoom[i]
           if (!value) return
           if (isZoomIn) {
-            if (value > _valueZoom) {
-              _valueZoom = value
+            if (value > _zoomValue) {
+              _zoomValue = value
               break
             }
           } else {
-            if (value < _valueZoom) {
-              _valueZoom = value
+            if (value < _zoomValue) {
+              _zoomValue = value
               break
             }
           }
         }
 
-        set({ zoom: _valueZoom })
+        set({ zoom: _zoomValue })
       },
       scrollZoom(isZoomIn) {
         const _zoom = get().zoom * 100

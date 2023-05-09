@@ -37,6 +37,9 @@ const useNodeUpdateMutation = () => {
 
       utils.node.list.setData({ template_id: ctx?.templateId as string }, ctx?.prevData)
     },
+    onSuccess() {
+      setNodeFocused('')
+    },
     onSettled() {
       utils.node.list.invalidate()
     },

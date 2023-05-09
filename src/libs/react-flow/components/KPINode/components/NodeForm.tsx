@@ -27,19 +27,21 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   const { saveHandler } = useNodeHandler()
 
-  const saveValueInput = () => {
-    saveValue(true)
-  }
-
-  const saveValue = (isBlur?: boolean) => {
+  const saveValue = () => {
+    // TODO: write function handle node data
     const nodeData = { ...data, ...getValues() }
-    const input_value = Number(nodeData.input_value?.replace('=', ''))
-    if (!!input_value) {
-      nodeData.value2number = input_value
+    const input_value = nodeData.input_value || ''
+    const is_formula = input_value.includes('=')
+
+    if (!is_formula) {
+      nodeData.value2number = Number(input_value)
     } else {
-      nodeData.value2number = 0
+      // TODO: handler calculate formula here
+      nodeData.value2number = null
     }
-    saveHandler(nodeData, isBlur)
+
+    nodeData.is_formula = is_formula
+    saveHandler(nodeData)
     changeFocusState(false)
   }
 
@@ -52,7 +54,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
     changeFocusState(true)
   }
 
-  const style = JSON.parse(data.node_style as string) || {}
+  const style = JSON.parse(data.node_style || '{}')
 
   return (
     <Stack component="form" onSubmit={saveForm} spacing={0.5}>
@@ -61,7 +63,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         name="input_title"
         required
         label="Label"
-        onBlur={saveValueInput}
+        onBlur={saveValue}
         onFocus={handleFocus}
         inputProps={{ style }}
       />
@@ -70,7 +72,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         control={control}
         name="input_value"
         label="="
-        onBlur={saveValueInput}
+        onBlur={saveValue}
         onFocus={handleFocus}
         inputProps={{ style }}
       />
@@ -79,7 +81,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
         control={control}
         name="unit"
         label="Unit"
-        onBlur={saveValueInput}
+        onBlur={saveValue}
         onFocus={handleFocus}
         inputProps={{ style }}
       />

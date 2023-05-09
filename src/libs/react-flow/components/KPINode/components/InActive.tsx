@@ -12,7 +12,7 @@ const InActive: React.FC = () => {
   const isHasChild = useRFStore((state) => state.isHasChild)
 
   const { data, isConnectable } = useKPINodeContext()
-  const style = JSON.parse(data.node_style as string) || {}
+  const style = JSON.parse(data.node_style || '{}')
 
   return (
     <NodeUnActiveContainer

@@ -92,6 +92,7 @@ export const Template: React.FC = () => {
           onPaneClick={onPaneClick}
           onWheel={handleWheel}
           deleteKeyCode={null}
+          zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
           <KpiControls />
         </KpiReactFlow>
