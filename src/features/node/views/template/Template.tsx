@@ -24,15 +24,13 @@ const storeSelector = (state: RFStore) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   viewportAction: state.viewportAction,
-  onNodeClick: state.onNodeClick,
   setNodeFocused: state.setNodeFocused,
+  scrollZoom: state.scrollZoom,
 })
 
 export const Template: React.FC = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, setNodeFocused } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { nodes, edges, onNodesChange, onEdgesChange, viewportAction, setNodeFocused, scrollZoom } =
+    useRFStore(storeSelector, shallow)
 
   const containerRef = useRef<HTMLElement>(null)
 
@@ -55,6 +53,19 @@ export const Template: React.FC = () => {
     }
   }, [setViewport])
 
+  function handleWheel(event: React.WheelEvent<HTMLDivElement>) {
+    if (event.ctrlKey) {
+      // Ctrl key is pressed
+      const delta = event.deltaY
+      // Handle scroll event here
+      if (delta > 0) {
+        scrollZoom()
+      } else {
+        scrollZoom(true)
+      }
+    }
+  }
+
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
@@ -62,7 +73,7 @@ export const Template: React.FC = () => {
       <Container display="flex" flex={1} ref={containerRef}>
         <KpiReactFlow
           maxZoom={2}
-          minZoom={0.5}
+          minZoom={0.25}
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -79,6 +90,8 @@ export const Template: React.FC = () => {
           nodesDraggable={false}
           action={viewportAction}
           onPaneClick={onPaneClick}
+          onWheel={handleWheel}
+          deleteKeyCode={null}
         >
           <KpiControls />
         </KpiReactFlow>

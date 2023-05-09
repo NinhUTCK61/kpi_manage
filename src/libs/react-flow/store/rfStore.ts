@@ -10,7 +10,7 @@ import {
 } from 'reactflow'
 import { createStore } from 'zustand'
 import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
-import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -44,6 +44,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
+  zoom: 0.75,
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -150,14 +151,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes, edges })
       },
-      getCurrentColorNodeFocused() {
-        const style = get().d3Root.find((n) => n.data.data.slug === get().nodeFocused)?.data.data
-          .node_style
-        console.log('slug', style)
-        return style ? JSON.parse(style).color : get().nodeColor
+      getNodeById(id) {
+        const node = get().nodes.find((n) => n.type === 'kpi' && n.data.id === id)
+        if (!node) return null
+        return node
       },
       isHasChild(nodeId: string) {
-        const _d3 = get().d3Root
+        const _d3 = get().d3Root as HierarchyFlowNode
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
@@ -171,7 +171,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         if (style) {
           set({ nodeColor: JSON.parse(style).color })
-          console.log('new node color', slug, JSON.parse(style).color)
         }
 
         if (slug === '') {
@@ -185,7 +184,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
         }
       },
-
+      //function toolbar
       changeViewportAction(action) {
         set({
           viewportAction: action,
@@ -212,6 +211,42 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       changeShapeType(shape) {
         set({ shape })
+      },
+      //function zoom
+      handleZoom(isZoomIn) {
+        const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+
+        let _valueZoom = get().zoom
+
+        for (
+          let i = isZoomIn ? 0 : list_value_zoom.length - 1;
+          isZoomIn ? i < list_value_zoom.length : i >= 0;
+          isZoomIn ? i++ : i--
+        ) {
+          const value = list_value_zoom[i]
+          if (!value) return
+          if (isZoomIn) {
+            if (value > _valueZoom) {
+              _valueZoom = value
+              break
+            }
+          } else {
+            if (value < _valueZoom) {
+              _valueZoom = value
+              break
+            }
+          }
+        }
+
+        set({ zoom: _valueZoom })
+      },
+      scrollZoom(isZoomIn) {
+        const _zoom = get().zoom * 100
+        if (isZoomIn) {
+          set({ zoom: (_zoom <= 200 ? _zoom + 5 : _zoom) / 100 })
+        } else {
+          set({ zoom: (_zoom >= 10 ? _zoom - 5 : _zoom) / 100 })
+        }
       },
     })),
   )

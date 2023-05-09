@@ -6,7 +6,7 @@ import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { IconImageNode, LeftHandler, NodeUnActiveContainer, RightHandler, TextId } from './styled'
 
-const NodeUnActive: React.FC = () => {
+const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const isHasChild = useRFStore((state) => state.isHasChild)
@@ -25,13 +25,13 @@ const NodeUnActive: React.FC = () => {
     >
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <Typography variant="body2" mb={0.5} style={style}>
-        {`${data.input_title}${data.unit && `(${data.unit})`}`}
+      <Typography variant="body2" mb={0.5} style={style} align="center">
+        {`${data.input_title}`}
       </Typography>
 
       {!!data.value2number && (
-        <Typography variant="body2" style={style}>
-          {data.value2number}
+        <Typography variant="body2" style={style} align="center">
+          {`${data.value2number} ${data.unit && `(${data.unit})`} `}
         </Typography>
       )}
 
@@ -44,4 +44,4 @@ const NodeUnActive: React.FC = () => {
   )
 }
 
-export { NodeUnActive }
+export { InActive }

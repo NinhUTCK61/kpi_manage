@@ -29,6 +29,12 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   const saveValue = () => {
     const nodeData = { ...data, ...getValues() }
+    const input_value = Number(nodeData.input_value?.replace('=', ''))
+    if (!!input_value) {
+      nodeData.value2number = input_value
+    } else {
+      nodeData.value2number = 0
+    }
     saveHandler(nodeData)
     changeFocusState(false)
   }
@@ -43,7 +49,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
   }
 
   const style = JSON.parse(data.node_style as string) || {}
-  
+
   return (
     <Stack component="form" onSubmit={saveForm} spacing={0.5}>
       <InputNode

@@ -1,8 +1,8 @@
 export const NODE_WIDTH = 190
 export const NODE_HEIGHT = 106
 
-export const HORIZONTAL_SPACING_FACTOR = 0.5
-export const VERTICAL_SPACING_FACTOR = 0.5
+export const HORIZONTAL_SPACING_FACTOR = 0.25
+export const VERTICAL_SPACING_FACTOR = 0.25
 
 export const DEFAULT_NODE_ATTRIBUTES = {
   x: 0,

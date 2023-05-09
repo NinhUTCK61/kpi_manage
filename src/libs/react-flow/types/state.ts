@@ -8,7 +8,7 @@ export type RFStore = {
   nodes: ReactFlowNode[]
   edges: Edge[]
   d3Root: HierarchyFlowNode
-  nodeFocus : ReactFlowNode | null
+  nodeFocus: ReactFlowNode | null
   onNodesChange: OnNodesChange
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
@@ -22,7 +22,7 @@ export type RFStore = {
   removeNode: (nodeId: string) => void
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   updateStyleKPINodeBySlug: (slug: string | null) => void
-  getCurrentColorNodeFocused: () => string 
+  getNodeById: (id: string) => ReactFlowNode | null
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
@@ -36,4 +36,8 @@ export type RFStore = {
   changeShapeStroke: (stroke: number) => void
   shape: string | null
   changeShapeType: (shape: string) => void
+  //Zoom action
+  zoom: number
+  handleZoom: (isZoomIn?: boolean) => void
+  scrollZoom: (isZoomIn?: boolean) => void
 }
