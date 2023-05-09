@@ -1,6 +1,5 @@
 import {
   LikeTemplateInputSchema,
-  TemplateDataOutputSchema,
   TemplateDataSchema,
   UpdateTemplateInputSchema,
 } from '@/libs/schema'
@@ -11,8 +10,9 @@ import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { User } from 'next-auth'
 import { z } from 'zod'
+import { TemplateHelper } from './helper/template.helper'
 
-export class TemplateService {
+export class TemplateService extends TemplateHelper {
   async list(userId: string, isTrash: boolean) {
     const deletedOpt = isTrash ? { not: null } : null
     const listTemplate = await prisma.userTemplate.findMany({
@@ -32,44 +32,13 @@ export class TemplateService {
       },
     })
 
-    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
+    const [...templateData] = this.transformTemplateOutput(listTemplate)
 
-    if (listTemplate.length) {
-      listTemplate.forEach((item) => {
-        const {
-          template: { id: _, ...restTemplate },
-        } = item
-
-        templateData.push({
-          template_id: item.template_id,
-          can_edit: item.can_edit,
-          is_favorite: item.is_favorite,
-          is_owner: item.is_owner,
-          ...restTemplate,
-        })
-      })
-    }
-
-    return templateData
+    return [...templateData]
   }
 
   async update({ id, ...restUpdate }: z.infer<typeof UpdateTemplateInputSchema>, user: User) {
-    const checkUserTemplate = await prisma.userTemplate.findFirst({
-      where: {
-        user_id: user.id,
-        template_id: id,
-        template: {
-          deleted_at: null,
-        },
-      },
-    })
-
-    if (!checkUserTemplate) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'error.template_not_found',
-      })
-    }
+    await this.validateUserTemplateDeleted(id, user.id)
 
     const updateData = await prisma.template.update({
       where: { id },
@@ -110,25 +79,10 @@ export class TemplateService {
   }
 
   async like({ id, is_favorite }: z.infer<typeof LikeTemplateInputSchema>, user: User) {
-    const checkUserTemplate = await prisma.userTemplate.findFirst({
-      where: {
-        user_id: user.id,
-        template_id: id,
-        template: {
-          deleted_at: null,
-        },
-      },
-    })
-
-    if (!checkUserTemplate) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'error.template_not_found',
-      })
-    }
+    const UserTemplate = await this.validateUserTemplateDeleted(id, user.id)
 
     const likeTemplate = await prisma.userTemplate.update({
-      where: { id: checkUserTemplate.id },
+      where: { id: UserTemplate.id },
       data: { is_favorite },
     })
 
@@ -179,19 +133,7 @@ export class TemplateService {
   }
 
   async restore(id: string, user: User) {
-    const checkUserTemplate = await prisma.userTemplate.findFirst({
-      where: {
-        user_id: user.id,
-        template_id: id,
-      },
-    })
-
-    if (!checkUserTemplate) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'error.template_not_found',
-      })
-    }
+    await this.validateUserTemplate(id, user.id)
 
     await prisma.template.update({
       where: { id },
@@ -264,24 +206,8 @@ export class TemplateService {
       },
     })
 
-    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
+    const [...templateData] = this.transformTemplateOutput(listTemplate)
 
-    if (listTemplate.length) {
-      listTemplate.forEach((item) => {
-        const {
-          template: { id: _, ...restTemplate },
-        } = item
-
-        templateData.push({
-          template_id: item.template_id,
-          can_edit: item.can_edit,
-          is_favorite: item.is_favorite,
-          is_owner: item.is_owner,
-          ...restTemplate,
-        })
-      })
-    }
-
-    return templateData
+    return [...templateData]
   }
 }
