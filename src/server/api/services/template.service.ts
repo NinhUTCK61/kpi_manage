@@ -245,8 +245,7 @@ export class TemplateService {
     return !!userTemplate
   }
 
-  async favorite(user: User, isTrash: boolean) {
-    const deletedOpt = isTrash ? { not: null } : null
+  async favorite(user: User) {
     const listTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: user.id,
