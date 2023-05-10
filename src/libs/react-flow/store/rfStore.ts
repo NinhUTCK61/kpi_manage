@@ -53,9 +53,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       ...(DEFAULT_STATE as RFStore),
       ...initialState,
       handleNodesChange(changes: NodeChange[]) {
-        console.log('handleNodesChange', changes)
         if (changes[0]?.type === 'remove') {
-          get().removeNode(changes[0].id)
+          // remove node handle by onNodesDelete
           return
         }
 
@@ -64,6 +63,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
       },
       handleEdgesChange(changes: EdgeChange[]) {
+        if (changes[0]?.type === 'remove') {
+          // remove node handle by onNodesDelete
+          return
+        }
+
         set({
           edges: applyEdgeChanges(changes, get().edges),
         })
