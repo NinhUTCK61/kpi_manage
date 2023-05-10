@@ -76,10 +76,8 @@ const Success: React.FC<PropType> = ({ email }) => {
             </Button>
           </Stack>
           <Stack width={{ xs: '100%', md: 460 }} spacing={2} mt={3.5} justifyContent="center">
-            <Typography
-              textAlign="center"
-              variant="body2"
-              color={isVisibleCount() ? 'greyScale.200' : 'base.contrastText'}
+            <Button
+              disabled={isVisibleCount()}
               onClick={handleResendEmail}
               sx={{
                 cursor: 'pointer',
@@ -87,7 +85,7 @@ const Success: React.FC<PropType> = ({ email }) => {
               }}
             >
               {t('resend_email')}
-            </Typography>
+            </Button>
             <Typography
               textAlign="center"
               variant="body2"
