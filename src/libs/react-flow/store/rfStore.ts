@@ -9,7 +9,12 @@ import {
   applyNodeChanges,
 } from 'reactflow'
 import { createStore } from 'zustand'
-import { generateNextReactFlowNode, getLayoutElements, stratifier } from '../helper'
+import {
+  generateNextReactFlowNode,
+  getLayoutElements,
+  removeEdgeByNodeId as rmEdges,
+  stratifier,
+} from '../helper'
 import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
@@ -123,27 +128,36 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         }
       },
       removeNode(nodeId: string) {
-        // TODO: remove hierarchy node
         let oldNodes = get().nodes
+        let oldEdges = get().edges
         const d3Node = get().d3Root.find((n) => n.data.id === nodeId)
-        if (!d3Node) return
+
+        if (!d3Node) return { nodes: oldNodes, edges: oldEdges }
+
+        // remove children node
         d3Node.descendants().forEach((n) => {
           const _node = oldNodes.find((node) => node.id === n.data.id)
-          oldNodes = oldNodes.filter((node) => node.id !== n.data.id)
+
           if (_node) {
-            get().removeEdgeByNodeId(_node.id)
+            oldNodes = oldNodes.filter((node) => node.id !== n.data.id)
+            oldEdges = oldEdges.filter(
+              (edge) => edge.source !== n.data.id && edge.target !== n.data.id,
+            )
           }
         })
 
         const nodes = oldNodes.filter((n) => n.id !== nodeId)
+        const edges = rmEdges(oldEdges, nodeId)
+
         const d3Updated = stratifier(nodes)
         const _nodes = getLayoutElements(d3Updated)
-        const edges = get().removeEdgeByNodeId(nodeId)
         set({ nodes: _nodes, edges })
+
+        return { nodes: _nodes, edges }
       },
       removeEdgeByNodeId(nodeId) {
         const oldEdges = get().edges
-        const edges = oldEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+        const edges = rmEdges(oldEdges, nodeId)
         set({ edges })
         return edges
       },

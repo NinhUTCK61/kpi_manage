@@ -19,7 +19,7 @@ export type RFStore = {
   isHasChild(nodeId: string): boolean
   removeEmptyNode: () => void
   updateKPINode: (node: UpdateNodeInputType) => void
-  removeNode: (nodeId: string) => void
+  removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
   // Toolbar action
