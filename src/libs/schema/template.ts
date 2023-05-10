@@ -1,3 +1,4 @@
+import { Template, UserTemplate } from 'prisma/generated/zod'
 import { z } from 'zod'
 
 export const UpdateTemplateInputSchema = z.object({
@@ -37,3 +38,9 @@ export const TemplateDataOutputSchema = z.array(TemplateDataSchema)
 export const GetTemplateByIdInputSchema = z.object({
   id: z.string(),
 })
+
+export type TemplateType = z.infer<typeof TemplateDataSchema>
+export type LikeTemplateType = z.infer<typeof LikeTemplateInputSchema>
+export type UpdateTemplateType = z.infer<typeof UpdateTemplateInputSchema>
+export type ListTemplateType = UserTemplate & { template: Template }
+export type TemplateOutputType = z.infer<typeof TemplateDataOutputSchema>

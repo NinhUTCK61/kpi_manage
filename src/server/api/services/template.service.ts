@@ -1,15 +1,10 @@
-import {
-  LikeTemplateInputSchema,
-  TemplateDataSchema,
-  UpdateTemplateInputSchema,
-} from '@/libs/schema'
+import { LikeTemplateType, TemplateType, UpdateTemplateType } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
 import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { User } from 'next-auth'
-import { z } from 'zod'
 import { TemplateHelper } from './helper/template.helper'
 
 export class TemplateService extends TemplateHelper {
@@ -37,7 +32,7 @@ export class TemplateService extends TemplateHelper {
     return [...templateData]
   }
 
-  async update({ id, ...restUpdate }: z.infer<typeof UpdateTemplateInputSchema>, user: User) {
+  async update({ id, ...restUpdate }: UpdateTemplateType, user: User) {
     await this.validateUserTemplateDeleted(id, user.id)
 
     const updateData = await prisma.template.update({
@@ -78,7 +73,7 @@ export class TemplateService extends TemplateHelper {
     })
   }
 
-  async like({ id, is_favorite }: z.infer<typeof LikeTemplateInputSchema>, user: User) {
+  async like({ id, is_favorite }: LikeTemplateType, user: User) {
     const UserTemplate = await this.validateUserTemplateDeleted(id, user.id)
 
     const likeTemplate = await prisma.userTemplate.update({
@@ -165,7 +160,7 @@ export class TemplateService extends TemplateHelper {
 
     const { template } = userTemplate
 
-    const templateData: z.infer<typeof TemplateDataSchema> = {
+    const templateData: TemplateType = {
       template_id: userTemplate.template_id,
       can_edit: userTemplate.can_edit,
       is_favorite: userTemplate.is_favorite,
@@ -206,8 +201,8 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const [...templateData] = this.transformTemplateOutput(listTemplate)
+    const templateData = this.transformTemplateOutput(listTemplate)
 
-    return [...templateData]
+    return templateData
   }
 }

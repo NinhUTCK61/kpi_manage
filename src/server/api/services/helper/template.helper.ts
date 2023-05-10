@@ -1,17 +1,11 @@
-import { TemplateDataOutputSchema } from '@/libs/schema'
+import { ListTemplateType, TemplateOutputType } from '@/libs/schema'
 import { prisma } from '@/server/db'
-import { Template, UserTemplate } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
 import { CommonHelper } from './common.hepler'
 
 export class TemplateHelper extends CommonHelper {
-  transformTemplateOutput(
-    listTemplate: (UserTemplate & {
-      template: Template
-    })[],
-  ) {
-    const templateData: z.infer<typeof TemplateDataOutputSchema> = []
+  transformTemplateOutput(listTemplate: ListTemplateType[]) {
+    const templateData: TemplateOutputType = []
 
     listTemplate.forEach((item) => {
       const {
