@@ -5,8 +5,13 @@ import { useNodeCreateMutation, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
+export enum SaveReason {
+  SubmitForm,
+}
+
 const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
 
@@ -22,6 +27,7 @@ const useNodeHandler = () => {
         break
       case 'UPDATE':
         update({ ...newData })
+        setNodeFocused('')
         break
       case 'DELETE':
         break

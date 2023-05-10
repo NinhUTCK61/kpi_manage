@@ -5,7 +5,6 @@ import { enqueueSnackbar } from 'notistack'
 
 const useNodeUpdateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
-  // const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
@@ -37,9 +36,7 @@ const useNodeUpdateMutation = () => {
 
       utils.node.list.setData({ template_id: ctx?.templateId as string }, ctx?.prevData)
     },
-    onSuccess() {
-      // setNodeFocused('')
-    },
+
     onSettled() {
       utils.node.list.invalidate()
     },
