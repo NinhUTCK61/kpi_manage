@@ -55,11 +55,11 @@ const Home = () => {
         }),
     },
     [FileAction.Restore]: {
-      title: t('restore'),
+      title: t('restore_title'),
       description: t('detail_dialog_restore'),
       handleConfirm: handleConfirmAction,
       type: 'warning',
-      textSubmit: t('restore'),
+      textSubmit: t('restore_firm'),
       action: () =>
         mutationRestore.mutate({
           id: String(nodeId),

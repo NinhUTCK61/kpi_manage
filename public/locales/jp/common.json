@@ -78,14 +78,14 @@
     "delete_success": "Delete node success!"
   },
   "dialog": {
-    "cancel": "キャンセル。",
-    "delete": "削除。",
+    "cancel": "キャンセル",
+    "delete": "削除",
     "thumbnail": {
       "click_to_upload": "クリックしてアップロード。",
       "detail_set_thumbnail_1": "ドラッグ＆ドロップ。",
       "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
     },
-    "submit": "登録。"
+    "submit": "登録"
   },
   "email_verified": "Email is verified!",
   "verify_title": "確認する。",
@@ -98,5 +98,5 @@
   "select_year": "生年月日（年）",
   "select_month": "生年月日（月）",
   "select_day": "生年月日（日）",
-  "verify_resend": "メールを再送"
+  "verify_resend": "再送信"
 }
