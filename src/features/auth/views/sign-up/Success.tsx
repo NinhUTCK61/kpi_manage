@@ -28,8 +28,7 @@ const Success: React.FC<PropType> = ({ email }) => {
   })
 
   const handleResendEmail = () => {
-    startCountdown()
-    if (count === 0) {
+    if (count === 0 || count === 60) {
       mutate(
         { email },
         {
@@ -38,10 +37,15 @@ const Success: React.FC<PropType> = ({ email }) => {
               variant: 'error',
             })
           },
+          onSuccess() {
+            startCountdown()
+            enqueueSnackbar(t('resend_message_success'), {
+              variant: 'success',
+            })
+          },
         },
       )
       resetCountdown()
-      startCountdown()
     }
   }
 
@@ -91,16 +95,21 @@ const Success: React.FC<PropType> = ({ email }) => {
               variant="body2"
               color="base.contrastText"
               visibility={isVisibleCount() ? 'visible' : 'hidden'}
+              component={Stack}
+              direction={'row'}
+              alignItems={'center'}
+              justifyContent={'center'}
             >
-              {count}
-            </Typography>
-            <Typography
-              textAlign="center"
-              variant="body2"
-              color="base.contrastText"
-              visibility={isVisibleCount() ? 'visible' : 'hidden'}
-            >
-              {count}
+              {t('resend_email_countdown')}
+              <Typography
+                textAlign="center"
+                variant="body2"
+                color="base.contrastText"
+                fontWeight={800}
+                ml={0.5}
+              >
+                {count} {t('seconds')}
+              </Typography>
             </Typography>
           </Stack>
         </Stack>

@@ -30,5 +30,8 @@
   "reason_title_reason": "KPI Masterを知ったきっかけ",
   "text_law1": "プライバシー規約への同意",
   "resend_email": "メールを再送",
-  "error_match_password": "パスワードとパスワードの確認が一致しません。"
+  "error_match_password": "パスワードとパスワードの確認が一致しません。",
+  "resend_message_success": "メールを送信しました。",
+  "resend_email_countdown": "後",
+  "seconds": "秒で再送信できる"
 }
