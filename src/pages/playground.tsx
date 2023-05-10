@@ -64,7 +64,7 @@ const Home: NextPage = () => {
 }
 
 const Template = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange } = useRFStore((state) => state)
+  const { nodes, edges, handleNodesChange, handleEdgesChange } = useRFStore((state) => state)
 
   return (
     <Box display="flex" flex={1} height="100vh">
@@ -76,8 +76,8 @@ const Template = () => {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onNodesChange={handleNodesChange}
+        onEdgesChange={handleEdgesChange}
         fitView
       >
         <Background />
