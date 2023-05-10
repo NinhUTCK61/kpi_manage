@@ -158,6 +158,36 @@ const customPrimary = {
 }
 const black = {
   900: '#101828',
+  800: '#111111',
+}
+
+const colorAlphabet = {
+  A: '#FF2EAA',
+  B: '#552CC5',
+  C: '#014D27',
+  D: '#334155',
+  E: '#9ca3af',
+  F: '#F59E0B',
+  G: '#10B981',
+  H: '#3B82F6',
+  I: '#6366F1',
+  J: '#8B5CF6',
+  K: '#EC4899',
+  L: '#F472B6',
+  M: '#FBBF24',
+  N: '#3A74F6',
+  O: '#065f46',
+  P: '#F9D882',
+  Q: '#F97316',
+  R: '#2B0B81',
+  S: '#F472B6',
+  T: '#48F79F',
+  U: '#00174C',
+  V: '#414141',
+  W: '#F89685',
+  X: '#F9D88C',
+  Y: '#047857',
+  Z: '#275CD4',
 }
 
 export {
@@ -175,4 +205,5 @@ export {
   greyScale,
   customPrimary,
   black,
+  colorAlphabet,
 }

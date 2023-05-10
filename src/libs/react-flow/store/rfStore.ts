@@ -189,13 +189,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       setNodeFocused(slug) {
         set({
           nodeFocused: slug,
+          nodeFocus: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
         })
-
-        const style = get().d3Root.find((n) => n.data.data.slug === slug)?.data.data.node_style
-
-        if (style) {
-          set({ nodeColor: JSON.parse(style).color })
-        }
 
         if (slug === '') {
           get().removeEmptyNode()
