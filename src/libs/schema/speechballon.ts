@@ -21,3 +21,6 @@ export const UpdateSpeechBallonInputSchema = z.object({
   node_style: z.string(),
   stroke: z.string(),
 })
+
+export type CreateSpeechBallonType = z.infer<typeof CreateSpeechBallonInputSchema>
+export type UpdateSpeechBallonType = z.infer<typeof UpdateSpeechBallonInputSchema>
