@@ -22,12 +22,12 @@ const useDeleteTemplate = () => {
       return { prevData, isTrash: template.is_permanently }
     },
     onSuccess: (data, _, ctx) => {
-      enqueueSnackbar('', {
-        variant: 'success',
-        description: t(
-          ctx?.isTrash ? 'description_delete_per_success' : 'description_delete_success',
-        ) as string,
-      })
+      enqueueSnackbar(
+        t(ctx?.isTrash ? 'description_delete_per_success' : 'description_delete_success'),
+        {
+          variant: 'success',
+        },
+      )
     },
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))

@@ -22,9 +22,8 @@ const useRenameTemplateById = () => {
       return { prevData, template_id }
     },
     onSuccess: () => {
-      enqueueSnackbar(t('rename_success'), {
+      enqueueSnackbar(t('description_rename_success'), {
         variant: 'success',
-        description: t('description_rename_success') as string,
       })
     },
     onError: (err, _, ctx) => {

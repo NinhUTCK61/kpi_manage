@@ -20,17 +20,15 @@ const useRenameTemplate = () => {
       return { prevData }
     },
     onSuccess: () => {
-      enqueueSnackbar(t('rename_success'), {
+      enqueueSnackbar(t('description_rename_success'), {
         variant: 'success',
-        description: t('description_rename_success') as string,
       })
     },
     onError: (err, _, ctx) => {
       if (err.data?.zodError) {
         const errorMes = JSON.parse(err.message)[0].message
-        enqueueSnackbar(t('rename_failed'), {
+        enqueueSnackbar(handleError(errorMes), {
           variant: 'error',
-          description: handleError(errorMes),
         })
 
         return
