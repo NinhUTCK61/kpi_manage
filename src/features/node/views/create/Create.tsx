@@ -27,7 +27,7 @@ const storeSelector = (state: RFStore) => ({
   scrollZoom: state.scrollZoom,
 })
 
-export const Template: React.FC = () => {
+export const CreateView: React.FC = () => {
   // TODO: wrap it in a hook
   const {
     nodes,

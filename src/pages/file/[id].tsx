@@ -1,4 +1,4 @@
-import { Template } from '@/features/node/views'
+import { CreateView } from '@/features/node'
 import { api } from '@/libs/api'
 import { HierarchyFlowNode, ReactFlowNode, TemplateProvider, stratifier } from '@/libs/react-flow'
 import { appRouter } from '@/server/api/root'
@@ -77,7 +77,7 @@ const NodeCreate: FC = () => {
         d3Root={d3Root}
         templateId={String(id)}
       >
-        <Template />
+        <CreateView />
       </TemplateProvider>
     </ReactFlowProvider>
   )
