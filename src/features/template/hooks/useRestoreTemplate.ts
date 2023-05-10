@@ -20,9 +20,8 @@ const useRestoreTemplate = () => {
       return { prevData }
     },
     onSuccess: () => {
-      enqueueSnackbar(t('restore_success'), {
+      enqueueSnackbar(t('description_restore_success'), {
         variant: 'success',
-        description: t('description_restore_success') as string,
       })
     },
     onError: (err, _, ctx) => {
