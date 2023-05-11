@@ -49,9 +49,7 @@ const Success: React.FC<PropType> = ({ email }) => {
     }
   }
 
-  const isVisibleCount = () => {
-    return count !== 60 && count !== 0
-  }
+  const isVisibleCount = count !== 60 && count !== 0
 
   return (
     <Fade in={isSuccess} mountOnEnter unmountOnExit timeout={400}>
@@ -81,7 +79,7 @@ const Success: React.FC<PropType> = ({ email }) => {
           </Stack>
           <Stack width={{ xs: '100%', md: 460 }} spacing={2} mt={3.5} justifyContent="center">
             <Button
-              disabled={isVisibleCount()}
+              disabled={isVisibleCount}
               onClick={handleResendEmail}
               sx={{
                 cursor: 'pointer',
@@ -94,7 +92,7 @@ const Success: React.FC<PropType> = ({ email }) => {
               textAlign="center"
               variant="body2"
               color="base.contrastText"
-              visibility={isVisibleCount() ? 'visible' : 'hidden'}
+              visibility={isVisibleCount ? 'visible' : 'hidden'}
               component={Stack}
               direction={'row'}
               alignItems={'center'}
@@ -115,7 +113,7 @@ const Success: React.FC<PropType> = ({ email }) => {
               textAlign="center"
               variant="body2"
               color="base.contrastText"
-              visibility={isVisibleCount() ? 'visible' : 'hidden'}
+              visibility={isVisibleCount ? 'visible' : 'hidden'}
             >
               {count}
             </Typography>
