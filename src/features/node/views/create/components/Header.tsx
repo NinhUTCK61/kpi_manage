@@ -1,13 +1,13 @@
 import { useLikeTemplate, useRenameTemplateById } from '@/features/template/hooks'
 import { api } from '@/libs/api'
-import { base } from '@/libs/config/theme'
+import { black } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
 import { Menu, MenuItem } from '@/libs/shared/components'
 import { Account } from '@/libs/shared/components/Layout/Header/Account'
 import { AppBar } from '@/libs/shared/components/Layout/Header/AppBar'
 import { Language } from '@/libs/shared/components/Layout/Header/Language'
 import { StackContainer } from '@/libs/shared/components/Layout/StackContainer'
-import { Button, InputBase, Stack, styled } from '@mui/material'
+import { Button, InputBase, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -119,10 +119,9 @@ const HeaderTemplate: React.FC = () => {
           <Button
             disableRipple
             onClick={handleClick}
-            sx={{ color: base.black }}
             endIcon={<Image src={openMenu ? ArrowLeftIcon : ArrowDownIcon} alt="down" />}
           >
-            {template.name}
+            <TextName>{template.name}</TextName>
           </Button>
         )}
 
@@ -166,5 +165,16 @@ const InputBaseStyled = styled(InputBase)(({ theme }) => ({
   fontSize: 15,
   lineHeight: '22px',
 }))
+
+const TextName = styled(Typography)({
+  fontWeight: 600,
+  maxWidth: 240,
+  fontSize: 19,
+  lineHeight: '26px',
+  color: black[800],
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+})
 
 export { HeaderTemplate }
