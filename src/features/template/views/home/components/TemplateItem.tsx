@@ -85,7 +85,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
           action: () => handleAction(FileAction.Restore),
         },
         {
-          title: t('permanently_delete'),
+          title: t('permanently_delete_menu'),
           action: () => handleAction(FileAction.DeletePermanently),
         },
       ]
