@@ -1,10 +1,13 @@
-import { CreateSpeechBallonType, UpdateSpeechBallonType } from '@/libs/schema/speechballon'
+import {
+  CreateSpeechBallonInputType,
+  UpdateSpeechBallonInputType,
+} from '@/libs/schema/speechballon'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 import { User } from 'next-auth'
 
 export class SpeechBallonService {
-  async create(user: User, { template_id, ...resCreate }: CreateSpeechBallonType) {
+  async create(user: User, { template_id, ...resCreate }: CreateSpeechBallonInputType) {
     const UserTemplate = await prisma.userTemplate.findFirst({
       where: {
         user_id: user.id,
@@ -31,12 +34,19 @@ export class SpeechBallonService {
     return speechBallon
   }
 
-  async update({ id, node_id, template_id, ...resCreate }: UpdateSpeechBallonType) {
+  async update({ id, node_id, template_id, ...resCreate }: UpdateSpeechBallonInputType) {
     const SpeechBallon = await prisma.speechBallon.findFirst({
       where: {
         id,
         node_id,
         template_id,
+      },
+      include: {
+        template: {
+          include: {
+            users: true,
+          },
+        },
       },
     })
 
