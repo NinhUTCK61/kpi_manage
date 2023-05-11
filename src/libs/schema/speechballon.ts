@@ -14,6 +14,7 @@ export const CreateSpeechBallonInputSchema = z.object({
 export const UpdateSpeechBallonInputSchema = z.object({
   id: z.string(),
   node_id: z.string(),
+  template_id: z.string(),
   text: z.string(),
   x: z.number(),
   y: z.number(),

@@ -23,7 +23,7 @@ export const speechBallonRoute = createTRPCRouter({
     })
     .input(UpdateSpeechBallonInputSchema)
     .output(SpeechBallonSchema)
-    .mutation(({ input }) => {
+    .mutation(({ input, ctx }) => {
       return speechBallonService.update(input)
     }),
 })

@@ -31,10 +31,12 @@ export class SpeechBallonService {
     return speechBallon
   }
 
-  async update({ id, ...resCreate }: UpdateSpeechBallonType) {
+  async update({ id, node_id, template_id, ...resCreate }: UpdateSpeechBallonType) {
     const SpeechBallon = await prisma.speechBallon.findFirst({
       where: {
         id,
+        node_id,
+        template_id,
       },
     })
 
