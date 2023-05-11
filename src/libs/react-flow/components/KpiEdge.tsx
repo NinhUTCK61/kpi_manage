@@ -24,8 +24,8 @@ function KpiEdge({
   })
 
   const getNodeById = useRFStore((state) => state.getKPINodeById)
-  const node = getNodeById(target)
-  const firstSlug = node?.type === 'kpi' && node?.data.slug.split('')[0]
+  const nodeTarget = getNodeById(target)
+  const firstSlug = nodeTarget?.type === 'kpi' && nodeTarget.data.slug.split('')[0]
   const _style = {
     ...style,
     strokeWidth: 4,
