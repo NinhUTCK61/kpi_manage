@@ -40,7 +40,7 @@ export const GetTemplateByIdInputSchema = z.object({
 })
 
 export type TemplateType = z.infer<typeof TemplateDataSchema>
-export type LikeTemplateType = z.infer<typeof LikeTemplateInputSchema>
-export type UpdateTemplateType = z.infer<typeof UpdateTemplateInputSchema>
-export type ListTemplateType = UserTemplate & { template: Template }
+export type LikeTemplateInputType = z.infer<typeof LikeTemplateInputSchema>
+export type UpdateTemplateInputType = z.infer<typeof UpdateTemplateInputSchema>
+export type UserTemplateType = UserTemplate & { template: Template }
 export type TemplateOutputType = z.infer<typeof TemplateDataOutputSchema>

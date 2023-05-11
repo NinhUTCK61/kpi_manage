@@ -1,4 +1,4 @@
-import { LikeTemplateType, TemplateType, UpdateTemplateType } from '@/libs/schema'
+import { LikeTemplateInputType, TemplateType, UpdateTemplateInputType } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
@@ -32,7 +32,7 @@ export class TemplateService extends TemplateHelper {
     return [...templateData]
   }
 
-  async update({ id, ...restUpdate }: UpdateTemplateType, user: User) {
+  async update({ id, ...restUpdate }: UpdateTemplateInputType, user: User) {
     await this.validateUserTemplateDeleted(id, user.id)
 
     const updateData = await prisma.template.update({
@@ -73,7 +73,7 @@ export class TemplateService extends TemplateHelper {
     })
   }
 
-  async like({ id, is_favorite }: LikeTemplateType, user: User) {
+  async like({ id, is_favorite }: LikeTemplateInputType, user: User) {
     const UserTemplate = await this.validateUserTemplateDeleted(id, user.id)
 
     const likeTemplate = await prisma.userTemplate.update({
@@ -183,7 +183,7 @@ export class TemplateService extends TemplateHelper {
   }
 
   async favorite(user: User) {
-    const listTemplate = await prisma.userTemplate.findMany({
+    const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: user.id,
         is_favorite: true,
@@ -201,7 +201,7 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const templateData = this.transformTemplateOutput(listTemplate)
+    const templateData = this.transformTemplateOutput(userTemplate)
 
     return templateData
   }

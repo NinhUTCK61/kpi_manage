@@ -1,10 +1,10 @@
-import { ListTemplateType, TemplateOutputType } from '@/libs/schema'
+import { TemplateOutputType, UserTemplateType } from '@/libs/schema'
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 import { CommonHelper } from './common.hepler'
 
 export class TemplateHelper extends CommonHelper {
-  transformTemplateOutput(listTemplate: ListTemplateType[]) {
+  transformTemplateOutput(listTemplate: UserTemplateType[]) {
     const templateData: TemplateOutputType = []
 
     listTemplate.forEach((item) => {
