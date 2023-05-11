@@ -35,31 +35,31 @@ export class SpeechBallonService extends CommonHelper {
     return speechBallon
   }
 
-  async update(user: User, speechBallon: UpdateSpeechBallonInputType) {
-    const checkSpeechBallon = await prisma.speechBallon.findFirst({
+  async update(user: User, { id, template_id, node_id, ...resData }: UpdateSpeechBallonInputType) {
+    const speechBallon = await prisma.speechBallon.findFirst({
       where: {
-        id: speechBallon.id,
-        template_id: speechBallon.template_id,
-        node_id: speechBallon.node_id,
+        id,
+        template_id,
+        node_id,
       },
     })
 
-    if (!checkSpeechBallon) {
+    if (!speechBallon) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.speechballon_not_found',
       })
     }
 
-    await this.validateUserTemplate(checkSpeechBallon.template_id, user.id)
+    await this.validateUserTemplate(speechBallon.template_id, user.id)
 
-    const updateSpeechBallon = await prisma.speechBallon.update({
-      data: speechBallon,
+    const updateData = await prisma.speechBallon.update({
+      data: { ...resData },
       where: {
-        id: speechBallon.id,
+        id,
       },
     })
 
-    return updateSpeechBallon
+    return updateData
   }
 }
