@@ -24,7 +24,6 @@ const useNodeHandler = () => {
     switch (action) {
       case 'CREATE':
         create({ ...newData, template_id: templateId })
-        setNodeFocused('')
         break
       case 'UPDATE':
         update({ ...newData })
