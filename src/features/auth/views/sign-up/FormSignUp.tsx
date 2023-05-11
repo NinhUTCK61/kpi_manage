@@ -52,7 +52,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             required
             label={t('last_name') as string}
             fullWidth
-            placeholder={t('last_name') as string}
+            placeholder={t('enter_last_name') as string}
             readOnly={isLoading}
           />
           <Input
@@ -61,7 +61,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             required
             label={t('first_name') as string}
             fullWidth
-            placeholder={t('first_name') as string}
+            placeholder={t('enter_first_name') as string}
             readOnly={isLoading}
           />
           <Input
@@ -103,7 +103,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             label={t('company_name') as string}
             type="text"
             fullWidth
-            placeholder={t('company_name') as string}
+            placeholder={t('enter_company_name') as string}
             readOnly={isLoading}
           />
 
@@ -114,7 +114,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             label={t('role') as string}
             type="text"
             fullWidth
-            placeholder={t('role') as string}
+            placeholder={t('enter_role') as string}
             readOnly={isLoading}
           />
 

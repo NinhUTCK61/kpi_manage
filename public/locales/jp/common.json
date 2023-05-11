@@ -21,6 +21,13 @@
     "privacy_policy": "プライバシーポリシー",
     "log_out": "ログアウト"
   },
+  "limit_name": "Maximum length of 250 characters",
+  "incorrect": "Email or password is incorrect.",
+  "limit_password": "8桁以上で入力する必要があります。",
+  "minimum_special_character": "少なくとも1桁以上の特殊文字を含める必要があります。",
+  "minimum_uppercase": "少なくとも1桁以上の大文字を含める必要があります。",
+  "minimum_lowercase": "少なくとも1桁以上の小文字を含める必要があります。",
+  "minimum_number": "少なくとも1桁以上の数字を含める必要があります。",
   "error": {
     "invalid_value": "この項目は必須です。",
     "invalid_value_undefined": "必須。",
@@ -59,11 +66,11 @@
     "internal_server_error": "内部サーバーエラーが発生しました。",
     "invalid_token": "トークンが見つからないか、期限切れです。",
     "email_conflict": "メールアドレスは既に存在します！",
-    "kpi_issue_required": "KPIの問題を選択しなければなりません。",
-    "kpi_reason_required": "KPIマスターについてどのように学んだか選択しなければなりません。",
+    "kpi_issue_required": "「KPIに関する課題」を選択してください。",
+    "kpi_reason_required": "「KPI Masterを知ったきっかけ」を選択してください。",
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
     "unauthorized": "認証されていません。",
-    "dob_invalid": "The date of birth cannot be later than the current date.",
+    "dob_invalid": "生年月日は、現在の日付より後にすることはできません。",
     "create_node": "ノードを作成できませんでした。"
   },
   "template": {
@@ -81,13 +88,13 @@
     "cancel": "キャンセル",
     "delete": "削除",
     "thumbnail": {
-      "click_to_upload": "クリックしてアップロード。",
-      "detail_set_thumbnail_1": "ドラッグ＆ドロップ。",
-      "detail_set_thumbnail_2": "PNG、JPG または (最大 800x400px)"
+      "click_to_upload": "クリックしてアップロード",
+      "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
+      "detail_set_thumbnail_2": "PNG、JPG (最大 800x400px)"
     },
     "submit": "登録"
   },
-  "email_verified": "Email is verified!",
+  "email_verified": "メールアドレスの認証が完了しました。",
   "verify_title": "確認する。",
   "verify_success": "確認済み！",
   "description_verify_success": "あなたのメールが正常に確認されました。これで、ログインして私たちと始めることができます。",
