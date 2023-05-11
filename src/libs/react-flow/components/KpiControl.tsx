@@ -13,17 +13,15 @@ function KpiControls() {
   const handleZoom = useRFStore((state) => state.handleZoom)
 
   useLayoutEffect(() => {
-    setTimeout(() => {
-      if (zoom) {
-        const { x, y } = getViewport()
-        // get current x y to set viewport after zoom
-        setViewport({
-          x,
-          y,
-          zoom,
-        })
-      }
-    }, 100)
+    if (zoom) {
+      const { x, y } = getViewport()
+      // get current x y to set viewport after zoom
+      setViewport({
+        x,
+        y,
+        zoom,
+      })
+    }
   }, [getViewport, setViewport, zoom])
 
   return (

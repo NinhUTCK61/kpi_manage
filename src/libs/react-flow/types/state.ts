@@ -22,6 +22,7 @@ export type RFStore = {
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
+  nodeFocus: ReactFlowNode | null
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

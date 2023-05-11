@@ -1,3 +1,4 @@
+import { colorAlphabet } from '@/libs/config/theme'
 import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith, isEqual } from 'lodash'
 import { KPINodeType, ReactFlowNode } from '../../types'
@@ -40,4 +41,18 @@ export function filterKpiNodes<
   T extends ReactFlowNode | ReactFlowNodeOutputType = ReactFlowNode | ReactFlowNodeOutputType,
 >(nodes: T[]) {
   return nodes.filter<V>((node): node is V => node.type === 'kpi')
+}
+
+export function generateColors(text: string) {
+  if (!colorAlphabet[text as keyof typeof colorAlphabet]) {
+    const base_char = text.charCodeAt(0).toString().split('').reverse().join('')
+    const gColor = text.charCodeAt(0) % 10
+    const bColor = 10 - gColor
+
+    return text.charCodeAt(0) % 2 === 0
+      ? `#${base_char}${gColor}${gColor}${bColor}${bColor}`
+      : `#${bColor}${bColor}${gColor}${gColor}${base_char}`
+  }
+
+  return colorAlphabet[text as keyof typeof colorAlphabet]
 }

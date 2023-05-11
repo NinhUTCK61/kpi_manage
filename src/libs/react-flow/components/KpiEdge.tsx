@@ -1,4 +1,6 @@
 import { EdgeProps, getBezierPath } from 'reactflow'
+import { useRFStore } from '../hooks'
+import { generateColors } from './KPINode/utils'
 
 function KpiEdge({
   id,
@@ -8,8 +10,9 @@ function KpiEdge({
   targetY,
   sourcePosition,
   targetPosition,
-  style = { color: '#FF2EAA', strokeWidth: 4, stroke: '#FF0072' },
+  style,
   markerEnd,
+  target,
 }: EdgeProps) {
   const [edgePath] = getBezierPath({
     sourceX,
@@ -20,11 +23,20 @@ function KpiEdge({
     targetPosition,
   })
 
+  const getNodeById = useRFStore((state) => state.getKPINodeById)
+  const nodeTarget = getNodeById(target)
+  const firstSlug = nodeTarget?.type === 'kpi' && nodeTarget.data.slug.split('')[0]
+  const _style = {
+    ...style,
+    strokeWidth: 4,
+    stroke: generateColors(firstSlug as string),
+  }
+
   return (
     <>
       <path
         id={id}
-        style={style}
+        style={_style}
         className="react-flow__edge-path"
         d={edgePath}
         markerEnd={markerEnd}
