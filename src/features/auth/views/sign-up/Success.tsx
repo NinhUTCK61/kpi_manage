@@ -1,4 +1,5 @@
 import { api } from '@/libs/api'
+import styled from '@emotion/styled'
 import { Button, Fade, Slide, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { useTranslation } from 'next-i18next'
@@ -11,6 +12,14 @@ import { CustomImage } from '../../components'
 type PropType = {
   email: string
 }
+
+const Span = styled('span')((themes) => ({
+  textAlign: 'center',
+  variant: 'body2',
+  color: 'base.contrastText',
+  fontWeight: 800,
+  ml: 0.5,
+}))
 
 const Success: React.FC<PropType> = ({ email }) => {
   const router = useRouter()
@@ -90,32 +99,15 @@ const Success: React.FC<PropType> = ({ email }) => {
             </Button>
             <Typography
               textAlign="center"
+              align="center"
               variant="body2"
               color="base.contrastText"
               visibility={isVisibleCount ? 'visible' : 'hidden'}
-              component={Stack}
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'center'}
             >
               {t('resend_email_countdown')}
-              <Typography
-                textAlign="center"
-                variant="body2"
-                color="base.contrastText"
-                fontWeight={800}
-                ml={0.5}
-              >
+              <Span>
                 {count} {t('seconds')}
-              </Typography>
-            </Typography>
-            <Typography
-              textAlign="center"
-              variant="body2"
-              color="base.contrastText"
-              visibility={isVisibleCount ? 'visible' : 'hidden'}
-            >
-              {count}
+              </Span>
             </Typography>
           </Stack>
         </Stack>
