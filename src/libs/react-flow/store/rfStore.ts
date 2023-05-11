@@ -180,7 +180,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         if (!node) return null
         return node
       },
-      hasChild(nodeId: string) {
+      getKPINodeFocus() {
+        const node = get().nodes.find((n) => n.type === 'kpi' && n.data.slug === get().nodeFocused)
+        if (!node) return null
+        return node
+      },
+      isHasChild(nodeId: string) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
@@ -188,7 +193,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       setNodeFocused(slug) {
         set({
           nodeFocused: slug,
-          nodeFocus: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
         })
 
         if (slug === '') {
