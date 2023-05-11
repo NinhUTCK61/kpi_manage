@@ -71,4 +71,11 @@ export const templateRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return templateService.exists(input.id, ctx.session.user)
     }),
+  favorite: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/template/favorite', protect: true } })
+    .input(z.void())
+    .output(TemplateDataOutputSchema)
+    .query(({ ctx }) => {
+      return templateService.favorite(ctx.session.user)
+    }),
 })
