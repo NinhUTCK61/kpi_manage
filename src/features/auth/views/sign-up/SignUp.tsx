@@ -11,7 +11,7 @@ import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
 
 const SignUp: FC = () => {
-  const { mutate, isLoading, isSuccess } = api.auth.signUp.useMutation()
+  const { mutate, isLoading, isSuccess, data } = api.auth.signUp.useMutation()
   const { data: reasons } = api.reason.list.useQuery()
 
   const methods = useForm<SignUpFormType>({
@@ -51,7 +51,7 @@ const SignUp: FC = () => {
         </FormProvider>
       )}
 
-      {isSuccess && <Success />}
+      {isSuccess && <Success email={data.email as string} />}
     </LayoutUnAuth>
   )
 }

@@ -31,5 +31,8 @@
   "reason_issue": "Please choose issue!",
   "reason_know": "Please choose reason!",
   "reason_title_reason": "How I learned about KPI Master.",
-  "reason_title_issue": "KPI issues"
+  "reason_title_issue": "KPI issues",
+  "resend_message_success": "Your email has been sent successfully.",
+  "resend_email_countdown": "Please resend the email in ",
+  "seconds": "second(s)"
 }
