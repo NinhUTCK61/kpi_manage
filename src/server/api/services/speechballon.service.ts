@@ -5,8 +5,9 @@ import {
 import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 import { User } from 'next-auth'
+import { CommonHelper } from './helper/common.hepler'
 
-export class SpeechBallonService {
+export class SpeechBallonService extends CommonHelper {
   async create(user: User, { template_id, ...resCreate }: CreateSpeechBallonInputType) {
     const UserTemplate = await prisma.userTemplate.findFirst({
       where: {
@@ -34,37 +35,31 @@ export class SpeechBallonService {
     return speechBallon
   }
 
-  async update({ id, node_id, template_id, ...resCreate }: UpdateSpeechBallonInputType) {
-    const SpeechBallon = await prisma.speechBallon.findFirst({
+  async update(user: User, speechBallon: UpdateSpeechBallonInputType) {
+    const checkSpeechBallon = await prisma.speechBallon.findFirst({
       where: {
-        id,
-        node_id,
-        template_id,
-      },
-      include: {
-        template: {
-          include: {
-            users: true,
-          },
-        },
+        id: speechBallon.id,
+        template_id: speechBallon.template_id,
+        node_id: speechBallon.node_id,
       },
     })
 
-    if (!SpeechBallon) {
+    if (!checkSpeechBallon) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.speechballon_not_found',
       })
     }
 
-    const speechBallon = await prisma.speechBallon.update({
-      data: {
-        ...resCreate,
-      },
+    await this.validateUserTemplate(checkSpeechBallon.template_id, user.id)
+
+    const updateSpeechBallon = await prisma.speechBallon.update({
+      data: speechBallon,
       where: {
-        id,
+        id: speechBallon.id,
       },
     })
-    return speechBallon
+
+    return updateSpeechBallon
   }
 }
