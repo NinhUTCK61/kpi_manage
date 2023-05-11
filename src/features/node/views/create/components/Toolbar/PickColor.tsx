@@ -1,11 +1,9 @@
 import { base } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
-import { useNodeUpdateMutation } from '@/libs/react-flow/components/KPINode/hooks/useNodeUpdateMutation'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, StackProps, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
+import { useEffect, useState, useTransition } from 'react'
 
 type PickColorTypes = {
   forShape?: boolean
@@ -17,44 +15,13 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   const changeNodeColor = useRFStore((state) =>
     forShape ? state.changeShapeColor : state.changeNodeColor,
   )
-  const nodeFocus = useRFStore((state) => state.nodeFocus)
   const [pickColor, setPickColor] = useState<string>(color as string)
-  const { mutate: update } = useNodeUpdateMutation()
-  const debouncedColor = useDebouncedCallback((value) => {
-    setPickColor(value)
-  }, 100)
-  // TODO: handle update pick color when change node
-  useLayoutEffect(() => {
-    if (!nodeFocus) return
-    if (forShape) return
-    if (nodeFocus.type === 'kpi' && nodeFocus.data.node_style) {
-      setPickColor(JSON.parse(nodeFocus.data.node_style as string).color)
-    }
-  }, [forShape, nodeFocus])
-  // TODO: call api update node color
-  const handleUpdate = useCallback(() => {
-    if (forShape) return
-    if (nodeFocus && nodeFocus.data.template_id && nodeFocus.type === 'kpi') {
-      const _nodeFocus = nodeFocus.data
-      const _nodeStyle = JSON.parse(_nodeFocus.node_style as string) || {}
-      if (pickColor === _nodeStyle.color) return
-      update({
-        ..._nodeFocus,
-        node_style: JSON.stringify({
-          ..._nodeStyle,
-          color: pickColor,
-        }),
-      })
-    }
-  }, [forShape, nodeFocus, pickColor, update])
+  const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
-    if (forShape) return
+    if (isPending) return
     changeNodeColor(pickColor)
-    if (color !== pickColor) {
-      handleUpdate()
-    }
-  }, [changeNodeColor, color, forShape, handleUpdate, pickColor])
+  }, [changeNodeColor, isPending, pickColor])
 
   const id = forShape ? 'colorShape' : 'color'
 
@@ -95,7 +62,9 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
           id={id}
           type="color"
           onChange={(e) => {
-            debouncedColor(e.target.value)
+            startTransition(() => {
+              setPickColor(e.target.value)
+            })
           }}
           value={pickColor}
           label={pickColor}
