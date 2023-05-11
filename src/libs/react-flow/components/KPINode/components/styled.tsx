@@ -78,6 +78,12 @@ const NodeInActiveContainer = styled(Stack)(({ theme }) => ({
   cursor: 'pointer !important',
 }))
 
+const TextOverflow = styled(Typography)({
+  maxWidth: 125,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+})
+
 export {
   LeftHandler,
   BottomHandler,
@@ -87,4 +93,5 @@ export {
   IconImageNode,
   NodeActiveContainer,
   NodeInActiveContainer,
+  TextOverflow,
 }
