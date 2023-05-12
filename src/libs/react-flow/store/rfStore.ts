@@ -44,13 +44,13 @@ const DEFAULT_STATE: Partial<RFStore> = {
   edges: [],
   d3Root: hierarchy(initialRootNode),
   viewportAction: ViewPortAction.Move,
-  nodeFocused: 'root',
   fontSize: '12',
   nodeColor: '#000000',
   colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
   zoom: 0.75,
+  nodeFocus: null,
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -89,15 +89,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)
-        const _node = node
-        _node.data = {
-          ..._node.data,
-          node_style: JSON.stringify({
-            fontSize: get().fontSize,
-            color: get().nodeColor,
-          }),
-        }
-        nodes.push(_node)
+        nodes.push(node)
         edges.push(edge)
 
         const d3Updated = stratifier(nodes)
@@ -106,7 +98,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
-        get().setNodeFocused(node.data.slug)
+        get().setNodeFocus(node.data.slug)
 
         set({
           nodes: _nodes,
@@ -122,6 +114,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
+        console.log('updateeeee store', kpiNodeData.node_style)
         if (_node) {
           _node.data.data = { ..._node.data.data, ...kpiNodeData }
           const _nodes = getLayoutElements(_d3)
@@ -180,19 +173,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         if (!node) return null
         return node
       },
-      getKPINodeFocus() {
-        const node = get().nodes.find((n) => n.type === 'kpi' && n.data.slug === get().nodeFocused)
-        if (!node) return null
-        return node
-      },
       isHasChild(nodeId: string) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
-      setNodeFocused(slug) {
+      setNodeFocus(slug) {
         set({
-          nodeFocused: slug,
+          nodeFocus: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
         })
 
         if (slug === '') {
@@ -202,7 +190,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       onNodeClick(_, node) {
         if (node.type === 'kpi') {
           set({
-            nodeFocused: node.data.slug,
+            nodeFocus: node,
           })
         }
       },
@@ -210,7 +198,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeViewportAction(action) {
         set({
           viewportAction: action,
-          nodeFocused: '',
         })
       },
       changeFontSize(fontSize) {

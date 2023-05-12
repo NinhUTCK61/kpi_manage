@@ -22,10 +22,11 @@ const storeSelector = (state: RFStore) => ({
   nodes: state.nodes,
   edges: state.edges,
   viewportAction: state.viewportAction,
+  setNodeFocus: state.setNodeFocus,
 })
 
 export const CreateView: React.FC = () => {
-  const { nodes, edges, viewportAction } = useRFStore(storeSelector, shallow)
+  const { nodes, edges, viewportAction, setNodeFocus } = useRFStore(storeSelector, shallow)
 
   const {
     handleEdgesChange,
@@ -49,6 +50,10 @@ export const CreateView: React.FC = () => {
       })
     }
   }, [setViewport])
+
+  useLayoutEffect(() => {
+    setNodeFocus('root')
+  }, [setNodeFocus])
 
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>

@@ -11,7 +11,7 @@ export enum SaveReason {
 
 const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const setNodeFocus = useRFStore((state) => state.setNodeFocus)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
@@ -45,7 +45,7 @@ const useNodeHandler = () => {
         break
       case 'UPDATE':
         update({ ...newData })
-        setNodeFocused('')
+        setNodeFocus('')
         break
       case 'DELETE':
         deleteMutate({ id: newData.id })

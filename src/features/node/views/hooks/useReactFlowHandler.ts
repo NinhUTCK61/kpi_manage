@@ -13,14 +13,16 @@ import { shallow } from 'zustand/shallow'
 const storeSelector = (state: RFStore) => ({
   handleNodesChange: state.handleNodesChange,
   handleEdgesChange: state.handleEdgesChange,
-  setNodeFocused: state.setNodeFocused,
+  setNodeFocus: state.setNodeFocus,
   scrollZoom: state.scrollZoom,
   removeEmptyNode: state.removeEmptyNode,
 })
 
 export const useReactFlowHandler = () => {
-  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom, removeEmptyNode } =
-    useRFStore(storeSelector, shallow)
+  const { handleEdgesChange, handleNodesChange, setNodeFocus, scrollZoom } = useRFStore(
+    storeSelector,
+    shallow,
+  )
 
   const { mutate } = useNodeDeleteMutation()
 
@@ -42,9 +44,9 @@ export const useReactFlowHandler = () => {
 
   const handlePaneClick = useCallback(
     (_: MouseEvent<Element>) => {
-      setNodeFocused('')
+      setNodeFocus('')
     },
-    [setNodeFocused],
+    [setNodeFocus],
   )
 
   const handleNodesDelete = useCallback(

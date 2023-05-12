@@ -10,11 +10,11 @@ import { KPINodeProvider } from './context'
 
 function KpiNode(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
-  const focusedSlug = useRFStore((state) => state.nodeFocused)
+  const nodeFocus = useRFStore((state) => state.nodeFocus)
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
-  const slug = data.slug
-  const isActive = (slug === 'root' && focusedSlug === 'root') || (focusedSlug === slug && selected)
+  const isMatches = nodeFocus?.id === data.id
+  const isActive = (data.slug === 'root' && isMatches) || (isMatches && selected)
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
 
   const handleContextMenu = (event: React.MouseEvent) => {
@@ -40,7 +40,7 @@ function KpiNode(props: NodeProps<KPINodeType>) {
         <ContextMenu
           open={!!contextMenu}
           onClose={handleClose}
-          disabledMenu={slug === 'root' ? [CtxMenuType.Delete] : []}
+          disabledMenu={data.slug === 'root' ? [CtxMenuType.Delete] : []}
           anchorPosition={
             !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }

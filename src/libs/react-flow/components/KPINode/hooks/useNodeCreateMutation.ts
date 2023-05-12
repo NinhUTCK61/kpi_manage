@@ -9,7 +9,7 @@ import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const removeNode = useRFStore((state) => state.removeNode)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const setNodeFocus = useRFStore((state) => state.setNodeFocus)
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
   const { t } = useTranslation('common')
@@ -44,7 +44,7 @@ const useNodeCreateMutation = () => {
         // TODO: handle error when update multiple nodes
         mulUpdate(diff.map((n) => n.data))
       }
-      setNodeFocused('')
+      setNodeFocus('')
     },
     onSettled() {
       utils.node.list.invalidate()

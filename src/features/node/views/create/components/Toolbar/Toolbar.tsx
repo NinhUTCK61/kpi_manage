@@ -33,7 +33,7 @@ const editors = [
 
 export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
-  const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const nodeFocus = useRFStore((state) => state.nodeFocus)
 
   return (
     <Container>
@@ -45,7 +45,7 @@ export const ToolbarInner: React.FC = () => {
         </Stack>
         <Stack
           direction="row"
-          {...(!nodeFocused && {
+          {...(!nodeFocus && {
             style: {
               opacity: 0.3,
               pointerEvents: 'none',

@@ -13,19 +13,20 @@ import {
 } from './styled'
 
 const InActive: React.FC = () => {
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const setNodeFocus = useRFStore((state) => state.setNodeFocus)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const d3Root = useRFStore((state) => state.d3Root)
 
   const { data, isConnectable } = useKPINodeContext()
   const style = JSON.parse(data.node_style || '{}')
+  console.log(data.slug, style)
 
   const d3Node = d3Root.find((node) => node.data.id === data.id)
   const hasChild = d3Node?.children && d3Node.children.length > 0
 
   return (
     <NodeInActiveContainer
-      onClick={() => setNodeFocused(data.slug)}
+      onClick={() => setNodeFocus(data.slug)}
       sx={{
         ...(viewportAction !== ViewPortAction.Move && {
           pointerEvents: 'none',

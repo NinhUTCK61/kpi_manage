@@ -13,16 +13,16 @@ export type RFStore = {
   deleteNodes: OnNodesDelete
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
-  nodeFocused: string | null
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
-  setNodeFocused: (slug: string) => void
-  hasChild(nodeId: string): boolean
+  setNodeFocus: (slug: string) => void
+  isHasChild(nodeId: string): boolean
   removeEmptyNode: () => void
   updateKPINode: (node: UpdateNodeInputType) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
   getKPINodeFocus: () => ReactFlowNode | null
+  nodeFocus: ReactFlowNode | null
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
