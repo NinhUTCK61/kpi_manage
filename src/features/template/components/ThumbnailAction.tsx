@@ -19,13 +19,19 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
   const { t } = useTranslation(['home'])
   const [image, setImage] = useState<File[] | null>()
   const onSelectImage = (_acceptedFiles: File[]) => {
-    console.log(_acceptedFiles)
-    _acceptedFiles.length
-      ? setImage(_acceptedFiles)
-      : enqueueSnackbar(t('incorrect_upload_image'), {
-          variant: 'error',
-        })
-
+    if (!_acceptedFiles.length) {
+      enqueueSnackbar(t('incorrect_upload_image'), {
+        variant: 'error',
+      })
+      return
+    } else if (_acceptedFiles[0]?.size && Math.floor(_acceptedFiles[0]?.size / (1024 * 1024)) > 3) {
+      enqueueSnackbar(t('error_size_image_upload'), {
+        variant: 'error',
+      })
+      return
+    } else {
+      setImage(_acceptedFiles)
+    }
     onClose()
   }
 

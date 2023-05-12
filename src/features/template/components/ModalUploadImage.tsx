@@ -29,7 +29,8 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
 
   useEffect(() => {
     if (image && image.length > 0 && image[0]) {
-      handleCheckSizeImage()
+      const url = URL.createObjectURL(image[0])
+      setPreviewURL(url)
       setNameImage(image[0]?.name)
     }
   }, [image])
@@ -99,13 +100,6 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     onOpenDialogThumbnail()
   }
 
-  const handleCheckSizeImage = () => {
-    if (image.length && image[0]?.size) {
-      const url = URL.createObjectURL(image[0])
-      const size = Math.floor(image[0]?.size / (1024 * 2))
-      size > 3 ? enqueueSnackbar('anhr to qua', { variant: 'warning' }) : setPreviewURL(url)
-    }
-  }
   return (
     <Modal open={isOpen} onClose={handelCloseModalUploadImage}>
       <BoxContainer>

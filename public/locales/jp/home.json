@@ -44,5 +44,6 @@
   "upload_fail": "画像のアップロードに失敗しました。時間をおいてから再度試してください。",
   "ok": "オーケー",
   "cancel": "キャンセル",
-  "incorrect_upload_image":"画像形式が正しくありません。"
+  "incorrect_upload_image":"画像形式が正しくありません。",
+  "error_size_image_upload": "画像の容量は3mbより大きいです、他の画像をお変更ください。"
 }
