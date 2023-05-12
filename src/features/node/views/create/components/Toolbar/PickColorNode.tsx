@@ -28,28 +28,32 @@ const PickColorNode: React.FC = () => {
   useLayoutEffect(() => {
     if (!nodeStyle.color) {
       setPickColor(base.black)
+      console.log('set color black')
     } else {
+      console.log('set color new node', nodeStyle.color)
       setPickColor(nodeStyle.color)
     }
     console.log('chang nodefocus')
   }, [nodeStyle])
 
   const handleUpdate = useCallback(() => {
-    if (!nodeFocused) return
+    console.log('handle update')
     if (debouncedColor === nodeStyle.color) return
     console.log('debouncedColor:', debouncedColor, ',nodeStyle.color:', nodeStyle.color)
-    // nodeFocused.data &&
-    //   update({
-    //     ...nodeFocused.data,
-    //     node_style: JSON.stringify({
-    //       ...nodeStyle,
-    //       color: debouncedColor,
-    //     }),
-    //   })
+    nodeFocused?.type === 'kpi' &&
+      update({
+        ...nodeFocused.data,
+        node_style: JSON.stringify({
+          ...nodeStyle,
+          color: debouncedColor,
+        }),
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedColor, update])
 
   useEffect(() => {
     if (!debouncedColor) return
+    console.log('effect debounceColor')
     handleUpdate()
   }, [debouncedColor, handleUpdate])
 
