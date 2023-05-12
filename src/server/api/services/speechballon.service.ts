@@ -8,35 +8,30 @@ import { User } from 'next-auth'
 import { CommonHelper } from './helper/common.hepler'
 
 export class SpeechBallonService extends CommonHelper {
-  async create(user: User, { template_id, ...resCreate }: CreateSpeechBallonInputType) {
-    const UserTemplate = await prisma.userTemplate.findFirst({
-      where: {
-        user_id: user.id,
-        template_id,
-        template: {
-          deleted_at: null,
-        },
-      },
-    })
+  async create(user: User, speechBallon: CreateSpeechBallonInputType) {
+    const { template_id, ...resCreate } = speechBallon
+    const userTemplate = await this.validateUserTemplate(template_id, user.id)
 
-    if (!UserTemplate) {
+    if (!userTemplate) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.template_not_found',
       })
     }
 
-    const speechBallon = await prisma.speechBallon.create({
+    const createData = await prisma.speechBallon.create({
       data: {
         template_id,
         ...resCreate,
       },
     })
-    return speechBallon
+    return createData
   }
 
-  async update(user: User, { id, template_id, node_id, ...resData }: UpdateSpeechBallonInputType) {
-    const speechBallon = await prisma.speechBallon.findFirst({
+  async update(user: User, speechBallon: UpdateSpeechBallonInputType) {
+    const { id, template_id, node_id, ...resData } = speechBallon
+
+    const querySpeechBallon = await prisma.speechBallon.findFirst({
       where: {
         id,
         template_id,
@@ -44,17 +39,17 @@ export class SpeechBallonService extends CommonHelper {
       },
     })
 
-    if (!speechBallon) {
+    if (!querySpeechBallon) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'error.speechballon_not_found',
       })
     }
 
-    await this.validateUserTemplate(speechBallon.template_id, user.id)
+    await this.validateUserTemplate(querySpeechBallon.template_id, user.id)
 
     const updateData = await prisma.speechBallon.update({
-      data: { ...resData },
+      data: resData,
       where: {
         id,
       },
