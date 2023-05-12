@@ -23,7 +23,7 @@ const useNodeHandler = () => {
     const is_formula = input_value.includes('=')
 
     if (!is_formula) {
-      data.value2number = Number(input_value)
+      data.value2number = Number(input_value) || null
     } else {
       // TODO: handler calculate formula here
       data.value2number = null
