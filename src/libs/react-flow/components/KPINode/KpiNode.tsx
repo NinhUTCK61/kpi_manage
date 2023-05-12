@@ -10,10 +10,10 @@ import { KPINodeProvider } from './context'
 
 function KpiNode(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
-  const nodeFocus = useRFStore((state) => state.nodeFocus)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
-  const isMatches = nodeFocus?.id === data.id
+  const isMatches = nodeFocused?.id === data.id
   const isActive = (data.slug === 'root' && isMatches) || (isMatches && selected)
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
 

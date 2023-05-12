@@ -50,7 +50,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   stroke: 1,
   shape: '1',
   zoom: 0.75,
-  nodeFocus: null,
+  nodeFocused: null,
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -98,7 +98,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
-        get().setNodeFocus(node.data.slug)
+        get().setNodeFocused(node.data.slug)
 
         set({
           nodes: _nodes,
@@ -178,9 +178,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
-      setNodeFocus(slug) {
+      setNodeFocused(slug) {
         set({
-          nodeFocus: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
+          nodeFocused: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
         })
 
         if (slug === '') {
@@ -190,7 +190,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       onNodeClick(_, node) {
         if (node.type === 'kpi') {
           set({
-            nodeFocus: node,
+            nodeFocused: node,
           })
         }
       },
