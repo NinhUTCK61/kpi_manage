@@ -10,7 +10,7 @@ import { TemplateHelper } from './helper/template.helper'
 export class TemplateService extends TemplateHelper {
   async list(userId: string, isTrash: boolean) {
     const deletedOpt = isTrash ? { not: null } : null
-    const listTemplate = await prisma.userTemplate.findMany({
+    const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: userId,
         template: {
@@ -27,9 +27,9 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const [...templateData] = this.transformTemplateOutput(listTemplate)
+    const templates = this.transformTemplateOutput(userTemplate)
 
-    return [...templateData]
+    return templates
   }
 
   async update({ id, ...restUpdate }: UpdateTemplateInputType, user: User) {
