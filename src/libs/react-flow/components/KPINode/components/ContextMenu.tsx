@@ -1,4 +1,5 @@
 import { PopoverPosition, PopoverReference } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import React from 'react'
 import { Menu, MenuItem, MenuItemDelete, MenuItemPaste } from './styled'
 
@@ -10,6 +11,8 @@ type PropsType = {
 }
 
 const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anchorPosition }) => {
+  const { t } = useTranslation(['file'])
+
   return (
     <Menu
       id="file-menu"
@@ -18,10 +21,10 @@ const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anch
       anchorReference={anchorReference}
       anchorPosition={anchorPosition}
     >
-      <MenuItem>Edit node / Speech balloon</MenuItem>
-      <MenuItem>Copy</MenuItem>
-      <MenuItemPaste>Paste</MenuItemPaste>
-      <MenuItemDelete>Delete</MenuItemDelete>
+      <MenuItem>{t('menu_context.edit')}</MenuItem>
+      <MenuItem>{t('menu_context.copy')}</MenuItem>
+      <MenuItemPaste>{t('menu_context.paste')}</MenuItemPaste>
+      <MenuItemDelete>{t('menu_context.delete')}</MenuItemDelete>
     </Menu>
   )
 }
