@@ -21,7 +21,7 @@ export const getSaveAction = (newData: KPINodeType, oldData: KPINodeType): SaveA
     return SaveAction.CREATE
   }
 
-  if (!template_id && !input_title) {
+  if (!template_id || !input_title) {
     return SaveAction.CANCEL
   }
 

@@ -89,3 +89,7 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
 
   return newNodes
 }
+
+export function isEmptyKPINodeForm(node: ReactFlowKPINode) {
+  return !node.data.input_title && !node.data.input_value && !node.data.unit
+}

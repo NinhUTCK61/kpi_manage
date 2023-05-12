@@ -12,6 +12,7 @@ import { createStore } from 'zustand'
 import {
   generateNextReactFlowNode,
   getLayoutElements,
+  isEmptyKPINodeForm,
   removeEdgeByNodeId as rmEdges,
   stratifier,
 } from '../helper'
@@ -164,7 +165,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEmptyNode() {
         const oldNodes = get().nodes
         const oldEdges = get().edges
-        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && !n.data.input_title)
+        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && isEmptyKPINodeForm(n))
         if (!emptyNode) return
 
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
