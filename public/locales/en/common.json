@@ -72,7 +72,9 @@
     "kpi_reason_required": "Please choose How I learned about KPI Master.",
     "unauthorized": "Unauthorized!",
     "dob_invalid": "The date of birth cannot be later than the current date.",
-    "create_node": "Create node error!"
+    "create_node": "Create node error!",
+    "error_date": "The date of birth cannot be later than the current date.",
+    "speechballon_not_found": "Speech ballon not found!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
@@ -83,7 +85,7 @@
     "template_restore_success": "Template restore success!"
   },
   "node": {
-    "delete_success": "Delete node succcess!"
+    "delete_success": "Delete node success!"
   },
   "dialog": {
     "cancel": "Cancel",
@@ -95,7 +97,7 @@
     },
     "submit": "Submit"
   },
-  "email_verified": "Email is verifiled!",
+  "email_verified": "Email is verified!",
   "verify_title": "Verify",
   "verify_success": "Verified!",
   "description_verify_success": "Your email's verified successfully. Now you can login to start with us.",

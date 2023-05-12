@@ -4,6 +4,7 @@ import { commentRouter } from './routers/comment'
 import { nodeRouter } from './routers/node'
 import { profileRouter } from './routers/profile'
 import { reasonRouter } from './routers/reason'
+import { speechBallonRoute } from './routers/speechballon'
 import { templateRouter } from './routers/template'
 import { utilsRouter } from './routers/utils'
 
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   utils: utilsRouter,
   comment: commentRouter,
   profile: profileRouter,
+  speechBallon: speechBallonRoute,
 })
 
 // export type definition of API
