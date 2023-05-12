@@ -41,5 +41,6 @@
   "upload_success": "Successfully set a thumbnail for this file!",
   "upload_fail": "Sorry, there was an error uploading your image. Please try again later.",
   "ok": "Ok",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "incorrect_upload_image": "Incorrect image format."
 }
