@@ -16,7 +16,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.331.0",
+    "@aws-sdk/client-s3": "^3.332.0",
     "@aws-sdk/s3-request-presigner": "^3.321.1",
     "@emotion/cache": "^11.10.8",
     "@emotion/react": "^11.10.8",
