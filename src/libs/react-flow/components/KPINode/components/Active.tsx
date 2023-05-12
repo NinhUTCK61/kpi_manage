@@ -8,25 +8,26 @@ import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandle
 
 const Active: React.FC = () => {
   const addKPINode = useRFStore((state) => state.addKPINode)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { data, isConnectable } = useKPINodeContext()
-  const [focus, setFocus] = useState<boolean>(false)
+  const [formFocus, setFormFocus] = useState<boolean>(false)
 
-  const changeFocusState = useCallback((state: boolean) => {
-    setFocus(state)
+  const changeFormFocusState = useCallback((state: boolean) => {
+    setFormFocus(state)
   }, [])
 
-  const isHasBottomHandler = data.slug !== 'root' && data.input_title
-  const isHasRightHandler = !!data.input_title
+  const isValidFocusToShowHandler = !formFocus && nodeFocused
+  const isShowBottomHandler = isValidFocusToShowHandler && data.slug !== 'root' && data.input_title
+  const isShowRightHandler = isValidFocusToShowHandler && data.input_title
 
   return (
     <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <NodeForm changeFocusState={changeFocusState} />
+      <NodeForm changeFormFocusState={changeFormFocusState} />
 
-      {isHasBottomHandler && (
+      {isShowBottomHandler && (
         <BottomHandler
-          sx={{ ...(focus && { opacity: 0 }) }}
           type="target"
           position={Position.Bottom}
           onClick={() => addKPINode(data.parent_node_id as string)}
@@ -35,13 +36,8 @@ const Active: React.FC = () => {
         </BottomHandler>
       )}
 
-      {isHasRightHandler && (
-        <RightHandler
-          sx={{ ...(focus && { opacity: 0 }) }}
-          type="source"
-          position={Position.Right}
-          onClick={() => addKPINode(data.id)}
-        >
+      {isShowRightHandler && (
+        <RightHandler type="source" position={Position.Right} onClick={() => addKPINode(data.id)}>
           <IconImage src={AddIcon} alt="add" />
         </RightHandler>
       )}

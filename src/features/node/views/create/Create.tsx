@@ -44,8 +44,6 @@ export const CreateView: React.FC = () => {
     }
   }, [setViewport])
 
-  // console.log(nodes, edges)
-
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />

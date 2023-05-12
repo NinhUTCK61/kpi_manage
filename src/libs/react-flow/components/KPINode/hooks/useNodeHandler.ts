@@ -17,10 +17,27 @@ const useNodeHandler = () => {
 
   const { data } = useKPINodeContext()
 
-  const saveHandler = (newData: KPINodeType) => {
-    const action = getSaveAction(newData, data)
-    consola.info('[MUTATE ACTION]', action) // keep it to debug
+  const handleData = (data: KPINodeType) => {
+    // TODO: write function handle node data
+    const input_value = data.input_value || ''
+    const is_formula = input_value.includes('=')
 
+    if (!is_formula) {
+      data.value2number = Number(input_value)
+    } else {
+      // TODO: handler calculate formula here
+      data.value2number = null
+    }
+    data.is_formula = is_formula
+
+    return data
+  }
+
+  const saveHandler = (_newData: KPINodeType) => {
+    const action = getSaveAction(_newData, data)
+    const newData = handleData(_newData)
+
+    consola.info('[MUTATE ACTION]', action) // keep it to debug
     switch (action) {
       case 'CREATE':
         create({ ...newData, template_id: templateId })

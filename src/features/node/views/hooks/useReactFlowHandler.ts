@@ -1,5 +1,4 @@
-import { RFStore, useRFStore } from '@/libs/react-flow'
-import { useNodeDeleteMutation } from '@/libs/react-flow/components/KPINode/hooks/useNodeDeleteMutation'
+import { RFStore, useNodeDeleteMutation, useRFStore } from '@/libs/react-flow'
 import { MouseEvent, useCallback } from 'react'
 import { Node as RFNode } from 'reactflow'
 import { shallow } from 'zustand/shallow'

@@ -170,9 +170,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
         const d3Updated = stratifier(_nodes)
         const nodes = getLayoutElements(d3Updated)
-        const edges = oldEdges.filter(
-          (edge) => edge.source !== emptyNode?.id && edge.target !== emptyNode?.id,
-        )
+        const edges = rmEdges(oldEdges, emptyNode.id)
 
         set({ nodes, edges })
       },

@@ -1,5 +1,5 @@
 import { ClickAwayListener, Stack } from '@mui/material'
-import { FormEvent, KeyboardEvent, memo } from 'react'
+import { FormEvent, KeyboardEvent, memo, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
 import { useNodeHandler } from '../hooks'
@@ -12,10 +12,10 @@ type NodeFormProps = {
 }
 
 type NodeFormMemoTypes = {
-  changeFocusState(state: boolean): void
+  changeFormFocusState(state: boolean): void
 }
 
-const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
+const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
   const { control, getValues, setFocus } = useForm<NodeFormProps>({
     defaultValues: {
@@ -25,24 +25,19 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
     },
   })
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (!data.input_title) {
+        setFocus('input_title')
+      }
+    }, 0)
+  }, [data.input_title, setFocus])
+
   const { saveHandler } = useNodeHandler()
-
   const saveValue = () => {
-    // TODO: write function handle node data
     const nodeData = { ...data, ...getValues() }
-    const input_value = nodeData.input_value || ''
-    const is_formula = input_value.includes('=')
-
-    if (!is_formula) {
-      nodeData.value2number = Number(input_value)
-    } else {
-      // TODO: handler calculate formula here
-      nodeData.value2number = null
-    }
-
-    nodeData.is_formula = is_formula
     saveHandler(nodeData)
-    changeFocusState(false)
+    changeFormFocusState(false)
   }
 
   const saveForm = (event: FormEvent<HTMLFormElement>) => {
@@ -51,7 +46,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
   }
 
   const handleFocus = () => {
-    changeFocusState(true)
+    changeFormFocusState(true)
   }
 
   const style = JSON.parse(data.node_style || '{}')
@@ -69,31 +64,24 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFocusState }) => {
 
   return (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={saveValue}>
-      <Stack component="form" onSubmit={saveForm} onKeyDown={handleKeyDown} spacing={0.5}>
+      <Stack
+        component="form"
+        onSubmit={saveForm}
+        onFocus={handleFocus}
+        onKeyDown={handleKeyDown}
+        spacing={0.5}
+      >
         <InputNode
           control={control}
           name="input_title"
           required
           label="Label"
-          onFocus={handleFocus}
           inputProps={{ style }}
         />
 
-        <InputNode
-          control={control}
-          name="input_value"
-          label="="
-          onFocus={handleFocus}
-          inputProps={{ style }}
-        />
+        <InputNode control={control} name="input_value" label="=" inputProps={{ style }} />
 
-        <InputNode
-          control={control}
-          name="unit"
-          label="Unit"
-          onFocus={handleFocus}
-          inputProps={{ style }}
-        />
+        <InputNode control={control} name="unit" label="Unit" inputProps={{ style }} />
 
         <input type="submit" hidden />
       </Stack>
