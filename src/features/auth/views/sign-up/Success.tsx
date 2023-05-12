@@ -13,18 +13,18 @@ type PropType = {
   email: string
 }
 
-const Span = styled('span')((themes) => ({
+const Span = styled('span')({
   textAlign: 'center',
   variant: 'body2',
   color: 'base.contrastText',
   fontWeight: 800,
   ml: 0.5,
-}))
+})
 
 const Success: React.FC<PropType> = ({ email }) => {
   const router = useRouter()
   const { t } = useTranslation('sign_up')
-  const { mutate, isLoading } = api.auth.resendVerifyEmail.useMutation()
+  const { mutate } = api.auth.resendVerifyEmail.useMutation()
   const isSuccess = true
 
   const redirectSignIn = () => {
