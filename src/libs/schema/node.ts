@@ -33,7 +33,9 @@ export const CreateNodeInputSchema = z.object({
 
 export type CreateNodeInputType = z.infer<typeof CreateNodeInputSchema>
 
-export const UpdateNodeInputSchema = NodeSchema.partial().required({ id: true, template_id: true })
+export const UpdateNodeInputSchema = NodeSchema.partial({
+  template_id: true,
+}).required({ id: true })
 
 export type UpdateNodeInputType = z.infer<typeof UpdateNodeInputSchema>
 

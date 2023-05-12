@@ -28,19 +28,19 @@ export const nodeRouter = createTRPCRouter({
     .mutation(({ input, ctx: { session } }) => {
       return nodeService.update(input, session.user)
     }),
-  multipleUpdate: protectedProcedure
+  bulkUpdate: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/nodes' } })
     .input(NodeSchema.array())
     .output(NodeSchema.array())
     .mutation(({ input, ctx: { session } }) => {
-      return nodeService.multipleUpdate(input, session.user)
+      return nodeService.bulkUpdate(input, session.user)
     }),
-  multipleDelete: protectedProcedure
+  bulkDelete: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/bulk-node' }, protect: true })
     .input(DeleteNodeInputSchema)
     .output(z.string())
     .mutation(({ input, ctx: { session } }) => {
-      return nodeService.multipleDelete(input.id, session.user)
+      return nodeService.bulkDelete(input.id, session.user)
     }),
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/node' }, protect: true })

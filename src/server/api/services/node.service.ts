@@ -38,7 +38,7 @@ export class NodeService extends NodeHelper {
     return newNode
   }
 
-  async multipleUpdate(nodes: Node[], user: User) {
+  async bulkUpdate(nodes: Node[], user: User) {
     const nodeIds: string[] = nodes.map((node: Node) => {
       return node.id
     })
@@ -69,7 +69,7 @@ export class NodeService extends NodeHelper {
     return newNode
   }
 
-  async multipleDelete(nodeIds: string[], user: User) {
+  async bulkDelete(nodeIds: string[], user: User) {
     await this.validateNodeOfUser(nodeIds, user.id)
 
     await prisma.node.deleteMany({

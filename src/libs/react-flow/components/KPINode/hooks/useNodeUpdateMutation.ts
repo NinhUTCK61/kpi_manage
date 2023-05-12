@@ -5,6 +5,7 @@ import { enqueueSnackbar } from 'notistack'
 
 const useNodeUpdateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
+  const templateId = useRFStore((state) => state.templateId)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
@@ -12,9 +13,9 @@ const useNodeUpdateMutation = () => {
     async onMutate(variables) {
       updateNode(variables)
 
-      const prevData = utils.node.list.getData({ template_id: variables.template_id })
+      const prevData = utils.node.list.getData({ template_id: templateId })
 
-      utils.node.list.setData({ template_id: variables.template_id }, (old) => {
+      utils.node.list.setData({ template_id: templateId }, (old) => {
         if (!old) return old
         const { nodes: _nodes = [], edges } = old
         return {
@@ -24,8 +25,6 @@ const useNodeUpdateMutation = () => {
           edges,
         }
       })
-
-      const templateId = variables.template_id
 
       return { prevData, templateId }
     },

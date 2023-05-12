@@ -14,7 +14,7 @@ const useNodeCreateMutation = () => {
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
-  const { mutate: mulUpdate } = api.node.multipleUpdate.useMutation()
+  const { mutate: mulUpdate } = api.node.bulkUpdate.useMutation()
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
