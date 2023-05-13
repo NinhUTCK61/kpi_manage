@@ -27,8 +27,14 @@ const storeSelector = (state: RFStore) => ({
 export const CreateView: React.FC = () => {
   const { nodes, edges, viewportAction } = useRFStore(storeSelector, shallow)
 
-  const { handleEdgesChange, handleNodesChange, handlePaneClick, handleWheel, handleNodesDelete } =
-    useReactFlowHandler()
+  const {
+    handleEdgesChange,
+    handleNodesChange,
+    handlePaneClick,
+    handleWheel,
+    handleNodesDelete,
+    handleNodeClick,
+  } = useReactFlowHandler()
 
   const containerRef = useRef<HTMLElement>(null)
   const { setViewport } = useReactFlow()
@@ -61,6 +67,7 @@ export const CreateView: React.FC = () => {
           onNodesDelete={handleNodesDelete}
           onPaneClick={handlePaneClick}
           onWheel={handleWheel}
+          onNodeClick={handleNodeClick}
           proOptions={{
             hideAttribution: true,
           }}

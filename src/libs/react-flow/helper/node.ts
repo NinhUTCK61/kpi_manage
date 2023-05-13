@@ -1,5 +1,5 @@
 import { HierarchyNode, hierarchy, tree } from 'd3-hierarchy'
-import { Edge } from 'reactflow'
+import { Edge, Node as RFNode } from 'reactflow'
 import {
   HORIZONTAL_SPACING_FACTOR,
   NODE_HEIGHT,
@@ -92,4 +92,8 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
 
 export function isEmptyKPINodeForm(node: KPINodeType) {
   return !node.input_title && !node.input_value && !node.unit
+}
+
+export function isReactFlowKPINode(node: RFNode): node is ReactFlowKPINode {
+  return node.type === 'kpi'
 }

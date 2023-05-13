@@ -1,4 +1,11 @@
-import { RFStore, useNodeDeleteMutation, useRFStore } from '@/libs/react-flow'
+import {
+  RFStore,
+  ReactFlowNodeData,
+  isEmptyKPINodeForm,
+  isReactFlowKPINode,
+  useNodeDeleteMutation,
+  useRFStore,
+} from '@/libs/react-flow'
 import { MouseEvent, useCallback } from 'react'
 import { Node as RFNode } from 'reactflow'
 import { shallow } from 'zustand/shallow'
@@ -8,13 +15,12 @@ const storeSelector = (state: RFStore) => ({
   handleEdgesChange: state.handleEdgesChange,
   setNodeFocused: state.setNodeFocused,
   scrollZoom: state.scrollZoom,
+  removeEmptyNode: state.removeEmptyNode,
 })
 
 export const useReactFlowHandler = () => {
-  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom, removeEmptyNode } =
+    useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
 
@@ -49,11 +55,21 @@ export const useReactFlowHandler = () => {
     [mutate],
   )
 
+  const handleNodeClick = useCallback(
+    (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
+      if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
+        removeEmptyNode()
+      }
+    },
+    [removeEmptyNode],
+  )
+
   return {
     handleWheel,
     handleNodesChange,
     handleEdgesChange,
     handlePaneClick,
     handleNodesDelete,
+    handleNodeClick,
   }
 }

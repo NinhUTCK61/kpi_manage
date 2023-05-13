@@ -1,5 +1,5 @@
 import AddIcon from 'public/assets/svgs/add_node.svg'
-import { useCallback, useState } from 'react'
+import { MouseEvent, useCallback, useState } from 'react'
 import { Position } from 'reactflow'
 import { useRFStore } from '../../../hooks'
 import { useKPINodeContext } from '../context'
@@ -16,6 +16,11 @@ const Active: React.FC = () => {
     setFormFocus(state)
   }, [])
 
+  const handleAddNode = (e: MouseEvent<HTMLDivElement>, id: string) => {
+    e.stopPropagation()
+    addKPINode(id)
+  }
+
   const isValidFocusToShowHandler = !formFocus && nodeFocused
   const isShowBottomHandler = isValidFocusToShowHandler && data.slug !== 'root' && data.input_title
   const isShowRightHandler = isValidFocusToShowHandler && data.input_title
@@ -30,14 +35,18 @@ const Active: React.FC = () => {
         <BottomHandler
           type="target"
           position={Position.Bottom}
-          onClick={() => addKPINode(data.parent_node_id as string)}
+          onClick={(e) => handleAddNode(e, data.parent_node_id as string)}
         >
           <IconImage src={AddIcon} alt="add" />
         </BottomHandler>
       )}
 
       {isShowRightHandler && (
-        <RightHandler type="source" position={Position.Right} onClick={() => addKPINode(data.id)}>
+        <RightHandler
+          type="source"
+          position={Position.Right}
+          onClick={(e) => handleAddNode(e, data.id)}
+        >
           <IconImage src={AddIcon} alt="add" />
         </RightHandler>
       )}
