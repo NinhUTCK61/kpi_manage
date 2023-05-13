@@ -15,10 +15,13 @@ import {
 const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
-  const isHasChild = useRFStore((state) => state.isHasChild)
+  const d3Root = useRFStore((state) => state.d3Root)
 
   const { data, isConnectable } = useKPINodeContext()
   const style = JSON.parse(data.node_style || '{}')
+
+  const d3Node = d3Root.find((node) => node.data.id === data.id)
+  const hasChild = d3Node?.children && d3Node.children.length > 0
 
   return (
     <NodeInActiveContainer
@@ -42,7 +45,7 @@ const InActive: React.FC = () => {
       )}
 
       <RightHandler type="source" position={Position.Right}>
-        {data.slug !== 'root' && isHasChild(data.id) && <IconImageNode src={NodeIcon} alt="add" />}
+        {data.slug !== 'root' && hasChild && <IconImageNode src={NodeIcon} alt="add" />}
       </RightHandler>
 
       <TextId variant="caption">{data.slug}</TextId>
