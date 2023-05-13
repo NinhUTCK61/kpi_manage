@@ -165,7 +165,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEmptyNode() {
         const oldNodes = get().nodes
         const oldEdges = get().edges
-        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && isEmptyKPINodeForm(n))
+        const emptyNode = oldNodes.find((n) => n.type === 'kpi' && isEmptyKPINodeForm(n.data))
         if (!emptyNode) return
 
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)

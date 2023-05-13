@@ -1,6 +1,7 @@
 import { colorAlphabet } from '@/libs/config/theme'
 import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith, isEqual } from 'lodash'
+import { isEmptyKPINodeForm } from '../../helper'
 import { KPINodeType, ReactFlowNode } from '../../types'
 
 export enum SaveAction {
@@ -23,6 +24,10 @@ export const getSaveAction = (newData: KPINodeType, oldData: KPINodeType): SaveA
 
   if (!template_id || !input_title) {
     return SaveAction.CANCEL
+  }
+
+  if (isEmptyKPINodeForm(newData)) {
+    return SaveAction.DELETE
   }
 
   return SaveAction.UPDATE

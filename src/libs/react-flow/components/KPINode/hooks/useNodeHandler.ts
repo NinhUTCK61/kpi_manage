@@ -1,7 +1,7 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
-import { useNodeCreateMutation, useNodeUpdateMutation } from '.'
+import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
@@ -14,6 +14,7 @@ const useNodeHandler = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
+  const { mutate: deleteMutate } = useNodeDeleteMutation()
 
   const { data } = useKPINodeContext()
 
@@ -47,6 +48,7 @@ const useNodeHandler = () => {
         setNodeFocused('')
         break
       case 'DELETE':
+        deleteMutate({ id: newData.id })
         break
       case 'CANCEL':
         break

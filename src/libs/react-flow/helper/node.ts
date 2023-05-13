@@ -6,7 +6,7 @@ import {
   NODE_WIDTH,
   VERTICAL_SPACING_FACTOR,
 } from '../constant'
-import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { generateNextNode } from './hierarchy'
 
 export const generateNextReactFlowNode = (
@@ -90,6 +90,6 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
   return newNodes
 }
 
-export function isEmptyKPINodeForm(node: ReactFlowKPINode) {
-  return !node.data.input_title && !node.data.input_value && !node.data.unit
+export function isEmptyKPINodeForm(node: KPINodeType) {
+  return !node.input_title && !node.input_value && !node.unit
 }
