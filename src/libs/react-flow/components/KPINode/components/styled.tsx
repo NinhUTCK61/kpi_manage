@@ -93,49 +93,19 @@ const TextOverflow = styled(Typography)({
 
 const Menu = styled(MuiMenu)(({ theme }) => ({
   '.MuiMenu-paper': {
-    overflow: 'hidden',
     boxShadow: theme.shadows[3],
-    '& .MuiAvatar-root': {
-      width: 32,
-      height: 32,
-      ml: -0.5,
-      mr: 1,
-    },
-    '&:before': {
-      content: '""',
-      display: 'block',
-      position: 'absolute',
-      top: 0,
-      right: 14,
-      width: 10,
-      height: 10,
-      bgcolor: 'background.paper',
-      transform: 'translateY(-50%) rotate(45deg)',
-      zIndex: 0,
-    },
-  },
-  '.MuiList-root': {
-    paddingBottom: 0,
-    paddingTop: 0,
   },
 }))
 
 const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
+  width: 240,
   height: theme.spacing(6.75),
-  fontSize: 15,
   lineHeight: '22px',
+  fontSize: 15,
   color: theme.palette.common.black,
   ':hover': {
     backgroundColor: theme.palette.customPrimary[0],
   },
-}))
-
-const MenuItemDelete = styled(MenuItem)(({ theme }) => ({
-  color: theme.palette.red[400],
-}))
-
-const MenuItemPaste = styled(MenuItem)(({ theme }) => ({
-  color: theme.palette.greyScale[500],
 }))
 
 export {
@@ -150,6 +120,4 @@ export {
   TextOverflow,
   Menu,
   MenuItem,
-  MenuItemDelete,
-  MenuItemPaste,
 }

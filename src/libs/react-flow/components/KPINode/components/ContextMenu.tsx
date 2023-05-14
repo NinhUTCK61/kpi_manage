@@ -1,7 +1,7 @@
 import { PopoverPosition, PopoverReference } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
-import { Menu, MenuItem, MenuItemDelete, MenuItemPaste } from './styled'
+import { Menu, MenuItem } from './styled'
 
 type PropsType = {
   open: boolean
@@ -12,6 +12,22 @@ type PropsType = {
 
 const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anchorPosition }) => {
   const { t } = useTranslation(['file'])
+  const contextMenuItem = [
+    {
+      title: t('menu_context.edit'),
+    },
+    {
+      title: t('menu_context.copy'),
+    },
+    {
+      title: t('menu_context.paste'),
+      disable: true,
+    },
+    {
+      title: t('menu_context.delete'),
+      color: 'red',
+    },
+  ]
 
   return (
     <Menu
@@ -21,10 +37,11 @@ const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anch
       anchorReference={anchorReference}
       anchorPosition={anchorPosition}
     >
-      <MenuItem>{t('menu_context.edit')}</MenuItem>
-      <MenuItem>{t('menu_context.copy')}</MenuItem>
-      <MenuItemPaste>{t('menu_context.paste')}</MenuItemPaste>
-      <MenuItemDelete>{t('menu_context.delete')}</MenuItemDelete>
+      {contextMenuItem.map((menu) => (
+        <MenuItem key={menu.title} disabled={menu.disable}>
+          {menu.title}
+        </MenuItem>
+      ))}
     </Menu>
   )
 }
