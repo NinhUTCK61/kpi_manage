@@ -73,12 +73,14 @@
     "dob_invalid": "The date of birth cannot be later than the current date.",
     "create_node": "ノードを作成できませんでした。",
     "error_date": "The date of birth cannot be later than the current date.",
-    "speechballon_not_found": "Speech ballon not found!"
+    "speechballon_not_found": "Speech ballon not found!",
+    "user_not_found": "ユーザーが見つかりませんでした。",
+    "send_mail_fail": "Send mail failed!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
     "delete_template": "Delete template success!",
-    "template_deleted": "The template has been deleted。",
+    "template_deleted": "The template has been deleted",
     "template_not_found": "Template not found!",
     "template_not_deleted": "Template not deleted yet!",
     "template_restore_success": "Template restore success!"

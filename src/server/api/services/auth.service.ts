@@ -26,7 +26,7 @@ class AuthService {
     if (!user) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'User not found!',
+        message: 'error.user_not_found',
       })
     }
 
@@ -53,7 +53,7 @@ class AuthService {
     } catch (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Send mail failed!',
+        message: 'error.send_mail_fail',
       })
     }
 

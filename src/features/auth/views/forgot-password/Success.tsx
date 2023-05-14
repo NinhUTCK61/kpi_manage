@@ -34,7 +34,7 @@ const Success: FC = () => {
             onClick={redirectSignIn}
             sx={{ textTransform: 'capitalize', marginTop: 2 }}
           >
-            Ok
+            {t('OK')}
           </Button>
         </Stack>
       </Slide>
