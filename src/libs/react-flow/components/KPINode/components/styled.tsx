@@ -102,9 +102,12 @@ const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
   height: theme.spacing(6.75),
   lineHeight: '22px',
   fontSize: 15,
-  color: theme.palette.common.black,
+  fontWeight: 400,
   ':hover': {
     backgroundColor: theme.palette.customPrimary[0],
+  },
+  ':disabled': {
+    color: theme.palette.greyScale[500],
   },
 }))
 

@@ -25,20 +25,25 @@ const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anch
     },
     {
       title: t('menu_context.delete'),
-      color: 'red',
+      delete: TextTrackCueList,
     },
   ]
 
   return (
     <Menu
-      id="file-menu"
       open={open}
       onClose={onClose}
       anchorReference={anchorReference}
       anchorPosition={anchorPosition}
     >
       {contextMenuItem.map((menu) => (
-        <MenuItem key={menu.title} disabled={menu.disable}>
+        <MenuItem
+          key={menu.title}
+          disabled={menu.disable}
+          sx={(theme) => ({
+            color: menu.delete ? theme.palette.red[500] : theme.palette.base.black,
+          })}
+        >
           {menu.title}
         </MenuItem>
       ))}
