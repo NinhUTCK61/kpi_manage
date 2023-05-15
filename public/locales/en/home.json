@@ -24,7 +24,7 @@
   "detail_set_thumbnail_2": "PNG, JPG or (max. 800x400px)",
   "seo_title": "Home",
   "restore": "Restore this file",
-  "restore_firm": "復元",
+  "restore_confirm": "Restore",
   "permanently_delete": "Permanently delete",
   "permanently_delete_menu": "Permanently delete",
   "detail_dialog_restore": "Are you sure to restore this file?",

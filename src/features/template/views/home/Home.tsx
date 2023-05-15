@@ -59,7 +59,7 @@ const Home = () => {
       description: t('detail_dialog_restore'),
       handleConfirm: handleConfirmAction,
       type: 'warning',
-      textSubmit: t('restore_firm'),
+      textSubmit: t('restore_confirm'),
       action: () =>
         mutationRestore.mutate({
           id: String(nodeId),

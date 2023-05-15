@@ -24,7 +24,7 @@
   "detail_set_thumbnail_2": "PNG、JPG (最大 800x400px)",
   "seo_title": "ホーム",
   "restore": "このファイルを復元する",
-  "restore_firm": "復元",
+  "restore_confirm": "復元",
   "permanently_delete": "完全に削除",
   "permanently_delete_menu": "完全に削除する",
   "detail_dialog_restore": "このファイルを復元しますか？",
