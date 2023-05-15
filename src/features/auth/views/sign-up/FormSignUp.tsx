@@ -111,10 +111,10 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             required
             control={control}
             name="role_in_company"
-            label={t('role') as string}
+            label={t('position') as string}
             type="text"
             fullWidth
-            placeholder={t('enter_role') as string}
+            placeholder={t('enter_position') as string}
             readOnly={isLoading}
           />
 
