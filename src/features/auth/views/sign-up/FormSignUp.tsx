@@ -118,7 +118,12 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             readOnly={isLoading}
           />
 
-          <DatePickerSeparator control={control} name="date_of_birth" fullWidth />
+          <DatePickerSeparator
+            control={control}
+            name="date_of_birth"
+            label={t('dob', { ns: 'common' })}
+            fullWidth
+          />
 
           <ReasonSection type={ReasonType.ISSUE} />
 

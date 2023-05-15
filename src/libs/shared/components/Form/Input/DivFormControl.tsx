@@ -6,7 +6,7 @@ import { FormLabel } from './FormLabel'
 
 export type AddDivControlProps = {
   helperText?: string | JSX.Element
-  label?: string
+  label?: string | null
   fieldError?: FieldError | boolean
   fullWidth?: boolean
   required?: boolean
