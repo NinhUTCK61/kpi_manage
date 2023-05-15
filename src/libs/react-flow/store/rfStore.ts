@@ -114,7 +114,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
-        console.log('updateeeee store', kpiNodeData.node_style)
         if (_node) {
           _node.data.data = { ..._node.data.data, ...kpiNodeData }
           const _nodes = getLayoutElements(_d3)

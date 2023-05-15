@@ -6,54 +6,51 @@ import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState, useTransition } from 'react'
 import { useDebounce } from 'usehooks-ts'
+import { ReactFlowKPINode } from '../../../../../../libs/react-flow/types/node'
 
 const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
   const [isPending, startTransition] = useTransition()
-  const { mutate: update } = useNodeUpdateMutation()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   const id = 'color'
 
-  const nodeStyle = useMemo(() => {
-    return nodeFocused?.type === 'kpi' && JSON.parse(nodeFocused?.data?.node_style || '{}')
+  const nodeFocusedMemo = useMemo<ReactFlowKPINode | undefined>(() => {
+    if (nodeFocused?.type === 'kpi') return nodeFocused
   }, [nodeFocused])
 
   const [pickColor, setPickColor] = useState<string>(
-    nodeStyle?.color ? nodeStyle.color : base.black,
+    nodeFocusedMemo?.data.node_style
+      ? JSON.parse(nodeFocusedMemo.data.node_style)?.color
+      : base.black,
   )
 
-  const debouncedColor = useDebounce<string>(pickColor, 300)
+  const debouncedColor = useDebounce<string>(pickColor, 100)
+
+  const { mutate: update } = useNodeUpdateMutation()
 
   useLayoutEffect(() => {
-    if (!nodeStyle.color) {
+    if (!nodeFocusedMemo?.data.node_style) {
       setPickColor(base.black)
-      console.log('set color black')
     } else {
-      console.log('set color new node', nodeStyle.color)
+      const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       setPickColor(nodeStyle.color)
     }
-    console.log('chang nodefocus')
-  }, [nodeStyle])
+  }, [nodeFocusedMemo])
 
   const handleUpdate = useCallback(() => {
-    console.log('handle update')
-    if (debouncedColor === nodeStyle.color) return
-    console.log('debouncedColor:', debouncedColor, ',nodeStyle.color:', nodeStyle.color)
-    nodeFocused?.type === 'kpi' &&
-      update({
-        ...nodeFocused.data,
-        node_style: JSON.stringify({
-          ...nodeStyle,
-          color: debouncedColor,
-        }),
-      })
+    if (!nodeFocusedMemo) return
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    if (debouncedColor === nodeStyle?.color) return
+    update({
+      ...nodeFocusedMemo.data,
+      node_style: JSON.stringify({ ...nodeStyle, color: debouncedColor }),
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedColor, update])
 
   useEffect(() => {
     if (!debouncedColor) return
-    console.log('effect debounceColor')
     handleUpdate()
   }, [debouncedColor, handleUpdate])
 

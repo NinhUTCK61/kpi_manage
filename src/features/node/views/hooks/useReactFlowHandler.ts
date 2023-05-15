@@ -19,10 +19,8 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const useReactFlowHandler = () => {
-  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom, removeEmptyNode } =
+    useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
 
