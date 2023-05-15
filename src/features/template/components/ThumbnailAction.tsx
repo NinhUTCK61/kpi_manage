@@ -16,10 +16,10 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
   onOpen,
   idTemplate,
 }) => {
-  const { t } = useTranslation(['home'])
+  const { t } = useTranslation('home')
   const [image, setImage] = useState<File[] | null>()
   const onSelectImage = (_acceptedFiles: File[]) => {
-    handleValidateAllCase(_acceptedFiles)
+    handleValidateFormatImage(_acceptedFiles) ? setImage(_acceptedFiles) : onCloseModal()
   }
 
   function handleValidateFormatImage(_acceptedFiles: File[]) {
@@ -29,10 +29,6 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
       })
       return false
     }
-    return true
-  }
-
-  function handleValidateSizeImage(_acceptedFiles: File[]) {
     if (_acceptedFiles[0]?.size && Math.floor(_acceptedFiles[0]?.size / (1024 * 1024)) > 3) {
       enqueueSnackbar(t('error_size_image_upload'), {
         variant: 'error',
@@ -41,18 +37,6 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
     }
     return true
   }
-
-  function handleValidateAllCase(_acceptedFiles: File[]) {
-    handleValidateFormatImage(_acceptedFiles) && handleValidateSizeImage(_acceptedFiles)
-      ? saveImage(_acceptedFiles)
-      : onCloseModal()
-  }
-
-  function saveImage(_acceptedFiles: File[]) {
-    setImage(_acceptedFiles)
-    onClose()
-  }
-
   const onCloseModal = () => {
     setImage(null)
   }
