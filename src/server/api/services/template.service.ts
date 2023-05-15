@@ -128,7 +128,19 @@ export class TemplateService extends TemplateHelper {
   }
 
   async restore(id: string, user: User) {
-    await this.validateUserTemplate(id, user.id)
+    const userTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        template_id: id,
+        user_id: user.id,
+      },
+    })
+
+    if (!userTemplate) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'error.unauthorized',
+      })
+    }
 
     await prisma.template.update({
       where: { id },
