@@ -9,5 +9,11 @@
   "hand_tool": "手のひらツール",
   "comment": "コメントの追加",
   "speech": "吹き出しの追加",
-  "remove_favorite": "お気に入りを削除"
+  "remove_favorite": "お気に入りを削除",
+  "menu_context": {
+    "edit": "ノードを編集 / 吹き出しを編集",
+    "copy": "コピー",
+    "paste": "ペースト",
+    "delete": "削除"
+  }
 }

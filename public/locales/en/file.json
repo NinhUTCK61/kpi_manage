@@ -9,5 +9,11 @@
   "hand_tool": "Hand tool",
   "comment": "Add comment",
   "speech": "Add speech balloon",
-  "remove_favorite": "Remove favorite this file"
+  "remove_favorite": "Remove favorite this file",
+  "menu_context": {
+    "edit": "Edit node / Speech balloon",
+    "copy": "Copy",
+    "paste": "Paste",
+    "delete": "Delete"
+  }
 }

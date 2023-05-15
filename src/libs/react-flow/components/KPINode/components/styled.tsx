@@ -1,4 +1,12 @@
-import { Box, Stack, Typography, styled } from '@mui/material'
+import { base, greyScale, red } from '@/libs/config/theme'
+import {
+  Box,
+  Menu as MuiMenu,
+  MenuItem as MuiMenuItem,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import Image from 'next/image'
 import { Handle } from 'reactflow'
 
@@ -84,6 +92,31 @@ const TextOverflow = styled(Typography)({
   textOverflow: 'ellipsis',
 })
 
+const Menu = styled(MuiMenu)(({ theme }) => ({
+  '.MuiMenu-paper': {
+    boxShadow: theme.shadows[3],
+  },
+}))
+
+const MenuItem = styled(MuiMenuItem, {
+  shouldForwardProp: (prop) => prop !== 'isDelete',
+})<{ isDelete?: boolean }>(({ theme, isDelete }) => {
+  return {
+    width: 240,
+    height: theme.spacing(6.75),
+    lineHeight: '22px',
+    fontSize: 15,
+    fontWeight: 400,
+    ':hover': {
+      backgroundColor: theme.palette.customPrimary[0],
+    },
+    color: isDelete ? red[500] : base.black,
+    '&.Mui-disabled': {
+      color: greyScale[500],
+    },
+  }
+})
+
 export {
   LeftHandler,
   BottomHandler,
@@ -94,4 +127,6 @@ export {
   NodeActiveContainer,
   NodeInActiveContainer,
   TextOverflow,
+  Menu,
+  MenuItem,
 }
