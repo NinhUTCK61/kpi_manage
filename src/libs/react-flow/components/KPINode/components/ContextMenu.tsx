@@ -25,7 +25,7 @@ const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anch
     },
     {
       title: t('menu_context.delete'),
-      delete: TextTrackCueList,
+      delete: true,
     },
   ]
 
