@@ -1,6 +1,7 @@
 export * from './useCreateTemplate'
 export * from './useDeleteTemplate'
 export * from './useLikeTemplate'
+export * from './useLikeTemplateById'
 export * from './useRenameTemplate'
 export * from './useRenameTemplateById'
 export * from './useRestoreTemplate'
