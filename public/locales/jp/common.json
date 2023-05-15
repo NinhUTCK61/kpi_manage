@@ -2,21 +2,21 @@
   "language": "日本語",
   "english": "English",
   "japan": "日本語",
-  "password_err_min": "8桁以上を入力する必要があります。",
-  "password_err_special": "最少1桁の特殊文字を含める必要があります。",
-  "password_err_upper": "最少1桁の大文字を含める必要があります。",
-  "password_err_lower": "最少1桁の小文字を含める必要があります。",
-  "password_err_number": "最少1桁の数字を含める必要があります。",
+  "password_err_min": "8桁以上で入力する必要があります。",
+  "password_err_special": "少なくとも1桁以上の特殊文字を含める必要があります。",
+  "password_err_upper": "少なくとも1桁以上の大文字を含める必要があります。",
+  "password_err_lower": "少なくとも1桁以上の小文字を含める必要があります。",
+  "password_err_number": "少なくとも1桁以上の数字を含める必要があります。",
   "sidebar": {
     "home": "ホーム",
     "favorite": "お気に入り",
-    "consultation": "相談",
-    "knowledge_blog": "ブログ",
-    "faq": "よくある質問",
-    "use_case": "事例を見る"
+    "consultation": "KPIに関する相談",
+    "knowledge_blog": "Knowledge Blog",
+    "faq": "FAQ",
+    "use_case": "活用事例"
   },
   "menu": {
-    "edit": "プロフィール編集",
+    "edit": "プロフィールを編集する",
     "change_password": "パスワード変更",
     "privacy_policy": "プライバシーポリシー",
     "log_out": "ログアウト"
