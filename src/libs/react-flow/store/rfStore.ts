@@ -173,7 +173,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         if (!node) return null
         return node
       },
-      isHasChild(nodeId: string) {
+      hasChild(nodeId: string) {
         const _d3 = get().d3Root
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length

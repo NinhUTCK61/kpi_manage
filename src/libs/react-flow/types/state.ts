@@ -14,7 +14,7 @@ export type RFStore = {
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
-  isHasChild(nodeId: string): boolean
+  hasChild(nodeId: string): boolean
   removeEmptyNode: () => void
   updateKPINode: (node: UpdateNodeInputType) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
