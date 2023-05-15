@@ -1,11 +1,11 @@
 import { base } from '@/libs/config/theme'
+import useDebounce from '@/libs/hooks/useDebounce'
 import { useRFStore } from '@/libs/react-flow'
 import { useNodeUpdateMutation } from '@/libs/react-flow/components/KPINode/hooks'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState, useTransition } from 'react'
-import { useDebounce } from 'usehooks-ts'
 
 const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
@@ -13,7 +13,7 @@ const PickColorNode: React.FC = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   const [pickColor, setPickColor] = useState<string>(base.black)
-  const debouncedColor = useDebounce<string>(pickColor, 300)
+  const [debouncedColor, resetDebounceColor] = useDebounce<string>(pickColor, 300)
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type !== 'kpi') return
@@ -29,8 +29,9 @@ const PickColorNode: React.FC = () => {
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       setPickColor(nodeStyle.color)
+      resetDebounceColor(nodeStyle.color as string)
     }
-  }, [nodeFocusedMemo])
+  }, [nodeFocusedMemo, resetDebounceColor])
 
   const handleUpdate = useCallback(() => {
     if (!nodeFocusedMemo?.id) return
