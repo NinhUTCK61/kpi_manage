@@ -15,17 +15,14 @@ const PickColorNode: React.FC = () => {
 
   const id = 'color'
 
-  const nodeFocusedMemo = useMemo<ReactFlowKPINode | undefined>(() => {
-    if (nodeFocused?.type === 'kpi') return nodeFocused
-  }, [nodeFocused])
-
-  const [pickColor, setPickColor] = useState<string>(
-    nodeFocusedMemo?.data.node_style
-      ? JSON.parse(nodeFocusedMemo.data.node_style)?.color
-      : base.black,
-  )
+  const [pickColor, setPickColor] = useState<string>(base.black)
 
   const debouncedColor = useDebounce<string>(pickColor, 100)
+
+  const nodeFocusedMemo = useMemo<ReactFlowKPINode | undefined>(() => {
+    if (nodeFocused?.type !== 'kpi') return undefined
+    return nodeFocused
+  }, [nodeFocused])
 
   const { mutate: update } = useNodeUpdateMutation()
 
