@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-function useDebounce<T>(value: T, delay?: number) {
+function useDebounce<T>(value: T, delay?: number): [T, (value: T) => void] {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
   const timer = useRef<ReturnType<typeof setTimeout>>()

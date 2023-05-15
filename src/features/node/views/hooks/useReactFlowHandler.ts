@@ -42,7 +42,7 @@ export const useReactFlowHandler = () => {
 
   const handlePaneClick = useCallback(
     (_: MouseEvent<Element>) => {
-      setNodeFocused('')
+      setNodeFocused(null)
     },
     [setNodeFocused],
   )

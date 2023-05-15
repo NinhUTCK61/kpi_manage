@@ -177,12 +177,22 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const _node = _d3.find((n) => n.data.id === nodeId)
         return !!_node?.children?.length
       },
-      setNodeFocused(slug) {
+      setNodeFocused(node) {
+        let nodeFocused: ReactFlowNode | null = null
+        const nodes = get().nodes
+        if (typeof node === 'string') {
+          nodeFocused = nodes.find((n) => n.id === node) || null
+        } else {
+          nodeFocused = node
+        }
+
+        console.log('setNodeFocused', nodeFocused)
+
         set({
-          nodeFocused: get().nodes.find((n) => n.type === 'kpi' && n.data.slug === slug),
+          nodeFocused,
         })
 
-        if (slug === '') {
+        if (!node) {
           get().removeEmptyNode()
         }
       },
