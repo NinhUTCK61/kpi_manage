@@ -89,10 +89,10 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
             required
             name="reenter_password"
             control={control}
-            label={t('reenter_password') as string}
+            label={t('confirm_password') as string}
             type="password"
             fullWidth
-            placeholder={t('reenter_password') as string}
+            placeholder={t('enter_reenter_password') as string}
             readOnly={isLoading}
           />
 

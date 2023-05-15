@@ -74,7 +74,9 @@
     "dob_invalid": "The date of birth cannot be later than the current date.",
     "create_node": "Create node error!",
     "error_date": "The date of birth cannot be later than the current date.",
-    "speechballon_not_found": "Speech ballon not found!"
+    "speechballon_not_found": "Speech ballon not found!",
+    "user_not_found": "User not found",
+    "send_mail_fail": "Send mail failed!"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

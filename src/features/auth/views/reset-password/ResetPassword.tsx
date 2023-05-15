@@ -14,7 +14,7 @@ const ResetPassword: FC = () => {
   const router = useRouter()
   const { mutate, isLoading, isSuccess } = api.auth.resetPassword.useMutation()
 
-  const { t } = useTranslation('common')
+  const { t } = useTranslation(['reset_password'])
 
   const { control, handleSubmit } = useForm<ResetPasswordType>({
     defaultValues: {
@@ -43,7 +43,7 @@ const ResetPassword: FC = () => {
   }
 
   return (
-    <LayoutUnAuth title="Reset Password">
+    <LayoutUnAuth title={t('seo_title')}>
       {!isSuccess && (
         <FormResetPassword
           isLoading={isLoading}
