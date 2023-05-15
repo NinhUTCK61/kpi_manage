@@ -27,7 +27,7 @@ const useRenameTemplateById = () => {
       })
     },
     onError: (err, _, ctx) => {
-      console.log(err)
+      ctx?.prevData && utils.template.byId.setData({ id: ctx?.template_id }, ctx?.prevData)
       if (err.data?.zodError) {
         const errorMes = JSON.parse(err.message)[0].message
         enqueueSnackbar(handleError(errorMes), {
@@ -38,7 +38,6 @@ const useRenameTemplateById = () => {
       }
 
       showError(err, t('rename_failed'))
-      ctx?.prevData && utils.template.byId.setData({ id: ctx?.template_id }, ctx?.prevData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
