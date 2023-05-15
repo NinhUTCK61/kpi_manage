@@ -5,4 +5,9 @@ type DialogBaseProps<T = Record<string, unknown>> = {
 
 type DialogActionType = 'delete' | 'warning' | 'default'
 
-export type { DialogBaseProps, DialogActionType }
+type ContextMenuState = {
+  mouseX: number
+  mouseY: number
+} | null
+
+export type { DialogBaseProps, DialogActionType, ContextMenuState }

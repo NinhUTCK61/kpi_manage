@@ -1,31 +1,48 @@
-import { PopoverPosition, PopoverReference } from '@mui/material'
+import { MenuProps } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import { Menu, MenuItem } from './styled'
 
-type PropsType = {
-  open: boolean
-  onClose: () => void
-  anchorReference: PopoverReference | undefined
-  anchorPosition: PopoverPosition | undefined
+export enum CtxMenuType {
+  Edit = 'edit',
+  Copy = 'copy',
+  Paste = 'paste',
+  Delete = 'delete',
 }
 
-const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anchorPosition }) => {
+type ContextMenuItem = {
+  title: string
+  type: CtxMenuType
+}
+
+export type CtxMenuProps = MenuProps & {
+  disabledMenu?: CtxMenuType[]
+}
+
+const ContextMenu: React.FC<CtxMenuProps> = ({
+  open,
+  onClose,
+  anchorPosition,
+  disabledMenu = [],
+}) => {
   const { t } = useTranslation(['file'])
-  const contextMenuItem = [
+
+  const contextMenuItem: ContextMenuItem[] = [
     {
       title: t('menu_context.edit'),
+      type: CtxMenuType.Edit,
     },
     {
       title: t('menu_context.copy'),
+      type: CtxMenuType.Copy,
     },
     {
       title: t('menu_context.paste'),
-      disable: true,
+      type: CtxMenuType.Paste,
     },
     {
       title: t('menu_context.delete'),
-      delete: true,
+      type: CtxMenuType.Delete,
     },
   ]
 
@@ -33,16 +50,14 @@ const ContextMenu: React.FC<PropsType> = ({ open, onClose, anchorReference, anch
     <Menu
       open={open}
       onClose={onClose}
-      anchorReference={anchorReference}
+      anchorReference="anchorPosition"
       anchorPosition={anchorPosition}
     >
       {contextMenuItem.map((menu) => (
         <MenuItem
           key={menu.title}
-          disabled={menu.disable}
-          sx={(theme) => ({
-            color: menu.delete ? theme.palette.red[500] : theme.palette.base.black,
-          })}
+          disabled={disabledMenu.includes(menu.type)}
+          isDelete={menu.type === CtxMenuType.Delete}
         >
           {menu.title}
         </MenuItem>

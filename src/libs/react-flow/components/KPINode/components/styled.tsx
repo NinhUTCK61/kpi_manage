@@ -1,3 +1,4 @@
+import { base, greyScale, red } from '@/libs/config/theme'
 import {
   Box,
   Menu as MuiMenu,
@@ -97,19 +98,24 @@ const Menu = styled(MuiMenu)(({ theme }) => ({
   },
 }))
 
-const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
-  width: 240,
-  height: theme.spacing(6.75),
-  lineHeight: '22px',
-  fontSize: 15,
-  fontWeight: 400,
-  ':hover': {
-    backgroundColor: theme.palette.customPrimary[0],
-  },
-  ':disabled': {
-    color: theme.palette.greyScale[500],
-  },
-}))
+const MenuItem = styled(MuiMenuItem, {
+  shouldForwardProp: (prop) => prop !== 'isDelete',
+})<{ isDelete?: boolean }>(({ theme, isDelete }) => {
+  return {
+    width: 240,
+    height: theme.spacing(6.75),
+    lineHeight: '22px',
+    fontSize: 15,
+    fontWeight: 400,
+    ':hover': {
+      backgroundColor: theme.palette.customPrimary[0],
+    },
+    color: isDelete ? red[500] : base.black,
+    '&.Mui-disabled': {
+      color: greyScale[500],
+    },
+  }
+})
 
 export {
   LeftHandler,
