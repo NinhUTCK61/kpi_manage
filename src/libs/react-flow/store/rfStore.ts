@@ -113,10 +113,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       // TODO: update kpi node
       updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.slug === kpiNodeData.slug)
+        const _node = _d3.find((n) => n.data.data.id === kpiNodeData.id)
         if (_node) {
           _node.data.data = { ..._node.data.data, ...kpiNodeData }
           const _nodes = getLayoutElements(_d3)
+
           set({ nodes: _nodes })
         }
       },
@@ -185,8 +186,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         } else {
           nodeFocused = node
         }
-
-        console.log('setNodeFocused', nodeFocused)
 
         set({
           nodeFocused,
