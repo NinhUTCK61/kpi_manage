@@ -72,6 +72,7 @@ export const CreateView: React.FC = () => {
             hideAttribution: true,
           }}
           panOnDrag={viewportAction === ViewPortAction.Pan}
+          panOnScroll
           zoomOnScroll={false}
           zoomOnPinch={false}
           zoomOnDoubleClick={false}
