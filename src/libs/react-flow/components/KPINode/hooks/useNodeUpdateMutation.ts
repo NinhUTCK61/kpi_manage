@@ -1,5 +1,6 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { consola } from 'consola'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
@@ -11,6 +12,8 @@ const useNodeUpdateMutation = () => {
 
   const mutation = api.node.update.useMutation({
     async onMutate(variables) {
+      consola.info('useNodeUpdateMutation', variables)
+
       updateNode(variables)
 
       const prevData = utils.node.list.getData({ template_id: templateId })

@@ -6,21 +6,18 @@ import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState, useTransition } from 'react'
 import { useDebounce } from 'usehooks-ts'
-import { ReactFlowKPINode } from '../../../../../../libs/react-flow/types/node'
 
 const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
-  const [isPending, startTransition] = useTransition()
+  const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
-  const id = 'color'
-
   const [pickColor, setPickColor] = useState<string>(base.black)
+  const debouncedColor = useDebounce<string>(pickColor, 300)
 
-  const debouncedColor = useDebounce<string>(pickColor, 100)
+  const nodeFocusedMemo = useMemo(() => {
+    if (nodeFocused?.type !== 'kpi') return
 
-  const nodeFocusedMemo = useMemo<ReactFlowKPINode | undefined>(() => {
-    if (nodeFocused?.type !== 'kpi') return undefined
     return nodeFocused
   }, [nodeFocused])
 
@@ -36,20 +33,18 @@ const PickColorNode: React.FC = () => {
   }, [nodeFocusedMemo])
 
   const handleUpdate = useCallback(() => {
-    if (!nodeFocusedMemo) return
+    if (!nodeFocusedMemo?.id) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     if (debouncedColor === nodeStyle?.color) return
     update({
-      ...nodeFocusedMemo.data,
+      id: nodeFocusedMemo.id as string,
       node_style: JSON.stringify({ ...nodeStyle, color: debouncedColor }),
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedColor, update])
+  }, [debouncedColor, update, nodeFocusedMemo?.id, nodeFocusedMemo?.data.node_style])
 
   useEffect(() => {
-    if (!debouncedColor) return
     handleUpdate()
-  }, [debouncedColor, handleUpdate])
+  }, [handleUpdate])
 
   return (
     <Tooltip title={t('text_color')} arrow>
@@ -64,12 +59,12 @@ const PickColorNode: React.FC = () => {
             cursor: 'pointer',
           }}
           component="label"
-          htmlFor={id}
+          htmlFor="node-color"
         />
 
         <Button
           component="label"
-          htmlFor={id}
+          htmlFor="node-color"
           sx={{
             backgroundColor: base.white,
             color: base.black,
@@ -85,7 +80,7 @@ const PickColorNode: React.FC = () => {
         </Button>
 
         <InputStyled
-          id={id}
+          id="node-color"
           type="color"
           onChange={(e) => {
             startTransition(() => {
