@@ -9,11 +9,11 @@ const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   return resultString.replace(/[^a-zA-Z]/g, ' ')
 }
 
-export const charNearCursorKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
   const inputElement = e.target as HTMLInputElement
   const selectionStart = inputElement.selectionStart
   if (selectionStart && selectionStart >= 1 && selectionStart <= inputElement.value.length) {
-    sliceKeyInsideSpace(inputElement.value.replace(/[^a-zA-Z0-9]/g, ' '), selectionStart)
+    return sliceKeyInsideSpace(inputElement.value.replace(/[^a-zA-Z0-9]/g, ' '), selectionStart)
   }
 }
 
