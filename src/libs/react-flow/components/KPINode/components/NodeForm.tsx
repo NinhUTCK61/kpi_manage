@@ -123,7 +123,9 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
             }}
           >
             <Image src={AlertIcon} alt="alert" />
-            <Typography color="red.400">{error}</Typography>
+            <Typography color="red.400" whiteSpace="nowrap">
+              {error}
+            </Typography>
           </Stack>
         )}
         <InputNode
