@@ -4,6 +4,7 @@ import { memo, useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { useRFStore } from '../../hooks'
 import { KPINodeType } from '../../types'
+import { SpeechBallon } from '../SpeechBallon/components/SpeechBallon'
 import { Active, InActive } from './components'
 import { ContextMenu, CtxMenuType } from './components/ContextMenu'
 import { KPINodeProvider } from './context'
@@ -46,6 +47,7 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
           }
         />
       </Stack>
+      <SpeechBallon />
     </KPINodeProvider>
   )
 }
