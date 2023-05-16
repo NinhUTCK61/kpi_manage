@@ -42,7 +42,7 @@
   "upload_title": "Set thumbnail for this file?",
   "upload_success": "Successfully set a thumbnail for this file!",
   "upload_fail": "Sorry, there was an error uploading your image. Please try again later.",
-  "ok": "Ok",
+  "ok": "OK",
   "cancel": "Cancel",
   "incorrect_upload_image": "Incorrect image format.",
   "error_size_image_upload": "The size of the image is larger than 3Mb, please change another image."
