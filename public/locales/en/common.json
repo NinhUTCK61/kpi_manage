@@ -76,7 +76,10 @@
     "error_date": "The date of birth cannot be later than the current date.",
     "speechballon_not_found": "Speech ballon not found!",
     "user_not_found": "User not found",
-    "send_mail_fail": "Send mail failed!"
+    "send_mail_fail": "Send mail failed!",
+
+    "invalid_string_label":"A title is required.",
+    "invalid_empty_node_form":"Please enter the content."
   },
   "template": {
     "move_to_trash": "Move to trash success!",

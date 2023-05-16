@@ -31,6 +31,7 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
     padding: 0,
     color: theme.palette.base.black,
   },
+  marginBottom: 4,
 }))
 
 export { InputNode }
