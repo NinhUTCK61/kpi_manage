@@ -1,6 +1,6 @@
 import { CustomImage } from '@/features/auth/components'
 import { api } from '@/libs/api'
-import { Box, Button, Modal, Stack, Typography, styled } from '@mui/material'
+import { Box, Button, CircularProgress, Modal, Stack, Typography, styled } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
@@ -11,6 +11,7 @@ type ModalUploadImageTypes = {
   image: File[]
   isOpen: boolean
   onCloseModalUploadImage: () => void
+  onCloseDialogThumbnail: () => void
   onOpenDialogThumbnail: () => void
   idTemplate: string
 }
@@ -19,6 +20,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   image,
   isOpen,
   onCloseModalUploadImage,
+  onCloseDialogThumbnail,
   onOpenDialogThumbnail,
   idTemplate,
 }) => {
@@ -91,6 +93,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   }
 
   const handelCloseModalUploadImage = () => {
+    onCloseDialogThumbnail()
     onCloseModalUploadImage()
     setPreviewURL('')
   }
@@ -141,7 +144,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
           </Button>
 
           <Button variant="contained" fullWidth onClick={handleUploadImage}>
-            {t('ok')}
+            {mutation.isLoading ? <CircularProgress size="1.2rem" /> : t('ok')}
           </Button>
         </Stack>
       </BoxContainer>
