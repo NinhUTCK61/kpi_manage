@@ -1,4 +1,4 @@
-import { useLikeTemplate, useRenameTemplateById } from '@/features/template/hooks'
+import { useLikeTemplate, useRenameTemplate } from '@/features/template/hooks'
 import { api } from '@/libs/api'
 import { black } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
@@ -21,8 +21,8 @@ const HeaderTemplate: React.FC = () => {
   const { t } = useTranslation('file')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
-  const mutationRename = useRenameTemplateById()
-  const mutationLike = useLikeTemplate()
+  const { mutationTemplate: mutationRename } = useRenameTemplate()
+  const { mutationTemplate: mutationLike } = useLikeTemplate()
   const inputNameRef = useRef<HTMLElement>(null)
   const templateId = useRFStore((state) => state.templateId)
 

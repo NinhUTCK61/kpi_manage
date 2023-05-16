@@ -31,7 +31,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const open = Boolean(anchorEl)
   const inputNameRef = useRef<HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
-  const mutationRename = useRenameTemplate()
+  const { mutation: mutationRename } = useRenameTemplate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
