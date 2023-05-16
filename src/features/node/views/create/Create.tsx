@@ -1,4 +1,4 @@
-import { NODE_HEIGHT_TEMPLATE, RFStore, useRFStore } from '@/libs/react-flow'
+import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
@@ -22,10 +22,15 @@ const storeSelector = (state: RFStore) => ({
   nodes: state.nodes,
   edges: state.edges,
   viewportAction: state.viewportAction,
+  setNodeFocused: state.setNodeFocused,
+  nodeFocused: state.nodeFocused,
 })
 
 export const CreateView: React.FC = () => {
-  const { nodes, edges, viewportAction } = useRFStore(storeSelector, shallow)
+  const { nodes, edges, viewportAction, setNodeFocused, nodeFocused } = useRFStore(
+    storeSelector,
+    shallow,
+  )
 
   const {
     handleEdgesChange,
@@ -49,6 +54,14 @@ export const CreateView: React.FC = () => {
       })
     }
   }, [setViewport])
+
+  const firstFocus = useRef(false)
+  useLayoutEffect(() => {
+    if (!firstFocus.current) {
+      setNodeFocused(nodes[0] as ReactFlowNode)
+      firstFocus.current = true
+    }
+  }, [setNodeFocused, nodes, nodeFocused])
 
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>

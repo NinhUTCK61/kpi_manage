@@ -1,33 +1,20 @@
 import { base } from '@/libs/config/theme'
-import { useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
-import { Button, Stack, StackProps, Tooltip } from '@mui/material'
+import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 
-type PickColorTypes = {
-  forShape?: boolean
-} & StackProps
-
-const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
+const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
-  const color = useRFStore((state) => (forShape ? state.colorShape : state.nodeColor))
-  const changeNodeColor = useRFStore((state) =>
-    forShape ? state.changeShapeColor : state.changeNodeColor,
-  )
-  const [pickColor, setPickColor] = useState<string>(color as string)
+
+  const [pickColor, setPickColor] = useState<string>('#3E19A3')
   const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
-    if (isPending) return
-    changeNodeColor(pickColor)
-  }, [changeNodeColor, isPending, pickColor])
-
-  const id = forShape ? 'colorShape' : 'color'
+  const id = 'colorShape'
 
   return (
-    <Tooltip title={t(forShape ? 'fill' : 'text_color')} arrow>
-      <Stack direction="row" height={36} alignItems="center" {...props}>
+    <Tooltip title={t('fill')} arrow>
+      <Stack direction="row" height={36} alignItems="center" mr={1}>
         <Stack
           sx={{
             backgroundColor: pickColor,
@@ -75,4 +62,4 @@ const PickColor: React.FC<PickColorTypes> = ({ forShape, ...props }) => {
   )
 }
 
-export { PickColor }
+export { PickColorShape }

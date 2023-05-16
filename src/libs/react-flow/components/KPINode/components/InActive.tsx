@@ -25,7 +25,7 @@ const InActive: React.FC = () => {
 
   return (
     <NodeInActiveContainer
-      onClick={() => setNodeFocused(data.slug)}
+      onClick={() => setNodeFocused(data.id)}
       sx={{
         ...(viewportAction !== ViewPortAction.Move && {
           pointerEvents: 'none',

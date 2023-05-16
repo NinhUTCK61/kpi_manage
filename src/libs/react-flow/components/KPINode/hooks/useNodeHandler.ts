@@ -45,7 +45,7 @@ const useNodeHandler = () => {
         break
       case 'UPDATE':
         update({ ...newData })
-        setNodeFocused('')
+        setNodeFocused(null)
         break
       case 'DELETE':
         deleteMutate({ id: newData.id })

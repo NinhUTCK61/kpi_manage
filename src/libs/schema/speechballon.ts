@@ -12,10 +12,7 @@ export const CreateSpeechBallonInputSchema = z.object({
   stroke: z.string(),
 })
 
-export const UpdateSpeechInputSchema = SpeechBallonSchema.partial({
-  node_id: true,
-  template_id: true,
-}).required({
+export const UpdateSpeechInputSchema = SpeechBallonSchema.partial().required({
   id: true,
 })
 

@@ -44,7 +44,7 @@ const useNodeCreateMutation = () => {
         // TODO: handle error when update multiple nodes
         mulUpdate(diff.map((n) => n.data))
       }
-      setNodeFocused('')
+      setNodeFocused(null)
     },
     onSettled() {
       utils.node.list.invalidate()

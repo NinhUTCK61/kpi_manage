@@ -15,7 +15,8 @@ import { memo } from 'react'
 import { ChooseFontSize } from './ChooseFontSize'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
-import { PickColor } from './PickColor'
+import { PickColorNode } from './PickColorNode'
+import { PickColorShape } from './PickColorShape'
 import { ViewportAction } from './ViewportAction'
 
 const TOOLBAR_HEIGHT = 60
@@ -32,6 +33,8 @@ const editors = [
 
 export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+
   return (
     <Container>
       <Stack direction="row" alignItems="center">
@@ -40,20 +43,29 @@ export const ToolbarInner: React.FC = () => {
 
           <Image src={RedoIcon} alt="undo" />
         </Stack>
-        <ChooseFontSize />
-        <Stack direction="row" spacing={0.5} mr={3}>
-          {editors.map((editor) => (
-            <Image
-              key={editor.key}
-              src={editor.icon}
-              alt={editor.key}
-              style={{ cursor: 'pointer' }}
-            />
-          ))}
+        <Stack
+          direction="row"
+          {...(!nodeFocused && {
+            style: {
+              opacity: 0.3,
+              pointerEvents: 'none',
+            },
+          })}
+        >
+          <ChooseFontSize />
+          <Stack direction="row" spacing={0.5} mr={3}>
+            {editors.map((editor) => (
+              <Image
+                key={editor.key}
+                src={editor.icon}
+                alt={editor.key}
+                style={{ cursor: 'pointer' }}
+              />
+            ))}
+          </Stack>
+
+          <PickColorNode />
         </Stack>
-
-        <PickColor mr={3} />
-
         <Stack
           direction="row"
           alignItems="center"
@@ -66,7 +78,7 @@ export const ToolbarInner: React.FC = () => {
         >
           <ChooseStroke />
 
-          <PickColor forShape mr={1} />
+          <PickColorShape />
 
           <ChooseShape />
         </Stack>
