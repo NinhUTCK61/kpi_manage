@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
 import { useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
+import { StackError } from './styled'
 
 type NodeFormProps = {
   input_title: string
@@ -21,7 +22,7 @@ type NodeFormMemoTypes = {
   changeFormFocusState(state: boolean): void
 }
 
-const indexErrors = ['empty_node_form', 'input_title']
+const INDEX_ERRORS = ['empty_node_form', 'input_title']
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
@@ -48,8 +49,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
       return
     }
 
-    for (let i = 0; i <= indexErrors.length; i++) {
-      const key = indexErrors[i] as keyof NodeFormProps
+    for (let i = 0; i <= INDEX_ERRORS.length; i++) {
+      const key = INDEX_ERRORS[i] as keyof NodeFormProps
       if (errors[key]) {
         setError(handleError(errors[key]?.message as string))
         break
@@ -112,21 +113,12 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
         }}
       >
         {error && (
-          <Stack
-            direction="row"
-            spacing={0.5}
-            sx={{
-              position: 'absolute',
-              top: -6,
-              left: 0,
-              transform: 'translate(0%,-100%)',
-            }}
-          >
+          <StackError spacing={0.5} direction="row">
             <Image src={AlertIcon} alt="alert" />
             <Typography color="red.400" whiteSpace="nowrap">
               {error}
             </Typography>
-          </Stack>
+          </StackError>
         )}
         <InputNode
           control={control}

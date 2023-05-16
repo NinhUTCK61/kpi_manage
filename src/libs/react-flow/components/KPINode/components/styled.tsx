@@ -114,6 +114,13 @@ const MenuItem = styled(MuiMenuItem, {
   }
 })
 
+const StackError = styled(Stack)({
+  position: 'absolute',
+  top: -6,
+  left: 0,
+  transform: 'translate(0%,-100%)',
+})
+
 export {
   LeftHandler,
   BottomHandler,
@@ -126,4 +133,5 @@ export {
   TextOverflow,
   Menu,
   MenuItem,
+  StackError,
 }
