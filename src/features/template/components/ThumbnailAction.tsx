@@ -19,7 +19,11 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
   const { t } = useTranslation('home')
   const [image, setImage] = useState<File[] | null>()
   const onSelectImage = (_acceptedFiles: File[]) => {
-    handleValidateFormatImage(_acceptedFiles) ? setImage(_acceptedFiles) : onCloseModal()
+    if (handleValidateFormatImage(_acceptedFiles)) {
+      setImage(_acceptedFiles), onClose()
+    } else {
+      onCloseModal()
+    }
   }
 
   function handleValidateFormatImage(_acceptedFiles: File[]) {
@@ -49,6 +53,7 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
         image={image || []}
         isOpen={!!image}
         onCloseModalUploadImage={onCloseModal}
+        onCloseDialogThumbnail={onClose}
         idTemplate={idTemplate}
         onOpenDialogThumbnail={onOpen}
       />
