@@ -13,7 +13,6 @@ export type CommentWithAuthorType = z.infer<typeof CommentWithAuthorSchema>
 
 // Type Create Comment
 export const CreateCommentInputSchema = CommentSchema.omit({
-  id: true,
   created_at: true,
   updated_at: true,
   author_id: true,
@@ -30,7 +29,6 @@ export type CreateCommentOutputType = z.infer<typeof CreateCommentOutputSchema>
 // Type Create Comment Reply
 
 export const CreateCommentReplyInputSchema = CommentReplySchema.omit({
-  id: true,
   created_at: true,
   updated_at: true,
   author_id: true,
