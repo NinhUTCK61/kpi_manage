@@ -24,7 +24,6 @@ const HeaderTemplate: React.FC = () => {
   const { mutationTemplate: mutationRename } = useRenameTemplate()
   const { mutationTemplate: mutationLike } = useLikeTemplate()
   const inputNameRef = useRef<HTMLElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
   const templateId = useRFStore((state) => state.templateId)
 
   const { data: template } = api.template.byId.useQuery(
@@ -64,20 +63,8 @@ const HeaderTemplate: React.FC = () => {
     },
   ]
 
-  let clickTimer: number | null = null
-
-  const handleClick = (_: React.MouseEvent<HTMLElement>) => {
-    if (clickTimer === null) {
-      clickTimer = window.setTimeout(function () {
-        if (!buttonRef.current) return
-        setAnchorEl(buttonRef.current)
-        clickTimer = null
-      }, 200)
-    } else {
-      window.clearTimeout(clickTimer)
-      clickTimer = null
-      handleOpenChangeName()
-    }
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
@@ -133,8 +120,6 @@ const HeaderTemplate: React.FC = () => {
             disableRipple
             onClick={handleClick}
             endIcon={<Image src={openMenu ? ArrowLeftIcon : ArrowDownIcon} alt="down" />}
-            onDoubleClick={handleOpenChangeName}
-            ref={buttonRef}
           >
             <TextName>{template.name}</TextName>
           </Button>
