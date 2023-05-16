@@ -199,7 +199,7 @@ export type Node = z.infer<typeof NodeSchema>
 export const SpeechBallonSchema = z.object({
   id: z.string(),
   template_id: z.string(),
-  node_id: z.string(),
+  node_id: z.string().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
@@ -1213,7 +1213,7 @@ export const SpeechBallonWhereInputSchema: z.ZodType<Prisma.SpeechBallonWhereInp
   NOT: z.union([ z.lazy(() => SpeechBallonWhereInputSchema),z.lazy(() => SpeechBallonWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   template_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  node_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  node_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   text: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   x: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
@@ -1223,7 +1223,7 @@ export const SpeechBallonWhereInputSchema: z.ZodType<Prisma.SpeechBallonWhereInp
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   template: z.union([ z.lazy(() => TemplateRelationFilterSchema),z.lazy(() => TemplateWhereInputSchema) ]).optional(),
-  node: z.union([ z.lazy(() => NodeRelationFilterSchema),z.lazy(() => NodeWhereInputSchema) ]).optional(),
+  node: z.union([ z.lazy(() => NodeRelationFilterSchema),z.lazy(() => NodeWhereInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SpeechBallonOrderByWithRelationInputSchema: z.ZodType<Prisma.SpeechBallonOrderByWithRelationInput> = z.object({
@@ -1271,7 +1271,7 @@ export const SpeechBallonScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   NOT: z.union([ z.lazy(() => SpeechBallonScalarWhereWithAggregatesInputSchema),z.lazy(() => SpeechBallonScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   template_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  node_id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  node_id: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   text: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   x: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
@@ -2192,13 +2192,13 @@ export const SpeechBallonCreateInputSchema: z.ZodType<Prisma.SpeechBallonCreateI
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
   template: z.lazy(() => TemplateCreateNestedOneWithoutSpeech_ballonInputSchema),
-  node: z.lazy(() => NodeCreateNestedOneWithoutSpeech_ballonInputSchema)
+  node: z.lazy(() => NodeCreateNestedOneWithoutSpeech_ballonInputSchema).optional()
 }).strict();
 
 export const SpeechBallonUncheckedCreateInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   template_id: z.string(),
-  node_id: z.string(),
+  node_id: z.string().optional().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
@@ -2220,13 +2220,13 @@ export const SpeechBallonUpdateInputSchema: z.ZodType<Prisma.SpeechBallonUpdateI
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   template: z.lazy(() => TemplateUpdateOneRequiredWithoutSpeech_ballonNestedInputSchema).optional(),
-  node: z.lazy(() => NodeUpdateOneRequiredWithoutSpeech_ballonNestedInputSchema).optional()
+  node: z.lazy(() => NodeUpdateOneWithoutSpeech_ballonNestedInputSchema).optional()
 }).strict();
 
 export const SpeechBallonUncheckedUpdateInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  node_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  node_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   text: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
@@ -2240,7 +2240,7 @@ export const SpeechBallonUncheckedUpdateInputSchema: z.ZodType<Prisma.SpeechBall
 export const SpeechBallonCreateManyInputSchema: z.ZodType<Prisma.SpeechBallonCreateManyInput> = z.object({
   id: z.string().optional(),
   template_id: z.string(),
-  node_id: z.string(),
+  node_id: z.string().optional().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
@@ -2266,7 +2266,7 @@ export const SpeechBallonUpdateManyMutationInputSchema: z.ZodType<Prisma.SpeechB
 export const SpeechBallonUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   template_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  node_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  node_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   text: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
@@ -4163,10 +4163,12 @@ export const TemplateUpdateOneRequiredWithoutSpeech_ballonNestedInputSchema: z.Z
   update: z.union([ z.lazy(() => TemplateUpdateWithoutSpeech_ballonInputSchema),z.lazy(() => TemplateUncheckedUpdateWithoutSpeech_ballonInputSchema) ]).optional(),
 }).strict();
 
-export const NodeUpdateOneRequiredWithoutSpeech_ballonNestedInputSchema: z.ZodType<Prisma.NodeUpdateOneRequiredWithoutSpeech_ballonNestedInput> = z.object({
+export const NodeUpdateOneWithoutSpeech_ballonNestedInputSchema: z.ZodType<Prisma.NodeUpdateOneWithoutSpeech_ballonNestedInput> = z.object({
   create: z.union([ z.lazy(() => NodeCreateWithoutSpeech_ballonInputSchema),z.lazy(() => NodeUncheckedCreateWithoutSpeech_ballonInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => NodeCreateOrConnectWithoutSpeech_ballonInputSchema).optional(),
   upsert: z.lazy(() => NodeUpsertWithoutSpeech_ballonInputSchema).optional(),
+  disconnect: z.boolean().optional(),
+  delete: z.boolean().optional(),
   connect: z.lazy(() => NodeWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => NodeUpdateWithoutSpeech_ballonInputSchema),z.lazy(() => NodeUncheckedUpdateWithoutSpeech_ballonInputSchema) ]).optional(),
 }).strict();
@@ -5686,12 +5688,12 @@ export const SpeechBallonCreateWithoutTemplateInputSchema: z.ZodType<Prisma.Spee
   stroke: z.string().optional().nullable(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  node: z.lazy(() => NodeCreateNestedOneWithoutSpeech_ballonInputSchema)
+  node: z.lazy(() => NodeCreateNestedOneWithoutSpeech_ballonInputSchema).optional()
 }).strict();
 
 export const SpeechBallonUncheckedCreateWithoutTemplateInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedCreateWithoutTemplateInput> = z.object({
   id: z.string().optional(),
-  node_id: z.string(),
+  node_id: z.string().optional().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
@@ -5816,7 +5818,7 @@ export const SpeechBallonScalarWhereInputSchema: z.ZodType<Prisma.SpeechBallonSc
   NOT: z.union([ z.lazy(() => SpeechBallonScalarWhereInputSchema),z.lazy(() => SpeechBallonScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   template_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  node_id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  node_id: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   text: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   x: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   y: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
@@ -6771,7 +6773,7 @@ export const NodeCreateManyTemplateInputSchema: z.ZodType<Prisma.NodeCreateManyT
 
 export const SpeechBallonCreateManyTemplateInputSchema: z.ZodType<Prisma.SpeechBallonCreateManyTemplateInput> = z.object({
   id: z.string().optional(),
-  node_id: z.string(),
+  node_id: z.string().optional().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
@@ -6878,12 +6880,12 @@ export const SpeechBallonUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.Spee
   stroke: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  node: z.lazy(() => NodeUpdateOneRequiredWithoutSpeech_ballonNestedInputSchema).optional()
+  node: z.lazy(() => NodeUpdateOneWithoutSpeech_ballonNestedInputSchema).optional()
 }).strict();
 
 export const SpeechBallonUncheckedUpdateWithoutTemplateInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedUpdateWithoutTemplateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  node_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  node_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   text: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
@@ -6896,7 +6898,7 @@ export const SpeechBallonUncheckedUpdateWithoutTemplateInputSchema: z.ZodType<Pr
 
 export const SpeechBallonUncheckedUpdateManyWithoutSpeech_ballonInputSchema: z.ZodType<Prisma.SpeechBallonUncheckedUpdateManyWithoutSpeech_ballonInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  node_id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  node_id: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   text: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   x: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   y: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
