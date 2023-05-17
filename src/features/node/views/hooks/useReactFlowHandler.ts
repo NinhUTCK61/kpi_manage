@@ -71,7 +71,7 @@ export const useReactFlowHandler = () => {
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
       if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
-        removeEmptyNode()
+        // removeEmptyNode()
       }
     },
     [removeEmptyNode],

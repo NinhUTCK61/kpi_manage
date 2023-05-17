@@ -202,7 +202,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         if (!node) {
-          get().removeEmptyNode()
+          // get().removeEmptyNode()
         }
       },
       onNodeClick(_, node) {
