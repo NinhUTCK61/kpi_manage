@@ -1,16 +1,10 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import NodeIcon from 'public/assets/svgs/node.svg'
+import { SvgIcon, SvgIconProps } from '@mui/material'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
-import {
-  IconImageNode,
-  LeftHandler,
-  NodeInActiveContainer,
-  RightHandler,
-  TextId,
-  TextOverflow,
-} from './styled'
+import { generateColors } from '../utils'
+import { LeftHandler, NodeInActiveContainer, RightHandler, TextId, TextOverflow } from './styled'
 
 const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
@@ -22,6 +16,24 @@ const InActive: React.FC = () => {
 
   const d3Node = d3Root.find((node) => node.data.id === data.id)
   const hasChild = d3Node?.children && d3Node.children.length > 0
+
+  const firstSlug = data.slug.split('')[0]
+
+  function NodeIcon(props: SvgIconProps) {
+    return (
+      <SvgIcon {...props}>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle
+            cx="6"
+            cy="6"
+            r="5"
+            stroke={generateColors(firstSlug as string)}
+            strokeWidth="2"
+          />
+        </svg>
+      </SvgIcon>
+    )
+  }
 
   return (
     <NodeInActiveContainer
@@ -45,7 +57,13 @@ const InActive: React.FC = () => {
       )}
 
       <RightHandler type="source" position={Position.Right}>
-        {data.slug !== 'root' && hasChild && <IconImageNode src={NodeIcon} alt="add" />}
+        {data.slug !== 'root' && hasChild && (
+          <NodeIcon
+            sx={{
+              transform: 'translate(-50%,-25%)',
+            }}
+          />
+        )}
       </RightHandler>
 
       <TextId variant="caption">{data.slug}</TextId>

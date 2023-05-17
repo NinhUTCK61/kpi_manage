@@ -4,3 +4,5 @@ export enum ViewPortAction {
   Comment = 'comment',
   SpeechBallon = 'speechBallon',
 }
+
+export type TextAlign = 'left' | 'center' | 'right' | ''

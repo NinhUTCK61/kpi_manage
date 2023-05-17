@@ -5,7 +5,6 @@ import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorCenter from 'public/assets/svgs/editor_center.svg'
 import EditorChild from 'public/assets/svgs/editor_child.svg'
-import EditorQuote from 'public/assets/svgs/editor_double_quote.svg'
 import EditorItalic from 'public/assets/svgs/editor_italic.svg'
 import EditorLeft from 'public/assets/svgs/editor_left.svg'
 import EditorRight from 'public/assets/svgs/editor_right.svg'
@@ -15,25 +14,25 @@ import { memo } from 'react'
 import { ChooseFontSize } from './ChooseFontSize'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
+import { ChooseStyleText } from './ChooseStyleText'
 import { PickColorNode } from './PickColorNode'
 import { PickColorShape } from './PickColorShape'
 import { ViewportAction } from './ViewportAction'
 
 const TOOLBAR_HEIGHT = 60
 
-const editors = [
-  { key: 'bold', icon: EditorBold },
-  { key: 'italic', icon: EditorItalic },
-  { key: 'quote', icon: EditorQuote },
-  { key: 'left', icon: EditorLeft },
-  { key: 'center', icon: EditorCenter },
-  { key: 'right', icon: EditorRight },
-  { key: 'child', icon: EditorChild },
-]
-
 export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+
+  const editors = [
+    { key: 'bold', icon: EditorBold, handle: () => console.log('bold') },
+    { key: 'italic', icon: EditorItalic },
+    { key: 'left', icon: EditorLeft },
+    { key: 'center', icon: EditorCenter },
+    { key: 'right', icon: EditorRight },
+    { key: 'child', icon: EditorChild },
+  ]
 
   return (
     <Container>
@@ -53,16 +52,8 @@ export const ToolbarInner: React.FC = () => {
           })}
         >
           <ChooseFontSize />
-          <Stack direction="row" spacing={0.5} mr={3}>
-            {editors.map((editor) => (
-              <Image
-                key={editor.key}
-                src={editor.icon}
-                alt={editor.key}
-                style={{ cursor: 'pointer' }}
-              />
-            ))}
-          </Stack>
+
+          <ChooseStyleText />
 
           <PickColorNode />
         </Stack>
