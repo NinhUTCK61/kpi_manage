@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-export const NonEmptyString = z.string().refine((value) => value.trim() !== '', {
-  message: 'error.invalid_string_email',
+export const NonEmptyPassword = z.string().trim().min(1, {
+  message: 'error.message_password',
 })
 
 export const PreSignUrlInputSchema = z.object({

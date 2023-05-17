@@ -1,10 +1,10 @@
 import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
-import { NonEmptyString } from './utils'
+import { NonEmptyPassword } from './utils'
 
 export const LoginSchema = z.object({
   email: z.string().email(),
-  password: NonEmptyString,
+  password: NonEmptyPassword,
 })
 
 export const ForgotPasswordInputSchema = z.object({
