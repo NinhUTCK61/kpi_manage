@@ -214,6 +214,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeShapeType(shape) {
         set({ shape })
       },
+      // comment node
+      addComment(node) {
+        const _nodes = get().nodes
+        const nodes = [..._nodes, node]
+        set({ nodes })
+      },
       //function zoom
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]

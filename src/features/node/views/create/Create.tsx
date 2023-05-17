@@ -1,8 +1,11 @@
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
+import { CommentNode } from '@/libs/react-flow/components/CommentNode'
+import { CommentInput } from '@/libs/react-flow/components/CommentNode/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
+import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Box, styled } from '@mui/material'
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
@@ -13,6 +16,7 @@ import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
   kpi: KpiNode,
+  comment: CommentNode,
 }
 const edgeTypes = {
   kpi: KpiEdge,
@@ -42,6 +46,7 @@ export const CreateView: React.FC = () => {
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
+
   useLayoutEffect(() => {
     if (container) {
       // set viewport to center like design
@@ -63,6 +68,24 @@ export const CreateView: React.FC = () => {
     }
   }, [setNodeFocused, nodes, nodeFocused])
 
+  const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault()
+    setContextMenu(
+      !contextMenu
+        ? {
+            mouseX: event.clientX,
+            mouseY: event.clientY,
+          }
+        : null,
+    )
+  }
+
+  const handleClose = () => {
+    setContextMenu(null)
+  }
+
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
@@ -78,7 +101,7 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={handlePaneClick}
+          onPaneClick={(e) => handlePaneClick(e, container, () => handleContextMenu(e))}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           proOptions={{
@@ -93,6 +116,13 @@ export const CreateView: React.FC = () => {
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
+          <CommentInput
+            open={!!contextMenu}
+            onClose={handleClose}
+            anchorPosition={
+              !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
+            }
+          />
           <KpiControls />
         </KpiReactFlow>
       </Container>

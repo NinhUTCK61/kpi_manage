@@ -6,9 +6,10 @@ import {
   useNodeDeleteMutation,
   useRFStore,
 } from '@/libs/react-flow'
-import { MouseEvent, useCallback } from 'react'
-import { Node as RFNode } from 'reactflow'
+import React, { MouseEvent, useCallback } from 'react'
+import { Node as RFNode, useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
+import { ViewPortAction } from '../../constant'
 
 const storeSelector = (state: RFStore) => ({
   handleNodesChange: state.handleNodesChange,
@@ -16,11 +17,19 @@ const storeSelector = (state: RFStore) => ({
   setNodeFocused: state.setNodeFocused,
   scrollZoom: state.scrollZoom,
   removeEmptyNode: state.removeEmptyNode,
+  viewPortAction: state.viewportAction,
+  addComment: state.addComment,
 })
 
 export const useReactFlowHandler = () => {
-  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom, removeEmptyNode } =
-    useRFStore(storeSelector, shallow)
+  const {
+    handleEdgesChange,
+    handleNodesChange,
+    setNodeFocused,
+    scrollZoom,
+    removeEmptyNode,
+    viewPortAction,
+  } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
 
@@ -40,11 +49,24 @@ export const useReactFlowHandler = () => {
     [scrollZoom],
   )
 
+  const { project } = useReactFlow()
   const handlePaneClick = useCallback(
-    (_: MouseEvent<Element>) => {
+    (
+      e: MouseEvent<Element>,
+      containerRef: HTMLDivElement | null,
+      handleContextMenu: () => void,
+    ) => {
       setNodeFocused(null)
+      const { top, left } = containerRef?.getBoundingClientRect() ?? { top: 0, left: 0 }
+      const position = project({ x: e.clientX - left, y: e.clientY - top })
+      console.log(position)
+
+      if (viewPortAction === ViewPortAction.Comment) {
+        handleContextMenu()
+        console.log(e.clientX, e.clientY)
+      }
     },
-    [setNodeFocused],
+    [setNodeFocused, viewPortAction, project],
   )
 
   const handleNodesDelete = useCallback(
