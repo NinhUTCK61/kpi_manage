@@ -1,5 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
+import { nanoid } from 'nanoid'
 import {
   Connection,
   EdgeChange,
@@ -16,7 +17,7 @@ import {
   reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode, ReactFlowSpeechBallonNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -104,6 +105,26 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _newNode
       },
+
+      addSpeechBallon() {
+        console.log('add speech')
+        const _node: ReactFlowSpeechBallonNode = {
+          id: nanoid(),
+          data: {
+            id: nanoid(),
+          },
+          position: { x: Math.random() * 100, y: Math.random() * 100 },
+          type: 'speech_ballon',
+        }
+
+        let _nodes = get().nodes
+        _nodes.push(_node)
+        set({
+          nodes: _nodes,
+        })
+        console.log('new node', _nodes)
+      },
+
       deleteNodes(nodes) {
         console.log('onNodesDelete', nodes)
       },
@@ -189,7 +210,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         if (!node) {
-          get().removeEmptyNode()
+          // get().removeEmptyNode()
         }
       },
       onNodeClick(_, node) {

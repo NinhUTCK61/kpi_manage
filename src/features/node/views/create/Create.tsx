@@ -5,6 +5,7 @@ import {
   KpiControls,
   KpiEdge,
   KpiNode,
+  KpiSpeechBallon,
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
@@ -20,6 +21,7 @@ import { HeaderTemplate } from './components/Header'
 const nodeTypes = {
   kpi: KpiNode,
   comment: CommentNode,
+  speech_ballon: KpiSpeechBallon,
 }
 const edgeTypes = {
   kpi: KpiEdge,
