@@ -1,6 +1,6 @@
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { useRFStore } from '../../hooks'
 import { KPINodeType } from '../../types'
@@ -8,7 +8,7 @@ import { Active, InActive } from './components'
 import { ContextMenu, CtxMenuType } from './components/ContextMenu'
 import { KPINodeProvider } from './context'
 
-function KpiNode(props: NodeProps<KPINodeType>) {
+function KpiNodeInner(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
@@ -50,4 +50,4 @@ function KpiNode(props: NodeProps<KPINodeType>) {
   )
 }
 
-export { KpiNode }
+export const KpiNode = memo(KpiNodeInner)
