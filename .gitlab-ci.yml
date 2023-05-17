@@ -12,7 +12,7 @@ variables:
   DOCKER_IMAGE_STG: $CI_REGISTRY_IMAGE/stg   
   DOCKER_IMAGE_PRD: $CI_REGISTRY_IMAGE/prd 
 
-check-convention:
+.check-convention:
   stage: check-convention
   image: node:alpine
   cache: 
