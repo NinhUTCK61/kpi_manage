@@ -1,12 +1,12 @@
 import { HierarchyNode, hierarchy, tree } from 'd3-hierarchy'
-import { Edge, Node as RFNode } from 'reactflow'
+import { Edge } from 'reactflow'
 import {
   HORIZONTAL_SPACING_FACTOR,
   NODE_HEIGHT,
   NODE_WIDTH,
   VERTICAL_SPACING_FACTOR,
 } from '../constant'
-import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { generateNextNode } from './hierarchy'
 
 export const generateNextReactFlowNode = (
@@ -88,12 +88,4 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
   })
 
   return newNodes
-}
-
-export function isEmptyKPINodeForm(node: KPINodeType) {
-  return !node.input_title && !node.input_value && !node.unit
-}
-
-export function isReactFlowKPINode(node: RFNode): node is ReactFlowKPINode {
-  return node.type === 'kpi'
 }

@@ -5,7 +5,7 @@ import { useKPINodeContext } from '../context'
 import { useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
 
-type NodeFormProps = {
+export type NodeFormProps = {
   input_title: string
   input_value: string | null
   unit: string | null
