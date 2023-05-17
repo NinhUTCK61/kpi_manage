@@ -39,6 +39,8 @@ build-stg:
   stage: build
   image: docker:latest
   environment: staging
+  tags:
+    - docker-runner
   services:
     - name: docker:dind
   before_script:
