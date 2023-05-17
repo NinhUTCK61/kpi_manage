@@ -16,7 +16,6 @@ const storeSelector = (state: RFStore) => ({
   setNodeFocused: state.setNodeFocused,
   scrollZoom: state.scrollZoom,
   removeEmptyNode: state.removeEmptyNode,
-  addComment: state.addComment,
   setActivePosition: state.setActivePosition,
 })
 
@@ -72,7 +71,7 @@ export const useReactFlowHandler = () => {
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
       if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
-        removeEmptyNode()
+        // removeEmptyNode()
       }
     },
     [removeEmptyNode],
