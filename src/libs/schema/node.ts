@@ -107,20 +107,8 @@ export const GetListNodeInputSchema = z.object({
   template_id: z.string(),
 })
 
-export const NodeFormSchema = z
-  .object({
-    input_title: NonEmptyStringLabel,
-    input_value: z.string().nullable(),
-    unit: z.string().nullable(),
-  })
-  .refine(
-    (data) => {
-      if (data?.input_title === '' && data?.input_value === '' && data?.unit === '') return false
-
-      return true
-    },
-    {
-      message: 'error.invalid_empty_node_form',
-      path: ['empty_node_form'],
-    },
-  )
+export const NodeFormSchema = z.object({
+  input_title: NonEmptyStringLabel,
+  input_value: z.string().nullable(),
+  unit: z.string().nullable(),
+})

@@ -3,7 +3,9 @@ import { NodeFormProps } from '../components'
 import { KPINodeType, ReactFlowKPINode } from '../types'
 
 export function isEmptyKPINodeForm(node: KPINodeType | NodeFormProps) {
-  return !node.input_title && !node.input_value && !node.unit
+  if (node?.input_title === '' && node?.input_value === '' && node?.unit === '') return false
+
+  return true
 }
 
 export function isReactFlowKPINode(node: RFNode): node is ReactFlowKPINode {

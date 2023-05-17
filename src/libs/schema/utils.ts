@@ -4,7 +4,7 @@ export const NonEmptyPassword = z.string().trim().min(1, {
   message: 'error.message_password',
 })
 
-export const NonEmptyStringLabel = z.string().refine((value) => value.trim() !== '', {
+export const NonEmptyStringLabel = z.string().trim().min(1, {
   message: 'error.invalid_string_label',
 })
 

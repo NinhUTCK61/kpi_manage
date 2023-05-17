@@ -12,7 +12,7 @@ import { useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
 import { StackError } from './styled'
 
-type NodeFormProps = {
+export type NodeFormProps = {
   input_title: string
   input_value: string | null
   unit: string | null
@@ -22,15 +22,12 @@ type NodeFormMemoTypes = {
   changeFormFocusState(state: boolean): void
 }
 
-const INDEX_ERRORS = ['empty_node_form', 'input_title']
-
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
   const {
     control,
     getValues,
     setFocus,
-    handleSubmit,
     formState: { errors },
   } = useForm<NodeFormProps>({
     defaultValues: {
@@ -39,6 +36,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
       unit: data.unit || '',
     },
     resolver: zodResolver(NodeFormSchema),
+    mode: 'onChange',
   })
   const { handleError } = useTranslateError()
 
@@ -48,14 +46,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
       setError('')
       return
     }
-
-    for (let i = 0; i <= INDEX_ERRORS.length; i++) {
-      const key = INDEX_ERRORS[i] as keyof NodeFormProps
-      if (errors[key]) {
-        setError(handleError(errors[key]?.message as string))
-        break
-      }
-    }
+    setError(handleError(errors.input_title?.message as string))
   }, [errors, getValues, handleError])
 
   useEffect(() => {
@@ -69,9 +60,9 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   const { saveHandler } = useNodeHandler()
   const saveValue = () => {
     const nodeData = { ...data, ...getValues() }
-    handleSubmit(() => {
-      saveHandler(nodeData)
-    })()
+    // if (errors.input_title) return
+    console.log(nodeData)
+    saveHandler(nodeData)
     changeFormFocusState(false)
   }
 
@@ -120,6 +111,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
             </Typography>
           </StackError>
         )}
+
         <InputNode
           control={control}
           name="input_title"
