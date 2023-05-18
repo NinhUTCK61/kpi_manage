@@ -58,7 +58,6 @@ const ChooseStyleAlignText: React.FC = () => {
     }
   }
 
-  const isShowForComment = viewportAction === ViewPortAction.Comment
   const isShowForSpeech = viewportAction === ViewPortAction.SpeechBallon
 
   const editors = [
@@ -93,7 +92,7 @@ const ChooseStyleAlignText: React.FC = () => {
       direction="row"
       spacing={0.5}
       mr={3}
-      {...(!(isShowForComment || isShowForSpeech) && {
+      {...(!isShowForSpeech && {
         sx: {
           cursor: 'not-allowed',
           opacity: 0.3,
