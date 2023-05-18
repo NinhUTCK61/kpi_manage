@@ -11,10 +11,10 @@ import {
 import { createStore } from 'zustand'
 import {
   generateNextReactFlowNode,
-  getLayoutElements,
   isEmptyKPINodeForm,
+  reLayout,
+  reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
-  stratifier,
 } from '../helper'
 import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
@@ -92,9 +92,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         nodes.push(node)
         edges.push(edge)
 
-        const d3Updated = stratifier(nodes)
-
-        const _nodes = getLayoutElements(d3Updated)
+        const _nodes = reLayout(nodes)
         // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
@@ -113,12 +111,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       // TODO: update kpi node
       updateKPINode(kpiNodeData) {
         const _d3 = get().d3Root
-        const _node = _d3.find((n) => n.data.data.id === kpiNodeData.id)
-        if (_node) {
-          _node.data.data = { ..._node.data.data, ...kpiNodeData }
-          const _nodes = getLayoutElements(_d3)
+        const _nodes = get().nodes
 
-          set({ nodes: _nodes })
+        const node = _d3.find((n) => n.data.data.id === kpiNodeData.id)
+        if (node) {
+          node.data.data = { ...node.data.data, ...kpiNodeData }
+          const nodes = reLayoutWithKpiNodes(_nodes, _d3)
+
+          set({ nodes })
         }
       },
       removeNode(nodeId: string) {
@@ -140,12 +140,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
         })
 
-        const nodes = oldNodes.filter((n) => n.id !== nodeId)
+        const _nodes = oldNodes.filter((n) => n.id !== nodeId)
         const edges = rmEdges(oldEdges, nodeId)
 
-        const d3Updated = stratifier(nodes)
-        const _nodes = getLayoutElements(d3Updated)
-        set({ nodes: _nodes, edges })
+        const nodes = reLayout(_nodes)
+        set({ nodes, edges })
 
         return { nodes: _nodes, edges }
       },
@@ -162,8 +161,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         if (!emptyNode) return
 
         const _nodes = oldNodes.filter((node) => node.id !== emptyNode?.id)
-        const d3Updated = stratifier(_nodes)
-        const nodes = getLayoutElements(d3Updated)
+        const nodes = reLayout(_nodes)
         const edges = rmEdges(oldEdges, emptyNode.id)
 
         set({ nodes, edges })

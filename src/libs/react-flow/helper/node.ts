@@ -7,6 +7,7 @@ import {
   VERTICAL_SPACING_FACTOR,
 } from '../constant'
 import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { stratifier } from './converter'
 import { generateNextNode } from './hierarchy'
 
 export const generateNextReactFlowNode = (
@@ -71,7 +72,7 @@ export function getTreeLayout<T>(d3Root: HierarchyNode<T>) {
     })(d3Root)
 }
 
-export function getLayoutElements(d3Root: HierarchyFlowNode) {
+export function reLayoutWithHierarchy(d3Root: HierarchyFlowNode) {
   const tree = getTreeLayout(d3Root)
   const newNodes: ReactFlowNode[] = []
 
@@ -85,6 +86,48 @@ export function getLayoutElements(d3Root: HierarchyFlowNode) {
     node.data.data.y = node.x
 
     newNodes.push(node.data)
+  })
+
+  return newNodes
+}
+
+export function reLayout(nodes: ReactFlowNode[]) {
+  const d3Root = stratifier(nodes)
+  const tree = getTreeLayout(d3Root)
+  const newKpiNodes: ReactFlowNode[] = []
+
+  tree.each((node) => {
+    node.data.position = {
+      x: node.y,
+      y: node.x,
+    }
+
+    node.data.data.x = node.y
+    node.data.data.y = node.x
+
+    newKpiNodes.push(node.data)
+  })
+
+  const newNodes = nodes.map((node) => {
+    const newNode = newKpiNodes.find((n) => n.id === node.id)
+    if (newNode) {
+      return newNode
+    }
+    return node
+  })
+
+  return newNodes
+}
+
+export function reLayoutWithKpiNodes(nodes: ReactFlowNode[], d3Root: HierarchyFlowNode) {
+  const newKpiNodes = reLayoutWithHierarchy(d3Root)
+
+  const newNodes = nodes.map((node) => {
+    const newNode = newKpiNodes.find((n) => n.id === node.id)
+    if (newNode) {
+      return newNode
+    }
+    return node
   })
 
   return newNodes
