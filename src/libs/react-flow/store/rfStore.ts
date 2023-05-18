@@ -44,8 +44,6 @@ const DEFAULT_STATE: Partial<RFStore> = {
   edges: [],
   d3Root: hierarchy(initialRootNode),
   viewportAction: ViewPortAction.Move,
-  fontSize: '12',
-  nodeColor: '#000000',
   colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
@@ -207,16 +205,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           viewportAction: action,
           nodeFocused: null,
-        })
-      },
-      changeFontSize(fontSize) {
-        set({
-          fontSize,
-        })
-      },
-      changeNodeColor(nodeColor) {
-        set({
-          nodeColor,
         })
       },
       changeShapeColor(colorShape) {

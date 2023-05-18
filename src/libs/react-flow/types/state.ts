@@ -25,10 +25,6 @@ export type RFStore = {
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
-  fontSize: string | null
-  changeFontSize: (fontSize: string) => void
-  nodeColor: string | null
-  changeNodeColor: (color: string) => void
   colorShape: string | null
   changeShapeColor: (color: string) => void
   stroke: number | null
