@@ -40,7 +40,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   })
   const { handleError } = useTranslateError()
   const { saveHandler } = useNodeHandler()
-  const [error, setError] = useState<string>('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     if (!errors) {
@@ -59,8 +59,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   }, [data.input_title, setFocus])
 
   const saveValue = () => {
-    const nodeData = { ...data, ...getValues() }
     if (errors.input_title) return
+    const nodeData = { ...data, ...getValues() }
     saveHandler(nodeData)
     changeFormFocusState(false)
   }
