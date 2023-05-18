@@ -14,7 +14,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import { TemplateAction } from './TemplateAction'
 
@@ -43,12 +43,13 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const handleOpenChangeName = () => {
     setName(template.name)
-    setTimeout(() => {
-      if (inputNameRef.current) {
-        inputNameRef.current.focus()
-      }
-    }, 0)
   }
+
+  useEffect(() => {
+    if (name && inputNameRef.current) {
+      inputNameRef.current.focus()
+    }
+  }, [name])
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()

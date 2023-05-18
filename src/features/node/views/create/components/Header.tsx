@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 
 const HeaderTemplate: React.FC = () => {
   const router = useRouter()
@@ -41,12 +41,13 @@ const HeaderTemplate: React.FC = () => {
 
   const handleOpenChangeName = () => {
     setName(template.name)
-    setTimeout(() => {
-      if (inputNameRef.current) {
-        inputNameRef.current.focus()
-      }
-    }, 0)
   }
+
+  useEffect(() => {
+    if (name && inputNameRef.current) {
+      inputNameRef.current.focus()
+    }
+  }, [name])
 
   const handleLike = () => {
     mutationLike.mutate({ id: template.template_id, is_favorite: !template.is_favorite })
