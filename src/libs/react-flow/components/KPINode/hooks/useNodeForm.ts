@@ -22,6 +22,9 @@ export const useNodeForm = (data: KPINodeType) => {
     resolver: zodResolver(NodeFormSchema),
     mode: 'onChange',
   })
+
+  const { setFocus } = forms
+
   const { handleError } = useTranslateError()
   const [error, setError] = useState('')
 
@@ -35,6 +38,14 @@ export const useNodeForm = (data: KPINodeType) => {
 
     setError(handleError(errors.input_title?.message as string))
   }, [forms.formState.errors, handleError])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!data.input_title) {
+        setFocus('input_title')
+      }
+    }, 0)
+  }, [data.input_title, setFocus])
 
   return { ...forms, error }
 }

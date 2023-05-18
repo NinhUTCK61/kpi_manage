@@ -2,7 +2,7 @@ import { blue, red } from '@/libs/config/theme'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import { FormEvent, KeyboardEvent, memo, useEffect } from 'react'
+import { FormEvent, KeyboardEvent, memo } from 'react'
 import { useKPINodeContext } from '../context'
 import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
@@ -16,14 +16,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   const { data } = useKPINodeContext()
   const { control, getValues, setFocus, error } = useNodeForm(data)
   const { saveHandler } = useNodeHandler()
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!data.input_title) {
-        setFocus('input_title')
-      }
-    }, 0)
-  }, [data.input_title, setFocus])
 
   const saveValue = () => {
     if (error) return
