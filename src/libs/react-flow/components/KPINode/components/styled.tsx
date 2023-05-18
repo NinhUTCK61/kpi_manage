@@ -24,7 +24,7 @@ const LeftHandler = styled(Handle)({
 
 const BottomHandler = styled(Handle)({
   '&.react-flow__handle-bottom': {
-    bottom: -20,
+    bottom: -25,
     cursor: 'pointer',
     height: 0,
     width: 0,
