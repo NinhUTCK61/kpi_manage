@@ -8,7 +8,7 @@ const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
 
   const [pickColor, setPickColor] = useState<string>('#3E19A3')
-  const [isPending, startTransition] = useTransition()
+  const [_, startTransition] = useTransition()
 
   const id = 'colorShape'
 

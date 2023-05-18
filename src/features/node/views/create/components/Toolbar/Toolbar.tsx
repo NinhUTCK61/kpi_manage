@@ -2,12 +2,6 @@ import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
 import Image from 'next/image'
-import EditorBold from 'public/assets/svgs/editor_bold.svg'
-import EditorCenter from 'public/assets/svgs/editor_center.svg'
-import EditorChild from 'public/assets/svgs/editor_child.svg'
-import EditorItalic from 'public/assets/svgs/editor_italic.svg'
-import EditorLeft from 'public/assets/svgs/editor_left.svg'
-import EditorRight from 'public/assets/svgs/editor_right.svg'
 import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
@@ -24,15 +18,6 @@ const TOOLBAR_HEIGHT = 60
 export const ToolbarInner: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-
-  const editors = [
-    { key: 'bold', icon: EditorBold, handle: () => console.log('bold') },
-    { key: 'italic', icon: EditorItalic },
-    { key: 'left', icon: EditorLeft },
-    { key: 'center', icon: EditorCenter },
-    { key: 'right', icon: EditorRight },
-    { key: 'child', icon: EditorChild },
-  ]
 
   return (
     <Container>

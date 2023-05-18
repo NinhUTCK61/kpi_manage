@@ -23,6 +23,7 @@ const ChooseStyleText: React.FC = () => {
   const [child, setChild] = useState<boolean>(false)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { mutate: update } = useNodeUpdateMutation()
 
   const nodeFocusedMemo = useMemo(() => {
@@ -47,8 +48,6 @@ const ChooseStyleText: React.FC = () => {
     setItalic(nodeStyle.fontStyle === 'italic')
     setTextAlign(nodeStyle.textAlign || '')
   }, [nodeFocusedMemo])
-
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
 
   const handleChangeTextAlign = (value: TextAlign) => {
     let _value: TextAlign = ''
