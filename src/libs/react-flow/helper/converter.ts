@@ -1,4 +1,4 @@
-import { CommentWithAuthorType } from '@/libs/schema/comment'
+import { CommentWithAuthorType, CreateCommentOutputType } from '@/libs/schema/comment'
 import {
   ReactFlowCommentNodeOutputType,
   ReactFlowKPINodeOutputType,
@@ -8,7 +8,14 @@ import {
 import { SpeechBallon } from '@prisma/client'
 import { HierarchyNode, stratify } from 'd3-hierarchy'
 import { Edge as ReactFlowEdge } from 'reactflow'
-import { HierarchyFlowNode, KPINodeType, ReactFlowKPINode, ReactFlowNode, RootNode } from '../types'
+import {
+  HierarchyFlowNode,
+  KPINodeType,
+  ReactFlowCommentNode,
+  ReactFlowKPINode,
+  ReactFlowNode,
+  RootNode,
+} from '../types'
 
 export function flattenHierarchy(rootNode: RootNode): {
   nodes: ReactFlowNode[]
@@ -147,4 +154,18 @@ export const convertToReactFlowComments = (
       type: 'comment',
     }
   })
+}
+
+export const convertToReactFlowComment = (
+  comment: CreateCommentOutputType,
+): ReactFlowCommentNode => {
+  return {
+    id: comment.id,
+    data: {
+      ...comment,
+      replies: [],
+    },
+    position: { x: comment.x, y: comment.y },
+    type: 'comment',
+  }
 }

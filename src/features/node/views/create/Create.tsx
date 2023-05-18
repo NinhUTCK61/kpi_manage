@@ -72,11 +72,12 @@ export const CreateView: React.FC = () => {
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault()
+
     setContextMenu(
       !contextMenu
         ? {
             mouseX: event.clientX,
-            mouseY: event.clientY,
+            mouseY: event.clientY - 22,
           }
         : null,
     )
@@ -119,9 +120,11 @@ export const CreateView: React.FC = () => {
           <CommentInput
             open={!!contextMenu}
             onClose={handleClose}
+            positionMenu={contextMenu}
             anchorPosition={
               !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
             }
+            containerRef={container}
           />
           <KpiControls />
         </KpiReactFlow>
