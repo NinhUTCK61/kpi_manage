@@ -68,13 +68,7 @@ const IconImageNode = styled(Image)(({ theme }) => ({
 
 const NodeActiveContainer = styled(Box)(({ theme }) => ({
   maxWidth: 190,
-<<<<<<< HEAD
   height: 106,
-=======
-  // minHeight: 106,
-  padding: theme.spacing(2, 2.25),
-  border: `2px solid`,
->>>>>>> chore: change style node
   backgroundColor: theme.palette.common.white,
   position: 'relative',
 }))
