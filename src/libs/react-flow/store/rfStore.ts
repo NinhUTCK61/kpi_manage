@@ -202,8 +202,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       //function toolbar
       changeViewportAction(action) {
+        if (action === get().viewportAction) return
+
         set({
           viewportAction: action,
+          nodeFocused: null,
         })
       },
       changeFontSize(fontSize) {
