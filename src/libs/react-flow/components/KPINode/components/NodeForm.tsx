@@ -1,15 +1,12 @@
-import { ClickAwayListener, Stack } from '@mui/material'
+import { blue, red } from '@/libs/config/theme'
+import { ClickAwayListener, Stack, Typography } from '@mui/material'
+import Image from 'next/image'
+import AlertIcon from 'public/assets/svgs/alert_error.svg'
 import { FormEvent, KeyboardEvent, memo, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
-import { useNodeHandler } from '../hooks'
+import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
-
-export type NodeFormProps = {
-  input_title: string
-  input_value: string | null
-  unit: string | null
-}
+import { StackError } from './styled'
 
 type NodeFormMemoTypes = {
   changeFormFocusState(state: boolean): void
@@ -17,13 +14,8 @@ type NodeFormMemoTypes = {
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
-  const { control, getValues, setFocus } = useForm<NodeFormProps>({
-    defaultValues: {
-      input_title: data.input_title || '',
-      input_value: data.input_value || '',
-      unit: data.unit || '',
-    },
-  })
+  const { control, getValues, setFocus, error } = useNodeForm(data)
+  const { saveHandler } = useNodeHandler()
 
   useEffect(() => {
     setTimeout(() => {
@@ -33,8 +25,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     }, 0)
   }, [data.input_title, setFocus])
 
-  const { saveHandler } = useNodeHandler()
   const saveValue = () => {
+    if (error) return
     const nodeData = { ...data, ...getValues() }
     saveHandler(nodeData)
     changeFormFocusState(false)
@@ -69,8 +61,23 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
         onSubmit={saveForm}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
-        spacing={0.5}
+        sx={{
+          padding: (theme) => theme.spacing(2, 2.25),
+          border: `2px solid`,
+          borderColor: !!error ? red[400] : blue[500],
+          position: 'relative',
+          borderRadius: 2,
+        }}
       >
+        {!!error && (
+          <StackError spacing={0.5} direction="row">
+            <Image src={AlertIcon} alt="alert" />
+            <Typography color="red.400" whiteSpace="nowrap">
+              {error}
+            </Typography>
+          </StackError>
+        )}
+
         <InputNode
           control={control}
           name="input_title"

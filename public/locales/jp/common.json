@@ -75,7 +75,10 @@
     "error_date": "生年月日は、現在の日付より後にすることはできません。",
     "speechballon_not_found": "Speech ballon not found!",
     "user_not_found": "ユーザーが見つかりませんでした。",
-    "send_mail_fail": "メールを送信できませんでした。"
+    "send_mail_fail": "メールを送信できませんでした。",
+
+    "invalid_string_label":"タイトルは必須です。",
+    "invalid_empty_node_form":"内容を入力してください。"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",

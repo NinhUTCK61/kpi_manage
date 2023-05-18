@@ -67,13 +67,10 @@ const IconImageNode = styled(Image)(({ theme }) => ({
 }))
 
 const NodeActiveContainer = styled(Box)(({ theme }) => ({
-  borderRadius: 8,
   maxWidth: 190,
   height: 106,
-  padding: theme.spacing(2, 2.25),
-  border: `2px solid`,
   backgroundColor: theme.palette.common.white,
-  borderColor: theme.palette.blue[500],
+  position: 'relative',
 }))
 
 const NodeInActiveContainer = styled(Stack)(({ theme }) => ({
@@ -117,6 +114,13 @@ const MenuItem = styled(MuiMenuItem, {
   }
 })
 
+const StackError = styled(Stack)({
+  position: 'absolute',
+  top: -6,
+  left: 0,
+  transform: 'translate(0%,-100%)',
+})
+
 export {
   LeftHandler,
   BottomHandler,
@@ -129,4 +133,5 @@ export {
   TextOverflow,
   Menu,
   MenuItem,
+  StackError,
 }
