@@ -68,6 +68,7 @@ const ChooseStyleText: React.FC = () => {
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move
+  const isShowForSpeechBallon = viewportAction === ViewPortAction.SpeechBallon
 
   const editors = [
     {
@@ -89,7 +90,7 @@ const ChooseStyleText: React.FC = () => {
       direction="row"
       spacing={0.5}
       mr={0.5}
-      {...(!isShowForNode && {
+      {...(!(isShowForNode || isShowForSpeechBallon) && {
         cursor: 'not-allowed',
         opacity: 0.3,
         pointerEvents: 'none',
