@@ -1,22 +1,12 @@
 import { blue, red } from '@/libs/config/theme'
-import { useTranslateError } from '@/libs/hooks'
-import { NodeFormSchema } from '@/libs/schema/node'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import { FormEvent, KeyboardEvent, memo, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormEvent, KeyboardEvent, memo, useEffect } from 'react'
 import { useKPINodeContext } from '../context'
-import { useNodeHandler } from '../hooks'
+import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
 import { StackError } from './styled'
-
-export type NodeFormProps = {
-  input_title: string
-  input_value: string | null
-  unit: string | null
-}
 
 type NodeFormMemoTypes = {
   changeFormFocusState(state: boolean): void
@@ -24,31 +14,8 @@ type NodeFormMemoTypes = {
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
-  const {
-    control,
-    getValues,
-    setFocus,
-    formState: { errors },
-  } = useForm<NodeFormProps>({
-    defaultValues: {
-      input_title: data.input_title || '',
-      input_value: data.input_value || '',
-      unit: data.unit || '',
-    },
-    resolver: zodResolver(NodeFormSchema),
-    mode: 'onChange',
-  })
-  const { handleError } = useTranslateError()
+  const { control, getValues, setFocus, error } = useNodeForm(data)
   const { saveHandler } = useNodeHandler()
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    if (!errors) {
-      setError('')
-      return
-    }
-    setError(handleError(errors.input_title?.message as string))
-  }, [errors, getValues, handleError])
 
   useEffect(() => {
     setTimeout(() => {
@@ -59,7 +26,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   }, [data.input_title, setFocus])
 
   const saveValue = () => {
-    if (errors.input_title) return
+    if (error) return
     const nodeData = { ...data, ...getValues() }
     saveHandler(nodeData)
     changeFormFocusState(false)
@@ -102,7 +69,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
           borderRadius: 2,
         }}
       >
-        {error && (
+        {!!error && (
           <StackError spacing={0.5} direction="row">
             <Image src={AlertIcon} alt="alert" />
             <Typography color="red.400" whiteSpace="nowrap">
