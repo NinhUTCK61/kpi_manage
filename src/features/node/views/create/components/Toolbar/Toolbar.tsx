@@ -5,6 +5,7 @@ import Image from 'next/image'
 import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
+import { ChooseStyleAlignText } from './ChooseAlignText'
 import { ChooseFontSize } from './ChooseFontSize'
 import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
@@ -39,6 +40,8 @@ export const ToolbarInner: React.FC = () => {
           <ChooseFontSize />
 
           <ChooseStyleText />
+
+          <ChooseStyleAlignText />
 
           <PickColorNode />
         </Stack>
