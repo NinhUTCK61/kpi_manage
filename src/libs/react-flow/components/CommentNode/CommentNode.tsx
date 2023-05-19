@@ -1,7 +1,7 @@
+import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
-import { useOnClickOutside } from 'usehooks-ts'
 import { CommentNodeType } from '../../types'
 import { Active } from './components/Active'
 import { InActive } from './components/InActive'
@@ -10,18 +10,34 @@ import { CommentNodeProvider } from './context'
 const CommentNode = (props: NodeProps<CommentNodeType>) => {
   const { data } = props
   const contextValue = useMemo(() => ({ data }), [data])
-  const [isActive, setIsActive] = useState<boolean>(false)
-  const ref = useRef(null)
+
+  const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault()
+    setContextMenu(
+      !contextMenu
+        ? {
+            mouseX: event.clientX + 36,
+            mouseY: event.clientY - 40,
+          }
+        : null,
+    )
+  }
 
   const handleClose = () => {
-    setIsActive(false)
+    setContextMenu(null)
   }
-  useOnClickOutside(ref, handleClose)
-
   return (
     <CommentNodeProvider value={contextValue}>
-      <Stack ref={ref} onClick={() => setIsActive(true)}>
-        {isActive ? <Active /> : <InActive />}
+      <Stack direction="row">
+        <InActive handleOpen={handleContextMenu} />
+        <Active
+          open={!!contextMenu}
+          onClose={handleClose}
+          anchorPosition={
+            !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
+          }
+        />
       </Stack>
     </CommentNodeProvider>
   )

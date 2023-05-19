@@ -120,6 +120,7 @@ export const CreateView: React.FC = () => {
           <CommentInput
             open={!!contextMenu}
             onClose={handleClose}
+            handleClose={handleClose}
             positionMenu={contextMenu}
             anchorPosition={
               !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined

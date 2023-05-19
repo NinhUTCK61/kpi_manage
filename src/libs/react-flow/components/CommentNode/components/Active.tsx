@@ -1,19 +1,19 @@
-import { Stack, Typography } from '@mui/material'
+import { Menu, MenuProps, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { CommentForm } from './CommentForm'
 import { CommentItem } from './CommentItem'
-import { BoxComment, HeaderComment, IconCommentImage } from './styled'
-import CommentActiveIcon from '/public/assets/svgs/comment_icon.svg'
+import { BoxComment, HeaderComment } from './styled'
 
-const Active = () => {
+const Active: React.FC<MenuProps> = ({ open, onClose, anchorPosition }) => {
   return (
-    <Stack direction="row" sx={{ cursor: 'context-menu' }} spacing={1}>
-      <IconCommentImage>
-        <Image src={CommentActiveIcon} alt="comment-icon" />
-      </IconCommentImage>
-
+    <Menu
+      open={open}
+      onClose={onClose}
+      anchorReference="anchorPosition"
+      anchorPosition={anchorPosition}
+    >
       <BoxComment>
         <HeaderComment>
           <Typography variant="body1" fontWeight="600">
@@ -28,7 +28,7 @@ const Active = () => {
         <CommentItem />
         <CommentForm />
       </BoxComment>
-    </Stack>
+    </Menu>
   )
 }
 
