@@ -58,10 +58,11 @@ const ChooseFontSize: React.FC = () => {
     setFontSize(nodeStyle.fontSize ? nodeStyle.fontSize : DEFAULT_FONT_SIZE)
   }, [nodeFocusedMemo])
 
-  const handleFontSizeChange = (value: string) => {
+  const handleFontSizeChange = (event: SelectChangeEvent<unknown>) => {
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const oldValue = fontSize
+    const value = event.target.value as string
     setFontSize(value)
     update(
       {
@@ -79,9 +80,7 @@ const ChooseFontSize: React.FC = () => {
   return (
     <Select
       value={fontSize}
-      onChange={(event: SelectChangeEvent<unknown>) =>
-        handleFontSizeChange(event.target.value as string)
-      }
+      onChange={handleFontSizeChange}
       input={<CustomInput />}
       IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
     >

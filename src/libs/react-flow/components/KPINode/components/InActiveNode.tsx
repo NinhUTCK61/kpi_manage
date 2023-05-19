@@ -17,19 +17,14 @@ const InActive: React.FC = () => {
   const d3Node = d3Root.find((node) => node.data.id === data.id)
   const hasChild = d3Node?.children && d3Node.children.length > 0
 
-  const firstSlug = data.slug.split('')[0]
+  const firstSlug = data.slug[0]
+  const edgeColor = generateColors(firstSlug as string)
 
   function NodeIcon(props: SvgIconProps) {
     return (
       <SvgIcon {...props}>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <circle
-            cx="6"
-            cy="6"
-            r="5"
-            stroke={generateColors(firstSlug as string)}
-            strokeWidth="2"
-          />
+          <circle cx="6" cy="6" r="5" stroke={edgeColor} strokeWidth="2" />
         </svg>
       </SvgIcon>
     )

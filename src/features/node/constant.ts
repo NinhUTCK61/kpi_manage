@@ -5,4 +5,13 @@ export enum ViewPortAction {
   SpeechBallon = 'speechBallon',
 }
 
-export type TextAlign = 'left' | 'center' | 'right' | ''
+export enum StyleText {
+  Bold = 'bold',
+  Italic = 'italic',
+}
+
+export enum TextAlign {
+  Left = 'left',
+  Center = 'center',
+  Right = 'right',
+}
