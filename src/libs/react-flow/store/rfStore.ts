@@ -263,6 +263,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ zoom: (_zoom >= 10 ? _zoom - 5 : _zoom) / 100 })
         }
       },
+      setZoom(zoom) {
+        set({ zoom })
+      },
     })),
   )
 

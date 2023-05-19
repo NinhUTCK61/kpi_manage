@@ -3,7 +3,7 @@ import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'
-import { useReactFlow } from 'reactflow'
+import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
@@ -43,7 +43,6 @@ export const CreateView: React.FC = () => {
 
   const containerRef = useRef<HTMLElement>(null)
   const { setViewport } = useReactFlow()
-
   useLayoutEffect(() => {
     if (containerRef.current) {
       // set viewport to center like design
@@ -54,6 +53,8 @@ export const CreateView: React.FC = () => {
       })
     }
   }, [setViewport])
+
+  const ctrl = useKeyPress(['ControlLeft', 'ControlRight'])
 
   const firstFocus = useRef(false)
   useLayoutEffect(() => {
@@ -87,7 +88,7 @@ export const CreateView: React.FC = () => {
           panOnDrag={viewportAction === ViewPortAction.Pan}
           panOnScroll
           zoomOnScroll={false}
-          zoomOnPinch={false}
+          zoomOnPinch={!ctrl}
           zoomOnDoubleClick={false}
           nodesDraggable={false}
           action={viewportAction}

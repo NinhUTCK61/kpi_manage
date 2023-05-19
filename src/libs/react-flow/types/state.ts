@@ -39,4 +39,5 @@ export type RFStore = {
   zoom: number
   handleZoom: (isZoomIn?: boolean) => void
   scrollZoom: (isZoomIn?: boolean) => void
+  setZoom: (zoom: number) => void
 }
