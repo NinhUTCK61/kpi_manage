@@ -1,5 +1,5 @@
-export * from './Active'
-export * from './InActive'
+export * from './ActiveNode'
+export * from './InActiveNode'
 export * from './InputControlNode'
 export * from './InputNode'
 export * from './NodeForm'
