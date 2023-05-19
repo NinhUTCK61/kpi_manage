@@ -1,10 +1,16 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { SvgIcon, SvgIconProps } from '@mui/material'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { generateColors } from '../utils'
-import { LeftHandler, NodeInActiveContainer, RightHandler, TextId, TextOverflow } from './styled'
+import {
+  LeftHandler,
+  NodeIcon,
+  NodeInActiveContainer,
+  RightHandler,
+  TextId,
+  TextOverflow,
+} from './styled'
 
 const InActive: React.FC = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
@@ -19,16 +25,6 @@ const InActive: React.FC = () => {
 
   const firstSlug = data.slug[0]
   const edgeColor = generateColors(firstSlug as string)
-
-  function NodeIcon(props: SvgIconProps) {
-    return (
-      <SvgIcon {...props}>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <circle cx="6" cy="6" r="5" stroke={edgeColor} strokeWidth="2" />
-        </svg>
-      </SvgIcon>
-    )
-  }
 
   return (
     <NodeInActiveContainer
@@ -56,6 +52,7 @@ const InActive: React.FC = () => {
           <NodeIcon
             sx={{
               transform: 'translate(-50%,-25%)',
+              stroke: edgeColor,
             }}
           />
         )}
