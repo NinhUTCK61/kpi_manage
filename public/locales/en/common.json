@@ -41,7 +41,8 @@
     "invalid_arguments": "Invalid function arguments.",
     "invalid_return_type": "Invalid function return type.",
     "invalid_date": "Invalid date",
-    "invalid_string_email": "This field must not be empty.",
+    "invalid_string_email": "Enter your email address.",
+    "message_password": "Enter your password.",
     "invalid_string_format": "Invalid format.",
     "too_small_array_true": "Array must contain at least {{minimum}} element(s).",
     "too_small_array_false": "Array must contain more than {{minimum}} element(s).",
@@ -61,7 +62,6 @@
     "invalid_intersection_types": "Intersection results could not be merged.",
     "not_multiple_of": "{{mutipleOf}} must be a multiple of.",
     "not_finite": "Number must be finite.",
-
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted.",
     "internal_server_error": "An internal server error occurred.",
