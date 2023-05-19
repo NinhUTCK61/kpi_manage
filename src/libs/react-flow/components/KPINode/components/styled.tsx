@@ -24,7 +24,7 @@ const LeftHandler = styled(Handle)({
 
 const BottomHandler = styled(Handle)({
   '&.react-flow__handle-bottom': {
-    bottom: -25,
+    bottom: -20,
     cursor: 'pointer',
     height: 0,
     width: 0,
@@ -68,7 +68,6 @@ const IconImageNode = styled(Image)(({ theme }) => ({
 
 const NodeActiveContainer = styled(Box)(({ theme }) => ({
   maxWidth: 190,
-  height: 106,
   backgroundColor: theme.palette.common.white,
   position: 'relative',
 }))
