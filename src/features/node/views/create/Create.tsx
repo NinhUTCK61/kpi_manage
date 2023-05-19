@@ -23,6 +23,7 @@ const nodeTypes = {
   comment: CommentNode,
   speech_ballon: KpiSpeechBallon,
 }
+
 const edgeTypes = {
   kpi: KpiEdge,
 }
@@ -88,9 +89,9 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={handlePaneClick}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
+          onPaneClick={handlePaneClick}
           proOptions={{
             hideAttribution: true,
           }}
@@ -105,6 +106,11 @@ export const CreateView: React.FC = () => {
         >
           <CommentForm />
           <KpiControls />
+          <KpiSpeechBallon
+            contextMenu={contextMenu}
+            onClose={handleClose}
+            containerRef={containerRef}
+          />
         </KpiReactFlow>
       </Container>
     </Layout>

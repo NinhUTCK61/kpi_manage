@@ -12,6 +12,8 @@ export const OptionShape: React.FC = () => {
 const MuiOptionShapeType = styled('div')(({ theme }) => ({
   position: 'relative',
   background: theme.palette.customPrimary[600],
+  minWidth: 210,
+  minHeight: 36,
   padding: '6px 15px',
   '::placeholder': {
     color: theme.palette.customPrimary[0o0],
