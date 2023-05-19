@@ -37,6 +37,7 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_AWS_S3_ENDPOINT: z.string(),
 })
 
 /**
@@ -62,6 +63,7 @@ const processEnv = {
   EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
   EMAIL_FROM: process.env.EMAIL_FROM,
   AWS_S3_ENDPOINT: process.env.AWS_S3_ENDPOINT,
+  NEXT_PUBLIC_AWS_S3_ENDPOINT: process.env.NEXT_PUBLIC_AWS_S3_ENDPOINT,
 
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 }

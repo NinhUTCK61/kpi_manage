@@ -2,6 +2,7 @@ import { useRenameTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
 import { TemplateDataSchema } from '@/libs/schema'
 import { Menu, MenuItem } from '@/libs/shared/components'
+import { getImageUrl } from '@/libs/utils/misc'
 import {
   CardContent,
   IconButton,
@@ -158,7 +159,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
       <CardContent sx={{ p: 0 }} onClick={redirectTemplate}>
         <Image
-          src={template.image_url || ImageFile}
+          src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
           alt="file"
           style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
           width={268}
