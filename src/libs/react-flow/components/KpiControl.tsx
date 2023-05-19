@@ -18,7 +18,7 @@ function KpiControls() {
 
   useEffect(() => {
     setZoom(Number(zoomDebounce.toFixed(2)))
-  }, [zoomDebounce])
+  }, [setZoom, zoomDebounce])
 
   useLayoutEffect(() => {
     if (zoom) {
