@@ -29,7 +29,7 @@ const editors = [
 ]
 
 const ChooseStyleAlignText: React.FC = () => {
-  const [textAlign, setTextAlign] = useState<TextAlign | null>(null)
+  const [textAlign, setTextAlign] = useState<TextAlign>(TextAlign.Unset)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
 
@@ -41,18 +41,18 @@ const ChooseStyleAlignText: React.FC = () => {
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
-      setTextAlign(null)
+      setTextAlign(TextAlign.Unset)
       return
     }
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     if (!nodeStyle) return
 
-    setTextAlign(nodeStyle.textAlign || '')
+    setTextAlign(nodeStyle.textAlign || TextAlign.Unset)
   }, [nodeFocusedMemo])
 
   const handleChangeTextAlign = (value: TextAlign) => {
-    setTextAlign(textAlign !== value ? value : null)
+    setTextAlign(textAlign !== value ? value : TextAlign.Unset)
   }
 
   const isShowForSpeech = viewportAction === ViewPortAction.SpeechBallon

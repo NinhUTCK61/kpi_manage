@@ -71,7 +71,7 @@ const ChooseFontSize: React.FC = () => {
       },
       {
         onError() {
-          setFontSize(oldValue as string)
+          setFontSize(oldValue)
         },
       },
     )
