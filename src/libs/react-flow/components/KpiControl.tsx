@@ -3,14 +3,22 @@ import { Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import ZoomInIcon from 'public/assets/svgs/zoom_in.svg'
 import ZoomOutIcon from 'public/assets/svgs/zoom_out.svg'
-import { useLayoutEffect } from 'react'
-import { Controls, useReactFlow } from 'reactflow'
+import { useEffect, useLayoutEffect } from 'react'
+import { Controls, useReactFlow, useViewport } from 'reactflow'
+import { useDebounce } from 'usehooks-ts'
 import { useRFStore } from '../hooks'
 
 function KpiControls() {
   const { setViewport, getViewport } = useReactFlow()
   const zoom = useRFStore((state) => state.zoom)
   const handleZoom = useRFStore((state) => state.handleZoom)
+  const setZoom = useRFStore((state) => state.setZoom)
+  const { zoom: zoomViewPort } = useViewport()
+  const zoomDebounce = useDebounce(zoomViewPort, 100)
+
+  useEffect(() => {
+    setZoom(Number(zoomDebounce.toFixed(2)))
+  }, [zoomDebounce])
 
   useLayoutEffect(() => {
     if (zoom) {
