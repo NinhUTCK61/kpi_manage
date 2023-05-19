@@ -27,6 +27,7 @@ const CommentNode = (props: NodeProps<CommentNodeType>) => {
   const handleClose = () => {
     setContextMenu(null)
   }
+
   return (
     <CommentNodeProvider value={contextValue}>
       <Stack direction="row">
@@ -34,6 +35,7 @@ const CommentNode = (props: NodeProps<CommentNodeType>) => {
         <Active
           open={!!contextMenu}
           onClose={handleClose}
+          handleClose={handleClose}
           anchorPosition={
             !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }

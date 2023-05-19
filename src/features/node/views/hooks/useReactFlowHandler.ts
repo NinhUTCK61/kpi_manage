@@ -6,13 +6,8 @@ import {
   useNodeDeleteMutation,
   useRFStore,
 } from '@/libs/react-flow'
-<<<<<<< HEAD
 import React, { MouseEvent, useCallback } from 'react'
-import { Node as RFNode, useReactFlow } from 'reactflow'
-=======
-import React, { MouseEvent, RefObject, useCallback } from 'react'
 import { Node as RFNode } from 'reactflow'
->>>>>>> aa443f1 (feat(KM-71): refactor code)
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
 
@@ -55,11 +50,7 @@ export const useReactFlowHandler = () => {
   )
 
   const handlePaneClick = useCallback(
-    (
-      e: MouseEvent<Element>,
-      containerRef: HTMLDivElement | null,
-      handleContextMenu: () => void,
-    ) => {
+    (e: MouseEvent<Element>, handleContextMenu: () => void) => {
       setNodeFocused(null)
       if (viewPortAction === ViewPortAction.Comment) {
         handleContextMenu()

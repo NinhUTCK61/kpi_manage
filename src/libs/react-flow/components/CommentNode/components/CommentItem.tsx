@@ -7,7 +7,6 @@ import Image from 'next/image'
 import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useCommentNodeContext } from '../context'
-import { MenuComment } from './styled'
 
 const CommentItem = () => {
   const {
@@ -22,7 +21,7 @@ const CommentItem = () => {
           <Box mr={1} width={24} height={24} sx={{ background: '#D9D9D9', borderRadius: '100%' }}>
             <Image src={data.author.image || ImageFile} alt="file" width={24} height={24} />
           </Box>
-          <Typography variant="body2" fontWeight={600}>
+          <Typography variant="body2" color="base.black" fontWeight={600}>
             {data.author.name}
           </Typography>
         </Stack>
@@ -36,9 +35,9 @@ const CommentItem = () => {
           {session?.user.id === data.author_id && (
             <Box ml={1}>
               <Image src={MenuIcon} alt="menu icon" />
-              <MenuComment>
+              {/* <MenuComment>
                 <Typography variant="body2">Edit</Typography>
-              </MenuComment>
+              </MenuComment> */}
             </Box>
           )}
         </Stack>

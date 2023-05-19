@@ -90,6 +90,17 @@ const InputComment = styled(InputBase)(({ theme }) => ({
   width: 382,
 }))
 
+const ButtonAction = styled(Button)({
+  minWidth: 0,
+  padding: 0,
+})
+
+const CommentActive = styled(Menu)(({ theme }) => ({
+  '& .MuiPaper-root': {
+    backgroundColor: theme.palette.greyScale[100],
+  },
+}))
+
 export {
   IconCommentImage,
   BoxComment,
@@ -100,4 +111,6 @@ export {
   ButtonSendComment,
   Menu,
   InputComment,
+  ButtonAction,
+  CommentActive,
 }

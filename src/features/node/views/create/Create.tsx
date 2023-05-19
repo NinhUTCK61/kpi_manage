@@ -102,7 +102,7 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={(e) => handlePaneClick(e, container, () => handleContextMenu(e))}
+          onPaneClick={(e) => handlePaneClick(e, () => handleContextMenu(e))}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           proOptions={{

@@ -1,14 +1,18 @@
-import { Menu, MenuProps, Stack, Typography } from '@mui/material'
+import { MenuProps, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { CommentForm } from './CommentForm'
 import { CommentItem } from './CommentItem'
-import { BoxComment, HeaderComment } from './styled'
+import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
 
-const Active: React.FC<MenuProps> = ({ open, onClose, anchorPosition }) => {
+type Props = {
+  handleClose: () => void
+} & MenuProps
+
+const Active: React.FC<Props> = ({ open, onClose, anchorPosition, handleClose }) => {
   return (
-    <Menu
+    <CommentActive
       open={open}
       onClose={onClose}
       anchorReference="anchorPosition"
@@ -16,19 +20,23 @@ const Active: React.FC<MenuProps> = ({ open, onClose, anchorPosition }) => {
     >
       <BoxComment>
         <HeaderComment>
-          <Typography variant="body1" fontWeight="600">
+          <Typography variant="body1" color="base.black" fontWeight="600">
             Comment
           </Typography>
 
-          <Stack spacing={1} direction="row" alignItems="center">
-            <Image src={MenuIcon} alt="menu icon" />
-            <Image src={CloseIcon} alt="close_icon" />
+          <Stack spacing={1.1} direction="row" alignItems="center">
+            <ButtonAction>
+              <Image src={MenuIcon} alt="menu" />
+            </ButtonAction>
+            <ButtonAction onClick={handleClose}>
+              <Image src={CloseIcon} alt="close" />
+            </ButtonAction>
           </Stack>
         </HeaderComment>
         <CommentItem />
         <CommentForm />
       </BoxComment>
-    </Menu>
+    </CommentActive>
   )
 }
 
