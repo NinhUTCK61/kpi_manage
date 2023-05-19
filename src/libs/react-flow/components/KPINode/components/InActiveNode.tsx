@@ -41,12 +41,12 @@ const InActive: React.FC = () => {
     >
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <TextOverflow variant="body2" mb={0.5} style={style} align="center">
+      <TextOverflow variant="body2" mb={0.5} style={style}>
         {`${data.input_title}`}
       </TextOverflow>
 
       {!!data.value2number && (
-        <TextOverflow variant="body2" style={style} align="center">
+        <TextOverflow variant="body2" style={style}>
           {`${data.value2number} ${data.unit && `(${data.unit})`} `}
         </TextOverflow>
       )}
