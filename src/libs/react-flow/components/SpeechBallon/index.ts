@@ -1,1 +1,1 @@
-export * from './KpiSpeechBallon'
+export * from './components/KpiSpeechBallon'

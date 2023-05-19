@@ -106,23 +106,20 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         return _newNode
       },
 
-      addSpeechBallon() {
+      addSpeechBallon(speechBallon) {
         console.log('add speech')
         const _node: ReactFlowSpeechBallonNode = {
           id: nanoid(),
-          data: {
-            id: nanoid(),
-          },
-          position: { x: Math.random() * 100, y: Math.random() * 100 },
+          data: speechBallon,
+          position: { x: speechBallon.x, y: speechBallon.y },
           type: 'speech_ballon',
         }
 
-        let _nodes = get().nodes
+        const _nodes = get().nodes
         _nodes.push(_node)
         set({
-          nodes: _nodes,
+          nodes: [..._nodes],
         })
-        console.log('new node', _nodes)
       },
 
       deleteNodes(nodes) {
@@ -210,7 +207,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         if (!node) {
-          // get().removeEmptyNode()
+          get().removeEmptyNode()
         }
       },
       onNodeClick(_, node) {
