@@ -18,13 +18,7 @@ function InputControlSpeechBalloon({
   return (
     <FormControl fullWidth={fullWidth} {...props}>
       {!value && (
-        <Typography
-          variant="body2"
-          color="greyScale.500"
-          sx={{
-            position: 'absolute',
-          }}
-        >
+        <Typography variant="body2" color="greyScale.500">
           {value}
         </Typography>
       )}

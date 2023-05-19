@@ -19,7 +19,7 @@ export type RFStore = {
   deleteNodes: OnNodesDelete
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
-  addSpeechBallon: () => void
+  addSpeechBallon: (speechBallon: SpeechBallon) => void
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   hasChild(nodeId: string): boolean
   removeEmptyNode: () => void

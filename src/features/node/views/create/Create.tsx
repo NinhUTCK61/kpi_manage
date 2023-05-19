@@ -108,6 +108,11 @@ export const CreateView: React.FC = () => {
           <CommentForm />
           <KpiSpeechBallonInput />
           <KpiControls />
+          <KpiSpeechBallon
+            contextMenu={contextMenu}
+            onClose={handleClose}
+            containerRef={containerRef}
+          />
         </KpiReactFlow>
       </Container>
     </Layout>
