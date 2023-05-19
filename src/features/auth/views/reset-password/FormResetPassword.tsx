@@ -24,7 +24,7 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
 }) => {
   const router = useRouter()
   const password = useWatch({ control, name: 'password' })
-  const { t } = useTranslation(['reset_password'])
+  const { t } = useTranslation('reset_password')
 
   const redirectSignIn = () => {
     router.push('/sign-in')
