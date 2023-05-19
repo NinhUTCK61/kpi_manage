@@ -14,7 +14,7 @@ const ResetPassword: FC = () => {
   const router = useRouter()
   const { mutate, isLoading, isSuccess } = api.auth.resetPassword.useMutation()
 
-  const { t } = useTranslation(['reset_password'])
+  const { t } = useTranslation('reset_password')
 
   const { control, handleSubmit } = useForm<ResetPasswordType>({
     defaultValues: {
