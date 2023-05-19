@@ -44,7 +44,6 @@ const DEFAULT_STATE: Partial<RFStore> = {
   edges: [],
   d3Root: hierarchy(initialRootNode),
   viewportAction: ViewPortAction.Move,
-  colorShape: '#3E19A3',
   stroke: 1,
   shape: '1',
   zoom: 0.75,
@@ -205,11 +204,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           viewportAction: action,
           nodeFocused: null,
-        })
-      },
-      changeShapeColor(colorShape) {
-        set({
-          colorShape,
         })
       },
       changeShapeStroke(stroke) {

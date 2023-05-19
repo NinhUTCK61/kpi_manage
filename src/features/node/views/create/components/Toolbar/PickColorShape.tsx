@@ -1,4 +1,4 @@
-import { base } from '@/libs/config/theme'
+import { base, customPrimary } from '@/libs/config/theme'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -7,7 +7,7 @@ import { useState, useTransition } from 'react'
 const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
 
-  const [pickColor, setPickColor] = useState<string>('#3E19A3')
+  const [pickColor, setPickColor] = useState<string>(customPrimary[700])
   const [_, startTransition] = useTransition()
 
   const id = 'colorShape'
