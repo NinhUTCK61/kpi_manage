@@ -34,6 +34,7 @@ variables:
   except:
     - develop
     - /^dependabot.*$/
+  interruptible: true
   
 build-stg:
   stage: build
@@ -52,6 +53,7 @@ build-stg:
     - docker push $DOCKER_IMAGE_STG:latest
   only:
     - develop
+  interruptible: true
 
 deploy-stg:
   stage: deploy
@@ -70,3 +72,4 @@ deploy-stg:
        bash -s" < cd.sh
   only:
     - develop
+  interruptible: true  
