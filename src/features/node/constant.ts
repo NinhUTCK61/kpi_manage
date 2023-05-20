@@ -5,9 +5,20 @@ export enum ViewPortAction {
   SpeechBallon = 'speechBallon',
 }
 
+// Style
 export enum StyleText {
+  FontWeight = 'fontWeight',
+  FontStyle = 'fontStyle',
+}
+
+export enum FontWeight {
   Bold = 'bold',
+  Normal = 'normal',
+}
+
+export enum FontStyle {
   Italic = 'italic',
+  Normal = 'normal',
 }
 
 export enum TextAlign {

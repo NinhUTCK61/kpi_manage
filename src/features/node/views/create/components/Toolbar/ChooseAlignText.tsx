@@ -14,17 +14,17 @@ const editors = [
   {
     key: TextAlign.Left,
     icon: EditorLeft,
-    iconActive: EditorLeftActive,
+    activeIcon: EditorLeftActive,
   },
   {
     key: TextAlign.Center,
     icon: EditorCenter,
-    iconActive: EditorCenterActive,
+    activeIcon: EditorCenterActive,
   },
   {
     key: TextAlign.Right,
     icon: EditorRight,
-    iconActive: EditorRightActive,
+    activeIcon: EditorRightActive,
   },
 ]
 
@@ -62,7 +62,7 @@ const ChooseStyleAlignText: React.FC = () => {
       {editors.map((editor) => (
         <Image
           key={editor.key}
-          src={textAlign === editor.key ? editor.iconActive : editor.icon}
+          src={textAlign === editor.key ? editor.activeIcon : editor.icon}
           alt={editor.key}
           style={{
             cursor: 'pointer',

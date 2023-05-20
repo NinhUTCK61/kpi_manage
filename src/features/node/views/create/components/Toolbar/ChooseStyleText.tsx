@@ -1,4 +1,4 @@
-import { StyleText, ViewPortAction } from '@/features/node/constant'
+import { FontStyle, FontWeight, StyleText, ViewPortAction } from '@/features/node/constant'
 import { useNodeUpdateMutation, useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
@@ -10,21 +10,23 @@ import { StackEditor } from './StackEditor'
 
 const editors = [
   {
-    key: StyleText.Bold,
+    key: StyleText.FontWeight,
     icon: EditorBold,
-    iconActive: EditorBoldActive,
+    activeIcon: EditorBoldActive,
+    value: FontWeight.Bold,
   },
   {
-    key: StyleText.Italic,
+    key: StyleText.FontStyle,
     icon: EditorItalic,
-    iconActive: EditorItalicActive,
+    activeIcon: EditorItalicActive,
+    value: FontStyle.Italic,
   },
 ]
 
 const ChooseStyleText: React.FC = () => {
   const [styleText, setStyleText] = useState({
-    [StyleText.Bold]: 'normal',
-    [StyleText.Italic]: 'normal',
+    [StyleText.FontWeight]: FontWeight.Normal,
+    [StyleText.FontStyle]: FontStyle.Normal,
   })
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -44,34 +46,30 @@ const ChooseStyleText: React.FC = () => {
     if (!nodeStyle) return
 
     setStyleText({
-      bold: nodeStyle.fontWeight || 'normal',
-      italic: nodeStyle.fontStyle || 'normal',
+      fontWeight: nodeStyle.fontWeight || FontWeight.Normal,
+      fontStyle: nodeStyle.fontStyle || FontStyle.Normal,
     })
   }, [nodeFocusedMemo])
 
-  const handleChangeStyle = (key: StyleText) => {
+  const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
     if (!nodeFocusedMemo) return
 
     const _styleText = {
       ...styleText,
-      [key]: styleText[key] === 'normal' ? key : 'normal',
+      [key]: styleText[key] === value ? 'normal' : value,
     }
-
-    setStyleText({
-      ..._styleText,
-    })
+    setStyleText(_styleText)
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const style = {
       ...nodeStyle,
-      fontStyle: _styleText.italic,
-      fontWeight: _styleText.bold,
+      ...styleText,
     }
 
     update(
       {
         id: nodeFocusedMemo.id,
-        node_style: JSON.stringify({ ...style }),
+        node_style: JSON.stringify(style),
       },
       {
         onSuccess(data) {
@@ -91,15 +89,15 @@ const ChooseStyleText: React.FC = () => {
       mr={0.5}
       disabled={!(isShowForNode || isShowForSpeechBallon)}
     >
-      {editors.map((editor) => (
+      {editors.map(({ key, value, icon, activeIcon }) => (
         <Image
-          key={editor.key}
-          src={styleText[editor.key] !== 'normal' ? editor.iconActive : editor.icon}
-          alt={editor.key}
+          key={key}
+          src={styleText[key] !== 'normal' ? activeIcon : icon}
+          alt={key}
           style={{
             cursor: 'pointer',
           }}
-          onClick={() => handleChangeStyle(editor.key)}
+          onClick={() => handleChangeStyle(key, value)}
         />
       ))}
     </StackEditor>
