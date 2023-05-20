@@ -4,6 +4,8 @@ import {
   Menu as MuiMenu,
   MenuItem as MuiMenuItem,
   Stack,
+  SvgIcon,
+  SvgIconProps,
   Typography,
   styled,
 } from '@mui/material'
@@ -68,7 +70,6 @@ const IconImageNode = styled(Image)(({ theme }) => ({
 
 const NodeActiveContainer = styled(Box)(({ theme }) => ({
   maxWidth: 190,
-  height: 106,
   backgroundColor: theme.palette.common.white,
   position: 'relative',
 }))
@@ -121,6 +122,16 @@ const StackError = styled(Stack)({
   transform: 'translate(0%,-100%)',
 })
 
+function NodeIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon {...props}>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <circle cx="6" cy="6" r="5" strokeWidth="2" />
+      </svg>
+    </SvgIcon>
+  )
+}
+
 export {
   LeftHandler,
   BottomHandler,
@@ -134,4 +145,5 @@ export {
   Menu,
   MenuItem,
   StackError,
+  NodeIcon,
 }

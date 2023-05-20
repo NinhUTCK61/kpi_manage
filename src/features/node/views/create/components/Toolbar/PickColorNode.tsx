@@ -40,7 +40,7 @@ const PickColorNode: React.FC = () => {
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       isNewFocusNode.current = true
-      setPickColor(nodeStyle.color)
+      setPickColor(nodeStyle.color || base.black)
     }
   }, [nodeFocusedMemo])
 
