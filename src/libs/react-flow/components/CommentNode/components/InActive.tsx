@@ -6,6 +6,7 @@ import CommentActiveIcon from '/public/assets/svgs/comment_icon.svg'
 type Props = {
   handleOpen: (event: React.MouseEvent) => void
 }
+
 const InActive = ({ handleOpen }: Props) => {
   return (
     <Stack onClick={handleOpen}>

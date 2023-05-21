@@ -68,23 +68,23 @@ export const CreateView: React.FC = () => {
     }
   }, [setNodeFocused, nodes, nodeFocused])
 
-  const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
+  const [comment, setComment] = useState<ContextMenuState>(null)
 
-  const handleContextMenu = (event: React.MouseEvent) => {
+  const handleOpenComment = (event: React.MouseEvent) => {
     event.preventDefault()
 
-    setContextMenu(
-      !contextMenu
+    setComment(
+      !comment
         ? {
             mouseX: event.clientX,
-            mouseY: event.clientY - 22,
+            mouseY: event.clientY,
           }
         : null,
     )
   }
 
-  const handleClose = () => {
-    setContextMenu(null)
+  const handleCloseComment = () => {
+    setComment(null)
   }
 
   return (
@@ -102,7 +102,7 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={(e) => handlePaneClick(e, () => handleContextMenu(e))}
+          onPaneClick={(e) => handlePaneClick(e, () => handleOpenComment(e))}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           proOptions={{
@@ -118,13 +118,11 @@ export const CreateView: React.FC = () => {
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
           <CommentInput
-            open={!!contextMenu}
-            onClose={handleClose}
-            handleClose={handleClose}
-            positionMenu={contextMenu}
-            anchorPosition={
-              !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
-            }
+            open={!!comment}
+            onClose={handleCloseComment}
+            handleClose={handleCloseComment}
+            positionMenu={comment}
+            anchorPosition={!!comment ? { top: comment.mouseY, left: comment.mouseX } : undefined}
             containerRef={container}
           />
           <KpiControls />

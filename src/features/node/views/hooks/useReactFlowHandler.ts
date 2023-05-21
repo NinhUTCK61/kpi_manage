@@ -50,10 +50,10 @@ export const useReactFlowHandler = () => {
   )
 
   const handlePaneClick = useCallback(
-    (e: MouseEvent<Element>, handleContextMenu: () => void) => {
+    (e: MouseEvent<Element>, handleOpenComment: () => void) => {
       setNodeFocused(null)
       if (viewPortAction === ViewPortAction.Comment) {
-        handleContextMenu()
+        handleOpenComment()
       }
     },
     [setNodeFocused, viewPortAction],

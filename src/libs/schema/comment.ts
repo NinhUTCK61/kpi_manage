@@ -62,3 +62,4 @@ export const UpdateCommentRepliesInputSchema = CommentReplySchema.omit({
 })
 
 export type UpdateCommentReplyInputType = z.infer<typeof UpdateCommentRepliesInputSchema>
+export type CommentOutputType = z.infer<typeof CreateCommentRepliesOutputSchema>

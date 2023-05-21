@@ -67,18 +67,18 @@ const InputStyle = styled(InputBase)(({ theme }) => ({
   background: theme.palette.trueGrey[100],
   color: theme.palette.base.black,
   borderRadius: 12,
-  padding: '16px 0',
+  padding: '13px 16px',
   height: '48px',
 }))
 
-const ButtonSendComment = styled(Button)(({ theme }) => ({
+const ButtonSendComment = styled(Button)({
   position: 'absolute',
   padding: 0,
   right: 16,
   minWidth: 0,
   top: '50%',
   transform: 'translateY(-50%)',
-}))
+})
 
 const InputComment = styled(InputBase)(({ theme }) => ({
   ...theme.typography.body2,

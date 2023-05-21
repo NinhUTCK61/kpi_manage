@@ -12,8 +12,10 @@ const CommentNode = (props: NodeProps<CommentNodeType>) => {
   const contextValue = useMemo(() => ({ data }), [data])
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
+
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault()
+    console.log(event.currentTarget)
     setContextMenu(
       !contextMenu
         ? {
@@ -30,8 +32,9 @@ const CommentNode = (props: NodeProps<CommentNodeType>) => {
 
   return (
     <CommentNodeProvider value={contextValue}>
-      <Stack direction="row">
+      <Stack direction="row" spacing={1}>
         <InActive handleOpen={handleContextMenu} />
+
         <Active
           open={!!contextMenu}
           onClose={handleClose}

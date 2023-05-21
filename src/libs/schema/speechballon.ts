@@ -2,15 +2,15 @@ import { SpeechBallonSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 
 export const CreateSpeechBallonInputSchema = z.object({
-  template_id: z.string(),
-  node_id: z.string(),
-  text: z.string(),
+  template_id: z.string().min(1),
+  node_id: z.string().min(1),
+  text: z.string().min(1),
   x: z.number(),
   y: z.number(),
-  shape: z.string(),
-  node_style: z.string(),
-  stroke: z.string(),
-  id: z.string(),
+  shape: z.string().min(1),
+  node_style: z.string().min(1),
+  stroke: z.string().min(1),
+  id: z.string().min(1),
 })
 
 export const UpdateSpeechInputSchema = SpeechBallonSchema.partial().required({
