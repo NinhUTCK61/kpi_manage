@@ -4,9 +4,11 @@ import { CommentItem } from './CommentItem'
 
 const ListComment = () => {
   const { data } = useCommentNodeContext()
+
   return (
     <Stack>
       <CommentItem data={data} />
+
       {data?.replies.map((comment) => (
         <CommentItem key={comment.comment_id} data={comment} />
       ))}

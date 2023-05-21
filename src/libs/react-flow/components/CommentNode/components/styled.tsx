@@ -4,9 +4,10 @@ const Menu = styled(MuiMenu)({
   '.MuiMenu-paper': {
     boxShadow: 'none',
   },
+  overflowY: 'scroll',
 })
 
-const IconCommentImage = styled(Stack)(({ theme }) => ({
+const IconStyled = styled(Stack)(({ theme }) => ({
   cursor: 'pointer',
   background: theme.palette.customPrimary[0],
   width: 40,
@@ -33,7 +34,7 @@ const HeaderComment = styled(Box)(({ theme }) => ({
   height: '56px',
 }))
 
-const InputCommentStyle = styled(Stack)(({ theme }) => ({
+const CommentReplyStyled = styled(Stack)(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.greyScale[300]}`,
   height: 80,
   padding: 16,
@@ -62,15 +63,6 @@ const MenuComment = styled(Stack)(({ theme }) => ({
   },
 }))
 
-const InputStyle = styled(InputBase)(({ theme }) => ({
-  ...theme.typography.body2,
-  background: theme.palette.trueGrey[100],
-  color: theme.palette.base.black,
-  borderRadius: 12,
-  padding: '13px 16px',
-  height: '48px',
-}))
-
 const ButtonSendComment = styled(Button)({
   position: 'absolute',
   padding: 0,
@@ -80,14 +72,14 @@ const ButtonSendComment = styled(Button)({
   transform: 'translateY(-50%)',
 })
 
-const InputComment = styled(InputBase)(({ theme }) => ({
-  ...theme.typography.body2,
-  background: theme.palette.trueGrey[100],
-  color: theme.palette.base.black,
-  borderRadius: 12,
-  padding: '12px 16px',
-  height: '48px',
-  width: 382,
+const InputStyled = styled(InputBase)(({ theme }) => ({
+  '& .MuiInputBase-input': {
+    padding: '13px 16px',
+    ...theme.typography.body2,
+    background: theme.palette.trueGrey[100],
+    color: theme.palette.base.black,
+    borderRadius: 12,
+  },
 }))
 
 const ButtonAction = styled(Button)({
@@ -99,18 +91,19 @@ const CommentActive = styled(Menu)(({ theme }) => ({
   '& .MuiPaper-root': {
     backgroundColor: theme.palette.greyScale[100],
   },
+  marginLeft: 8,
+  marginTop: 36,
 }))
 
 export {
-  IconCommentImage,
+  IconStyled,
   BoxComment,
   HeaderComment,
-  InputCommentStyle,
+  CommentReplyStyled,
+  InputStyled,
   MenuComment,
-  InputStyle,
   ButtonSendComment,
   Menu,
-  InputComment,
   ButtonAction,
   CommentActive,
 }

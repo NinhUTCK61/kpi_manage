@@ -1,29 +1,118 @@
-import { Box, Stack } from '@mui/material'
-import { useSession } from 'next-auth/react'
+import { CreateCommentInputSchema, CreateCommentInputType } from '@/libs/schema/comment'
+import { ContextMenuState } from '@/libs/shared/types/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { MenuProps, Stack } from '@mui/material'
+import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import ImageFile from 'public/assets/imgs/file.png'
-import { ButtonSendComment, InputCommentStyle, InputStyle } from './styled'
+import { useRouter } from 'next/router'
+import React, { KeyboardEvent } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useReactFlow } from 'reactflow'
+import { useCommentCreateMutation } from '../hooks'
+import { InputComment } from './InputComment'
+import { ButtonSendComment, Menu } from './styled'
+import CommentIcon from '/public/assets/svgs/comment_create.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
-const CommentForm = () => {
+type CommentFormProps = MenuProps & {
+  containerRef: HTMLDivElement | null
+  positionMenu: ContextMenuState
+  handleClose: () => void
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({
+  open,
+  onClose,
+  anchorPosition,
+  containerRef,
+  positionMenu,
+  handleClose,
+}) => {
+  const router = useRouter()
+  const { id } = router.query
+  const { project } = useReactFlow()
+  const { mutate: create } = useCommentCreateMutation()
+  const { top } = containerRef?.getBoundingClientRect() ?? { top: 120 }
   const { t } = useTranslation('file')
-  const { data } = useSession()
+
+  const position = project({
+    x: positionMenu?.mouseX as number,
+    y: (positionMenu?.mouseY as number) - top,
+  })
+
+  const { control, handleSubmit, reset } = useForm<CreateCommentInputType>({
+    defaultValues: {
+      id: '',
+      content: '',
+      template_id: '',
+      x: 0,
+      y: 0,
+    },
+    resolver: zodResolver(CreateCommentInputSchema),
+  })
+
+  const createComment = (content: string) => {
+    const newComment = {
+      id: nanoid(),
+      template_id: id as string,
+      x: position.x,
+      y: position.y,
+      content,
+    }
+
+    create(newComment, {
+      onSuccess() {
+        handleClose()
+        reset({ content: '' })
+      },
+    })
+  }
+
+  const onSubmit: SubmitHandler<CreateCommentInputType> = (data) => {
+    createComment(data.content)
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const content = (e.target as HTMLInputElement).value
+      if (content.length === 0) return
+
+      createComment(content)
+    }
+  }
 
   return (
-    <InputCommentStyle spacing={1} direction="row">
-      <Box width={32} height={32} sx={{ background: '#D9D9D9', borderRadius: '100%' }}>
-        <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
-      </Box>
+    <Menu
+      open={open}
+      onClose={onClose}
+      anchorReference="anchorPosition"
+      anchorPosition={anchorPosition}
+    >
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Image src={CommentIcon} alt="comment icon" />
 
-      <Stack component="form" position="relative" width="100%">
-        <InputStyle name="comment" placeholder={t('enter_comment') as string} />
+        <Stack
+          component="form"
+          position="relative"
+          width={382}
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyDown={handleKeyDown}
+        >
+          <InputComment
+            control={control}
+            name="content"
+            placeholder={t('enter_comment') as string}
+            fullWidth
+          />
 
-        <ButtonSendComment type="submit">
-          <Image src={SendIcon} alt="send" />
-        </ButtonSendComment>
+          <ButtonSendComment type="submit">
+            <Image src={SendIcon} alt="send" />
+          </ButtonSendComment>
+        </Stack>
       </Stack>
-    </InputCommentStyle>
+    </Menu>
   )
 }
 

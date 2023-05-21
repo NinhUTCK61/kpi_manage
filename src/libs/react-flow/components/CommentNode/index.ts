@@ -1,2 +1,2 @@
 export * from './CommentNode'
-export * from './components/CommentInput'
+export * from './components/CommentForm'

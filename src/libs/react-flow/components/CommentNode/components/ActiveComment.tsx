@@ -3,23 +3,30 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
-import { CommentForm } from './CommentForm'
+import { CommentReplyForm } from './CommentReplyForm'
 import { ListComment } from './ListComment'
 import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
 
-type Props = {
+type ActiveCommentProps = {
   handleClose: () => void
 } & MenuProps
 
-const Active: React.FC<Props> = ({ open, onClose, anchorPosition, handleClose }) => {
+const ActiveComment: React.FC<ActiveCommentProps> = ({ open, anchorEl, handleClose }) => {
   const { t } = useTranslation('file')
 
   return (
     <CommentActive
+      anchorEl={anchorEl}
       open={open}
-      onClose={onClose}
-      anchorReference="anchorPosition"
-      anchorPosition={anchorPosition}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'center',
+        horizontal: 'left',
+      }}
     >
       <BoxComment>
         <HeaderComment>
@@ -39,10 +46,10 @@ const Active: React.FC<Props> = ({ open, onClose, anchorPosition, handleClose })
         </HeaderComment>
         <ListComment />
 
-        <CommentForm />
+        <CommentReplyForm />
       </BoxComment>
     </CommentActive>
   )
 }
 
-export { Active }
+export { ActiveComment }

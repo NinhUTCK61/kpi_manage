@@ -1,7 +1,7 @@
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
 import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { CommentNode } from '@/libs/react-flow/components/CommentNode'
-import { CommentInput } from '@/libs/react-flow/components/CommentNode/components'
+import { CommentForm } from '@/libs/react-flow/components/CommentNode/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Box, styled } from '@mui/material'
@@ -117,7 +117,7 @@ export const CreateView: React.FC = () => {
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
-          <CommentInput
+          <CommentForm
             open={!!comment}
             onClose={handleCloseComment}
             handleClose={handleCloseComment}

@@ -1,1 +1,2 @@
-export * from './CommentInput'
+export * from './ActiveComment'
+export * from './CommentForm'
