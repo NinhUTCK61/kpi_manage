@@ -15,5 +15,11 @@
     "copy": "コピー",
     "paste": "ペースト",
     "delete": "削除"
-  }
+  },
+  "comment_title": "Comment",
+  "deleted_thread": "Delete thread",
+  "edit_comment": "Edit comment",
+  "cancel": "Cancel",
+  "save": "Save",
+  "enter_comment": "Add a comment"
 }
