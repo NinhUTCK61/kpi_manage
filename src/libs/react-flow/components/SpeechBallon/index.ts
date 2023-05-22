@@ -1,1 +1,2 @@
-export * from './components/KpiSpeechBallon'
+export * from './components/KpiSpeechBallonContext'
+export * from './components/KpiSpeechBallonNode'

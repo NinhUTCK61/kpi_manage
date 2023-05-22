@@ -1,4 +1,5 @@
 import { styled } from '@mui/material'
+import React from 'react'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
