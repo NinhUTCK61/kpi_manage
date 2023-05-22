@@ -1,3 +1,4 @@
+export * from './CommentNode'
 export * from './KPINode'
 export * from './KpiControl'
 export * from './KpiEdge'

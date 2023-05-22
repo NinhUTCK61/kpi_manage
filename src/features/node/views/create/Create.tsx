@@ -1,5 +1,11 @@
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
-import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
+import {
+  CommentForm,
+  CommentNode,
+  KpiControls,
+  KpiEdge,
+  KpiNode,
+} from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'
@@ -13,6 +19,7 @@ import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
   kpi: KpiNode,
+  comment: CommentNode,
 }
 const edgeTypes = {
   kpi: KpiEdge,
@@ -42,6 +49,7 @@ export const CreateView: React.FC = () => {
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
+
   useLayoutEffect(() => {
     if (container) {
       // set viewport to center like design
@@ -93,6 +101,7 @@ export const CreateView: React.FC = () => {
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
+          <CommentForm />
           <KpiControls />
         </KpiReactFlow>
       </Container>

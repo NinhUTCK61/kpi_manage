@@ -6,7 +6,7 @@ import {
   useNodeDeleteMutation,
   useRFStore,
 } from '@/libs/react-flow'
-import { MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 
@@ -16,11 +16,19 @@ const storeSelector = (state: RFStore) => ({
   setNodeFocused: state.setNodeFocused,
   scrollZoom: state.scrollZoom,
   removeEmptyNode: state.removeEmptyNode,
+  addComment: state.addComment,
+  setActivePosition: state.setActivePosition,
 })
 
 export const useReactFlowHandler = () => {
-  const { handleEdgesChange, handleNodesChange, setNodeFocused, scrollZoom, removeEmptyNode } =
-    useRFStore(storeSelector, shallow)
+  const {
+    handleEdgesChange,
+    handleNodesChange,
+    setNodeFocused,
+    scrollZoom,
+    removeEmptyNode,
+    setActivePosition,
+  } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
 
@@ -41,10 +49,16 @@ export const useReactFlowHandler = () => {
   )
 
   const handlePaneClick = useCallback(
-    (_: MouseEvent<Element>) => {
+    (e: MouseEvent<Element>) => {
+      e.preventDefault()
       setNodeFocused(null)
+
+      setActivePosition({
+        x: e.clientX,
+        y: e.clientY,
+      })
     },
-    [setNodeFocused],
+    [setNodeFocused, setActivePosition],
   )
 
   const handleNodesDelete = useCallback(
