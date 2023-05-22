@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { UpdateNodeInputType } from '@/libs/schema/node'
-import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete } from 'reactflow'
+import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import { HierarchyFlowNode, ReactFlowKPINode, ReactFlowNode } from './node'
 
 export type RFStore = {
@@ -22,6 +22,7 @@ export type RFStore = {
   getKPINodeById: (id: string) => ReactFlowNode | null
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
+
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
@@ -34,4 +35,7 @@ export type RFStore = {
   handleZoom: (isZoomIn?: boolean) => void
   scrollZoom: (isZoomIn?: boolean) => void
   setZoom: (zoom: number) => void
+
+  activePosition: XYPosition | null
+  setActivePosition: (position: XYPosition | null) => void
 }
