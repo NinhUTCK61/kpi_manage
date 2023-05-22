@@ -1,5 +1,4 @@
-export * from './InputControlSpeechBalloon'
 export * from './InputSpeechBalloon'
-export * from './KpiSpeechBallon'
+export * from './KpiSpeechBallonContext'
 export * from './OptionShape'
 export * from './SpeechBallonForm'
