@@ -11,7 +11,7 @@
   "speech": "Add speech balloon",
   "remove_favorite": "Remove favorite this file",
   "menu_context": {
-    "edit": "Edit node / Speech balloon",
+    "edit": "Edit node",
     "copy": "Copy",
     "paste": "Paste",
     "delete": "Delete"
