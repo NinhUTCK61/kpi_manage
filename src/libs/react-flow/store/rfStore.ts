@@ -1,6 +1,7 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
 import { nanoid } from 'nanoid'
+import { RefObject } from 'react'
 import {
   Connection,
   EdgeChange,
@@ -119,6 +120,31 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         _nodes.push(_node)
         set({
           nodes: [..._nodes],
+        })
+      },
+
+      handleContextSpeechBallon(event: React.MouseEvent, containerRef: RefObject<HTMLElement>) {
+        event.preventDefault()
+        const position = get().position
+        const viewportAction = get().viewportAction
+        set({
+          containerRef: containerRef,
+        })
+        if (containerRef.current && viewportAction === ViewPortAction.SpeechBallon) {
+          set({
+            position: !position
+              ? {
+                  x: event.clientX,
+                  y: event.clientY,
+                }
+              : null,
+          })
+        }
+      },
+
+      handleCloseSpeechBallon() {
+        set({
+          position: null,
         })
       },
 
@@ -286,7 +312,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ activePosition })
       },
       setContainer(container) {
-        set({ container })
+        set({
+          container,
+        })
       },
     })),
   )
