@@ -101,7 +101,7 @@ export const CreateView: React.FC = () => {
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
-          <CommentForm containerRef={container} />
+          <CommentForm />
           <KpiControls />
         </KpiReactFlow>
       </Container>

@@ -15,27 +15,25 @@ import { ButtonSend, CommentFormContainer } from './styled'
 import CommentIcon from '/public/assets/svgs/comment_create.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
-type CommentFormProps = {
-  containerRef: HTMLDivElement | null
-}
-
 export const CommentFormSchema = z.object({
   content: z.string().min(1),
 })
 
 export type CommentFormType = z.infer<typeof CommentFormSchema>
 
-const CommentForm: React.FC<CommentFormProps> = ({ containerRef }) => {
+const CommentForm: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
   const { project } = useReactFlow()
   const { mutate: create } = useCommentCreateMutation()
-  const { top } = containerRef?.getBoundingClientRect() ?? { top: 120 }
   const { t } = useTranslation('file')
 
   const viewportAction = useRFStore((state) => state.viewportAction)
   const setActivePosition = useRFStore((state) => state.setActivePosition)
   const activePosition = useRFStore((state) => state.activePosition)
+  const container = useRFStore((state) => state.container)
+
+  const { top } = container?.getBoundingClientRect() ?? { top: 120 }
 
   const handleClose = () => {
     reset({ content: '' })
