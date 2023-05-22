@@ -1,5 +1,5 @@
+import { useRFStore } from '@/libs/react-flow/hooks'
 import { CreateCommentInputType } from '@/libs/schema/comment'
-import { ContextMenuState } from '@/libs/shared/types/utils'
 import { MenuProps, Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
@@ -16,7 +16,6 @@ import SendIcon from '/public/assets/svgs/send.svg'
 
 type CommentFormProps = MenuProps & {
   containerRef: HTMLDivElement | null
-  positionMenu: ContextMenuState
   handleClose: () => void
 }
 
@@ -25,7 +24,6 @@ const CommentForm: React.FC<CommentFormProps> = ({
   onClose,
   anchorPosition,
   containerRef,
-  positionMenu,
   handleClose,
 }) => {
   const router = useRouter()
@@ -34,13 +32,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
   const { mutate: create } = useCommentCreateMutation()
   const { top } = containerRef?.getBoundingClientRect() ?? { top: 120 }
   const { t } = useTranslation('file')
+  const activePosition = useRFStore((state) => state.activePosition)
+  console.log(top)
 
   const position = project({
-    x: positionMenu?.mouseX as number,
-    y: (positionMenu?.mouseY as number) - top,
+    x: activePosition ? (activePosition.x as number) : 0,
+    y: activePosition ? activePosition.y - 120 : 0,
   })
-
-  console.log(top)
 
   const { control, handleSubmit, reset } = useForm<CreateCommentInputType>({
     defaultValues: {

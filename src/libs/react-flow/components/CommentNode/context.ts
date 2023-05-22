@@ -1,8 +1,10 @@
-import { createContext, useContext } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext } from 'react'
 import { CommentNodeType } from '../../types'
 
 export type CommentNodeContextType = {
   data: CommentNodeType
+  active: null | HTMLElement
+  setActive: Dispatch<SetStateAction<HTMLElement | null>>
 }
 
 export const CommentNodeContext = createContext<CommentNodeContextType | null>(null)

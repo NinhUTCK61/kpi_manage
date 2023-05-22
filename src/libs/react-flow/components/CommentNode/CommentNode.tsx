@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import React, { memo, useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { CommentNodeType } from '../../types'
 import { ActiveComment } from './components/ActiveComment'
@@ -11,25 +11,12 @@ const CommentNodeInner = (props: NodeProps<CommentNodeType>) => {
   const contextValue = useMemo(() => ({ data }), [data])
   const [active, setActive] = useState<null | HTMLElement>(null)
 
-  const handleOpenComment = (event: React.MouseEvent<HTMLElement>) => {
-    setActive(event.currentTarget)
-  }
-
-  const handleCloseComment = () => {
-    setActive(null)
-  }
-
   return (
-    <CommentNodeProvider value={contextValue}>
+    <CommentNodeProvider value={{ ...contextValue, active, setActive }}>
       <Stack direction="row" spacing={1}>
-        <InActiveComment handleOpen={handleOpenComment} />
+        <InActiveComment />
 
-        <ActiveComment
-          open={!!active}
-          onClose={handleCloseComment}
-          handleClose={handleCloseComment}
-          anchorEl={active}
-        />
+        <ActiveComment open={!!active} anchorEl={active} />
       </Stack>
     </CommentNodeProvider>
   )

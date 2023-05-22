@@ -3,9 +3,8 @@ import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
 import { CommentNode } from '@/libs/react-flow/components/CommentNode'
 import { CommentForm } from '@/libs/react-flow/components/CommentNode/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
-import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Box, styled } from '@mui/material'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
@@ -68,23 +67,16 @@ export const CreateView: React.FC = () => {
     }
   }, [setNodeFocused, nodes, nodeFocused])
 
-  const [comment, setComment] = useState<ContextMenuState>(null)
+  const setActivePosition = useRFStore((state) => state.setActivePosition)
+  const activePosition = useRFStore((state) => state.activePosition)
 
   const handleOpenComment = (event: React.MouseEvent) => {
     event.preventDefault()
-
-    setComment(
-      !comment
-        ? {
-            mouseX: event.clientX,
-            mouseY: event.clientY - 16,
-          }
-        : null,
-    )
+    setActivePosition({ x: event.clientX, y: event.clientY })
   }
 
   const handleCloseComment = () => {
-    setComment(null)
+    setActivePosition(null)
   }
 
   return (
@@ -118,11 +110,12 @@ export const CreateView: React.FC = () => {
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
           <CommentForm
-            open={!!comment}
+            open={!!activePosition}
             onClose={handleCloseComment}
             handleClose={handleCloseComment}
-            positionMenu={comment}
-            anchorPosition={!!comment ? { top: comment.mouseY, left: comment.mouseX } : undefined}
+            anchorPosition={
+              !!activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
+            }
             containerRef={container}
           />
           <KpiControls />

@@ -3,16 +3,17 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
+import { useCommentNodeContext } from '../context'
 import { CommentReplyForm } from './CommentReplyForm'
 import { ListComment } from './ListComment'
 import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
 
-type ActiveCommentProps = {
-  handleClose: () => void
-} & MenuProps
-
-const ActiveComment: React.FC<ActiveCommentProps> = ({ open, anchorEl, handleClose }) => {
+const ActiveComment: React.FC<MenuProps> = ({ open, anchorEl }) => {
   const { t } = useTranslation('file')
+  const { setActive } = useCommentNodeContext()
+  const handleClose = () => {
+    setActive(null)
+  }
 
   return (
     <CommentActive
