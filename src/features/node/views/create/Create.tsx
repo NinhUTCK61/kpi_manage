@@ -90,7 +90,6 @@ export const CreateView: React.FC = () => {
           zoomOnScroll={false}
           zoomOnPinch={!ctrl}
           zoomOnDoubleClick={false}
-          nodesDraggable={false}
           action={viewportAction}
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}

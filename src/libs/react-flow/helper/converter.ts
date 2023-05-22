@@ -101,6 +101,7 @@ export const convertToReactFlowKPINodes = (
       },
       position: { x: node.data.x, y: node.data.y },
       type: 'kpi',
+      draggable: false,
     }
   })
 }

@@ -52,6 +52,7 @@ const BaseReactFlowSchema = z.object({
     x: z.number(),
     y: z.number(),
   }),
+  draggable: z.boolean().optional(),
 })
 
 const ReactFlowKPINode = BaseReactFlowSchema.merge(
