@@ -38,4 +38,7 @@ export type RFStore = {
 
   activePosition: XYPosition | null
   setActivePosition: (position: XYPosition | null) => void
+
+  container: HTMLDivElement | null
+  setContainer: (container: HTMLDivElement | null) => void
 }

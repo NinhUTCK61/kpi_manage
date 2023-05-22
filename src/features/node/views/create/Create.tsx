@@ -24,13 +24,13 @@ const storeSelector = (state: RFStore) => ({
   viewportAction: state.viewportAction,
   setNodeFocused: state.setNodeFocused,
   nodeFocused: state.nodeFocused,
+  container: state.container,
+  setContainer: state.setContainer,
 })
 
 export const CreateView: React.FC = () => {
-  const { nodes, edges, viewportAction, setNodeFocused, nodeFocused } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { nodes, edges, viewportAction, setNodeFocused, nodeFocused, container, setContainer } =
+    useRFStore(storeSelector, shallow)
 
   const {
     handleEdgesChange,
@@ -41,18 +41,17 @@ export const CreateView: React.FC = () => {
     handleNodeClick,
   } = useReactFlowHandler()
 
-  const containerRef = useRef<HTMLElement>(null)
   const { setViewport } = useReactFlow()
   useLayoutEffect(() => {
-    if (containerRef.current) {
+    if (container) {
       // set viewport to center like design
       setViewport({
         x: 30,
-        y: (containerRef.current.clientHeight - NODE_HEIGHT_TEMPLATE) * 0.5,
+        y: (container.clientHeight - NODE_HEIGHT_TEMPLATE) * 0.5,
         zoom: 0.75,
       })
     }
-  }, [setViewport])
+  }, [container, setViewport])
 
   const ctrl = useKeyPress(['ControlLeft', 'ControlRight'])
 
@@ -68,7 +67,7 @@ export const CreateView: React.FC = () => {
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
 
-      <Container display="flex" flex={1} ref={containerRef}>
+      <Container display="flex" flex={1} ref={setContainer}>
         <KpiReactFlow
           maxZoom={2}
           minZoom={0.25}

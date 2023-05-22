@@ -49,6 +49,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
   zoom: 0.75,
   nodeFocused: null,
   activePosition: null,
+  container: null,
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -254,6 +255,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       setActivePosition(activePosition) {
         set({ activePosition })
+      },
+      setContainer(container) {
+        set({ container })
       },
     })),
   )
