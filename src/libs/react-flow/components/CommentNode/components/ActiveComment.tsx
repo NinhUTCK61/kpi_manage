@@ -10,10 +10,10 @@ import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled
 
 const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
-  const { setActive } = useCommentNodeContext()
-  const { active } = useCommentNodeContext()
+  const { active, handleSetActive } = useCommentNodeContext()
+
   const handleClose = () => {
-    setActive(null)
+    handleSetActive(null)
   }
 
   return (
@@ -21,7 +21,7 @@ const ActiveComment: React.FC = () => {
       open={!!active}
       anchorEl={active}
       onClose={handleClose}
-      autoFocus={false}
+      autoFocus
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',

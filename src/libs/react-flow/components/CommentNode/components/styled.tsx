@@ -1,6 +1,6 @@
 import { Box, Button, InputBase, Popover, Stack, styled } from '@mui/material'
 
-const CommentFormStyled = styled(Popover)({
+const CommentFormContainer = styled(Popover)({
   '.MuiPopover-paper': {
     boxShadow: 'none',
   },
@@ -12,9 +12,8 @@ const IconStyled = styled(Stack)(({ theme }) => ({
   background: theme.palette.customPrimary[0],
   width: 40,
   height: 40,
-  padding: '9px',
+  padding: 9,
   borderRadius: '100%',
-  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 }))
@@ -31,14 +30,13 @@ const HeaderComment = styled(Box)(({ theme }) => ({
   width: '100%',
   borderBottom: `1px solid ${theme.palette.greyScale[300]}`,
   padding: '0 16px',
-  height: '56px',
+  height: 56,
 }))
 
-const CommentReplyStyled = styled(Stack)(({ theme }) => ({
+const CommentReplyContainer = styled(Stack)(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.greyScale[300]}`,
   height: 80,
   padding: 16,
-  display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
 }))
@@ -63,7 +61,7 @@ const MenuComment = styled(Stack)(({ theme }) => ({
   },
 }))
 
-const ButtonSendComment = styled(Button)({
+const ButtonSend = styled(Button)({
   position: 'absolute',
   padding: 0,
   right: 16,
@@ -87,7 +85,7 @@ const ButtonAction = styled(Button)({
   padding: 0,
 })
 
-const CommentActive = styled(CommentFormStyled)(({ theme }) => ({
+const CommentActive = styled(CommentFormContainer)(({ theme }) => ({
   '& .MuiPaper-root': {
     backgroundColor: theme.palette.greyScale[100],
   },
@@ -99,11 +97,11 @@ export {
   IconStyled,
   BoxComment,
   HeaderComment,
-  CommentReplyStyled,
+  CommentReplyContainer,
   InputStyled,
   MenuComment,
-  ButtonSendComment,
-  CommentFormStyled,
+  ButtonSend,
+  CommentFormContainer,
   ButtonAction,
   CommentActive,
 }

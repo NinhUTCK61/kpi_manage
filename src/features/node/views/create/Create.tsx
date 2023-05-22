@@ -1,7 +1,11 @@
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
-import { KpiControls, KpiEdge, KpiNode } from '@/libs/react-flow/components'
-import { CommentNode } from '@/libs/react-flow/components/CommentNode'
-import { CommentForm } from '@/libs/react-flow/components/CommentNode/components'
+import {
+  CommentForm,
+  CommentNode,
+  KpiControls,
+  KpiEdge,
+  KpiNode,
+} from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'
@@ -67,18 +71,6 @@ export const CreateView: React.FC = () => {
     }
   }, [setNodeFocused, nodes, nodeFocused])
 
-  const setActivePosition = useRFStore((state) => state.setActivePosition)
-  const activePosition = useRFStore((state) => state.activePosition)
-
-  const handleOpenComment = (event: React.MouseEvent) => {
-    event.preventDefault()
-    setActivePosition({ x: event.clientX, y: event.clientY })
-  }
-
-  const handleCloseComment = () => {
-    setActivePosition(null)
-  }
-
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
@@ -94,7 +86,7 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={(e) => handlePaneClick(e, () => handleOpenComment(e))}
+          onPaneClick={handlePaneClick}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           proOptions={{
@@ -109,15 +101,7 @@ export const CreateView: React.FC = () => {
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
-          <CommentForm
-            open={!!activePosition}
-            onClose={handleCloseComment}
-            handleClose={handleCloseComment}
-            anchorPosition={
-              !!activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
-            }
-            containerRef={container}
-          />
+          <CommentForm containerRef={container} />
           <KpiControls />
         </KpiReactFlow>
       </Container>

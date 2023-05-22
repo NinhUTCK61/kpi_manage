@@ -10,14 +10,15 @@ const useCommentCreateMutation = () => {
 
   const mutation = api.comment.create.useMutation({
     onSuccess(data) {
+      // TODO: move onSuccess to onMutate
       const comment = convertToReactFlowComment(data)
       addComment(comment)
     },
-    onError(_, data) {
+    onError(_, variables) {
       enqueueSnackbar('err.create_comment', {
         variant: 'error',
       })
-      removeComment(data.id)
+      removeComment(variables.id)
     },
     onSettled() {
       utils.node.list.invalidate()

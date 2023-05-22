@@ -1,6 +1,6 @@
+import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { CreateCommentInputType } from '@/libs/schema/comment'
-import { MenuProps, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -8,73 +8,85 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
+import { z } from 'zod'
 import { useCommentCreateMutation } from '../hooks'
 import { InputComment } from './InputComment'
-import { ButtonSendComment, CommentFormStyled } from './styled'
+import { ButtonSend, CommentFormContainer } from './styled'
 import CommentIcon from '/public/assets/svgs/comment_create.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
-type CommentFormProps = MenuProps & {
+type CommentFormProps = {
   containerRef: HTMLDivElement | null
-  handleClose: () => void
 }
 
-const CommentForm: React.FC<CommentFormProps> = ({
-  open,
-  onClose,
-  anchorPosition,
-  containerRef,
-  handleClose,
-}) => {
+export const CommentFormSchema = z.object({
+  content: z.string().min(1),
+})
+
+export type CommentFormType = z.infer<typeof CommentFormSchema>
+
+const CommentForm: React.FC<CommentFormProps> = ({ containerRef }) => {
   const router = useRouter()
   const { id } = router.query
   const { project } = useReactFlow()
   const { mutate: create } = useCommentCreateMutation()
   const { top } = containerRef?.getBoundingClientRect() ?? { top: 120 }
   const { t } = useTranslation('file')
+
+  const viewportAction = useRFStore((state) => state.viewportAction)
+  const setActivePosition = useRFStore((state) => state.setActivePosition)
   const activePosition = useRFStore((state) => state.activePosition)
-  console.log(top)
+
+  const handleClose = () => {
+    reset({ content: '' })
+    setActivePosition(null)
+  }
 
   const position = project({
     x: activePosition ? (activePosition.x as number) : 0,
-    y: activePosition ? activePosition.y - 120 : 0,
+    y: activePosition ? activePosition.y - top : 0,
   })
 
-  const { control, handleSubmit, reset } = useForm<CreateCommentInputType>({
+  const { control, handleSubmit, reset } = useForm<CommentFormType>({
     defaultValues: {
       content: '',
     },
   })
 
-  const onSubmit: SubmitHandler<CreateCommentInputType> = (data, e) => {
+  const onSubmit: SubmitHandler<CommentFormType> = (data, e) => {
     e?.preventDefault()
 
-    const createComment = (content: string) => {
-      const newComment = {
-        id: nanoid(),
-        content,
-        template_id: id as string,
-        x: position.x,
-        y: position.y,
-      }
-
-      create(newComment, {
-        onSuccess() {
-          handleClose()
-          reset({ content: '' })
-        },
-      })
+    if (!data.content) {
+      handleClose()
+      return
     }
 
-    createComment(data.content)
+    const newComment = {
+      id: nanoid(),
+      content: data.content,
+      template_id: id as string,
+      x: position.x,
+      y: position.y,
+    }
+
+    create(newComment, {
+      onSuccess() {
+        handleClose()
+        reset({ content: '' })
+      },
+    })
   }
 
+  const open = Boolean(activePosition) && viewportAction === ViewPortAction.Comment
+
   return (
-    <CommentFormStyled
+    <CommentFormContainer
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       anchorReference="anchorPosition"
-      anchorPosition={anchorPosition}
+      anchorPosition={
+        activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
+      }
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Image src={CommentIcon} alt="comment icon" />
@@ -88,12 +100,12 @@ const CommentForm: React.FC<CommentFormProps> = ({
             fullWidth
           />
 
-          <ButtonSendComment type="submit">
+          <ButtonSend type="submit">
             <Image src={SendIcon} alt="send" />
-          </ButtonSendComment>
+          </ButtonSend>
         </Stack>
       </Stack>
-    </CommentFormStyled>
+    </CommentFormContainer>
   )
 }
 

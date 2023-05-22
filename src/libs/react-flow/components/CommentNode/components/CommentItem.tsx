@@ -21,9 +21,9 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   const { data: session } = useSession()
 
   return (
-    <Stack sx={{ padding: 2 }}>
-      <Stack flexDirection="row" justifyContent="space-between" mb={1}>
-        <Stack flexDirection="row">
+    <Stack p={2}>
+      <Stack direction="row" justifyContent="space-between" mb={1}>
+        <Stack direction="row">
           <Box mr={1} width={24} height={24} borderRadius="100%">
             <Image src={data.author.image || ImageFile} alt="file" width={24} height={24} />
           </Box>
