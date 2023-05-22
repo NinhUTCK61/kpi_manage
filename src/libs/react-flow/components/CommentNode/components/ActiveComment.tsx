@@ -1,4 +1,4 @@
-import { MenuProps, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
@@ -8,17 +8,18 @@ import { CommentReplyForm } from './CommentReplyForm'
 import { ListComment } from './ListComment'
 import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
 
-const ActiveComment: React.FC<MenuProps> = ({ open, anchorEl }) => {
+const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
   const { setActive } = useCommentNodeContext()
+  const { active } = useCommentNodeContext()
   const handleClose = () => {
     setActive(null)
   }
 
   return (
     <CommentActive
-      anchorEl={anchorEl}
-      open={open}
+      open={!!active}
+      anchorEl={active}
       onClose={handleClose}
       autoFocus={false}
       anchorOrigin={{

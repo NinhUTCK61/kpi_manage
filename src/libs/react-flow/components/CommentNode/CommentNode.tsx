@@ -16,7 +16,7 @@ const CommentNodeInner = (props: NodeProps<CommentNodeType>) => {
       <Stack direction="row" spacing={1}>
         <InActiveComment />
 
-        <ActiveComment open={!!active} anchorEl={active} />
+        <ActiveComment />
       </Stack>
     </CommentNodeProvider>
   )
