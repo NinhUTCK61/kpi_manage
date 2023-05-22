@@ -19,6 +19,7 @@ const ActiveComment: React.FC<ActiveCommentProps> = ({ open, anchorEl, handleClo
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}
+      autoFocus={false}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',

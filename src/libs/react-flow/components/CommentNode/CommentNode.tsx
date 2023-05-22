@@ -1,12 +1,12 @@
 import { Stack } from '@mui/material'
-import React, { useMemo, useState } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { CommentNodeType } from '../../types'
 import { ActiveComment } from './components/ActiveComment'
 import { InActiveComment } from './components/InActiveComment'
 import { CommentNodeProvider } from './context'
 
-const CommentNode = (props: NodeProps<CommentNodeType>) => {
+const CommentNodeInner = (props: NodeProps<CommentNodeType>) => {
   const { data } = props
   const contextValue = useMemo(() => ({ data }), [data])
   const [active, setActive] = useState<null | HTMLElement>(null)
@@ -35,4 +35,4 @@ const CommentNode = (props: NodeProps<CommentNodeType>) => {
   )
 }
 
-export { CommentNode }
+export const CommentNode = memo(CommentNodeInner)

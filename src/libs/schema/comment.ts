@@ -21,7 +21,10 @@ export const CreateCommentInputSchema = CommentSchema.omit({
 export type CreateCommentInputType = z.infer<typeof CreateCommentInputSchema>
 
 export const CreateCommentOutputSchema = CommentSchema.merge(
-  z.object({ author: UserWithoutPasswordSchema }),
+  z.object({
+    author: UserWithoutPasswordSchema,
+    replies: z.array(CommentReplySchema.merge(z.object({ author: UserWithoutPasswordSchema }))),
+  }),
 )
 
 export type CreateCommentOutputType = z.infer<typeof CreateCommentOutputSchema>

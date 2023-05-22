@@ -161,10 +161,7 @@ export const convertToReactFlowComment = (
 ): ReactFlowCommentNode => {
   return {
     id: comment.id,
-    data: {
-      ...comment,
-      replies: [],
-    },
+    data: comment,
     position: { x: comment.x, y: comment.y },
     type: 'comment',
   }

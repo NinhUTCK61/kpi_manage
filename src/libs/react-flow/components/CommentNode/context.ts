@@ -13,7 +13,7 @@ export const useCommentNodeContext = () => {
   const value = useContext(CommentNodeContext)
 
   if (!value) {
-    throw new Error('useCommentNodeContext must be used within a KPINodeProvider')
+    throw new Error('useCommentNodeContext must be used within a CommentNodeProvider')
   }
 
   return value

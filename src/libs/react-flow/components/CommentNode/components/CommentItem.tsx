@@ -1,3 +1,4 @@
+import { base, greyScale } from '@/libs/config/theme'
 import { CommentOutputType, CreateCommentOutputType } from '@/libs/schema/comment'
 import { Box, Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
@@ -27,17 +28,13 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
             <Image src={data.author.image || ImageFile} alt="file" width={24} height={24} />
           </Box>
 
-          <Typography variant="body2" color={(theme) => theme.palette.base.black} fontWeight={600}>
+          <Typography variant="body2" color={base.black} fontWeight={600}>
             {data.author.name}
           </Typography>
         </Stack>
 
         <Stack direction="row" spacing={1}>
-          <Typography
-            variant="caption"
-            fontWeight={400}
-            color={(theme) => theme.palette.greyScale[500]}
-          >
+          <Typography variant="caption" fontWeight={400} color={greyScale[500]}>
             {formatDistance(data.created_at, new Date(), {
               addSuffix: true,
               locale: language === 'en' ? enAU : ja,
@@ -52,7 +49,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
         </Stack>
       </Stack>
 
-      <Typography variant="body2" color={(theme) => theme.palette.greyScale[900]}>
+      <Typography variant="body2" color={greyScale[900]}>
         {data.content}
       </Typography>
     </Stack>

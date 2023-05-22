@@ -77,7 +77,7 @@ export const CreateView: React.FC = () => {
       !comment
         ? {
             mouseX: event.clientX,
-            mouseY: event.clientY,
+            mouseY: event.clientY - 16,
           }
         : null,
     )

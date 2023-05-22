@@ -14,6 +14,11 @@ export class CommentService extends CommentHelper {
       },
       include: {
         author: true,
+        replies: {
+          include: {
+            author: true,
+          },
+        },
       },
     })
 
@@ -42,6 +47,11 @@ export class CommentService extends CommentHelper {
       },
       include: {
         author: true,
+        replies: {
+          include: {
+            author: true,
+          },
+        },
       },
     })
 

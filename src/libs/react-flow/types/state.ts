@@ -24,6 +24,7 @@ export type RFStore = {
   nodeFocused: ReactFlowNode | null
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
+  removeComment: (commentId: string) => void
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

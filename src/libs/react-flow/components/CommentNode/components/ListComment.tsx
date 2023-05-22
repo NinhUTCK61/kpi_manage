@@ -10,7 +10,7 @@ const ListComment = () => {
       <CommentItem data={data} />
 
       {data?.replies.map((comment) => (
-        <CommentItem key={comment.comment_id} data={comment} />
+        <CommentItem key={comment.id} data={comment} />
       ))}
     </Stack>
   )

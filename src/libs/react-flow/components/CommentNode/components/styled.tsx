@@ -1,7 +1,7 @@
-import { Box, Button, InputBase, Menu as MuiMenu, Stack, styled } from '@mui/material'
+import { Box, Button, InputBase, Popover, Stack, styled } from '@mui/material'
 
-const Menu = styled(MuiMenu)({
-  '.MuiMenu-paper': {
+const CommentFormStyled = styled(Popover)({
+  '.MuiPopover-paper': {
     boxShadow: 'none',
   },
   overflowY: 'scroll',
@@ -74,7 +74,7 @@ const ButtonSendComment = styled(Button)({
 
 const InputStyled = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
-    padding: '13px 16px',
+    padding: '13px 40px 13px 16px',
     ...theme.typography.body2,
     background: theme.palette.trueGrey[100],
     color: theme.palette.base.black,
@@ -87,7 +87,7 @@ const ButtonAction = styled(Button)({
   padding: 0,
 })
 
-const CommentActive = styled(Menu)(({ theme }) => ({
+const CommentActive = styled(CommentFormStyled)(({ theme }) => ({
   '& .MuiPaper-root': {
     backgroundColor: theme.palette.greyScale[100],
   },
@@ -103,7 +103,7 @@ export {
   InputStyled,
   MenuComment,
   ButtonSendComment,
-  Menu,
+  CommentFormStyled,
   ButtonAction,
   CommentActive,
 }

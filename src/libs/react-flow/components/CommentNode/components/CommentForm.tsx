@@ -1,17 +1,16 @@
-import { CreateCommentInputSchema, CreateCommentInputType } from '@/libs/schema/comment'
+import { CreateCommentInputType } from '@/libs/schema/comment'
 import { ContextMenuState } from '@/libs/shared/types/utils'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { MenuProps, Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { KeyboardEvent } from 'react'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { useCommentCreateMutation } from '../hooks'
 import { InputComment } from './InputComment'
-import { ButtonSendComment, Menu } from './styled'
+import { ButtonSendComment, CommentFormStyled } from './styled'
 import CommentIcon from '/public/assets/svgs/comment_create.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
@@ -41,50 +40,39 @@ const CommentForm: React.FC<CommentFormProps> = ({
     y: (positionMenu?.mouseY as number) - top,
   })
 
+  console.log(top)
+
   const { control, handleSubmit, reset } = useForm<CreateCommentInputType>({
     defaultValues: {
-      id: '',
       content: '',
-      template_id: '',
-      x: 0,
-      y: 0,
     },
-    resolver: zodResolver(CreateCommentInputSchema),
   })
 
-  const createComment = (content: string) => {
-    const newComment = {
-      id: nanoid(),
-      template_id: id as string,
-      x: position.x,
-      y: position.y,
-      content,
+  const onSubmit: SubmitHandler<CreateCommentInputType> = (data, e) => {
+    e?.preventDefault()
+
+    const createComment = (content: string) => {
+      const newComment = {
+        id: nanoid(),
+        content,
+        template_id: id as string,
+        x: position.x,
+        y: position.y,
+      }
+
+      create(newComment, {
+        onSuccess() {
+          handleClose()
+          reset({ content: '' })
+        },
+      })
     }
 
-    create(newComment, {
-      onSuccess() {
-        handleClose()
-        reset({ content: '' })
-      },
-    })
-  }
-
-  const onSubmit: SubmitHandler<CreateCommentInputType> = (data) => {
     createComment(data.content)
   }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      const content = (e.target as HTMLInputElement).value
-      if (content.length === 0) return
-
-      createComment(content)
-    }
-  }
-
   return (
-    <Menu
+    <CommentFormStyled
       open={open}
       onClose={onClose}
       anchorReference="anchorPosition"
@@ -93,17 +81,12 @@ const CommentForm: React.FC<CommentFormProps> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Image src={CommentIcon} alt="comment icon" />
 
-        <Stack
-          component="form"
-          position="relative"
-          width={382}
-          onSubmit={handleSubmit(onSubmit)}
-          onKeyDown={handleKeyDown}
-        >
+        <Stack component="form" position="relative" width={382} onSubmit={handleSubmit(onSubmit)}>
           <InputComment
-            control={control}
+            autoFocus
             name="content"
             placeholder={t('enter_comment') as string}
+            control={control}
             fullWidth
           />
 
@@ -112,7 +95,7 @@ const CommentForm: React.FC<CommentFormProps> = ({
           </ButtonSendComment>
         </Stack>
       </Stack>
-    </Menu>
+    </CommentFormStyled>
   )
 }
 

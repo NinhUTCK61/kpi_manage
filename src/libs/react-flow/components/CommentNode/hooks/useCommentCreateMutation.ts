@@ -5,6 +5,7 @@ import { enqueueSnackbar } from 'notistack'
 
 const useCommentCreateMutation = () => {
   const addComment = useRFStore((state) => state.addComment)
+  const removeComment = useRFStore((state) => state.removeComment)
   const utils = api.useContext()
 
   const mutation = api.comment.create.useMutation({
@@ -12,10 +13,11 @@ const useCommentCreateMutation = () => {
       const comment = convertToReactFlowComment(data)
       addComment(comment)
     },
-    onError(error) {
-      enqueueSnackbar(error.message, {
+    onError(_, data) {
+      enqueueSnackbar('err.create_comment', {
         variant: 'error',
       })
+      removeComment(data.id)
     },
     onSettled() {
       utils.node.list.invalidate()

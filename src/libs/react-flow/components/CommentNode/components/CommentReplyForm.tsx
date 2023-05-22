@@ -16,7 +16,6 @@ const CommentReplyForm = () => {
     defaultValues: {
       id: '',
       content: '',
-      comment_id: '',
     },
   })
 
@@ -28,6 +27,7 @@ const CommentReplyForm = () => {
 
       <Stack component="form" position="relative" width="100%">
         <InputComment
+          autoFocus
           name="content"
           placeholder={t('enter_comment') as string}
           control={control}

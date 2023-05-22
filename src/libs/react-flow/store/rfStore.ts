@@ -220,6 +220,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = [..._nodes, node]
         set({ nodes })
       },
+      removeComment(commentId: string) {
+        const _nodes = get().nodes
+        const nodes = _nodes.filter((comment) => comment.id !== commentId)
+        set({ nodes })
+      },
       //function zoom
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
