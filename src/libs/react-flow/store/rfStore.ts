@@ -119,6 +119,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           nodes: [...nodes],
         })
       },
+      removeSpeechBallon(speechBallonId: string) {
+        const _nodes = get().nodes
+        const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
+        set({ nodes })
+      },
       deleteNodes(nodes) {
         console.log('onNodesDelete', nodes)
       },

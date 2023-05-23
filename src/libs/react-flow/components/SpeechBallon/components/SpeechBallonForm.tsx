@@ -1,16 +1,15 @@
-import { api } from '@/libs/api'
 import { customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore } from '@/libs/react-flow/types'
 import { CreateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { Stack, Typography } from '@mui/material'
-import { SpeechBallon } from '@prisma/client'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
 import { FormEvent, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
+import { useSpeechBallonCreateMutation } from '../hooks/useSpeechBallonCreateMutation'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonProvider } from './KpiSpeechBallonNode'
 type SpeechBallonFormProps = {
@@ -43,12 +42,7 @@ export const SpeechBallonForm: React.FC = () => {
 
   const { id } = router.query
 
-  const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
-  const mutate = api.speechBallon.create.useMutation({
-    onSuccess(data: SpeechBallon) {
-      addSpeechBallon(data)
-    },
-  })
+  const mutate = useSpeechBallonCreateMutation()
 
   const { top } = container?.getBoundingClientRect() ?? {
     top: 0,

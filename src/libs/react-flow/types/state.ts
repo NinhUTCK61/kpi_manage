@@ -25,9 +25,10 @@ export type RFStore = {
   nodeFocused: ReactFlowNode | null
   // Speech ballon
   addSpeechBallon: (node: SpeechBallon) => void
+  removeSpeechBallon: (speechBallonId: string) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
-  removeComment: (commentId: string) => void
+  removeComment: (speechBallonId: string) => void
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
