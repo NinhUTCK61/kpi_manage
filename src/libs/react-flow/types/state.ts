@@ -35,7 +35,11 @@ export type RFStore = {
   removeSpeechBallon: (speechBallonId: string) => void
 =======
   addSpeechBallon: (node: SpeechBallon) => void
+<<<<<<< HEAD
 >>>>>>> 20d77cd (fix: rebase)
+=======
+  removeSpeechBallon: (speechBallonId: string) => void
+>>>>>>> 124d641 (fix(KM-72): create speechballon node)
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (speechBallonId: string) => void
