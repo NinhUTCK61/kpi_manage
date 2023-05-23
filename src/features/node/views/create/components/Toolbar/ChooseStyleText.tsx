@@ -72,8 +72,6 @@ const ChooseStyleText: React.FC = () => {
       ..._styleText,
     }
 
-    console.log(2222, style)
-
     update(
       {
         id: nodeFocusedMemo.id,

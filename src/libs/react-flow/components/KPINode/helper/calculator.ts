@@ -12,20 +12,30 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
 
     if (!is_formula) return
 
-    const expressionStack = [...getSlugFromInputValue(input_value as string), slug]
+    const expressionArr = getSlugFromInputValue(input_value as string)
+    const expressionStack = [...expressionArr, slug]
+
+    valid.set(slug, expressionArr)
     // validate expression
     if (!stack.length) {
       stack.push(...expressionStack)
-      expressionStack.forEach((slug) => {
-        valid.set(slug, true)
-      })
     }
 
-    expressionStack.forEach((slug) => {
-      if (!valid.has(slug)) {
-        stack.push(slug)
-        valid.set(slug, true)
+    let maxIndex = 0
+    expressionArr.forEach((_slug) => {
+      if (!stack.includes(_slug)) {
+        stack.unshift(_slug)
+        valid.set(_slug, true)
+      }
+
+      const indexSlug = stack.indexOf(slug)
+      if (indexSlug > maxIndex) {
+        maxIndex = indexSlug
       }
     })
+
+    stack.splice(maxIndex + 1, 0, slug)
   })
+
+  return stack
 }
