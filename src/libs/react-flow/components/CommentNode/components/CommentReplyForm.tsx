@@ -1,19 +1,23 @@
-import { Box, Stack } from '@mui/material'
-import { useSession } from 'next-auth/react'
+import { Stack } from '@mui/material'
+import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import ImageFile from 'public/assets/imgs/file.png'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useCommentRepliesCreateMutation } from '../hooks'
 import { CommentFormType } from './CommentForm'
 import { InputComment } from './InputComment'
 import { ButtonSend, CommentReplyContainer } from './styled'
 import SendIcon from '/public/assets/svgs/send.svg'
 
-const CommentReplyForm = () => {
+type CommentReplyFormProps = {
+  commentId: string
+}
+
+const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
   const { t } = useTranslation('file')
-  const { data } = useSession()
-  const { control, setFocus } = useForm<CommentFormType>({
+  const { mutate: create } = useCommentRepliesCreateMutation()
+  const { control, setFocus, reset, handleSubmit } = useForm<CommentFormType>({
     defaultValues: {
       content: '',
     },
@@ -23,13 +27,33 @@ const CommentReplyForm = () => {
     setFocus('content')
   }, [setFocus])
 
+  const onSubmit: SubmitHandler<CommentFormType> = (data, e) => {
+    e?.preventDefault()
+
+    if (!data.content) {
+      return
+    }
+
+    const newComment = {
+      id: nanoid(),
+      content: data.content,
+      comment_id: commentId,
+    }
+
+    create(newComment, {
+      onSuccess() {
+        reset({ content: '' })
+      },
+    })
+  }
+
   return (
     <CommentReplyContainer spacing={1} direction="row">
-      <Box width={32} height={32} borderRadius="100%">
-        <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
-      </Box>
+      <Stack width={32} height={32} borderRadius="100%" sx={{ background: 'red' }}>
+        T
+      </Stack>
 
-      <Stack component="form" position="relative" width="100%">
+      <Stack component="form" position="relative" width="100%" onSubmit={handleSubmit(onSubmit)}>
         <InputComment
           autoFocus
           name="content"

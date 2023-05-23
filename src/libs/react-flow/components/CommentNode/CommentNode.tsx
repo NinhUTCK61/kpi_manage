@@ -9,6 +9,8 @@ import { InActiveComment } from './components/InActiveComment'
 const CommentNodeInner = (props: NodeProps<CommentNodeType>) => {
   const { data } = props
 
+  console.log(data)
+
   return (
     <CommentNodeProvider data={data}>
       <Stack direction="row" spacing={1}>

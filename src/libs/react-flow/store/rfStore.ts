@@ -1,5 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
+import { produce } from 'immer'
 import {
   Connection,
   EdgeChange,
@@ -16,7 +17,7 @@ import {
   reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -223,24 +224,27 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
-      // speech ballon node
-      addSpeechBallon(speechBallonNode) {
-        get().removeEmptySpeechBallon()
-        const nodes = get().nodes
-        nodes.push(speechBallonNode)
-
-        set({ nodes: [...nodes] })
-      },
-      removeEmptySpeechBallon() {
+      createCommentReply(reply) {
         const _nodes = get().nodes
-        const empty = _nodes.find((n) => n.type === 'speech_ballon' && !n.data.text)
-        if (!empty) return
-        const nodes = _nodes.filter((n) => n.id !== empty.id)
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
+          )
+          comment?.data?.replies.push(reply)
+        })
+
         set({ nodes })
       },
-      removeSpeechBallon(speechBallonId: string) {
+      removeCommentReply(replyId: string) {
         const _nodes = get().nodes
-        const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
+
+        const nodes = produce(_nodes, (draft) => {
+          draft.filter<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id !== replyId,
+          )
+        })
+
         set({ nodes })
       },
       //function zoom

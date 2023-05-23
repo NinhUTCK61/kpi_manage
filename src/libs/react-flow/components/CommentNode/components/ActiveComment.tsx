@@ -4,7 +4,6 @@ import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useCommentNodeContext } from '../context'
-import { CommentReplyForm } from './CommentReplyForm'
 import { ListComment } from './ListComment'
 import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
 
@@ -38,7 +37,7 @@ const ActiveComment: React.FC = () => {
           </Typography>
 
           <Stack spacing={1.1} direction="row" alignItems="center">
-            <ButtonAction>
+            <ButtonAction sx={{ position: 'relative' }}>
               <Image src={MenuIcon} alt="menu" />
             </ButtonAction>
 
@@ -47,9 +46,8 @@ const ActiveComment: React.FC = () => {
             </ButtonAction>
           </Stack>
         </HeaderComment>
-        <ListComment />
 
-        <CommentReplyForm />
+        <ListComment />
       </BoxComment>
     </CommentActive>
   )

@@ -83,7 +83,7 @@ const CommentForm: React.FC = () => {
       onClose={handleClose}
       anchorReference="anchorPosition"
       anchorPosition={
-        activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
+        activePosition ? { top: activePosition.y - 14, left: activePosition.x } : undefined
       }
     >
       <Stack direction="row" spacing={1} alignItems="center">

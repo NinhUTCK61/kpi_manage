@@ -21,6 +21,7 @@ const IconStyled = styled(Stack)(({ theme }) => ({
 const BoxComment = styled(Box)(({ theme }) => ({
   width: 400,
   background: theme.palette.trueGrey[50],
+  position: 'relative',
 }))
 
 const HeaderComment = styled(Box)(({ theme }) => ({
