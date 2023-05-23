@@ -30,7 +30,6 @@ export const useReactFlowHandler = () => {
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
-
   const handleWheel = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
       if (event.ctrlKey) {
@@ -46,7 +45,6 @@ export const useReactFlowHandler = () => {
     },
     [scrollZoom],
   )
-
   const handlePaneClick = useCallback(
     (e: MouseEvent<Element>) => {
       e.preventDefault()
