@@ -34,7 +34,7 @@ const ResetPassword: FC = () => {
       },
       {
         onError(error) {
-          enqueueSnackbar(t(error.message), {
+          enqueueSnackbar(t(error.message, { ns: 'common' }), {
             variant: 'error',
           })
         },
