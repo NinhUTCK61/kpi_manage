@@ -58,13 +58,16 @@ const ChooseStyleText: React.FC = () => {
       ...styleText,
       [key]: styleText[key] === value ? 'normal' : value,
     }
+
     setStyleText(_styleText)
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const style = {
       ...nodeStyle,
-      ...styleText,
+      ..._styleText,
     }
+
+    console.log(2222, style)
 
     update(
       {
