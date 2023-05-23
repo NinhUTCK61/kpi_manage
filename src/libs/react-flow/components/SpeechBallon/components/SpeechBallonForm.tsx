@@ -66,7 +66,6 @@ export const SpeechBallonForm: React.FC = () => {
     reset({ text: '' })
   }
 
-  // tạm thời fix cứng node_id vì chưa làm chức năng này ạ ;v
   function handleFormatData() {
     const dataConfig: CreateSpeechBallonInputType = {
       id: nanoid(),
