@@ -70,18 +70,21 @@ const IconImageNode = styled(Image)(({ theme }) => ({
 
 const NodeActiveContainer = styled(Box)(({ theme }) => ({
   maxWidth: 190,
+  // height: 130,
   backgroundColor: theme.palette.common.white,
   position: 'relative',
+  transform: 'translate(0%, -50%)',
 }))
 
 const NodeInActiveContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   maxWidth: 190,
-  height: 106,
+  minHeight: 112,
   justifyContent: 'center',
   position: 'relative',
   padding: theme.spacing(0.5),
   cursor: 'pointer !important',
+  transform: 'translate(0%,-50%)',
 }))
 
 const TextOverflow = styled(Typography)({
