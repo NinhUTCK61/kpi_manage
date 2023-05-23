@@ -1,7 +1,5 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
-import { nanoid } from 'nanoid'
-import { RefObject } from 'react'
 import {
   Connection,
   EdgeChange,
@@ -106,48 +104,21 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _newNode
       },
-
       addSpeechBallon(speechBallon) {
-        console.log('add speech')
-        const _node: ReactFlowSpeechBallonNode = {
-          id: nanoid(),
+        const node: ReactFlowSpeechBallonNode = {
+          id: speechBallon.id,
           data: speechBallon,
           position: { x: speechBallon.x, y: speechBallon.y },
           type: 'speech_ballon',
         }
 
-        const _nodes = get().nodes
-        _nodes.push(_node)
+        const nodes = get().nodes
+        nodes.push(node)
+
         set({
-          nodes: [..._nodes],
+          nodes: [...nodes],
         })
       },
-
-      handleContextSpeechBallon(event: React.MouseEvent, containerRef: RefObject<HTMLElement>) {
-        event.preventDefault()
-        const position = get().position
-        const viewportAction = get().viewportAction
-        set({
-          containerRef: containerRef,
-        })
-        if (containerRef.current && viewportAction === ViewPortAction.SpeechBallon) {
-          set({
-            position: !position
-              ? {
-                  x: event.clientX,
-                  y: event.clientY,
-                }
-              : null,
-          })
-        }
-      },
-
-      handleCloseSpeechBallon() {
-        set({
-          position: null,
-        })
-      },
-
       deleteNodes(nodes) {
         console.log('onNodesDelete', nodes)
       },
