@@ -42,7 +42,7 @@ export type RFStore = {
 >>>>>>> 124d641 (fix(KM-72): create speechballon node)
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
-  removeComment: (speechBallonId: string) => void
+  removeComment: (commentId: string) => void
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
