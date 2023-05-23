@@ -40,6 +40,11 @@ const ChooseStyleText: React.FC = () => {
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
+      setStyleText({
+        fontWeight: FontWeight.Normal,
+        fontStyle: FontStyle.Normal,
+      })
+
       return
     }
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
