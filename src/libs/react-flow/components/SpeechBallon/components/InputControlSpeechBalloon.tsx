@@ -7,14 +7,7 @@ export type AddControlProps = {
 
 export type InputControlProps = FormControlProps<'div', AddControlProps>
 
-function InputControlSpeechBalloon({
-  fullWidth,
-  children,
-  required,
-  label,
-  value,
-  ...props
-}: InputControlProps) {
+function InputControlSpeechBalloon({ fullWidth, children, value, ...props }: InputControlProps) {
   return (
     <FormControl fullWidth={fullWidth} {...props}>
       {!value && (

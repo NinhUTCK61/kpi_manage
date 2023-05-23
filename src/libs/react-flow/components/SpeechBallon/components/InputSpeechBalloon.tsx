@@ -7,7 +7,6 @@ function InputSpeechBalloon<T extends FieldValues>({
   name,
   control,
   defaultValue,
-  label,
   controlProps,
   required,
   fullWidth,
