@@ -65,7 +65,7 @@
     "template_deleted": "このファイルを削除しました。",
     "internal_server_error": "内部サーバーエラーが発生しました。",
     "invalid_token": "トークンが見つからないか、期限切れです。",
-    "email_conflict": "メールアドレスは既に存在します！",
+    "email_conflict": "このメールアドレスは既に登録されています。",
     "kpi_issue_required": "「KPIに関する課題」を選択してください。",
     "kpi_reason_required": "「KPI Masterを知ったきっかけ」を選択してください。",
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
@@ -75,7 +75,10 @@
     "error_date": "生年月日は、現在の日付より後にすることはできません。",
     "speechballon_not_found": "Speech ballon not found!",
     "user_not_found": "ユーザーが見つかりませんでした。",
-    "send_mail_fail": "メールを送信できませんでした。"
+    "send_mail_fail": "メールを送信できませんでした。",
+
+    "invalid_string_label": "タイトルは必須です。",
+    "invalid_empty_node_form": "内容を入力してください。"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",
