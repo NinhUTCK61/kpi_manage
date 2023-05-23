@@ -7,85 +7,104 @@ import { Stack, Typography } from '@mui/material'
 import { SpeechBallon } from '@prisma/client'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
-import { FormEvent, useContext } from 'react'
+import { FormEvent, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonProvider } from './KpiSpeechBallonNode'
-
 type SpeechBallonFormProps = {
   text: string
 }
 
 const storeSelector = (state: RFStore) => ({
-  handleCloseSpeechBallon: state.handleCloseSpeechBallon,
-  position: state.position,
-  containerRef: state.containerRef,
+  activePosition: state.activePosition,
+  container: state.container,
+  setActivePosition: state.setActivePosition,
+  changeViewportAction: state.changeViewportAction,
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { handleCloseSpeechBallon, position, containerRef } = useRFStore(storeSelector, shallow)
+  const { activePosition, container, setActivePosition } = useRFStore(storeSelector, shallow)
 
   const dataProvider = useContext(SpeechBallonProvider)
 
-  const { control, getValues, reset } = useForm<SpeechBallonFormProps>({
+  const { control, getValues, reset, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: '',
     },
   })
+
+  useEffect(() => {
+    setFocus('text')
+  }, [setFocus])
 
   const router = useRouter()
 
   const { id } = router.query
 
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
-  const dataResult = api.speechBallon.create.useMutation({
+  const mutate = api.speechBallon.create.useMutation({
     onSuccess(data: SpeechBallon) {
       addSpeechBallon(data)
     },
   })
 
-  const { top, left } = containerRef?.current?.getBoundingClientRect() ?? {
+  const { top } = container?.getBoundingClientRect() ?? {
     top: 0,
     left: 0,
   }
 
   const { project } = useReactFlow()
   const positionConvert = project({
-    x: position?.x as number,
-    y: (position?.y as number) - top,
+    x: activePosition?.x as number,
+    y: (activePosition?.y as number) - top,
   })
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (getValues().text === '' || getValues().text === null) {
+    if (!getValues().text) {
       return
     }
+    mutate.mutate(handleFormatData())
+    setActivePosition(null)
+    reset({ text: '' })
+  }
+
+  // tạm thời fix cứng node_id vì chưa làm chức năng này ạ ;v
+  function handleFormatData(node_id = 'loFv7C_B2LrO2dpD2hpM5') {
     const dataConfig: CreateSpeechBallonInputType = {
       id: nanoid(),
       template_id: id as string,
       shape: 'square',
       node_style: 'null',
       text: getValues().text,
-      node_id: 'loFv7C_B2LrO2dpD2hpM5',
+      node_id,
       stroke: 'null',
-      x: positionConvert?.x,
-      y: positionConvert?.y,
+      x: positionConvert?.x - 50,
+      y: positionConvert?.y - 50,
     }
-    if (getValues().text !== '') {
-      dataResult.mutate(dataConfig)
-      handleCloseSpeechBallon()
-      reset({ text: '' })
-    }
+    return dataConfig
   }
+
   return (
     <Stack component="form" spacing={0.5} onSubmit={handleSubmit}>
       {!dataProvider?.data ? (
-        <InputSpeechBalloon control={control} name="text" />
+        <InputSpeechBalloon control={control} name="text" autoComplete="off" autoFocus />
       ) : (
-        <Typography variant="body2" color={customPrimary[0o0]} minWidth="210px" minHeight="26px">
-          {dataProvider?.data.text}
+        <Typography
+          variant="body2"
+          color={customPrimary[0o0]}
+          sx={{
+            minWidth: 210,
+            minHeight: 26,
+            width: '100%',
+            height: '100%',
+            cursor: 'grab',
+            pointerEvents: 'grabbing',
+          }}
+        >
+          {dataProvider?.data?.text}
         </Typography>
       )}
       <input type="submit" hidden />

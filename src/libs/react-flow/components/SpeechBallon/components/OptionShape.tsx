@@ -19,7 +19,7 @@ const MuiOptionShapeType = styled('div')(({ theme }) => ({
   '::placeholder': {
     color: theme.palette.customPrimary[0o0],
   },
-  borderRadius: `12px`,
+  borderRadius: 12,
   '::before': {
     position: 'absolute',
     content: '""',
@@ -28,7 +28,7 @@ const MuiOptionShapeType = styled('div')(({ theme }) => ({
     borderLeft: '12px solid transparent',
     borderRight: '12px solid transparent',
     borderTop: `20px solid ${theme.palette.customPrimary[600]}`,
-    height: '21px',
-    width: '19px',
+    height: 21,
+    width: 19,
   },
 }))

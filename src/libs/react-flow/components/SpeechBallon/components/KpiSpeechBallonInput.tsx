@@ -1,10 +1,10 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Menu, Stack, styled } from '@mui/material'
+import { Popover, Stack, styled } from '@mui/material'
 import React from 'react'
 import { OptionShape } from './OptionShape'
 
-const KpiSpeechBallonContext: React.FC = () => {
+const KpiSpeechBallonInput: React.FC = () => {
   const activePosition = useRFStore((state) => state.activePosition)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const setActivePosition = useRFStore((state) => state.setActivePosition)
@@ -16,26 +16,26 @@ const KpiSpeechBallonContext: React.FC = () => {
   }
 
   return (
-    <MuiMenuContext
+    <MuiPopoverContext
       open={isOpen}
       onClose={handleClose}
       anchorReference="anchorPosition"
       anchorPosition={
-        !!activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
+        !!activePosition ? { top: activePosition.y - 50, left: activePosition.x - 50 } : undefined
       }
     >
       <Stack spacing={0.5}>
         <OptionShape />
       </Stack>
-    </MuiMenuContext>
+    </MuiPopoverContext>
   )
 }
 
-export { KpiSpeechBallonContext }
+export { KpiSpeechBallonInput }
 
-const MuiMenuContext = styled(Menu)(({ theme }) => ({
-  '.MuiMenu-paper': {
+const MuiPopoverContext = styled(Popover)({
+  '.MuiPopover-paper': {
     boxShadow: 'none',
     overflow: 'initial',
   },
-}))
+})
