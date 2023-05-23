@@ -18,8 +18,9 @@ export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
 }
 
 export const getSlugFromInputValue = (inputValue: string) => {
+  const str = inputValue.trim().replace('=', '')
   const slugs: string[] = []
-  const nodeParse = math.parse(inputValue)
+  const nodeParse = math.parse(str)
   nodeParse.traverse(function (node: math.MathNode) {
     if (node.type === 'SymbolNode') {
       slugs.push((node as math.SymbolNode).name)
