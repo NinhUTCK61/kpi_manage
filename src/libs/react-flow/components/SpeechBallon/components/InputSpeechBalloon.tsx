@@ -25,11 +25,11 @@ function InputSpeechBalloon<T extends FieldValues>({
 
 const InputStyled = styled(InputBase)(({ theme }) => ({
   color: theme.palette.customPrimary[0o0],
-  fontSize: '15px',
+  fontSize: 15,
   fontWeight: 400,
-  lineHeight: '22px',
-  minWidth: '210px',
-  minHeight: '36px',
+  lineHeight: 22,
+  minWidth: 210,
+  minHeight: 36,
 }))
 
 export { InputSpeechBalloon }
