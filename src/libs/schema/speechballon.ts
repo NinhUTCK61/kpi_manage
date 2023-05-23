@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const CreateSpeechBallonInputSchema = z.object({
   template_id: z.string(),
-  node_id: z.string(),
+  node_id: z.string().nullable(),
   text: z.string(),
   x: z.number(),
   y: z.number(),
