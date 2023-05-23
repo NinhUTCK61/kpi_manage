@@ -1,6 +1,5 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { UpdateNodeInputType } from '@/libs/schema/node'
-import { SpeechBallon } from '@prisma/client'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import {
   HierarchyFlowNode,
@@ -30,16 +29,8 @@ export type RFStore = {
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
   // Speech ballon
-<<<<<<< HEAD
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
-=======
-  addSpeechBallon: (node: SpeechBallon) => void
-<<<<<<< HEAD
->>>>>>> 20d77cd (fix: rebase)
-=======
-  removeSpeechBallon: (speechBallonId: string) => void
->>>>>>> 124d641 (fix(KM-72): create speechballon node)
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (commentId: string) => void

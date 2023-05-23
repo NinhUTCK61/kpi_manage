@@ -12,6 +12,7 @@ import { shallow } from 'zustand/shallow'
 import { SpeechBallonContext } from '../hooks/useContextSpeechBallon'
 import { useSpeechBallonCreateMutation } from '../hooks/useSpeechBallonCreateMutation'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
+
 type SpeechBallonFormProps = {
   text: string
 }
