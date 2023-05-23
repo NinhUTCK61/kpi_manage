@@ -1,5 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { UpdateNodeInputType } from '@/libs/schema/node'
+import { SpeechBallon } from '@prisma/client'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import {
   HierarchyFlowNode,
@@ -19,11 +20,6 @@ export type RFStore = {
   deleteNodes: OnNodesDelete
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
-  addSpeechBallon: (speechBallon: SpeechBallon) => void
-  handleContextSpeechBallon: (event: React.MouseEvent, containerRef: RefObject<HTMLElement>) => void
-  handleCloseSpeechBallon: () => void
-  containerRef: RefObject<HTMLElement>
-  position: { x: number; y: number } | null
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   hasChild(nodeId: string): boolean
   removeEmptyNode: () => void
@@ -34,8 +30,12 @@ export type RFStore = {
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
   // Speech ballon
+<<<<<<< HEAD
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
+=======
+  addSpeechBallon: (node: SpeechBallon) => void
+>>>>>>> 20d77cd (fix: rebase)
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (speechBallonId: string) => void

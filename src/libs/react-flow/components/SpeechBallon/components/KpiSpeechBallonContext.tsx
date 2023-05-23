@@ -1,24 +1,28 @@
+import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { RFStore } from '@/libs/react-flow/types'
 import { Menu, Stack, styled } from '@mui/material'
 import React from 'react'
-import { shallow } from 'zustand/shallow'
 import { OptionShape } from './OptionShape'
 
-const storeSelector = (state: RFStore) => ({
-  position: state.position,
-  handleCloseSpeechBallon: state.handleCloseSpeechBallon,
-  containerRef: state.containerRef,
-})
 const KpiSpeechBallonContext: React.FC = () => {
-  const { position, handleCloseSpeechBallon } = useRFStore(storeSelector, shallow)
+  const activePosition = useRFStore((state) => state.activePosition)
+  const viewportAction = useRFStore((state) => state.viewportAction)
+  const setActivePosition = useRFStore((state) => state.setActivePosition)
+
+  const isOpen = !!activePosition && viewportAction === ViewPortAction.SpeechBallon
+
+  const handleClose = () => {
+    setActivePosition(null)
+  }
 
   return (
     <MuiMenuContext
-      open={!!position}
-      onClose={handleCloseSpeechBallon}
+      open={isOpen}
+      onClose={handleClose}
       anchorReference="anchorPosition"
-      anchorPosition={!!position ? { top: position.y, left: position.x } : undefined}
+      anchorPosition={
+        !!activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
+      }
     >
       <Stack spacing={0.5}>
         <OptionShape />
