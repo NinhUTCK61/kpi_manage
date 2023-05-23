@@ -9,9 +9,10 @@ import { FormEvent, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
+import { SpeechBallonContext } from '../hooks/useContextSpeechBallon'
 import { useSpeechBallonCreateMutation } from '../hooks/useSpeechBallonCreateMutation'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
-import { SpeechBallonProvider } from './KpiSpeechBallonNode'
+
 type SpeechBallonFormProps = {
   text: string
 }
@@ -26,7 +27,7 @@ const storeSelector = (state: RFStore) => ({
 export const SpeechBallonForm: React.FC = () => {
   const { activePosition, container, setActivePosition } = useRFStore(storeSelector, shallow)
 
-  const dataProvider = useContext(SpeechBallonProvider)
+  const dataProvider = useContext(SpeechBallonContext)
 
   const { control, getValues, reset, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
@@ -66,14 +67,14 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   // tạm thời fix cứng node_id vì chưa làm chức năng này ạ ;v
-  function handleFormatData(node_id = 'loFv7C_B2LrO2dpD2hpM5') {
+  function handleFormatData() {
     const dataConfig: CreateSpeechBallonInputType = {
       id: nanoid(),
       template_id: id as string,
       shape: 'square',
       node_style: 'null',
       text: getValues().text,
-      node_id,
+      node_id: null,
       stroke: 'null',
       x: positionConvert?.x - 50,
       y: positionConvert?.y - 50,

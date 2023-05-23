@@ -16,7 +16,8 @@ const KpiSpeechBallonInput: React.FC = () => {
   }
 
   return (
-    <MuiPopoverContext
+    <SpeechBallonPopover
+      elevation={0}
       open={isOpen}
       onClose={handleClose}
       anchorReference="anchorPosition"
@@ -27,13 +28,13 @@ const KpiSpeechBallonInput: React.FC = () => {
       <Stack spacing={0.5}>
         <OptionShape />
       </Stack>
-    </MuiPopoverContext>
+    </SpeechBallonPopover>
   )
 }
 
 export { KpiSpeechBallonInput }
 
-const MuiPopoverContext = styled(Popover)({
+const SpeechBallonPopover = styled(Popover)({
   '.MuiPopover-paper': {
     boxShadow: 'none',
     overflow: 'initial',

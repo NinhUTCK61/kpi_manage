@@ -1,8 +1,13 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { UpdateNodeInputType } from '@/libs/schema/node'
-import { SpeechBallon } from '@prisma/client'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
-import { HierarchyFlowNode, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from './node'
+import {
+  HierarchyFlowNode,
+  ReactFlowCommentNode,
+  ReactFlowKPINode,
+  ReactFlowNode,
+  ReactFlowSpeechBallonNode,
+} from './node'
 
 export type RFStore = {
   templateId: string
@@ -24,7 +29,7 @@ export type RFStore = {
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
   // Speech ballon
-  addSpeechBallon: (node: SpeechBallon) => void
+  addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void

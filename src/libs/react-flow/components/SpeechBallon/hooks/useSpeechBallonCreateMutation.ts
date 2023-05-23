@@ -11,7 +11,7 @@ const useSpeechBallonCreateMutation = () => {
   const mutation = api.speechBallon.create.useMutation({
     onSuccess(data) {
       const dataConvert = convertToReactFlowSpeechBallonSingle(data)
-      addSpeechBallon(dataConvert.data)
+      addSpeechBallon(dataConvert)
     },
     onError(_, variables) {
       enqueueSnackbar('err.create_SpeechBallon', {

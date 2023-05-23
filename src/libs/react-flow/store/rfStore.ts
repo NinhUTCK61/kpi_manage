@@ -16,7 +16,7 @@ import {
   reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowKPINode, ReactFlowNode, ReactFlowSpeechBallonNode } from '../types'
+import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -104,16 +104,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _newNode
       },
-      addSpeechBallon(speechBallon) {
-        const node: ReactFlowSpeechBallonNode = {
-          id: speechBallon.id,
-          data: speechBallon,
-          position: { x: speechBallon.x, y: speechBallon.y },
-          type: 'speech_ballon',
-        }
-
+      addSpeechBallon(speechBallonNode) {
         const nodes = get().nodes
-        nodes.push(node)
+        nodes.push(speechBallonNode)
 
         set({
           nodes: [...nodes],
