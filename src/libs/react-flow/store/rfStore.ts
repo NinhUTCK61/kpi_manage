@@ -188,8 +188,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         } else {
           nodeFocused = node
         }
-
-        set({ nodeFocused })
+        if (!nodeFocused) {
+          set({ nodeFocused: null })
+          return
+        }
+        const _nodeFocused: ReactFlowNode = {
+          ...nodeFocused,
+          selected: true,
+          position: nodeFocused.position,
+        }
+        set({
+          nodeFocused: _nodeFocused,
+        })
 
         if (!node) {
           get().removeEmptyNode()
@@ -201,6 +211,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
             nodeFocused: node,
           })
         }
+      },
+      setNodeCopy(node) {
+        const nodes = get().nodes
+        let nodeCopy: ReactFlowNode | null = null
+        nodeCopy = nodes.find((n) => n.id === node) || null
+        set({ nodeCopy })
       },
       //function toolbar
       changeViewportAction(action) {

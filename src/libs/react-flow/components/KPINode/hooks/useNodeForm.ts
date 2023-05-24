@@ -22,6 +22,16 @@ export const useNodeForm = (data: KPINodeType) => {
     resolver: zodResolver(NodeFormSchema),
     mode: 'onChange',
   })
+  //TODO: reset default value when data change
+  useEffect(() => {
+    if (data.input_title !== forms.getValues('input_title')) {
+      forms.reset({
+        input_title: data.input_title || '',
+        input_value: data.input_value || '',
+        unit: data.unit || '',
+      })
+    }
+  }, [data, forms])
 
   const { setFocus } = forms
 
