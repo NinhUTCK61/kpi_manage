@@ -166,3 +166,14 @@ export const convertToReactFlowComment = (
     type: 'comment',
   }
 }
+
+export const convertToReactFlowSpeechBallonSingle = (
+  speechBallon: SpeechBallon,
+): ReactFlowSpeechBallonNodeOutputType => {
+  return {
+    id: speechBallon.id,
+    data: speechBallon,
+    position: { x: speechBallon.x, y: speechBallon.y },
+    type: 'speech_ballon',
+  }
+}

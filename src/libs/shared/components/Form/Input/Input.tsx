@@ -4,11 +4,12 @@ import { useController } from 'react-hook-form'
 import type { AddControlProps } from './InputControl'
 import { InputControl } from './InputControl'
 
-export type InputProps<T extends FieldValues> = UseControllerProps<T> &
-  OutlinedInputProps &
+export type BaseInputProps<T extends FieldValues> = UseControllerProps<T> &
   AddControlProps & {
     controlProps?: FormControlProps
   }
+
+export type InputProps<T extends FieldValues> = BaseInputProps<T> & OutlinedInputProps
 
 function Input<T extends FieldValues>({
   name,

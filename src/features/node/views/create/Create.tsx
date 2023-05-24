@@ -5,6 +5,7 @@ import {
   KpiControls,
   KpiEdge,
   KpiNode,
+  KpiSpeechBallonNode,
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
@@ -20,7 +21,9 @@ import { HeaderTemplate } from './components/Header'
 const nodeTypes = {
   kpi: KpiNode,
   comment: CommentNode,
+  speech_ballon: KpiSpeechBallonNode,
 }
+
 const edgeTypes = {
   kpi: KpiEdge,
 }
@@ -86,9 +89,9 @@ export const CreateView: React.FC = () => {
           onNodesChange={handleNodesChange}
           onEdgesChange={handleEdgesChange}
           onNodesDelete={handleNodesDelete}
-          onPaneClick={handlePaneClick}
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
+          onPaneClick={handlePaneClick}
           proOptions={{
             hideAttribution: true,
           }}
