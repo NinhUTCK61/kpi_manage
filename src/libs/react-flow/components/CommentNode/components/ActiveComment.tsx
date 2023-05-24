@@ -6,7 +6,7 @@ import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useCommentNodeContext } from '../context'
 import { ListComment } from './ListComment'
-import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled'
+import { ButtonAction, CommentActive, CommentContainer, HeaderComment } from './styled'
 
 const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
@@ -33,13 +33,13 @@ const ActiveComment: React.FC = () => {
         horizontal: 'left',
       }}
     >
-      <BoxComment>
-        <HeaderComment>
+      <CommentContainer>
+        <HeaderComment direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="body1" color="base.black" fontWeight="600">
             {t('comment_title')}
           </Typography>
 
-          <Stack spacing={1.1} direction="row" alignItems="center">
+          <Stack spacing={1} direction="row" alignItems="center">
             {session?.user.id === data.author_id && (
               <ButtonAction>
                 <Image src={MenuIcon} alt="menu" />
@@ -53,7 +53,7 @@ const ActiveComment: React.FC = () => {
         </HeaderComment>
 
         <ListComment />
-      </BoxComment>
+      </CommentContainer>
     </CommentActive>
   )
 }

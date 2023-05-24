@@ -8,7 +8,7 @@ const ListComment = () => {
 
   return (
     <Stack maxHeight={400} sx={{ overflowY: 'auto' }}>
-      <CommentItem isLast={false} data={data} />
+      <CommentItem data={data} />
 
       {data.replies.map((comment, index) => (
         <CommentItem isLast={index === data.replies.length - 1} key={comment.id} data={comment} />

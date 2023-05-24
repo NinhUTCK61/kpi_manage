@@ -12,7 +12,7 @@ import { ButtonAction } from './styled'
 
 type CommentItemProps = {
   data: CreateCommentOutputType | CommentOutputType
-  isLast: boolean
+  isLast?: boolean
 }
 
 const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
@@ -28,7 +28,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   }
 
   return (
-    <Stack p={2} sx={{ background: greyScale[0o0] }} ref={isLast ? scrollTo : undefined}>
+    <Stack p={2} sx={{ backgroundColor: 'base.white' }} ref={isLast ? scrollTo : undefined}>
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row">
           <Box mr={1} width={24} height={24} borderRadius="100%">
@@ -56,7 +56,12 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
         </Stack>
       </Stack>
 
-      <Typography variant="body2" color={greyScale[900]}>
+      <Typography
+        variant="body2"
+        color={greyScale[900]}
+        whiteSpace="pre-line"
+        sx={{ wordWrap: 'break-word' }}
+      >
         {data.content}
       </Typography>
     </Stack>

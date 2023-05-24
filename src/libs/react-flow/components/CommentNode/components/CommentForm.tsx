@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { useCommentCreateMutation } from '../hooks'
 import { InputComment } from './InputComment'
 import { ButtonSend, CommentFormContainer } from './styled'
-import CommentIcon from '/public/assets/svgs/comment_create.svg'
+import CommentIcon from '/public/assets/svgs/comment_icon.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
 export const CommentFormSchema = z.object({
@@ -42,7 +42,7 @@ const CommentForm: React.FC = () => {
 
   const position = project({
     x: activePosition ? (activePosition.x as number) : 0,
-    y: activePosition ? activePosition.y - top : 0,
+    y: activePosition ? activePosition.y - top - 20 : 0,
   })
 
   const { control, handleSubmit, reset } = useForm<CommentFormType>({
@@ -83,11 +83,17 @@ const CommentForm: React.FC = () => {
       onClose={handleClose}
       anchorReference="anchorPosition"
       anchorPosition={
-        activePosition ? { top: activePosition.y - 14, left: activePosition.x } : undefined
+        activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
       }
+      transformOrigin={{
+        vertical: 'center',
+        horizontal: 'left',
+      }}
     >
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Image src={CommentIcon} alt="comment icon" />
+      <Stack direction="row" spacing={1} minHeight={48}>
+        <Box mt={1}>
+          <Image src={CommentIcon} alt="comment icon" />
+        </Box>
 
         <Stack component="form" position="relative" width={382} onSubmit={handleSubmit(onSubmit)}>
           <InputComment
@@ -96,6 +102,9 @@ const CommentForm: React.FC = () => {
             placeholder={t('enter_comment') as string}
             control={control}
             fullWidth
+            multiline
+            maxRows={10}
+            sx={{ overflowY: 'auto' }}
           />
 
           <ButtonSend type="submit">

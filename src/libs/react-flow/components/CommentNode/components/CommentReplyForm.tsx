@@ -37,13 +37,13 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
       return
     }
 
-    const newComment = {
+    const newCommentReply = {
       id: nanoid(),
       content: data.content,
       comment_id: commentId,
     }
 
-    create(newComment, {
+    create(newCommentReply, {
       onSuccess() {
         reset({ content: '' })
       },
@@ -51,8 +51,8 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
   }
 
   return (
-    <CommentReplyContainer spacing={1} direction="row">
-      <Box width={32} height={32} borderRadius="100%">
+    <CommentReplyContainer spacing={1} justifyContent="space-between" direction="row">
+      <Box width={32} height={32} mt="12px" borderRadius="100%">
         <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
       </Box>
 
@@ -63,6 +63,8 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
           placeholder={t('enter_comment') as string}
           control={control}
           fullWidth
+          multiline
+          maxRows={100}
         />
 
         <ButtonSend type="submit">

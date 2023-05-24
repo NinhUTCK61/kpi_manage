@@ -1,8 +1,7 @@
-import { Stack } from '@mui/material'
+import { Box } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
 import { useCommentNodeContext } from '../context'
-import { IconStyled } from './styled'
 import CommentActiveIcon from '/public/assets/svgs/comment_icon.svg'
 
 const InActiveComment: React.FC = () => {
@@ -12,11 +11,9 @@ const InActiveComment: React.FC = () => {
   }
 
   return (
-    <Stack onClick={handleOpenComment}>
-      <IconStyled>
-        <Image src={CommentActiveIcon} alt="comment icon" />
-      </IconStyled>
-    </Stack>
+    <Box onClick={handleOpenComment} sx={{ cursor: 'pointer' }}>
+      <Image src={CommentActiveIcon} alt="comment icon" />
+    </Box>
   )
 }
 export { InActiveComment }
