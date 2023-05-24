@@ -5,12 +5,12 @@ import { CreateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { Stack, Typography } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
-import { FormEvent, useContext, useEffect } from 'react'
+import { FormEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
-import { SpeechBallonContext } from '../hooks/useContextSpeechBallon'
-import { useSpeechBallonCreateMutation } from '../hooks/useSpeechBallonCreateMutation'
+import { useSpeechBallonContext } from '../context'
+import { useSpeechBallonCreateMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 
 type SpeechBallonFormProps = {
@@ -26,21 +26,15 @@ const storeSelector = (state: RFStore) => ({
 
 export const SpeechBallonForm: React.FC = () => {
   const { activePosition, container, setActivePosition } = useRFStore(storeSelector, shallow)
+  const { data } = useSpeechBallonContext()
 
-  const dataProvider = useContext(SpeechBallonContext)
-
-  const { control, getValues, reset, setFocus } = useForm<SpeechBallonFormProps>({
+  const { control, getValues, reset } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: '',
     },
   })
 
-  useEffect(() => {
-    setFocus('text')
-  }, [setFocus])
-
   const router = useRouter()
-
   const { id } = router.query
 
   const mutate = useSpeechBallonCreateMutation()
@@ -61,29 +55,27 @@ export const SpeechBallonForm: React.FC = () => {
     if (!getValues().text) {
       return
     }
-    mutate.mutate(handleFormatData())
+
+    const data: CreateSpeechBallonInputType = {
+      id: nanoid(),
+      template_id: id as string,
+      shape: 'square',
+      node_style: null,
+      text: getValues().text,
+      node_id: null,
+      stroke: '1px',
+      x: positionConvert?.x - 50,
+      y: positionConvert?.y - 50,
+    }
+
+    mutate.mutate(data)
     setActivePosition(null)
     reset({ text: '' })
   }
 
-  function handleFormatData() {
-    const dataConfig: CreateSpeechBallonInputType = {
-      id: nanoid(),
-      template_id: id as string,
-      shape: 'square',
-      node_style: 'null',
-      text: getValues().text,
-      node_id: null,
-      stroke: 'null',
-      x: positionConvert?.x - 50,
-      y: positionConvert?.y - 50,
-    }
-    return dataConfig
-  }
-
   return (
-    <Stack component="form" spacing={0.5} onSubmit={handleSubmit}>
-      {!dataProvider?.data ? (
+    <Stack component="form" spacing={0.5} autoFocus onSubmit={handleSubmit}>
+      {!data ? (
         <InputSpeechBalloon control={control} name="text" autoComplete="off" autoFocus />
       ) : (
         <Typography
@@ -98,7 +90,7 @@ export const SpeechBallonForm: React.FC = () => {
             pointerEvents: 'grabbing',
           }}
         >
-          {dataProvider?.data?.text}
+          {data.text}
         </Typography>
       )}
       <input type="submit" hidden />

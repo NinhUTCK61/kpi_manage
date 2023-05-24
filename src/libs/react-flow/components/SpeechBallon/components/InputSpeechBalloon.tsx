@@ -1,7 +1,9 @@
-import { FormControl, InputBase, styled } from '@mui/material'
+import { BaseInputProps } from '@/libs/shared/components'
+import { FormControl, InputBase, InputBaseProps, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
-import { InputProps } from '../../../../shared/components/Form/Input/Input'
+
+type InputNodeProps<T extends FieldValues> = BaseInputProps<T> & InputBaseProps
 
 function InputSpeechBalloon<T extends FieldValues>({
   name,
@@ -11,10 +13,11 @@ function InputSpeechBalloon<T extends FieldValues>({
   required,
   fullWidth,
   ...props
-}: InputProps<T>) {
+}: InputNodeProps<T>) {
   const {
     field: { ref, value, ...inputProps },
   } = useController({ name, control, defaultValue })
+
   return (
     <FormControl fullWidth={fullWidth} required={required} {...controlProps}>
       <InputStyled {...inputProps} {...props} inputRef={ref} value={value} />
