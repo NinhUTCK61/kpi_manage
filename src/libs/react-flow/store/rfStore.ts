@@ -236,13 +236,17 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
-      removeCommentReply(replyId: string) {
+      removeCommentReply(commentId: string, replyId: string) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
-          draft.filter<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id !== replyId,
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
           )
+
+          if (comment) {
+            comment.data.replies = comment.data.replies.filter((reply) => reply.id !== replyId)
+          }
         })
 
         set({ nodes })

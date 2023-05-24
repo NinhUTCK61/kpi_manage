@@ -1,4 +1,5 @@
 import { Stack, Typography } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
@@ -10,6 +11,8 @@ import { BoxComment, ButtonAction, CommentActive, HeaderComment } from './styled
 const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
   const { active, handleSetActive } = useCommentNodeContext()
+  const { data: session } = useSession()
+  const { data } = useCommentNodeContext()
 
   const handleClose = () => {
     handleSetActive(null)
@@ -37,9 +40,11 @@ const ActiveComment: React.FC = () => {
           </Typography>
 
           <Stack spacing={1.1} direction="row" alignItems="center">
-            <ButtonAction sx={{ position: 'relative' }}>
-              <Image src={MenuIcon} alt="menu" />
-            </ButtonAction>
+            {session?.user.id === data.author_id && (
+              <ButtonAction>
+                <Image src={MenuIcon} alt="menu" />
+              </ButtonAction>
+            )}
 
             <ButtonAction onClick={handleClose}>
               <Image src={CloseIcon} alt="close" />
