@@ -1,7 +1,7 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { SpeechBallonNodeType } from '@/libs/react-flow/types'
-import { Popover, Stack, styled } from '@mui/material'
+import { ClickAwayListener, Popper, Stack, styled } from '@mui/material'
 import { FC, memo, useMemo } from 'react'
 import { NodeProps } from 'reactflow'
 import { SpeechBallonProvider } from '../context'
@@ -11,6 +11,7 @@ const KpiSpeechBallonInputInner: FC = () => {
   const activePosition = useRFStore((state) => state.activePosition)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const setActivePosition = useRFStore((state) => state.setActivePosition)
+  const container = useRFStore((state) => state.container)
 
   const isOpen = !!activePosition && viewportAction === ViewPortAction.SpeechBallon
 
@@ -18,31 +19,58 @@ const KpiSpeechBallonInputInner: FC = () => {
     setActivePosition(null)
   }
 
-  const contextValue = useMemo(() => ({}), [])
+  const x = activePosition?.x ?? 0
+  const y = activePosition?.y ?? 0
 
+  const contextValue = useMemo(() => ({}), [])
   return (
-    <SpeechBallonPopover
-      elevation={0}
+    <Popper
       open={isOpen}
-      onClose={handleClose}
-      anchorReference="anchorPosition"
-      anchorPosition={
-        !!activePosition ? { top: activePosition.y - 50, left: activePosition.x - 50 } : undefined
-      }
+      anchorEl={{
+        contextElement: container as Element,
+        getBoundingClientRect: () => ({
+          width: 0,
+          height: 0,
+          top: y,
+          right: x,
+          bottom: y,
+          left: x,
+          x,
+          y,
+          toJSON: () => null,
+        }),
+      }}
+      placement="top-start"
+      modifiers={[
+        {
+          name: 'offset',
+          options: {
+            offset: [-30, 20],
+          },
+        },
+      ]}
     >
-      <Stack spacing={0.5}>
-        <SpeechBallonProvider value={contextValue as NodeProps<SpeechBallonNodeType>}>
-          <OptionShape />
-        </SpeechBallonProvider>
-      </Stack>
-    </SpeechBallonPopover>
+      <ClickAwayListener onClickAway={handleClose}>
+        <Stack spacing={0.5}>
+          <SpeechBallonProvider value={contextValue as NodeProps<SpeechBallonNodeType>}>
+            <OptionShape />
+          </SpeechBallonProvider>
+        </Stack>
+      </ClickAwayListener>
+      <Arrow />
+    </Popper>
   )
 }
 
 export const KpiSpeechBallonInput = memo(KpiSpeechBallonInputInner)
 
-const SpeechBallonPopover = styled(Popover)({
-  '.MuiPopover-paper': {
-    overflow: 'initial',
-  },
-})
+export const Arrow = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  content: '""',
+  left: 30,
+  borderLeft: '12px solid transparent',
+  borderRight: '12px solid transparent',
+  borderTop: `20px solid ${theme.palette.customPrimary[600]}`,
+  height: 22,
+  width: 20,
+}))

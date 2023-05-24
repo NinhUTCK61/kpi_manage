@@ -29,9 +29,15 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
   color: theme.palette.customPrimary[0o0],
   fontSize: 15,
   fontWeight: 400,
-  lineHeight: 22,
+  lineHeight: '15px',
   minWidth: 210,
-  minHeight: 36,
+  textarea: {
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+    '-ms-overflow-style': 'none',
+    scrollbarWidth: 'none',
+  },
 }))
 
 export { InputSpeechBalloon }

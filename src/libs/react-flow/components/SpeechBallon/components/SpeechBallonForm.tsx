@@ -50,8 +50,8 @@ export const SpeechBallonForm: React.FC = () => {
     y: (activePosition?.y as number) - top,
   })
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  function handleSubmit(e?: FormEvent<HTMLFormElement>) {
+    e?.preventDefault()
     if (!getValues().text) {
       return
     }
@@ -64,8 +64,8 @@ export const SpeechBallonForm: React.FC = () => {
       text: getValues().text,
       node_id: null,
       stroke: '1px',
-      x: positionConvert?.x - 50,
-      y: positionConvert?.y - 50,
+      x: positionConvert?.x + 20,
+      y: positionConvert?.y - 30,
     }
 
     mutate.mutate(data)
@@ -73,19 +73,31 @@ export const SpeechBallonForm: React.FC = () => {
     reset({ text: '' })
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      handleSubmit()
+    }
+  }
+
   return (
     <Stack component="form" spacing={0.5} autoFocus onSubmit={handleSubmit}>
       {!data ? (
-        <InputSpeechBalloon control={control} name="text" autoComplete="off" autoFocus />
+        <InputSpeechBalloon
+          control={control}
+          onKeyDown={handleKeyDown}
+          multiline
+          maxRows={5}
+          name="text"
+          autoComplete="off"
+          autoFocus
+        />
       ) : (
         <Typography
-          variant="body2"
           color={customPrimary[0o0]}
+          variant="body2"
+          whiteSpace="pre-line"
           sx={{
             minWidth: 210,
-            minHeight: 26,
-            width: '100%',
-            height: '100%',
             cursor: 'grab',
             pointerEvents: 'grabbing',
           }}
@@ -93,7 +105,6 @@ export const SpeechBallonForm: React.FC = () => {
           {data.text}
         </Typography>
       )}
-      <input type="submit" hidden />
     </Stack>
   )
 }

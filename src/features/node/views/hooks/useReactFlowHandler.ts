@@ -9,6 +9,7 @@ import {
 import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode } from 'reactflow'
 import { shallow } from 'zustand/shallow'
+import { ViewPortAction } from '../../constant'
 
 const storeSelector = (state: RFStore) => ({
   handleNodesChange: state.handleNodesChange,
@@ -17,6 +18,7 @@ const storeSelector = (state: RFStore) => ({
   scrollZoom: state.scrollZoom,
   removeEmptyNode: state.removeEmptyNode,
   setActivePosition: state.setActivePosition,
+  viewportAction: state.viewportAction,
 })
 
 export const useReactFlowHandler = () => {
@@ -27,6 +29,7 @@ export const useReactFlowHandler = () => {
     scrollZoom,
     removeEmptyNode,
     setActivePosition,
+    viewportAction,
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
@@ -50,14 +53,20 @@ export const useReactFlowHandler = () => {
   const handlePaneClick = useCallback(
     (e: MouseEvent<Element>) => {
       e.preventDefault()
+
       setNodeFocused(null)
 
-      setActivePosition({
-        x: e.clientX,
-        y: e.clientY,
-      })
+      if (
+        viewportAction === ViewPortAction.Comment ||
+        viewportAction === ViewPortAction.SpeechBallon
+      ) {
+        setActivePosition({
+          x: e.clientX,
+          y: e.clientY,
+        })
+      }
     },
-    [setNodeFocused, setActivePosition],
+    [setNodeFocused, viewportAction, setActivePosition],
   )
 
   const handleNodesDelete = useCallback(
