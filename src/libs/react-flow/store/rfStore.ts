@@ -224,7 +224,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
-      createCommentReply(reply) {
+      addCommentReply(reply) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
@@ -251,6 +251,27 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
+      // speech ballon node
+      addSpeechBallon(speechBallonNode) {
+        get().removeEmptySpeechBallon()
+        const nodes = get().nodes
+        nodes.push(speechBallonNode)
+
+        set({ nodes: [...nodes] })
+      },
+      removeEmptySpeechBallon() {
+        const _nodes = get().nodes
+        const empty = _nodes.find((n) => n.type === 'speech_ballon' && !n.data.text)
+        if (!empty) return
+        const nodes = _nodes.filter((n) => n.id !== empty.id)
+        set({ nodes })
+      },
+      removeSpeechBallon(speechBallonId: string) {
+        const _nodes = get().nodes
+        const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
+        set({ nodes })
+      },
+
       //function zoom
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]

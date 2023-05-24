@@ -3,8 +3,8 @@ import { nanoid } from 'nanoid'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { FormEvent, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { useCommentRepliesCreateMutation } from '../hooks'
 import { CommentFormType } from './CommentForm'
 import { InputComment } from './InputComment'
@@ -20,7 +20,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
   const { t } = useTranslation('file')
   const { mutate: create } = useCommentRepliesCreateMutation()
   const { data } = useSession()
-  const { control, setFocus, reset, handleSubmit } = useForm<CommentFormType>({
+  const { control, setFocus, reset, getValues } = useForm<CommentFormType>({
     defaultValues: {
       content: '',
     },
@@ -30,16 +30,15 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
     setFocus('content')
   }, [setFocus])
 
-  const onSubmit: SubmitHandler<CommentFormType> = (data, e) => {
+  const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-
-    if (!data.content) {
+    if (!getValues().content) {
       return
     }
 
     const newCommentReply = {
       id: nanoid(),
-      content: data.content,
+      content: getValues().content,
       comment_id: commentId,
     }
 
@@ -50,17 +49,25 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
     })
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit()
+    }
+  }
+
   return (
     <CommentReplyContainer spacing={1} justifyContent="space-between" direction="row">
       <Box width={32} height={32} mt="12px" borderRadius="100%">
         <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
       </Box>
 
-      <Stack component="form" position="relative" width="100%" onSubmit={handleSubmit(onSubmit)}>
+      <Stack component="form" position="relative" width="100%" onSubmit={handleSubmit}>
         <InputComment
           autoFocus
           name="content"
           placeholder={t('enter_comment') as string}
+          onKeyDown={handleKeyDown}
           control={control}
           fullWidth
           multiline

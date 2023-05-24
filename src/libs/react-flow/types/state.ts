@@ -36,7 +36,7 @@ export type RFStore = {
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (commentId: string) => void
-  createCommentReply: (reply: CreateCommentRepliesOutputType) => void
+  addCommentReply: (reply: CreateCommentRepliesOutputType) => void
   removeCommentReply: (commentId: string, repliesId: string) => void
   // Toolbar action
   viewportAction: ViewPortAction
