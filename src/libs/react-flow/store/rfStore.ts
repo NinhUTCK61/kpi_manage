@@ -188,22 +188,25 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         } else {
           nodeFocused = node
         }
+
+        if (!node) {
+          get().removeEmptyNode()
+        }
+
         if (!nodeFocused) {
           set({ nodeFocused: null })
           return
         }
+
         const _nodeFocused: ReactFlowNode = {
           ...nodeFocused,
           selected: true,
           position: nodeFocused.position,
         }
+
         set({
           nodeFocused: _nodeFocused,
         })
-
-        if (!node) {
-          get().removeEmptyNode()
-        }
       },
       onNodeClick(_, node) {
         if (node.type === 'kpi') {
