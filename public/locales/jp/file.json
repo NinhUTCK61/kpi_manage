@@ -16,10 +16,10 @@
     "paste": "ペースト",
     "delete": "削除"
   },
-  "comment_title": "Comment",
-  "deleted_thread": "Delete thread",
-  "edit_comment": "Edit comment",
+  "comment_title": "コメント",
+  "deleted_thread": "スレッドを削除",
+  "edit_comment": "コメントを編集",
   "cancel": "キャンセル",
-  "save": "Save",
-  "enter_comment": "Add a comment"
+  "save": "保存",
+  "enter_comment": "コメントを追加"
 }
