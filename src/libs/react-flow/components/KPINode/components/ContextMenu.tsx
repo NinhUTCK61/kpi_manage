@@ -1,7 +1,7 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { MenuProps } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useKPINodeContext } from '../context'
 import { useNodeDeleteMutation, useNodeHandler } from '../hooks'
 import { Menu, MenuItem } from './styled'
@@ -32,7 +32,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
   const { t } = useTranslation(['file'])
   const { data } = useKPINodeContext()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
-  const { saveHandler } = useNodeHandler()
+  const { handlePaste } = useNodeHandler()
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
 
@@ -45,7 +45,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
     {
       title: t('menu_context.paste'),
       type: CtxMenuType.Paste,
-      handle: () => handlePaste(),
+      handle: () => handlePaste(data),
     },
     {
       title: t('menu_context.delete'),
@@ -58,18 +58,6 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
     handle?.()
     onClose?.({}, 'backdropClick')
   }
-
-  const handlePaste = useCallback(() => {
-    if (!nodeCopy) return
-    if (nodeCopy.type !== 'kpi') return
-
-    saveHandler({
-      ...data,
-      input_title: nodeCopy.data.input_title,
-      input_value: nodeCopy.data.input_value,
-      unit: nodeCopy.data.unit,
-    })
-  }, [data, nodeCopy, saveHandler])
 
   return (
     <Menu

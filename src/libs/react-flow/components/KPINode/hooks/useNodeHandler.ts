@@ -12,6 +12,7 @@ export enum SaveReason {
 const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const nodeCopy = useRFStore((state) => state.nodeCopy)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
@@ -55,7 +56,19 @@ const useNodeHandler = () => {
     }
   }
 
-  return { saveHandler }
+  const handlePaste = (_data: KPINodeType) => {
+    if (!nodeCopy) return
+    if (nodeCopy.type !== 'kpi') return
+
+    saveHandler({
+      ..._data,
+      input_title: nodeCopy.data.input_title,
+      input_value: nodeCopy.data.input_value,
+      unit: nodeCopy.data.unit,
+    })
+  }
+
+  return { saveHandler, handlePaste }
 }
 
 export { useNodeHandler }

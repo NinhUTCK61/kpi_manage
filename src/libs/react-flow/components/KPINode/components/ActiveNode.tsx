@@ -13,8 +13,7 @@ const Active: React.FC = () => {
   const { data, isConnectable } = useKPINodeContext()
   const [formFocus, setFormFocus] = useState<boolean>(false)
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
-  const nodeCopy = useRFStore((state) => state.nodeCopy)
-  const { saveHandler } = useNodeHandler()
+  const { handlePaste } = useNodeHandler()
 
   const changeFormFocusState = useCallback((state: boolean) => {
     setFormFocus(state)
@@ -32,18 +31,6 @@ const Active: React.FC = () => {
   const copy = useKeyPress(['ControlLeft+KeyC', 'ControlRight+KeyC'])
   const paste = useKeyPress(['ControlLeft+KeyV', 'ControlRight+KeyV'])
 
-  const handlePaste = useCallback(() => {
-    if (!nodeCopy) return
-    if (nodeCopy.type !== 'kpi') return
-
-    saveHandler({
-      ...data,
-      input_title: nodeCopy.data.input_title,
-      input_value: nodeCopy.data.input_value,
-      unit: nodeCopy.data.unit,
-    })
-  }, [data, nodeCopy, saveHandler])
-
   useEffect(() => {
     if (!copy) return
     setNodeCopy(data.id)
@@ -51,8 +38,8 @@ const Active: React.FC = () => {
 
   useEffect(() => {
     if (!paste) return
-    handlePaste()
-  }, [handlePaste, paste])
+    handlePaste(data)
+  }, [data, handlePaste, paste])
 
   return (
     <NodeActiveContainer>
