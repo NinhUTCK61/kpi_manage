@@ -2,7 +2,9 @@ import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { createContext, useContext } from 'react'
 
 type SpeechBallonContextType = {
-  data: SpeechBallonNodeType | null
+  data: SpeechBallonNodeType
+  xPos: number
+  yPos: number
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)

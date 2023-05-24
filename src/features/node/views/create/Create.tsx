@@ -5,7 +5,6 @@ import {
   KpiControls,
   KpiEdge,
   KpiNode,
-  KpiSpeechBallonInput,
   KpiSpeechBallonNode,
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
@@ -106,7 +105,6 @@ export const CreateView: React.FC = () => {
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
         >
           <CommentForm />
-          <KpiSpeechBallonInput />
           <KpiControls />
         </KpiReactFlow>
       </Container>

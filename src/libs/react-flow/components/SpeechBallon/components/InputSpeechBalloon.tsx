@@ -25,18 +25,25 @@ function InputSpeechBalloon<T extends FieldValues>({
   )
 }
 
-const InputStyled = styled(InputBase)(({ theme }) => ({
+const InputStyled = styled(InputBase)(({ theme, readOnly }) => ({
   color: theme.palette.customPrimary[0o0],
   fontSize: 15,
   fontWeight: 400,
-  lineHeight: '15px',
+  lineHeight: '22px',
   minWidth: 210,
+  minHeight: 36,
+  ...(readOnly && {
+    cursor: 'grab !important',
+  }),
   textarea: {
     '&::-webkit-scrollbar': {
       display: 'none',
     },
-    '-ms-overflow-style': 'none',
+    msOverflowStyle: 'none',
     scrollbarWidth: 'none',
+    ...(readOnly && {
+      cursor: 'grab !important',
+    }),
   },
 }))
 

@@ -184,9 +184,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           nodeFocused = node
         }
 
-        set({
-          nodeFocused,
-        })
+        set({ nodeFocused })
 
         if (!node) {
           get().removeEmptyNode()
@@ -227,12 +225,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {
+        get().removeEmptySpeechBallon()
         const nodes = get().nodes
         nodes.push(speechBallonNode)
 
-        set({
-          nodes: [...nodes],
-        })
+        set({ nodes: [...nodes] })
+      },
+      removeEmptySpeechBallon() {
+        const _nodes = get().nodes
+        const empty = _nodes.find((n) => n.type === 'speech_ballon' && !n.data.text)
+        if (!empty) return
+        const nodes = _nodes.filter((n) => n.id !== empty.id)
+        set({ nodes })
       },
       removeSpeechBallon(speechBallonId: string) {
         const _nodes = get().nodes

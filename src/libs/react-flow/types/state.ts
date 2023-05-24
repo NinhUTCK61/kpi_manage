@@ -31,6 +31,7 @@ export type RFStore = {
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
+  removeEmptySpeechBallon: () => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (commentId: string) => void

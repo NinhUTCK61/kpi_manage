@@ -1,18 +1,17 @@
-import { Stack } from '@mui/material'
 import React, { useMemo } from 'react'
 import { NodeProps } from 'reactflow'
 import { SpeechBallonNodeType } from '../../types'
 import { OptionShape } from './components/OptionShape'
 import { SpeechBallonProvider } from './context'
 
-const KpiSpeechBallonNodeInner: React.FC<NodeProps<SpeechBallonNodeType>> = (data) => {
-  const contextValue = useMemo(() => data, [data])
+type KpiSpeechBallonNodeProps = NodeProps<SpeechBallonNodeType>
+
+const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xPos, yPos }) => {
+  const contextValue = useMemo(() => ({ data, xPos, yPos }), [data, xPos, yPos])
 
   return (
     <SpeechBallonProvider value={contextValue}>
-      <Stack spacing={0.5}>
-        <OptionShape />
-      </Stack>
+      <OptionShape />
     </SpeechBallonProvider>
   )
 }
