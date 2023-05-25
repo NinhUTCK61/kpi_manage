@@ -44,8 +44,8 @@ const useNodeHandler = () => {
         create({ ...newData, template_id: templateId })
         break
       case 'UPDATE':
-        update({ ...newData })
         setNodeFocused(null)
+        update({ ...newData })
         break
       case 'DELETE':
         deleteMutate({ id: newData.id })

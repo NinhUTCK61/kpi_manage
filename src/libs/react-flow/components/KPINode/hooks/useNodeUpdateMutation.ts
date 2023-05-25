@@ -6,12 +6,13 @@ import { enqueueSnackbar } from 'notistack'
 const useNodeUpdateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const templateId = useRFStore((state) => state.templateId)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
   const mutation = api.node.update.useMutation({
     async onMutate(variables) {
-      updateNode(variables)
+      updateNode(variables, !!nodeFocused)
 
       const prevData = utils.node.list.getData({ template_id: templateId })
 

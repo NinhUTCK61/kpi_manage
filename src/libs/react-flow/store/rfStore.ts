@@ -14,7 +14,6 @@ import {
   generateNextReactFlowNode,
   isEmptyKPINodeForm,
   reLayout,
-  reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
 import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
@@ -110,14 +109,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         console.log('onNodesDelete', nodes)
       },
       // TODO: update kpi node
-      updateKPINode(kpiNodeData) {
-        const _d3 = get().d3Root
+      updateKPINode(kpiNodeData, shouldFocus = false) {
         const _nodes = get().nodes
 
-        const node = _d3.find((n) => n.data.data.id === kpiNodeData.id)
+        const node = _nodes.find((n) => n.type === 'kpi' && n.data.id === kpiNodeData.id)
         if (node) {
-          node.data.data = { ...node.data.data, ...kpiNodeData }
-          const nodes = reLayoutWithKpiNodes(_nodes, _d3)
+          node.data = { ...node.data, ...kpiNodeData }
+          const nodes = reLayout(_nodes)
+
+          if (shouldFocus) {
+            set({ nodes, nodeFocused: node })
+            return
+          }
 
           set({ nodes })
         }

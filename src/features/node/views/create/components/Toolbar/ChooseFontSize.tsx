@@ -70,7 +70,7 @@ const ChooseFontSize: React.FC = () => {
 
     // Case the node has not been saved to the database
     if (!nodeFocusedMemo.data.is_saved) {
-      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
       return
     }
 

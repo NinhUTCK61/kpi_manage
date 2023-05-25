@@ -31,7 +31,6 @@ const ChooseStyleText: React.FC = () => {
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const updateNode = useRFStore((state) => state.updateKPINode)
   const { mutate: update } = useNodeUpdateMutation()
 
@@ -75,21 +74,14 @@ const ChooseStyleText: React.FC = () => {
 
     // Case the node has not been saved to the database
     if (!nodeFocusedMemo.data.is_saved) {
-      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
       return
     }
 
-    update(
-      {
-        id: nodeFocusedMemo.id,
-        node_style: newNodeStyle,
-      },
-      {
-        onSuccess(data) {
-          setNodeFocused(data.id)
-        },
-      },
-    )
+    update({
+      id: nodeFocusedMemo.id,
+      node_style: newNodeStyle,
+    })
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move
