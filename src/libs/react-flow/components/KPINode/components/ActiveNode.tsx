@@ -1,9 +1,9 @@
 import AddIcon from 'public/assets/svgs/add_node.svg'
-import { MouseEvent, useCallback, useEffect, useState } from 'react'
-import { Position, useKeyPress } from 'reactflow'
+import { MouseEvent, useCallback, useState } from 'react'
+import { Position } from 'reactflow'
 import { useRFStore } from '../../../hooks'
 import { useKPINodeContext } from '../context'
-import { useNodeHandler } from '../hooks'
+import { useHandleKeyPress } from '../hooks'
 import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
@@ -12,8 +12,6 @@ const Active: React.FC = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { data, isConnectable } = useKPINodeContext()
   const [formFocus, setFormFocus] = useState<boolean>(false)
-  const setNodeCopy = useRFStore((state) => state.setNodeCopy)
-  const { handlePaste } = useNodeHandler()
 
   const changeFormFocusState = useCallback((state: boolean) => {
     setFormFocus(state)
@@ -27,19 +25,7 @@ const Active: React.FC = () => {
   const isValidFocusToShowHandler = !formFocus && nodeFocused
   const isShowBottomHandler = isValidFocusToShowHandler && data.slug !== 'root' && data.input_title
   const isShowRightHandler = isValidFocusToShowHandler && data.input_title
-
-  const copy = useKeyPress(['ControlLeft+KeyC', 'ControlRight+KeyC'])
-  const paste = useKeyPress(['ControlLeft+KeyV', 'ControlRight+KeyV'])
-
-  useEffect(() => {
-    if (!copy) return
-    setNodeCopy(data.id)
-  }, [copy, data.id, setNodeCopy])
-
-  useEffect(() => {
-    if (!paste) return
-    handlePaste(data)
-  }, [data, handlePaste, paste])
+  useHandleKeyPress()
 
   return (
     <NodeActiveContainer>
