@@ -93,7 +93,7 @@ const CommentForm: React.FC = () => {
         activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
       }
       transformOrigin={{
-        vertical: 'center',
+        vertical: COMMENT_HEIGHT_CURSOR,
         horizontal: 'left',
       }}
     >
