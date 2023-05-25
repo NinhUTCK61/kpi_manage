@@ -1,6 +1,7 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
+import { useCallback } from 'react'
 import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
@@ -35,9 +36,10 @@ const useNodeHandler = () => {
     return data
   }
 
-  const saveHandler = (_newData: KPINodeType) => {
-    const action = getSaveAction(_newData, data)
-    const newData = handleData(_newData)
+  const saveHandler = useCallback(
+    (_newData: KPINodeType) => {
+      const action = getSaveAction(_newData, data)
+      const newData = handleData(_newData)
 
     consola.info('[MUTATE ACTION]', action) // keep it to debug
     switch (action) {
@@ -54,20 +56,24 @@ const useNodeHandler = () => {
       case 'CANCEL':
         break
     }
-  }
+  },[create, data, deleteMutate, setNodeFocused, templateId, update])
 
-  const handlePaste = (_data: KPINodeType) => {
-    if (!nodeCopy) return
-    if (nodeCopy.type !== 'kpi') return
+  const handlePaste = useCallback(
+    (_data: KPINodeType) => {
+      if (!nodeCopy) return
+      if (nodeCopy.type !== 'kpi') return
 
-    saveHandler({
-      ..._data,
-      input_title: nodeCopy.data.input_title,
-      input_value: nodeCopy.data.input_value,
-      unit: nodeCopy.data.unit,
-      node_style: nodeCopy.data.node_style,
-    })
-  }
+      const newData = handleData(_data)
+      saveHandler({
+        ...newData,
+        input_title: nodeCopy.data.input_title,
+        input_value: nodeCopy.data.input_value,
+        unit: nodeCopy.data.unit,
+        node_style: nodeCopy.data.node_style,
+      })
+    },
+    [nodeCopy, saveHandler],
+  )
 
   return { saveHandler, handlePaste }
 }

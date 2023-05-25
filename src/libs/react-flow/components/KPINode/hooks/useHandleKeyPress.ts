@@ -8,12 +8,14 @@ const useHandleKeyPress = () => {
   const { data } = useKPINodeContext()
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
   const { handlePaste } = useNodeHandler()
+
   const copy = useKeyPress([
     'ControlLeft+KeyC',
     'ControlRight+KeyC',
     'MetaLeft+KeyC',
     'MetaRight+KeyC',
   ])
+
   const paste = useKeyPress([
     'ControlLeft+KeyV',
     'ControlRight+KeyV',
