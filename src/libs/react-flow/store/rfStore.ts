@@ -35,6 +35,7 @@ const initialRootNode: ReactFlowKPINode = {
     unit: '',
     value2number: 0,
     template_id: '',
+    is_saved: true,
   },
   position: { x: 0, y: 0 },
   type: 'kpi',

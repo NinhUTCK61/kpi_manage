@@ -32,6 +32,7 @@ const ChooseStyleText: React.FC = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const updateNode = useRFStore((state) => state.updateKPINode)
   const { mutate: update } = useNodeUpdateMutation()
 
   const nodeFocusedMemo = useMemo(() => {
@@ -67,15 +68,21 @@ const ChooseStyleText: React.FC = () => {
     setStyleText(_styleText)
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    const style = {
+    const newNodeStyle = JSON.stringify({
       ...nodeStyle,
       ..._styleText,
+    })
+
+    // Case the node has not been saved to the database
+    if (!nodeFocusedMemo.data.is_saved) {
+      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+      return
     }
 
     update(
       {
         id: nodeFocusedMemo.id,
-        node_style: JSON.stringify(style),
+        node_style: newNodeStyle,
       },
       {
         onSuccess(data) {

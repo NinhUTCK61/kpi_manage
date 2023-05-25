@@ -23,7 +23,7 @@ export type RFStore = {
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   hasChild(nodeId: string): boolean
   removeEmptyNode: () => void
-  updateKPINode: (node: UpdateNodeInputType) => void
+  updateKPINode: (node: UpdateNodeInputType & { is_saved?: boolean }) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null

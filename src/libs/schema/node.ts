@@ -44,7 +44,12 @@ export const DeleteNodeInputSchema = z.object({
   id: z.string().array(),
 })
 
+const isSavedDbSchema = z.object({ is_saved: z.boolean().default(true) })
+
 // React Flow Schema
+
+const ReactFlowKPINodeDataSchema = NodeSchema.merge(isSavedDbSchema)
+const ReactFlowSpeechBallonDataSchema = SpeechBallonSchema.merge(isSavedDbSchema)
 
 const BaseReactFlowSchema = z.object({
   id: z.string(),
@@ -57,14 +62,14 @@ const BaseReactFlowSchema = z.object({
 
 const ReactFlowKPINode = BaseReactFlowSchema.merge(
   z.object({
-    data: NodeSchema,
+    data: ReactFlowKPINodeDataSchema,
     type: z.literal('kpi'),
   }),
 )
 
 const ReactFlowSpeechBallonNode = BaseReactFlowSchema.merge(
   z.object({
-    data: SpeechBallonSchema,
+    data: ReactFlowSpeechBallonDataSchema,
     type: z.literal('speech_ballon'),
   }),
 )
@@ -94,6 +99,9 @@ export const NodesOutputSchema = z.object({
   nodes: z.array(ReactFlowNodeOutputSchema),
   edges: ReactFlowEdgeSchema.array(),
 })
+
+export type ReactFlowKPINodeDataType = z.infer<typeof ReactFlowKPINodeDataSchema>
+export type ReactFlowSpeechBallonNodeDataType = z.infer<typeof ReactFlowSpeechBallonDataSchema>
 
 export type NodesOutputType = z.infer<typeof NodesOutputSchema>
 export type ReactFlowKPINodeOutputType = z.infer<typeof ReactFlowKPINode>

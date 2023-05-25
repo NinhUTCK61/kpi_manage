@@ -18,3 +18,5 @@ export const DEFAULT_NODE_ATTRIBUTES = {
 }
 
 export const NODE_HEIGHT_TEMPLATE = 79
+
+export const PANE_CLASS_NAME = 'react-flow__pane'

@@ -19,6 +19,7 @@ const rootNode: RootNode = {
   children: [],
   x: 0,
   y: 0,
+  is_saved: true,
 }
 
 // const d3Root = createD3Hierarchy(rootNode)

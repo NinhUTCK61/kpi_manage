@@ -41,6 +41,7 @@ export function flattenHierarchy(rootNode: RootNode): {
         is_formula: node.is_formula,
         unit: node.unit,
         template_id: node.template_id,
+        is_saved: node.is_saved,
       },
       position: { x: node.x, y: node.y },
       type: 'kpi',
@@ -105,6 +106,7 @@ export const convertToReactFlowKPINodes = (
         unit: node.data.unit,
         template_id: node.data.template_id,
         type: 'kpi',
+        is_saved: true,
       },
       position: { x: node.data.x, y: node.data.y },
       type: 'kpi',
@@ -136,7 +138,7 @@ export const convertToReactFlowSpeechBallon = (
   return speechBallon.map((sb) => {
     return {
       id: sb.id,
-      data: sb,
+      data: { ...sb, is_saved: true },
       position: { x: sb.x, y: sb.y },
       type: 'speech_ballon',
     }
@@ -172,7 +174,7 @@ export const convertToReactFlowSpeechBallonSingle = (
 ): ReactFlowSpeechBallonNodeOutputType => {
   return {
     id: speechBallon.id,
-    data: speechBallon,
+    data: { ...speechBallon, is_saved: true },
     position: { x: speechBallon.x, y: speechBallon.y },
     type: 'speech_ballon',
   }

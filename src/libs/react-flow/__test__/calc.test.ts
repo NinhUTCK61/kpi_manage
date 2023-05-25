@@ -61,6 +61,7 @@ const nodes: ReactFlowKPINode[] = [
       input_value: '=B+C',
       id: 'A',
       parent_node_id: null,
+      is_saved: true,
     },
     position: { x: 0, y: 0 },
   },
@@ -68,6 +69,7 @@ const nodes: ReactFlowKPINode[] = [
     id: 'C',
     data: {
       ...DEFAULT_NODE_ATTRIBUTES,
+      is_saved: true,
       slug: 'C',
       is_formula: true,
       input_value: '=B+D',

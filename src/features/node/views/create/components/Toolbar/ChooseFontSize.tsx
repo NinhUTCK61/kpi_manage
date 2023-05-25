@@ -41,6 +41,7 @@ const DEFAULT_FONT_SIZE = '15px'
 const ChooseFontSize: React.FC = () => {
   const [fontSize, setFontSize] = useState<string>(DEFAULT_FONT_SIZE)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const updateNode = useRFStore((state) => state.updateKPINode)
   const { mutate: update } = useNodeUpdateMutation()
 
   const nodeFocusedMemo = useMemo(() => {
@@ -64,10 +65,19 @@ const ChooseFontSize: React.FC = () => {
     const oldValue = fontSize
     const value = event.target.value as string
     setFontSize(value)
+
+    const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
+
+    // Case the node has not been saved to the database
+    if (!nodeFocusedMemo.data.is_saved) {
+      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+      return
+    }
+
     update(
       {
         id: nodeFocusedMemo.id,
-        node_style: JSON.stringify({ ...nodeStyle, fontSize: value }),
+        node_style: newNodeStyle,
       },
       {
         onError() {

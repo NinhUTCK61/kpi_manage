@@ -62,6 +62,7 @@ export const generateNextNode = (parentNode: HierarchyFlowNode): KPINodeType => 
     id: nanoid(),
     slug: generateNextId(parentNode),
     parent_node_id: parentNode.data.id,
+    is_saved: false,
     ...DEFAULT_NODE_ATTRIBUTES,
   }
 }

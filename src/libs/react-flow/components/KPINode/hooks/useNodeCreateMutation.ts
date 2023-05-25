@@ -18,7 +18,7 @@ const useNodeCreateMutation = () => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode(variables)
+      updateNode({ ...variables, is_saved: true })
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {
