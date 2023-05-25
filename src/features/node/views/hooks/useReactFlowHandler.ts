@@ -78,6 +78,7 @@ export const useReactFlowHandler = () => {
           stroke: '1px',
           created_at: new Date(),
           updated_at: new Date(),
+          is_saved: false,
         },
         position: { x, y },
         type: 'speech_ballon',

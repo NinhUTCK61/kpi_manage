@@ -38,6 +38,7 @@ const _nodes: ReactFlowKPINode[] = [
       unit: '',
       value2number: 0,
       template_id: 'root',
+      is_saved: true,
     },
     position: { x: 0, y: 0 },
   },
