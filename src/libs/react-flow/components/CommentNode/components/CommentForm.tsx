@@ -15,6 +15,8 @@ import { ButtonSend, CommentFormContainer } from './styled'
 import CommentIcon from '/public/assets/svgs/comment_icon.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
+const COMMENT_HEIGHT_CURSOR = 20
+
 export const CommentFormSchema = z.object({
   content: z.string().min(1),
 })
@@ -42,7 +44,7 @@ const CommentForm: React.FC = () => {
 
   const position = project({
     x: activePosition ? (activePosition.x as number) : 0,
-    y: activePosition ? activePosition.y - top - 20 : 0,
+    y: activePosition ? activePosition.y - top - COMMENT_HEIGHT_CURSOR / 2 : 0,
   })
 
   const { control, getValues, reset } = useForm<CommentFormType>({
@@ -110,7 +112,6 @@ const CommentForm: React.FC = () => {
             fullWidth
             multiline
             maxRows={10}
-            sx={{ overflowY: 'auto' }}
           />
 
           <ButtonSend type="submit">

@@ -1,19 +1,19 @@
-import { Box } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
 import { useCommentNodeContext } from '../context'
+import { ButtonAction } from './styled'
 import CommentActiveIcon from '/public/assets/svgs/comment_icon.svg'
 
 const InActiveComment: React.FC = () => {
   const { handleSetActive } = useCommentNodeContext()
-  const handleOpenComment = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleOpenComment = (event: React.MouseEvent<HTMLButtonElement>) => {
     handleSetActive(event.currentTarget)
   }
 
   return (
-    <Box onClick={handleOpenComment} sx={{ cursor: 'pointer' }}>
+    <ButtonAction onClick={handleOpenComment}>
       <Image src={CommentActiveIcon} alt="comment icon" />
-    </Box>
+    </ButtonAction>
   )
 }
 export { InActiveComment }

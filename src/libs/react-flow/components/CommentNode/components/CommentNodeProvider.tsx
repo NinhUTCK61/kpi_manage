@@ -7,9 +7,9 @@ export const CommentNodeProvider: React.FC<
     data: CommentNodeType
   }>
 > = ({ children, data }) => {
-  const [active, setActive] = useState<null | HTMLDivElement>(null)
+  const [active, setActive] = useState<null | HTMLButtonElement | HTMLDivElement>(null)
 
-  const handleSetActive = useCallback((el: HTMLDivElement | null) => {
+  const handleSetActive = useCallback((el: HTMLDivElement | HTMLButtonElement | null) => {
     setActive(el)
   }, [])
 

@@ -58,7 +58,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
 
   return (
     <CommentReplyContainer spacing={1} justifyContent="space-between" direction="row">
-      <Box width={32} height={32} mt="12px" borderRadius="100%">
+      <Box width={32} height={32} mt={1.5} borderRadius="100%">
         <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
       </Box>
 
@@ -71,7 +71,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
           control={control}
           fullWidth
           multiline
-          maxRows={100}
+          maxRows={10}
         />
 
         <ButtonSend type="submit">
