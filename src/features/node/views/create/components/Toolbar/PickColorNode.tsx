@@ -19,7 +19,7 @@ const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const updateNode = useRFStore((state) => state.updateKPINode)
 
   const [pickColor, setPickColor] = useState(base.black)
   const debouncedColor = useDebounce(pickColor, 300)
@@ -48,18 +48,20 @@ const PickColorNode: React.FC = () => {
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     if (debouncedColor === nodeStyle?.color) return
-    update(
-      {
-        id: nodeFocusedMemo.id,
-        node_style: JSON.stringify({ ...nodeStyle, color: debouncedColor }),
-      },
-      {
-        onSuccess(data) {
-          setNodeFocused({ ...nodeFocusedMemo, data: { ...nodeFocusedMemo.data, ...data } })
-        },
-      },
-    )
-  }, [nodeFocusedMemo, debouncedColor, update, setNodeFocused])
+
+    const newNodeStyle = JSON.stringify({ ...nodeStyle, color: debouncedColor })
+
+    // Case the node has not been saved to the database
+    if (!nodeFocusedMemo.data.is_saved) {
+      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
+      return
+    }
+
+    update({
+      id: nodeFocusedMemo.id,
+      node_style: newNodeStyle,
+    })
+  }, [nodeFocusedMemo, debouncedColor, update, updateNode])
 
   useEffect(() => {
     if (isNewFocusNode.current) return
