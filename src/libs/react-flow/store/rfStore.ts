@@ -1,5 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { hierarchy } from 'd3-hierarchy'
+import { produce } from 'immer'
 import {
   Connection,
   EdgeChange,
@@ -16,7 +17,7 @@ import {
   reLayoutWithKpiNodes,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -223,6 +224,33 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
+      addCommentReply(reply) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
+          )
+          comment?.data?.replies.push(reply)
+        })
+
+        set({ nodes })
+      },
+      removeCommentReply(commentId: string, replyId: string) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
+          )
+
+          if (comment) {
+            comment.data.replies = comment.data.replies.filter((reply) => reply.id !== replyId)
+          }
+        })
+
+        set({ nodes })
+      },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {
         get().removeEmptySpeechBallon()
@@ -243,6 +271,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
         set({ nodes })
       },
+
       //function zoom
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]

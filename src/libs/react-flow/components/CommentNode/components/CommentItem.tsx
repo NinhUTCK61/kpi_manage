@@ -12,16 +12,23 @@ import { ButtonAction } from './styled'
 
 type CommentItemProps = {
   data: CreateCommentOutputType | CommentOutputType
+  isLast?: boolean
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
+const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const {
     i18n: { language },
   } = useTranslation('home')
   const { data: session } = useSession()
 
+  const scrollTo = (el: HTMLDivElement) => {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <Stack p={2}>
+    <Stack p={2} bgcolor="base.white" ref={isLast ? scrollTo : undefined}>
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row">
           <Box mr={1} width={24} height={24} borderRadius="100%">
@@ -49,7 +56,12 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
         </Stack>
       </Stack>
 
-      <Typography variant="body2" color={greyScale[900]}>
+      <Typography
+        variant="body2"
+        color={greyScale[900]}
+        whiteSpace="pre-line"
+        sx={{ wordWrap: 'break-word' }}
+      >
         {data.content}
       </Typography>
     </Stack>

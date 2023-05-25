@@ -1,19 +1,21 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import React, { FormEvent } from 'react'
+import { useForm } from 'react-hook-form'
 import { useReactFlow } from 'reactflow'
 import { z } from 'zod'
 import { useCommentCreateMutation } from '../hooks'
 import { InputComment } from './InputComment'
 import { ButtonSend, CommentFormContainer } from './styled'
-import CommentIcon from '/public/assets/svgs/comment_create.svg'
+import CommentIcon from '/public/assets/svgs/comment_icon.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
+
+const COMMENT_HEIGHT_CURSOR = 20
 
 export const CommentFormSchema = z.object({
   content: z.string().min(1),
@@ -42,26 +44,24 @@ const CommentForm: React.FC = () => {
 
   const position = project({
     x: activePosition ? (activePosition.x as number) : 0,
-    y: activePosition ? activePosition.y - top : 0,
+    y: activePosition ? activePosition.y - top - COMMENT_HEIGHT_CURSOR / 2 : 0,
   })
 
-  const { control, handleSubmit, reset } = useForm<CommentFormType>({
+  const { control, getValues, reset } = useForm<CommentFormType>({
     defaultValues: {
       content: '',
     },
   })
 
-  const onSubmit: SubmitHandler<CommentFormType> = (data, e) => {
+  const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-
-    if (!data.content) {
-      handleClose()
+    if (!getValues().content) {
       return
     }
 
     const newComment = {
       id: nanoid(),
-      content: data.content,
+      content: getValues().content,
       template_id: id as string,
       x: position.x,
       y: position.y,
@@ -75,6 +75,13 @@ const CommentForm: React.FC = () => {
     })
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit()
+    }
+  }
+
   const open = Boolean(activePosition) && viewportAction === ViewPortAction.Comment
 
   return (
@@ -85,17 +92,26 @@ const CommentForm: React.FC = () => {
       anchorPosition={
         activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
       }
+      transformOrigin={{
+        vertical: COMMENT_HEIGHT_CURSOR,
+        horizontal: 'left',
+      }}
     >
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Image src={CommentIcon} alt="comment icon" />
+      <Stack direction="row" spacing={1} minHeight={48}>
+        <Box mt={1}>
+          <Image src={CommentIcon} alt="comment icon" />
+        </Box>
 
-        <Stack component="form" position="relative" width={382} onSubmit={handleSubmit(onSubmit)}>
+        <Stack component="form" position="relative" width={382} onSubmit={handleSubmit}>
           <InputComment
             autoFocus
             name="content"
             placeholder={t('enter_comment') as string}
+            onKeyDown={handleKeyDown}
             control={control}
             fullWidth
+            multiline
+            maxRows={10}
           />
 
           <ButtonSend type="submit">
