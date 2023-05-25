@@ -28,7 +28,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   }
 
   return (
-    <Stack p={2} sx={{ backgroundColor: 'base.white' }} ref={isLast ? scrollTo : undefined}>
+    <Stack p={2} bgcolor="base.white" ref={isLast ? scrollTo : undefined}>
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row">
           <Box mr={1} width={24} height={24} borderRadius="100%">
