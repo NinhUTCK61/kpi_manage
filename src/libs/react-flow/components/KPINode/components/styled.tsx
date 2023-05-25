@@ -74,6 +74,7 @@ const NodeActiveContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   position: 'relative',
   transform: 'translate(0%, -50%)',
+  borderRadius: 12,
 }))
 
 const NodeInActiveContainer = styled(Stack)(({ theme }) => ({
