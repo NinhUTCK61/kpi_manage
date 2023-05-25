@@ -65,6 +65,7 @@ const useNodeHandler = () => {
       input_title: nodeCopy.data.input_title,
       input_value: nodeCopy.data.input_value,
       unit: nodeCopy.data.unit,
+      node_style: nodeCopy.data.node_style,
     })
   }
 
