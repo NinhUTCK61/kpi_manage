@@ -16,12 +16,26 @@ export enum CtxMenuType {
 type ContextMenuItem = {
   title: string
   type: CtxMenuType
-  handle?: () => void
 }
 
 export type CtxMenuProps = MenuProps & {
   disabledMenu?: CtxMenuType[]
 }
+
+const contextMenuItem: ContextMenuItem[] = [
+  {
+    title: 'menu_context.copy',
+    type: CtxMenuType.Copy,
+  },
+  {
+    title: 'menu_context.paste',
+    type: CtxMenuType.Paste,
+  },
+  {
+    title: 'menu_context.delete',
+    type: CtxMenuType.Delete,
+  },
+]
 
 const ContextMenu: React.FC<CtxMenuProps> = ({
   open,
@@ -34,28 +48,21 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
   const { mutate: deleteMutate } = useNodeDeleteMutation()
   const { handlePaste } = useNodeHandler()
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
-  const nodeCopy = useRFStore((state) => state.nodeCopy)
 
-  const contextMenuItem: ContextMenuItem[] = [
-    {
-      title: t('menu_context.copy'),
-      type: CtxMenuType.Copy,
-      handle: () => setNodeCopy(data.id),
-    },
-    {
-      title: t('menu_context.paste'),
-      type: CtxMenuType.Paste,
-      handle: () => handlePaste(data),
-    },
-    {
-      title: t('menu_context.delete'),
-      type: CtxMenuType.Delete,
-      handle: () => deleteMutate({ id: data.id }),
-    },
-  ]
-
-  const handleAction = (handle?: () => void) => {
-    handle?.()
+  const handleAction = (key: CtxMenuType) => {
+    switch (key) {
+      case CtxMenuType.Copy:
+        setNodeCopy(data.id)
+        break
+      case CtxMenuType.Paste:
+        handlePaste(data)
+        break
+      case CtxMenuType.Delete:
+        deleteMutate({ id: data.id })
+        break
+      default:
+        break
+    }
     onClose?.({}, 'backdropClick')
   }
 
@@ -69,13 +76,11 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
       {contextMenuItem.map((menu) => (
         <MenuItem
           key={menu.title}
-          disabled={
-            disabledMenu.includes(menu.type) || (menu.type === CtxMenuType.Paste && !nodeCopy)
-          }
+          disabled={disabledMenu.includes(menu.type)}
           isDelete={menu.type === CtxMenuType.Delete}
-          onClick={() => handleAction(menu.handle)}
+          onClick={() => handleAction(menu.type)}
         >
-          {menu.title}
+          {t(menu.title)}
         </MenuItem>
       ))}
     </Menu>
