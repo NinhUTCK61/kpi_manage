@@ -2,6 +2,7 @@ import { Stack } from '@mui/material'
 import { useCommentNodeContext } from '../context'
 import { CommentItem } from './CommentItem'
 import { CommentReplyForm } from './CommentReplyForm'
+import { CommentReplyItem } from './CommentReplyItem'
 
 const ListComment = () => {
   const { data } = useCommentNodeContext()
@@ -11,7 +12,11 @@ const ListComment = () => {
       <CommentItem data={data} />
 
       {data.replies.map((comment, index) => (
-        <CommentItem isLast={index === data.replies.length - 1} key={comment.id} data={comment} />
+        <CommentReplyItem
+          isLast={index === data.replies.length - 1}
+          key={comment.id}
+          data={comment}
+        />
       ))}
 
       <CommentReplyForm commentId={data.id} />

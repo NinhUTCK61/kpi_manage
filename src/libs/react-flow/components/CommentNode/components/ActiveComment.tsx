@@ -5,6 +5,7 @@ import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useCommentNodeContext } from '../context'
+import { useCommentDeleteMutation } from '../hooks'
 import { ListComment } from './ListComment'
 import { ButtonAction, CommentActive, CommentContainer, HeaderComment } from './styled'
 
@@ -13,9 +14,14 @@ const ActiveComment: React.FC = () => {
   const { active, handleSetActive } = useCommentNodeContext()
   const { data: session } = useSession()
   const { data } = useCommentNodeContext()
+  const { mutate: deleteComment } = useCommentDeleteMutation()
 
   const handleClose = () => {
     handleSetActive(null)
+  }
+
+  const handleDeleteComment = () => {
+    deleteComment(data)
   }
 
   return (
@@ -41,7 +47,7 @@ const ActiveComment: React.FC = () => {
 
           <Stack spacing={1} direction="row" alignItems="center">
             {session?.user.id === data.author_id && (
-              <ButtonAction>
+              <ButtonAction onClick={handleDeleteComment}>
                 <Image src={MenuIcon} alt="menu" />
               </ButtonAction>
             )}

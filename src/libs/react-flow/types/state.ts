@@ -1,5 +1,5 @@
 import { ViewPortAction } from '@/features/node/constant'
-import { CreateCommentRepliesOutputType } from '@/libs/schema/comment'
+import { CreateCommentRepliesOutputType, UpdateCommentInputType } from '@/libs/schema/comment'
 import { UpdateNodeInputType } from '@/libs/schema/node'
 import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
@@ -39,8 +39,10 @@ export type RFStore = {
   updateSpeechBallon: (node: UpdateSpeechBallonInputType) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
+  updateComment: (data: UpdateCommentInputType) => void
   removeComment: (commentId: string) => void
   addCommentReply: (reply: CreateCommentRepliesOutputType) => void
+  updateCommentReply: (repliesId: string, content: string, commentId: string) => void
   removeCommentReply: (commentId: string, repliesId: string) => void
   // Toolbar action
   viewportAction: ViewPortAction

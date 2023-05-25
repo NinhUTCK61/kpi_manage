@@ -1,5 +1,5 @@
 import { base, greyScale } from '@/libs/config/theme'
-import { CreateCommentOutputType } from '@/libs/schema/comment'
+import { CommentOutputType } from '@/libs/schema/comment'
 import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
 import { Box, Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
@@ -11,21 +11,31 @@ import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
-import { useCommentUpdateMutation } from '../hooks'
 import { ButtonAction, InputStyled } from './styled'
 
+import { useRFStore } from '@/libs/react-flow/hooks'
+import { useCommentReplyDeleteMutation, useCommentReplyUpdateMutation } from '../hooks'
 type CommentItemProps = {
-  data: CreateCommentOutputType
+  data: CommentOutputType
+  isLast?: boolean
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
+const CommentReplyItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const {
     i18n: { language },
   } = useTranslation('home')
   const { data: session } = useSession()
   const [content, setContent] = useState<string | null>()
   const { t } = useTranslation('file')
-  const { mutate: update } = useCommentUpdateMutation()
+  const { mutate: updateReply } = useCommentReplyUpdateMutation()
+  const { mutate: deleteReply } = useCommentReplyDeleteMutation()
+  const updateCommentReply = useRFStore((state) => state.updateCommentReply)
+
+  const scrollTo = (el: HTMLDivElement) => {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   const handleOpenEdit = () => {
     setContent(data.content)
@@ -40,16 +50,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   }
 
   const handleSaveContentChange = () => {
-    if (data.content) {
-      const comment = {
-        id: data.id,
-        x: data.x,
-        y: data.y,
-        content: content as string,
-      }
-      update(comment)
-    }
-    handleCloseEdit()
+    updateCommentReply(data.id, content as string, data.comment_id)
+  }
+
+  const handleDeleteCommentReply = () => {
+    deleteReply(data)
   }
 
   const ref = useRef(null)
@@ -57,7 +62,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   useOnClickOutside(ref, handleCloseEdit)
 
   return (
-    <Stack p={2} bgcolor="base.white">
+    <Stack p={2} bgcolor="base.white" ref={isLast ? scrollTo : undefined}>
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row">
           <Box mr={1} width={24} height={24} borderRadius="100%">
@@ -112,4 +117,4 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   )
 }
 
-export { CommentItem }
+export { CommentReplyItem }

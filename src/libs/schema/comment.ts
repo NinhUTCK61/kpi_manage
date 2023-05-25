@@ -49,7 +49,7 @@ export type CreateCommentReplyInput = z.infer<typeof CreateCommentReplyInputSche
 
 export const UpdateCommentInputSchema = CreateCommentInputSchema.merge(
   z.object({
-    id: z.string().cuid(),
+    id: z.string(),
   }),
 ).omit({ template_id: true })
 
@@ -66,3 +66,17 @@ export const UpdateCommentRepliesInputSchema = CommentReplySchema.omit({
 
 export type UpdateCommentReplyInputType = z.infer<typeof UpdateCommentRepliesInputSchema>
 export type CommentOutputType = z.infer<typeof CreateCommentRepliesOutputSchema>
+
+// Type Delete Comment
+
+export const DeleteCommentInputSchema = z.object({
+  id: z.string(),
+})
+
+export const DeleteCommentReplyInputSchema = z.object({
+  id: z.string(),
+  comment_id: z.string(),
+})
+
+export type DeleteCommentInputType = z.infer<typeof DeleteCommentInputSchema>
+export type DeleteCommentReplyInputType = z.infer<typeof DeleteCommentReplyInputSchema>

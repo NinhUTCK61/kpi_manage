@@ -232,6 +232,19 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
+      updateComment(CommentNode) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === CommentNode?.id,
+          )
+
+          if (comment) comment.data = { ...comment?.data, ...CommentNode }
+        })
+
+        set({ nodes })
+      },
       addCommentReply(reply) {
         const _nodes = get().nodes
 
@@ -258,6 +271,29 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         set({ nodes })
+      },
+      updateCommentReply(id: string, content: string, commentId: string) {
+        const _nodes = get().nodes
+
+        console.log(content)
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
+          )
+
+          const replies = comment?.data.replies.find((reply) => reply.id === id)
+          console.log(comment)
+
+          // if (comment) {
+          //   comment.data.replies = [...comment?.data.replies, ...replies]
+          //   console.log(comment.data.replies)
+          // }
+        })
+
+        console.log('new', nodes)
+
+        // set({ nodes })
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {
