@@ -12,6 +12,7 @@ const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
 export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
   const inputElement = e.target as HTMLInputElement
   const selectionStart = inputElement.selectionStart
+  console.log('hihi', inputElement.value)
   if (selectionStart && selectionStart >= 1 && selectionStart <= inputElement.value.length) {
     return sliceKeyInsideSpace(inputElement.value.replace(/[^a-zA-Z0-9]/g, ' '), selectionStart)
   }

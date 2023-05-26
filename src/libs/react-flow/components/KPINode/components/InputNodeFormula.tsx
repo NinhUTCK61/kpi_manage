@@ -1,3 +1,4 @@
+import { charNearCursor } from '@/libs/react-flow/helper/expression'
 import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, styled } from '@mui/material'
 import type { FieldValues } from 'react-hook-form'
@@ -37,7 +38,7 @@ function InputNodeFormula<T extends FieldValues>({
             mapToRadix: ['.'],
           },
           {
-            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{0,999}$/i,
+            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/?]{0,999}$/i,
           },
         ]}
         unmask
