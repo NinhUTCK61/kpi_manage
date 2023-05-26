@@ -1,5 +1,5 @@
 import { BaseInputProps } from '@/libs/shared/components'
-import { InputBase, InputBaseProps, styled } from '@mui/material'
+import { InputBaseProps, styled } from '@mui/material'
 import { forwardRef } from 'react'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
@@ -15,35 +15,7 @@ type CustomProps = {
 
 const InputMaskCustom = forwardRef<HTMLElement, CustomProps>(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props
-  return (
-    <IMaskInput
-      mask={[
-        {
-          mask: Number,
-          thousandsSeparator: ',',
-          scale: 3, // digits after point, 0 for integers
-          signed: false, // disallow negative
-          padFractionalZeros: false, // if true, then pads zeros at end to the length of scale
-          normalizeZeros: true, // appends or removes zeros at ends
-          radix: '.', // fractional delimiter
-          mapToRadix: ['.'], // symbols to process as radix
-        },
-        {
-          mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{0,999}$/i,
-        },
-      ]}
-      unmask={true}
-      inputRef={ref}
-      onAccept={(value: string) => {
-        onChange({ target: { name: props.name, value } })
-      }}
-      overwrite
-      onChange={(e) => {
-        console.log((e.target as HTMLInputElement).value)
-      }}
-      {...other}
-    />
-  )
+  return <IMaskInput {...other} />
 })
 
 function InputNodeFormula<T extends FieldValues>({
@@ -62,40 +34,59 @@ function InputNodeFormula<T extends FieldValues>({
     <InputControlNode label={label} required={required} value={value} {...controlProps}>
       <InputStyled
         inputRef={ref}
-        inputComponent={InputMaskCustom as any}
         value={value}
-        onChange={onChange}
+        mask={[
+          {
+            mask: Number,
+            thousandsSeparator: ',',
+            scale: 3, // digits after point, 0 for integers
+            signed: false, // disallow negative
+            padFractionalZeros: false, // if true, then pads zeros at end to the length of scale
+            normalizeZeros: true, // appends or removes zeros at ends
+            radix: '.', // fractional delimiter
+            mapToRadix: ['.'], // symbols to process as radix
+          },
+          {
+            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{0,999}$/i,
+          },
+        ]}
+        unmask={true}
+        onAccept={(value: string) => {
+          onChange(value)
+        }}
+        onChange={() => undefined}
+        overwrite
         {...inputProps}
       />
     </InputControlNode>
   )
 }
 
-// const InputStyled = styled()(({ theme }) => ({
-//   width: 140,
-//   fontSize: 15,
-//   lineHeight: '22px',
-//   padding: 0,
-//   color: theme.palette.base.black,
-//   marginBottom: 4,
-//   border: 0,
-//   boxSizing: 'border-box',
-//   background: 'none',
-//   WebkitTapHighlightColor: 'transparent',
-//   '&:focus': {
-//     outline: 'none',
-//   },
-// }))
-
-const InputStyled = styled(InputBase)(({ theme }) => ({
-  '& .MuiInputBase-input': {
-    width: 140,
-    fontSize: 15,
-    lineHeight: '22px',
-    padding: 0,
-    color: theme.palette.base.black,
-  },
+const InputStyled = styled(IMaskInput)(({ theme }) => ({
+  width: 140,
+  fontSize: 15,
+  lineHeight: '22px',
+  padding: 0,
+  color: theme.palette.base.black,
   marginBottom: 4,
+  border: 0,
+  boxSizing: 'border-box',
+  background: 'none',
+  WebkitTapHighlightColor: 'transparent',
+  '&:focus': {
+    outline: 'none',
+  },
 }))
+
+// const InputStyled = styled(InputBase)(({ theme }) => ({
+//   '& .MuiInputBase-input': {
+//     width: 140,
+//     fontSize: 15,
+//     lineHeight: '22px',
+//     padding: 0,
+//     color: theme.palette.base.black,
+//   },
+//   marginBottom: 4,
+// }))
 
 export { InputNodeFormula }
