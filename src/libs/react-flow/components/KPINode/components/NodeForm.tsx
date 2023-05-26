@@ -55,10 +55,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     }
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('event.target.value', event.target.value)
-  }
-
   return (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <Stack
