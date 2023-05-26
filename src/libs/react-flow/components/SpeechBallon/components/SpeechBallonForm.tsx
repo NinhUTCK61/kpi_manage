@@ -69,7 +69,6 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleUpdate = ({ updated_at, ...data }: SpeechBallonNodeType) => {
-    console.log('update', data)
     if (nodeFocused?.id === data.id && nodeFocused?.type === 'speech_ballon') {
       update(data)
     }

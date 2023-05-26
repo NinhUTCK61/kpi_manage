@@ -40,7 +40,6 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
             !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }
           data={data}
-          parentType="speech_ballon"
         />
       </Stack>
     </SpeechBallonProvider>

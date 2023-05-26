@@ -293,7 +293,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
         if (!nodeFound.length) return
         nodeFound.push(node)
-        console.log(nodeFound, 'DATATATATA')
         set({
           nodes: [...nodes],
         })
