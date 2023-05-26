@@ -266,10 +266,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           )
 
           if (comment) {
-            comment.data.replies.filter((reply) => reply.id !== reply.id)
+            comment.data.replies = comment.data.replies.filter(
+              (replyComment) => replyComment.id !== reply.id,
+            )
           }
         })
-
+        console.log(nodes)
         set({ nodes })
       },
       updateCommentReply(reply) {
