@@ -1,6 +1,6 @@
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { SpeechBallonNodeType } from '../../types'
 import { ContextMenu } from './components/ContextMenu'
@@ -10,13 +10,6 @@ import { SpeechBallonProvider } from './context'
 type KpiSpeechBallonNodeProps = NodeProps<SpeechBallonNodeType>
 
 const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xPos, yPos }) => {
-  const [typeContext, setTypeContext] = useState<string | null>(null)
-
-  const contextValue = useMemo(
-    () => ({ data, xPos, yPos, typeContext, setTypeContext }),
-    [data, xPos, yPos, typeContext, setTypeContext],
-  )
-
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
   const handleContextMenu = (event: React.MouseEvent) => {
@@ -34,6 +27,17 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
   const handleClose = () => {
     setContextMenu(null)
   }
+
+  const [isEditing, setEditing] = useState<boolean>(false)
+  const handleSetEditing = useCallback((value: boolean) => {
+    setEditing(value)
+  }, [])
+
+  const contextValue = useMemo(
+    () => ({ data, xPos, yPos, isEditing, handleSetEditing }),
+    [data, xPos, yPos, isEditing, handleSetEditing],
+  )
+
   return (
     <SpeechBallonProvider value={contextValue}>
       <Stack onContextMenu={handleContextMenu}>

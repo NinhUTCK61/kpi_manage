@@ -21,13 +21,11 @@ type ContextMenuItem = {
 
 export type CtxMenuProps = MenuProps & {
   disabledMenu?: CtxMenuType[]
+  onClose: () => void
 }
 
 const storeSelector = (state: RFStore) => ({
   setNodeFocused: state.setNodeFocused,
-  nodeFocused: state.nodeFocused,
-  setContextMenu: state.setContainer,
-  nodes: state.nodes,
 })
 
 const ContextMenu: React.FC<CtxMenuProps> = ({
@@ -38,8 +36,8 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
 }) => {
   const { t } = useTranslation(['file'])
 
-  const { setNodeFocused, nodes } = useRFStore(storeSelector, shallow)
-  const { data, setTypeContext } = useSpeechBallonContext()
+  const { setNodeFocused } = useRFStore(storeSelector, shallow)
+  const { data, handleSetEditing } = useSpeechBallonContext()
 
   const contextMenuItem: ContextMenuItem[] = [
     {
@@ -61,9 +59,8 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
   ]
 
   const handleEdit = () => {
-    const node = nodes.find((node) => node.id == data?.id && node.type === 'speech_ballon') || null
-    setNodeFocused(node)
-    setTypeContext(CtxMenuType.Edit)
+    setNodeFocused(data.id)
+    handleSetEditing(true)
   }
 
   const handleMenuSelect = (type: string) => {
@@ -72,6 +69,8 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
         handleEdit()
         break
     }
+
+    onClose()
   }
 
   return (

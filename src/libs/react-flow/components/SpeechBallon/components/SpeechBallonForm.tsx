@@ -4,7 +4,6 @@ import { ClickAwayListener } from '@mui/material'
 import { FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
-import { CtxMenuType } from '../../KPINode/components/ContextMenu'
 import { useSpeechBallonContext } from '../context'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
@@ -19,8 +18,7 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { data, xPos, yPos, typeContext, setTypeContext } = useSpeechBallonContext()
-
+  const { data, xPos, yPos, isEditing: editable, handleSetEditing } = useSpeechBallonContext()
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
@@ -32,7 +30,7 @@ export const SpeechBallonForm: React.FC = () => {
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
 
-  const isEditing = !data.text || (nodeFocused?.id === data.id && typeContext === CtxMenuType.Edit)
+  const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,25 +47,24 @@ export const SpeechBallonForm: React.FC = () => {
       return
     }
 
-    const createData = {
+    const mutateData = {
       ...data,
       x: xPos,
       y: yPos,
       text: getValues().text,
     }
 
-    if (typeContext === CtxMenuType.Edit) {
-      handleUpdate(createData)
+    if (data.is_saved) {
+      handleUpdate(mutateData)
       return
     }
-    create(createData)
+
+    create(mutateData)
   }
 
-  const handleUpdate = ({ updated_at, ...data }: SpeechBallonNodeType) => {
-    if (nodeFocused?.id === data.id && nodeFocused?.type === 'speech_ballon') {
-      update(data)
-    }
-    setTypeContext(null)
+  const handleUpdate = (data: SpeechBallonNodeType) => {
+    update(data)
+    handleSetEditing(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -81,10 +78,12 @@ export const SpeechBallonForm: React.FC = () => {
     if (!data.text) {
       removeSpeechBallon(data.id)
     }
+
+    handleSetEditing(false)
   }
 
   return isEditing ? (
-    <ClickAwayListener onClickAway={handleClickAway}>
+    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <form onSubmit={handleSubmit}>
         <InputSpeechBalloon
           control={control}

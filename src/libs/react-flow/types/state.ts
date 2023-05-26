@@ -1,6 +1,7 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { CreateCommentRepliesOutputType } from '@/libs/schema/comment'
 import { UpdateNodeInputType } from '@/libs/schema/node'
+import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import {
   HierarchyFlowNode,
@@ -35,7 +36,7 @@ export type RFStore = {
   removeEmptySpeechBallon: () => void
   nodeCopy: ReactFlowNode | null
   setNodeCopy: (node: string | null) => void
-  updateSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
+  updateSpeechBallon: (node: UpdateSpeechBallonInputType) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (commentId: string) => void

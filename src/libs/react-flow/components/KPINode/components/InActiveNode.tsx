@@ -13,7 +13,6 @@ import {
 } from './styled'
 
 const InActive: React.FC = () => {
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
   const d3Root = useRFStore((state) => state.d3Root)
 
@@ -28,7 +27,6 @@ const InActive: React.FC = () => {
 
   return (
     <NodeInActiveContainer
-      onClick={() => setNodeFocused(data.id)}
       sx={{
         ...(viewportAction !== ViewPortAction.Move && {
           pointerEvents: 'none',

@@ -5,8 +5,8 @@ type SpeechBallonContextType = {
   data: SpeechBallonNodeType
   xPos: number
   yPos: number
-  typeContext: string | null
-  setTypeContext: React.Dispatch<React.SetStateAction<string | null>>
+  isEditing: boolean
+  handleSetEditing: (isEditing: boolean) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)

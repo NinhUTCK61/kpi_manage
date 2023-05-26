@@ -16,7 +16,13 @@ import {
   reLayout,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
+import {
+  RFStore,
+  ReactFlowCommentNode,
+  ReactFlowKPINode,
+  ReactFlowNode,
+  ReactFlowSpeechBallonNode,
+} from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -282,15 +288,23 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ nodes })
       },
       updateSpeechBallon(node) {
-        const nodes = get().nodes
-        const nodeFound = nodes.filter((nodeItem) => {
-          return nodeItem.id !== node.id
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const speechBallon = draft.find<ReactFlowSpeechBallonNode>(
+            (el): el is ReactFlowSpeechBallonNode =>
+              el.type === 'speech_ballon' && el.id === node.id,
+          )
+
+          if (speechBallon) {
+            speechBallon.data = {
+              ...speechBallon.data,
+              ...node,
+            }
+          }
         })
-        if (!nodeFound.length) return
-        nodeFound.push(node)
-        set({
-          nodes: [...nodes],
-        })
+
+        set({ nodes: nodes })
       },
       //function zoom
       handleZoom(isZoomIn) {
