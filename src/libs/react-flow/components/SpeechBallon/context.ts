@@ -5,6 +5,8 @@ type SpeechBallonContextType = {
   data: SpeechBallonNodeType
   xPos: number
   yPos: number
+  isEditing: boolean
+  handleSetEditing: (isEditing: boolean) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)
