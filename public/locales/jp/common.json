@@ -78,7 +78,8 @@
     "send_mail_fail": "メールを送信できませんでした。",
 
     "invalid_string_label": "タイトルは必須です。",
-    "invalid_empty_node_form": "内容を入力してください。"
+    "invalid_empty_node_form": "内容を入力してください。",
+    "formula": "Formula"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",

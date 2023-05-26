@@ -3,10 +3,11 @@ import { PANE_CLASS_NAME } from '@/libs/react-flow/constant'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import { FormEvent, KeyboardEvent, memo } from 'react'
+import React, { FormEvent, KeyboardEvent, memo } from 'react'
 import { useKPINodeContext } from '../context'
 import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNode } from './InputNode'
+import { InputNodeFormula } from './InputNodeFormula'
 import { StackError } from './styled'
 
 type NodeFormMemoTypes = {
@@ -54,6 +55,10 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     }
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('event.target.value', event.target.value)
+  }
+
   return (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <Stack
@@ -86,7 +91,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
           inputProps={{ style }}
         />
 
-        <InputNode control={control} name="input_value" label="=" inputProps={{ style }} />
+        <InputNodeFormula control={control} name="input_value" label="=" inputProps={{ style }} />
 
         <InputNode control={control} name="unit" label="Unit" inputProps={{ style }} />
 

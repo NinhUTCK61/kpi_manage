@@ -1,5 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { formatNumber } from '@/libs/utils/format'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { generateColors } from '../utils'
@@ -43,7 +44,7 @@ const InActive: React.FC = () => {
 
       {!!data.value2number && (
         <TextOverflow variant="body2" style={style}>
-          {`${data.value2number} ${data.unit && `(${data.unit})`} `}
+          {`${formatNumber(data.value2number)} ${data.unit && `(${data.unit})`} `}
         </TextOverflow>
       )}
 

@@ -79,7 +79,8 @@
     "send_mail_fail": "Send mail failed!",
 
     "invalid_string_label":"A title is required.",
-    "invalid_empty_node_form":"Please enter the content."
+    "invalid_empty_node_form":"Please enter the content.",
+    "formula": "Formula"
   },
   "template": {
     "move_to_trash": "Move to trash success!",
