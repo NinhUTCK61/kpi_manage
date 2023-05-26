@@ -16,42 +16,46 @@ export function generateIds(d3Node: HierarchyFlowNode): void {
 }
 
 export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
-  if (parentNode.data.data.slug === 'root') {
-    let nextLetter = ''
-    let index = parentNode.children?.length ?? 0
-    do {
-      nextLetter = String.fromCharCode(65 + index)
+  const { data, children } = parentNode
+  const { slug } = data.data
+  const existingSlugs = new Set(children?.map((child) => child.data.data.slug))
+
+  if (slug === 'root') {
+    let index = children?.length ?? 0
+    while (existingSlugs.has(String.fromCharCode(65 + index))) {
       index++
-    } while (parentNode.children?.some((child) => child.data.data.slug === nextLetter))
-    return nextLetter
+    }
+    return String.fromCharCode(65 + index)
   } else {
-    let nextNumber = ''
-    let index = parentNode.children?.length ?? 0 + 1
-    do {
-      nextNumber = `${parentNode.data.data.slug}${index}`
+    let index = children?.length ?? 0 + 1
+    let nextSlug = `${slug}${index}`
+    while (existingSlugs.has(nextSlug)) {
       index++
-    } while (parentNode.children?.some((child) => child.data.data.slug === nextNumber))
-    return nextNumber
+      nextSlug = `${slug}${index}`
+    }
+    return nextSlug
   }
 }
 
 export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
-  if (parentNode.data.data.slug === 'root') {
-    let nextLetter = ''
-    let index = parentNode.children?.length ?? 0
-    do {
-      nextLetter = String.fromCharCode(65 + index)
+  const { data, children } = parentNode
+  const { slug } = data.data
+  const existingSlugs = new Set(children?.map((child) => child.data.data.slug))
+
+  if (slug === 'root') {
+    let index = children?.length ?? 0
+    while (existingSlugs.has(String.fromCharCode(65 + index))) {
       index++
-    } while (parentNode.children?.some((child) => child.data.data.slug === nextLetter))
-    return nextLetter
+    }
+    return String.fromCharCode(65 + index)
   } else {
-    let nextNumber = ''
-    let index = parentNode.children?.length ?? 0 + 1
-    do {
-      nextNumber = `${parentNode.data.data.slug}${index}`
+    let index = (children?.length ?? 0) + 1
+    let nextSlug = `${slug}${index}`
+    while (existingSlugs.has(nextSlug)) {
       index++
-    } while (parentNode.children?.some((child) => child.data.data.slug === nextNumber))
-    return nextNumber
+      nextSlug = `${slug}${index}`
+    }
+    return nextSlug
   }
 }
 
