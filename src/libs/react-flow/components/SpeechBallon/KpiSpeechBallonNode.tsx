@@ -3,7 +3,7 @@ import { Stack } from '@mui/material'
 import React, { useMemo, useState } from 'react'
 import { NodeProps } from 'reactflow'
 import { SpeechBallonNodeType } from '../../types'
-import { ContextMenu } from '../KPINode/components/ContextMenu'
+import { ContextMenu } from './components/ContextMenu'
 import { OptionShape } from './components/OptionShape'
 import { SpeechBallonProvider } from './context'
 
@@ -39,7 +39,6 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
           anchorPosition={
             !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }
-          data={data}
         />
       </Stack>
     </SpeechBallonProvider>
