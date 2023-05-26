@@ -11,6 +11,7 @@ import { KPINodeProvider } from './context'
 function KpiNodeInner(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const nodeCopy = useRFStore((state) => state.nodeCopy)
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
   const isMatches = nodeFocused?.id === data.id
@@ -33,6 +34,15 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
     setContextMenu(null)
   }
 
+  const disabledMenu = []
+
+  if (data.slug === 'root') {
+    disabledMenu.push(CtxMenuType.Delete)
+  }
+  if (!nodeCopy) {
+    disabledMenu.push(CtxMenuType.Paste)
+  }
+
   return (
     <KPINodeProvider value={contextValue}>
       <Stack onContextMenu={handleContextMenu}>
@@ -40,7 +50,7 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
         <ContextMenu
           open={!!contextMenu}
           onClose={handleClose}
-          disabledMenu={data.slug === 'root' ? [CtxMenuType.Delete] : []}
+          disabledMenu={disabledMenu}
           anchorPosition={
             !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
           }

@@ -19,24 +19,28 @@ export const useNodeForm = (data: KPINodeType) => {
       input_value: data.input_value || '',
       unit: data.unit || '',
     },
+    values: {
+      input_title: data.input_title || '',
+      input_value: data.input_value || '',
+      unit: data.unit || '',
+    },
     resolver: zodResolver(NodeFormSchema),
     mode: 'onChange',
   })
 
   const { setFocus } = forms
-
   const { handleError } = useTranslateError()
   const [error, setError] = useState('')
 
   useEffect(() => {
     const errors = forms.formState.errors
-
     if (isEmpty(errors)) {
       setError('')
       return
     }
-
-    setError(handleError(errors.input_title?.message as string))
+    if (errors.input_title?.message) {
+      setError(handleError(errors.input_title.message as string))
+    }
   }, [forms.formState.errors, handleError])
 
   useEffect(() => {

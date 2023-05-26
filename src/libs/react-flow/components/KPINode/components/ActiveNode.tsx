@@ -3,6 +3,7 @@ import { MouseEvent, useCallback, useState } from 'react'
 import { Position } from 'reactflow'
 import { useRFStore } from '../../../hooks'
 import { useKPINodeContext } from '../context'
+import { useHandleKeyPress } from '../hooks'
 import { NodeForm } from './NodeForm'
 import { BottomHandler, IconImage, LeftHandler, NodeActiveContainer, RightHandler } from './styled'
 
@@ -24,6 +25,7 @@ const Active: React.FC = () => {
   const isValidFocusToShowHandler = !formFocus && nodeFocused
   const isShowBottomHandler = isValidFocusToShowHandler && data.slug !== 'root' && data.input_title
   const isShowRightHandler = isValidFocusToShowHandler && data.input_title
+  useHandleKeyPress()
 
   return (
     <NodeActiveContainer>

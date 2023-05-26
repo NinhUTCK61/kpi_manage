@@ -202,6 +202,12 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
         }
       },
+      setNodeCopy(node) {
+        const nodes = get().nodes
+        let nodeCopy: ReactFlowNode | null = null
+        nodeCopy = nodes.find((n) => n.id === node) || null
+        set({ nodeCopy })
+      },
       //function toolbar
       changeViewportAction(action) {
         if (action === get().viewportAction) return
