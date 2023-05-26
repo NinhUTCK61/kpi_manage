@@ -14,6 +14,7 @@ const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
+  const updateKPINode = useRFStore((state) => state.updateKPINode)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
@@ -36,11 +37,9 @@ const useNodeHandler = () => {
     return data
   }
 
-  const saveHandler = useCallback(
-    (_newData: KPINodeType) => {
-      const action = getSaveAction(_newData, data)
-      const newData = handleData(_newData)
-
+  const saveHandler = (_newData: KPINodeType) => {
+    const action = getSaveAction(_newData, data)
+    const newData = handleData(_newData)
     consola.info('[MUTATE ACTION]', action) // keep it to debug
     switch (action) {
       case 'CREATE':
@@ -56,24 +55,20 @@ const useNodeHandler = () => {
       case 'CANCEL':
         break
     }
-  },[create, data, deleteMutate, setNodeFocused, templateId, update])
+  }
 
-  const handlePaste = useCallback(
-    (_data: KPINodeType) => {
-      if (!nodeCopy) return
-      if (nodeCopy.type !== 'kpi') return
+  const handlePaste = useCallback(() => {
+    if (!nodeCopy) return
+    if (nodeCopy.type !== 'kpi') return
 
-      const newData = handleData(_data)
-      saveHandler({
-        ...newData,
-        input_title: nodeCopy.data.input_title,
-        input_value: nodeCopy.data.input_value,
-        unit: nodeCopy.data.unit,
-        node_style: nodeCopy.data.node_style,
-      })
-    },
-    [nodeCopy, saveHandler],
-  )
+    updateKPINode({
+      id: data.id,
+      input_title: nodeCopy.data.input_title,
+      input_value: nodeCopy.data.input_value,
+      unit: nodeCopy.data.unit,
+      node_style: nodeCopy.data.node_style,
+    })
+  }, [data.id, nodeCopy, updateKPINode])
 
   return { saveHandler, handlePaste }
 }

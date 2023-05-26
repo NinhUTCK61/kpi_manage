@@ -55,7 +55,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
         setNodeCopy(data.id)
         break
       case CtxMenuType.Paste:
-        handlePaste(data)
+        handlePaste()
         break
       case CtxMenuType.Delete:
         deleteMutate({ id: data.id })

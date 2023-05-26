@@ -24,7 +24,6 @@ export const useNodeForm = (data: KPINodeType) => {
   })
 
   const { setFocus } = forms
-
   const { handleError } = useTranslateError()
   const [error, setError] = useState('')
 
@@ -46,6 +45,23 @@ export const useNodeForm = (data: KPINodeType) => {
       }
     }, 0)
   }, [data.input_title, setFocus])
+
+  //TODO: data node form not change after paste , need to reset by effect
+  useEffect(() => {
+    const formInputTitle = forms.getValues('input_title')
+    const formInputValue = forms.getValues('input_value')
+    const formUnit = forms.getValues('unit')
+    if (
+      data.input_title !== formInputTitle ||
+      data.input_value !== formInputValue ||
+      data.unit !== formUnit
+    )
+      forms.reset({
+        input_title: data.input_title || '',
+        input_value: data.input_value || '',
+        unit: data.unit || '',
+      })
+  }, [data.input_title, data.input_value, data.unit, forms])
 
   return { ...forms, error }
 }

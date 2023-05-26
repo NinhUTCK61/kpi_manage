@@ -30,8 +30,8 @@ const useHandleKeyPress = () => {
 
   useEffect(() => {
     if (!paste) return
-    handlePaste(data)
-  }, [data, handlePaste, paste])
+    handlePaste()
+  }, [handlePaste, paste])
 }
 
 export { useHandleKeyPress }
