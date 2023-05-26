@@ -1,4 +1,4 @@
-import { Box, Button, InputBase, Popover, Stack, styled } from '@mui/material'
+import { Box, Button, ButtonBase, InputBase, Popover, Stack, styled } from '@mui/material'
 
 const CommentFormContainer = styled(Popover)({
   '.MuiPopover-paper': {
@@ -57,6 +57,32 @@ const CommentActive = styled(CommentFormContainer)(({ theme }) => ({
   marginTop: 36,
 }))
 
+const Arrow = styled('div')(({ theme }) => ({
+  position: 'relative',
+  marginTop: 40,
+  '&::before': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    borderLeft: '12px solid transparent',
+    borderRight: '12px solid transparent',
+    borderBottom: `40px solid ${theme.palette.base.black}`,
+    top: -20,
+    left: 20,
+    zIndex: -1,
+  },
+}))
+
+const ButtonMenu = styled(ButtonBase)(({ theme }) => ({
+  ...theme.typography.body2,
+  color: theme.palette.base.white,
+  background: theme.palette.base.black,
+  padding: '12px 16px',
+  '&::hover': {
+    background: theme.palette.base.black,
+  },
+}))
+
 export {
   CommentContainer,
   HeaderComment,
@@ -66,4 +92,6 @@ export {
   CommentFormContainer,
   ButtonAction,
   CommentActive,
+  Arrow,
+  ButtonMenu,
 }

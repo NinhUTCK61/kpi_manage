@@ -6,6 +6,7 @@ const useCommentRepliesCreateMutation = () => {
   const utils = api.useContext()
   const addCommentReply = useRFStore((state) => state.addCommentReply)
   const removeCommentReply = useRFStore((state) => state.removeCommentReply)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   const mutation = api.comment.createReply.useMutation({
     onSuccess(data) {
@@ -16,7 +17,7 @@ const useCommentRepliesCreateMutation = () => {
       enqueueSnackbar('err.create_commentReply', {
         variant: 'error',
       })
-      removeCommentReply(variables.comment_id, variables.id)
+      if (nodeFocused) removeCommentReply({ ...variables, comment_id: nodeFocused.id })
     },
     onSettled() {
       utils.node.list.invalidate()

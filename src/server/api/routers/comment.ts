@@ -4,7 +4,6 @@ import {
   CreateCommentRepliesOutputSchema,
   CreateCommentReplyInputSchema,
   DeleteCommentInputSchema,
-  DeleteCommentReplyInputSchema,
   UpdateCommentInputSchema,
   UpdateCommentRepliesInputSchema,
 } from '@/libs/schema/comment'
@@ -55,9 +54,9 @@ export const commentRouter = createTRPCRouter({
     }),
   deleteReply: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/comment-reply' } })
-    .input(DeleteCommentReplyInputSchema)
+    .input(DeleteCommentInputSchema)
     .output(z.string())
     .mutation(({ input, ctx }) => {
-      return commentReplyService.delete(input.id, input.comment_id, ctx.session.user.id)
+      return commentReplyService.delete(input.id, ctx.session.user.id)
     }),
 })

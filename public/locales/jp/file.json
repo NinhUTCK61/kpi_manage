@@ -22,5 +22,6 @@
   "edit_comment": "コメントを編集",
   "cancel": "キャンセル",
   "save": "保存",
-  "enter_comment": "コメントを追加"
+  "enter_comment": "コメントを追加",
+  "delete_comment": "Delete comment"
 }

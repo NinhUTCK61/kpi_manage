@@ -1,3 +1,4 @@
+import { useRFStore } from '@/libs/react-flow/hooks'
 import { Stack, Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
@@ -15,9 +16,11 @@ const ActiveComment: React.FC = () => {
   const { data: session } = useSession()
   const { data } = useCommentNodeContext()
   const { mutate: deleteComment } = useCommentDeleteMutation()
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
 
   const handleClose = () => {
     handleSetActive(null)
+    setNodeFocused(null)
   }
 
   const handleDeleteComment = () => {

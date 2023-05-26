@@ -1,6 +1,5 @@
 import { Stack } from '@mui/material'
 import { useCommentNodeContext } from '../context'
-import { CommentItem } from './CommentItem'
 import { CommentReplyForm } from './CommentReplyForm'
 import { CommentReplyItem } from './CommentReplyItem'
 
@@ -9,7 +8,7 @@ const ListComment = () => {
 
   return (
     <Stack maxHeight={400} sx={{ overflowY: 'auto' }}>
-      <CommentItem data={data} />
+      <CommentReplyItem data={data} />
 
       {data.replies.map((comment, index) => (
         <CommentReplyItem

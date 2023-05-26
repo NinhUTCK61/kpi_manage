@@ -4,10 +4,10 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 const useCommentReplyUpdateMutation = () => {
   const utils = api.useContext()
   const updateCommentReply = useRFStore((state) => state.updateCommentReply)
-
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const mutation = api.comment.updateReply.useMutation({
-    onSuccess(data) {
-      updateCommentReply(data.comment_id, data.id, data.content)
+    onMutate(variables) {
+      if (nodeFocused) updateCommentReply({ ...variables, comment_id: nodeFocused.id })
     },
     onError(err) {
       console.log(err)

@@ -257,43 +257,36 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
-      removeCommentReply(commentId: string, replyId: string) {
+      removeCommentReply(reply) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
 
           if (comment) {
-            comment.data.replies = comment.data.replies.filter((reply) => reply.id !== replyId)
+            comment.data.replies.filter((reply) => reply.id !== reply.id)
           }
         })
 
         set({ nodes })
       },
-      updateCommentReply(id: string, content: string, commentId: string) {
+      updateCommentReply(reply) {
         const _nodes = get().nodes
-
-        console.log(content)
-
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
 
-          const replies = comment?.data.replies.find((reply) => reply.id === id)
-          console.log(comment)
-
-          // if (comment) {
-          //   comment.data.replies = [...comment?.data.replies, ...replies]
-          //   console.log(comment.data.replies)
-          // }
+          comment?.data.replies.filter((data) => {
+            if (data.id === reply.id) {
+              data.content = reply.content
+            }
+          })
         })
 
-        console.log('new', nodes)
-
-        // set({ nodes })
+        set({ nodes })
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {

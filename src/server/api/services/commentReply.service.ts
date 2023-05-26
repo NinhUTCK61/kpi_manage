@@ -79,12 +79,11 @@ export class CommentReply extends CommentHelper {
     return comment
   }
 
-  async delete(id: string, comment_id: string, author_id: string) {
+  async delete(id: string, author_id: string) {
     const comment = await prisma.commentReply.findFirst({
       where: {
         id,
         author_id,
-        comment_id,
       },
     })
 

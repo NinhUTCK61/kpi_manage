@@ -1,5 +1,9 @@
 import { base, greyScale } from '@/libs/config/theme'
-import { CommentOutputType } from '@/libs/schema/comment'
+import {
+  CommentOutputType,
+  CommentReplyOutputType,
+  CreateCommentOutputType,
+} from '@/libs/schema/comment'
 import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
 import { Box, Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
@@ -10,13 +14,17 @@ import Image from 'next/image'
 import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useRef, useState } from 'react'
-import { useOnClickOutside } from 'usehooks-ts'
-import { ButtonAction, InputStyled } from './styled'
+import { Arrow, ButtonAction, ButtonMenu, InputStyled } from './styled'
 
-import { useRFStore } from '@/libs/react-flow/hooks'
-import { useCommentReplyDeleteMutation, useCommentReplyUpdateMutation } from '../hooks'
+import { Popover } from '@mui/material'
+import { useOnClickOutside } from 'usehooks-ts'
+import {
+  useCommentReplyDeleteMutation,
+  useCommentReplyUpdateMutation,
+  useCommentUpdateMutation,
+} from '../hooks'
 type CommentItemProps = {
-  data: CommentOutputType
+  data: CommentReplyOutputType | CommentOutputType
   isLast?: boolean
 }
 
@@ -27,9 +35,19 @@ const CommentReplyItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const { data: session } = useSession()
   const [content, setContent] = useState<string | null>()
   const { t } = useTranslation('file')
+  const ref = useRef(null)
   const { mutate: updateReply } = useCommentReplyUpdateMutation()
+  const { mutate: updateComment } = useCommentUpdateMutation()
   const { mutate: deleteReply } = useCommentReplyDeleteMutation()
-  const updateCommentReply = useRFStore((state) => state.updateCommentReply)
+
+  function isCommentNode(
+    data: CommentReplyOutputType | CreateCommentOutputType,
+  ): data is CreateCommentOutputType {
+    return (
+      (data as CreateCommentOutputType).x !== undefined &&
+      (data as CreateCommentOutputType).y !== undefined
+    )
+  }
 
   const scrollTo = (el: HTMLDivElement) => {
     if (el) {
@@ -37,29 +55,52 @@ const CommentReplyItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
     }
   }
 
-  const handleOpenEdit = () => {
-    setContent(data.content)
-  }
-
   const handleCloseEdit = () => {
     setContent(null)
   }
+
+  useOnClickOutside(ref, handleCloseEdit)
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event?.target.value)
   }
 
   const handleSaveContentChange = () => {
-    updateCommentReply(data.id, content as string, data.comment_id)
+    if (isCommentNode(data)) {
+      const comment = {
+        id: data.id,
+        content: content as string,
+        x: data.x,
+        y: data.y,
+      }
+      updateComment(comment)
+    } else {
+      const comment = {
+        id: data.id,
+        content: content as string,
+      }
+      updateReply(comment)
+    }
+    handleCloseEdit()
   }
 
   const handleDeleteCommentReply = () => {
-    deleteReply(data)
+    deleteReply({ id: data.id })
   }
 
-  const ref = useRef(null)
+  const [activePoper, setActivePoper] = useState<null | HTMLButtonElement>()
 
-  useOnClickOutside(ref, handleCloseEdit)
+  const handleOpenPoper = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setActivePoper(event.currentTarget)
+  }
+  const handleClosePoper = () => {
+    setActivePoper(null)
+  }
+
+  const handleOpenEdit = () => {
+    setContent(data.content)
+    handleClosePoper()
+  }
 
   return (
     <Stack p={2} bgcolor="base.white" ref={isLast ? scrollTo : undefined}>
@@ -83,9 +124,37 @@ const CommentReplyItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
           </Typography>
 
           {session?.user.id === data.author_id && (
-            <ButtonAction onClick={handleOpenEdit}>
-              <Image src={MenuIcon} alt="menu icon" />
-            </ButtonAction>
+            <Stack>
+              <ButtonAction onClick={handleOpenPoper}>
+                <Image src={MenuIcon} alt="menu icon" />
+              </ButtonAction>
+              <Popover
+                open={!!activePoper}
+                anchorEl={activePoper}
+                onClose={handleClosePoper}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: -14,
+                }}
+                PaperProps={{
+                  style: {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    borderRadius: 0,
+                  },
+                }}
+              >
+                <Arrow />
+                <Stack borderRadius={0.5} overflow="hidden">
+                  <ButtonMenu onClick={handleOpenEdit}>{t('edit_comment')}</ButtonMenu>
+                  {!isCommentNode(data) && (
+                    <ButtonMenu onClick={handleDeleteCommentReply}>
+                      {t('delete_comment')}
+                    </ButtonMenu>
+                  )}
+                </Stack>
+              </Popover>
+            </Stack>
           )}
         </Stack>
       </Stack>

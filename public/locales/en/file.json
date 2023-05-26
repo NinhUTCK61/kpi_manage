@@ -22,5 +22,6 @@
   "edit_comment": "Edit comment",
   "cancel": "Cancel",
   "save": "Save",
-  "enter_comment": "Add a comment"
+  "enter_comment": "Add a comment",
+  "delete_comment": "Delete comment"
 }
