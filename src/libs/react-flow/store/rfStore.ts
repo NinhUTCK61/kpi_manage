@@ -189,9 +189,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           nodeFocused = node
         }
 
-        set({
-          nodeFocused,
-        })
+        set({ nodeFocused })
 
         if (!node) {
           get().removeEmptyNode()
