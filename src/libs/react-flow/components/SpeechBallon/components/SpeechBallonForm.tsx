@@ -1,7 +1,7 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
-import { FormEvent, useEffect } from 'react'
+import { FocusEvent, FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
@@ -82,6 +82,11 @@ export const SpeechBallonForm: React.FC = () => {
     handleSetEditing(false)
   }
 
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    const length = e.target.value.length
+    e.target.setSelectionRange(length, length)
+  }
+
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <form onSubmit={handleSubmit}>
@@ -92,6 +97,7 @@ export const SpeechBallonForm: React.FC = () => {
           maxRows={5}
           name="text"
           autoComplete="off"
+          onFocus={handleFocus}
         />
       </form>
     </ClickAwayListener>
