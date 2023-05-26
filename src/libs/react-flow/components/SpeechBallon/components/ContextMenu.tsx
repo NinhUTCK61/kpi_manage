@@ -1,12 +1,10 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
+import { RFStore } from '@/libs/react-flow/types'
 import { MenuProps } from '@mui/material'
-import { SpeechBallon } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import { shallow } from 'zustand/shallow'
 import { Menu, MenuItem } from '../../KPINode/components/styled'
-import { isDataKPISpeechBallon } from '../../SpeechBallon/helper/utils'
 import { useSpeechBallonContext } from '../context'
 
 export enum CtxMenuType {
@@ -23,14 +21,11 @@ type ContextMenuItem = {
 
 export type CtxMenuProps = MenuProps & {
   disabledMenu?: CtxMenuType[]
-  data?: SpeechBallonNodeType
-  parentType?: string
 }
 
 const storeSelector = (state: RFStore) => ({
   setNodeFocused: state.setNodeFocused,
   nodeFocused: state.nodeFocused,
-  setTypeContext: state.setTypeContext,
   setContextMenu: state.setContainer,
   nodes: state.nodes,
 })
@@ -43,8 +38,8 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
 }) => {
   const { t } = useTranslation(['file'])
 
-  const { setNodeFocused, setTypeContext, nodes } = useRFStore(storeSelector, shallow)
-  const { data } = useSpeechBallonContext()
+  const { setNodeFocused, nodes } = useRFStore(storeSelector, shallow)
+  const { data, setTypeContext } = useSpeechBallonContext()
 
   const contextMenuItem: ContextMenuItem[] = [
     {
@@ -86,20 +81,16 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
       anchorReference="anchorPosition"
       anchorPosition={anchorPosition}
     >
-      {contextMenuItem.map((menu, index) => {
-        return !isDataKPISpeechBallon(data as SpeechBallon) && index === 0 ? (
-          ''
-        ) : (
-          <MenuItem
-            key={menu.title}
-            disabled={disabledMenu.includes(menu.type)}
-            isDelete={menu.type === CtxMenuType.Delete}
-            onClick={() => handleMenuSelect(menu.type)}
-          >
-            {menu.title}
-          </MenuItem>
-        )
-      })}
+      {contextMenuItem.map((menu) => (
+        <MenuItem
+          key={menu.title}
+          disabled={disabledMenu.includes(menu.type)}
+          isDelete={menu.type === CtxMenuType.Delete}
+          onClick={() => handleMenuSelect(menu.type)}
+        >
+          {menu.title}
+        </MenuItem>
+      ))}
     </Menu>
   )
 }

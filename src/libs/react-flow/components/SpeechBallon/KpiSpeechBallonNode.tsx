@@ -10,7 +10,12 @@ import { SpeechBallonProvider } from './context'
 type KpiSpeechBallonNodeProps = NodeProps<SpeechBallonNodeType>
 
 const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xPos, yPos }) => {
-  const contextValue = useMemo(() => ({ data, xPos, yPos }), [data, xPos, yPos])
+  const [typeContext, setTypeContext] = useState<string | null>(null)
+
+  const contextValue = useMemo(
+    () => ({ data, xPos, yPos, typeContext, setTypeContext }),
+    [data, xPos, yPos, typeContext, setTypeContext],
+  )
 
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
