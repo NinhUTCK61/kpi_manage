@@ -131,32 +131,24 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ nodes })
         }
       },
-      removeNode(nodeId: string) {
-        let oldNodes = get().nodes
-        let oldEdges = get().edges
-        const d3Node = get().d3Root.find((n) => n.data.id === nodeId)
+      removeNode(nodeId) {
+        const { nodes, edges, d3Root } = get()
+        const nodeToRemove = d3Root.find((n) => n.data.id === nodeId)
 
-        if (!d3Node) return { nodes: oldNodes, edges: oldEdges }
+        if (!nodeToRemove) {
+          return { nodes, edges }
+        }
 
-        // remove children node
-        d3Node.descendants().forEach((n) => {
-          const _node = oldNodes.find((node) => node.id === n.data.id)
+        const nodesToRemove = nodeToRemove.descendants().map((n) => n.data.id)
+        const filteredNodes = nodes.filter((n) => !nodesToRemove.includes(n.id))
+        const filteredEdges = edges.filter(
+          (e) => !nodesToRemove.includes(e.source) && !nodesToRemove.includes(e.target),
+        )
 
-          if (_node) {
-            oldNodes = oldNodes.filter((node) => node.id !== n.data.id)
-            oldEdges = oldEdges.filter(
-              (edge) => edge.source !== n.data.id && edge.target !== n.data.id,
-            )
-          }
-        })
+        const newNodes = reLayout(filteredNodes)
+        set({ nodes: newNodes, edges: filteredEdges })
 
-        const _nodes = oldNodes.filter((n) => n.id !== nodeId)
-        const edges = rmEdges(oldEdges, nodeId)
-
-        const nodes = reLayout(_nodes)
-        set({ nodes, edges })
-
-        return { nodes: _nodes, edges }
+        return { nodes: newNodes, edges: filteredEdges }
       },
       removeEdgeByNodeId(nodeId) {
         const oldEdges = get().edges
@@ -308,39 +300,23 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       //function zoom
       handleZoom(isZoomIn) {
-        const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+        const zoomValues = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+        const currentZoom = get().zoom
+        const index = zoomValues.indexOf(currentZoom)
+        const newIndex = isZoomIn ? index + 1 : index - 1
 
-        let _zoomValue = get().zoom
-
-        for (
-          let i = isZoomIn ? 0 : list_value_zoom.length - 1;
-          isZoomIn ? i < list_value_zoom.length : i >= 0;
-          isZoomIn ? i++ : i--
-        ) {
-          const value = list_value_zoom[i]
-          if (!value) return
-          if (isZoomIn) {
-            if (value > _zoomValue) {
-              _zoomValue = value
-              break
-            }
-          } else {
-            if (value < _zoomValue) {
-              _zoomValue = value
-              break
-            }
-          }
+        if (newIndex < 0 || newIndex >= zoomValues.length) {
+          return
         }
 
-        set({ zoom: _zoomValue })
+        const newZoom = zoomValues[newIndex]
+        set({ zoom: newZoom })
       },
       scrollZoom(isZoomIn) {
-        const _zoom = get().zoom * 100
-        if (isZoomIn) {
-          set({ zoom: (_zoom <= 200 ? _zoom + 5 : _zoom) / 100 })
-        } else {
-          set({ zoom: (_zoom >= 10 ? _zoom - 5 : _zoom) / 100 })
-        }
+        const { zoom } = get()
+        const newZoom = isZoomIn ? zoom + 0.05 : zoom - 0.05
+        const clampedZoom = Math.min(Math.max(newZoom, 0.1), 2)
+        set({ zoom: clampedZoom })
       },
       setZoom(zoom) {
         set({ zoom })
