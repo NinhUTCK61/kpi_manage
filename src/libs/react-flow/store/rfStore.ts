@@ -223,11 +223,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeShapeType(shape) {
         set({ shape })
       },
-
-      setTypeContext(typeContext) {
-        set({ typeContext })
-      },
-
       // comment node
       addComment(node) {
         const _nodes = get().nodes

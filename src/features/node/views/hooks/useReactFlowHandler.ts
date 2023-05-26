@@ -3,6 +3,7 @@ import {
   ReactFlowNodeData,
   isEmptyKPINodeForm,
   isReactFlowKPINode,
+  isReactFlowKPISpeechBallon,
   useNodeDeleteMutation,
   useRFStore,
 } from '@/libs/react-flow'
@@ -120,8 +121,11 @@ export const useReactFlowHandler = () => {
       if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
         removeEmptyNode()
       }
+      if (isReactFlowKPISpeechBallon(node)) {
+        setNodeFocused(node)
+      }
     },
-    [removeEmptyNode],
+    [removeEmptyNode, setNodeFocused],
   )
 
   return {

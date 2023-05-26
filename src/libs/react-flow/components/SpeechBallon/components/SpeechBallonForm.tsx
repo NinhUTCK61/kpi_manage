@@ -16,17 +16,12 @@ type SpeechBallonFormProps = {
 const storeSelector = (state: RFStore) => ({
   removeSpeechBallon: state.removeSpeechBallon,
   nodeFocused: state.nodeFocused,
-  typeContext: state.typeContext,
-  setTypeContext: state.setTypeContext,
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { data, xPos, yPos } = useSpeechBallonContext()
+  const { data, xPos, yPos, typeContext, setTypeContext } = useSpeechBallonContext()
 
-  const { removeSpeechBallon, nodeFocused, typeContext, setTypeContext } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
