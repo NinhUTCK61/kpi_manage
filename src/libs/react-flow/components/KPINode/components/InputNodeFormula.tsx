@@ -25,11 +25,17 @@ function InputNodeFormula<T extends FieldValues>({
       <InputStyled
         mask={[
           {
-            mask: /^\d+$/,
+            mask: Number,
             thousandsSeparator: ',',
+            scale: 3, // digits after point, 0 for integers
+            signed: false, // disallow negative
+            padFractionalZeros: false, // if true, then pads zeros at end to the length of scale
+            normalizeZeros: true, // appends or removes zeros at ends
+            radix: '.', // fractional delimiter
+            mapToRadix: ['.'], // symbols to process as radix
           },
           {
-            mask: /^=[0-9a-z]{0,1000}$/i,
+            mask: /^=[0-9a-f]{0,111111}$/i,
           },
         ]}
         inputRef={ref}
