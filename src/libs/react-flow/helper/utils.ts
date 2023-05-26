@@ -2,7 +2,7 @@ import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith } from 'lodash'
 import { Node as RFNode } from 'reactflow'
 import { NodeFormProps } from '../components'
-import { KPINodeType, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { KPINodeType, ReactFlowKPINode, ReactFlowNode, ReactFlowSpeechBallonNode } from '../types'
 
 export function isEmptyKPINodeForm(node: KPINodeType | NodeFormProps) {
   return !node.input_title && !node.input_value && !node.unit
@@ -10,6 +10,10 @@ export function isEmptyKPINodeForm(node: KPINodeType | NodeFormProps) {
 
 export function isReactFlowKPINode(node: RFNode): node is ReactFlowKPINode {
   return node.type === 'kpi'
+}
+
+export function isReactFlowKPISpeechBallon(node: RFNode): node is ReactFlowSpeechBallonNode {
+  return node.type === 'speech_ballon'
 }
 
 export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {

@@ -223,6 +223,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeShapeType(shape) {
         set({ shape })
       },
+
+      setTypeContext(typeContext) {
+        set({ typeContext })
+      },
+
       // comment node
       addComment(node) {
         const _nodes = get().nodes
@@ -281,7 +286,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
         set({ nodes })
       },
-
+      updateSpeechBallon(node) {
+        const nodes = get().nodes
+        const nodeFound = nodes.filter((nodeItem) => {
+          return nodeItem.id !== node.id
+        })
+        if (!nodeFound.length) return
+        nodeFound.push(node)
+        console.log(nodeFound, 'DATATATATA')
+        set({
+          nodes: [...nodes],
+        })
+      },
       //function zoom
       handleZoom(isZoomIn) {
         const list_value_zoom = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]

@@ -29,12 +29,15 @@ export type RFStore = {
   getKPINodeById: (id: string) => ReactFlowNode | null
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
+  setTypeContext: (type: string | null) => void
+  typeContext: string | null
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
   removeEmptySpeechBallon: () => void
   nodeCopy: ReactFlowNode | null
   setNodeCopy: (node: string | null) => void
+  updateSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   removeComment: (commentId: string) => void

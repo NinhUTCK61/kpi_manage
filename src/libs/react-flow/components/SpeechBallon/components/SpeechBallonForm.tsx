@@ -1,26 +1,43 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
 import { FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { shallow } from 'zustand/shallow'
+import { CtxMenuType } from '../../KPINode/components/ContextMenu'
 import { useSpeechBallonContext } from '../context'
-import { useSpeechBallonCreateMutation } from '../hooks'
+import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 
 type SpeechBallonFormProps = {
   text: string
 }
 
+const storeSelector = (state: RFStore) => ({
+  removeSpeechBallon: state.removeSpeechBallon,
+  nodeFocused: state.nodeFocused,
+  typeContext: state.typeContext,
+  setTypeContext: state.setTypeContext,
+})
+
 export const SpeechBallonForm: React.FC = () => {
   const { data, xPos, yPos } = useSpeechBallonContext()
-  const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
+
+  const { removeSpeechBallon, nodeFocused, typeContext, setTypeContext } = useRFStore(
+    storeSelector,
+    shallow,
+  )
+
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: data.text,
     },
   })
-  const { mutate: create } = useSpeechBallonCreateMutation()
 
-  const isEditing = !data.text
+  const { mutate: create } = useSpeechBallonCreateMutation()
+  const { mutate: update } = useUpdateSpeechBallonMutation()
+
+  const isEditing = !data.text || (nodeFocused?.id === data.id && typeContext === CtxMenuType.Edit)
 
   useEffect(() => {
     setTimeout(() => {
@@ -44,7 +61,19 @@ export const SpeechBallonForm: React.FC = () => {
       text: getValues().text,
     }
 
+    if (typeContext === CtxMenuType.Edit) {
+      handleUpdate(createData)
+      return
+    }
     create(createData)
+  }
+
+  const handleUpdate = ({ updated_at, ...data }: SpeechBallonNodeType) => {
+    console.log('update', data)
+    if (nodeFocused?.id === data.id && nodeFocused?.type === 'speech_ballon') {
+      update(data)
+    }
+    setTypeContext(null)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
