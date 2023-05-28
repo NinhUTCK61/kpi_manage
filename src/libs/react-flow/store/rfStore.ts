@@ -295,7 +295,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
             }
           }
         })
-
         set({ nodes: nodes })
       },
       //function zoom

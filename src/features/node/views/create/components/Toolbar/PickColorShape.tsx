@@ -18,7 +18,7 @@ import { useReactFlowUpdateNode } from '../../../hooks'
 const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
 
-  const [pickColor, setPickColor] = useState<string>(customPrimary[700])
+  const [pickColor, setPickColor] = useState<string>(customPrimary[600])
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
