@@ -1,4 +1,3 @@
-import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
 import Image from 'next/image'
@@ -17,7 +16,6 @@ import { ViewportAction } from './ViewportAction'
 const TOOLBAR_HEIGHT = 60
 
 export const ToolbarInner: React.FC = () => {
-  const viewportAction = useRFStore((state) => state.viewportAction)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   return (
@@ -49,7 +47,7 @@ export const ToolbarInner: React.FC = () => {
           direction="row"
           alignItems="center"
           sx={{
-            ...(viewportAction !== ViewPortAction.SpeechBallon && {
+            ...(nodeFocused?.type !== 'speech_ballon' && {
               opacity: 0.3,
               pointerEvents: 'none',
             }),

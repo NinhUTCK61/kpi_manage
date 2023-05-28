@@ -1,9 +1,10 @@
-import { useNodeUpdateMutation, useRFStore } from '@/libs/react-flow'
+import { useRFStore } from '@/libs/react-flow'
 import { MenuItem } from '@/libs/shared/components'
 import { InputBase, Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down_select.svg'
 import { useEffect, useMemo, useState } from 'react'
+import { useReactFlowUpdateNode } from '../../../hooks'
 
 const fontSizes = [
   {
@@ -41,14 +42,14 @@ const DEFAULT_FONT_SIZE = '15px'
 const ChooseFontSize: React.FC = () => {
   const [fontSize, setFontSize] = useState<string>(DEFAULT_FONT_SIZE)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const updateNode = useRFStore((state) => state.updateKPINode)
-  const { mutate: update } = useNodeUpdateMutation()
 
   const nodeFocusedMemo = useMemo(() => {
-    if (nodeFocused?.type !== 'kpi') return
+    if (nodeFocused?.type !== 'kpi' && nodeFocused?.type !== 'speech_ballon') return
 
     return nodeFocused
   }, [nodeFocused])
+
+  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -62,29 +63,13 @@ const ChooseFontSize: React.FC = () => {
   const handleFontSizeChange = (event: SelectChangeEvent<unknown>) => {
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    const oldValue = fontSize
+
     const value = event.target.value as string
     setFontSize(value)
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
 
-    // Case the node has not been saved to the database
-    if (!nodeFocusedMemo.data.is_saved) {
-      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
-      return
-    }
-
-    update(
-      {
-        id: nodeFocusedMemo.id,
-        node_style: newNodeStyle,
-      },
-      {
-        onError() {
-          setFontSize(oldValue)
-        },
-      },
-    )
+    handleValidType(newNodeStyle)
   }
 
   return (
