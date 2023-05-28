@@ -8,6 +8,7 @@ import EditorLeftActive from 'public/assets/svgs/editor_left_active.svg'
 import EditorRight from 'public/assets/svgs/editor_right.svg'
 import EditorRightActive from 'public/assets/svgs/editor_right_active.svg'
 import { useEffect, useMemo, useState } from 'react'
+import { useReactFlowUpdateNode } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -34,10 +35,10 @@ const ChooseStyleAlignText: React.FC = () => {
   const viewportAction = useRFStore((state) => state.viewportAction)
 
   const nodeFocusedMemo = useMemo(() => {
-    if (nodeFocused?.type !== 'kpi') return
-
-    return nodeFocused
+    if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
+
+  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -52,9 +53,17 @@ const ChooseStyleAlignText: React.FC = () => {
   }, [nodeFocusedMemo])
 
   const handleChangeTextAlign = (value: TextAlign) => {
+    if (!nodeFocusedMemo) return
     setTextAlign(textAlign !== value ? value : TextAlign.Unset)
-  }
 
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
+    const newNodeStyle = JSON.stringify({
+      ...nodeStyle,
+      textAlign: value,
+    })
+    handleValidType(newNodeStyle)
+  }
   const isShowForSpeech = viewportAction === ViewPortAction.SpeechBallon
 
   return (

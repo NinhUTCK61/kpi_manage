@@ -1,11 +1,13 @@
 import { FontStyle, FontWeight, StyleText, ViewPortAction } from '@/features/node/constant'
-import { useNodeUpdateMutation, useRFStore } from '@/libs/react-flow'
+import { useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorBoldActive from 'public/assets/svgs/editor_bold_active.svg'
 import EditorItalic from 'public/assets/svgs/editor_italic.svg'
 import EditorItalicActive from 'public/assets/svgs/editor_italic_active.svg'
 import { useEffect, useMemo, useState } from 'react'
+
+import { useReactFlowUpdateNode } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -31,8 +33,6 @@ const ChooseStyleText: React.FC = () => {
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const viewportAction = useRFStore((state) => state.viewportAction)
-  const updateNode = useRFStore((state) => state.updateKPINode)
-  const { mutate: update } = useNodeUpdateMutation()
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
@@ -56,6 +56,8 @@ const ChooseStyleText: React.FC = () => {
     })
   }, [nodeFocusedMemo])
 
+  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+
   const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
     if (!nodeFocusedMemo) return
 
@@ -67,21 +69,13 @@ const ChooseStyleText: React.FC = () => {
     setStyleText(_styleText)
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
       ..._styleText,
     })
 
-    // Case the node has not been saved to the database
-    if (!nodeFocusedMemo.data.is_saved) {
-      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
-      return
-    }
-
-    update({
-      id: nodeFocusedMemo.id,
-      node_style: newNodeStyle,
-    })
+    handleValidType(newNodeStyle)
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move
