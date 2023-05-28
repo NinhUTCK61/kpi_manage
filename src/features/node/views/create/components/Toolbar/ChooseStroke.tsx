@@ -4,6 +4,8 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import DownIcon from 'public/assets/svgs/arrow_down_select.svg'
 import UpIcon from 'public/assets/svgs/arrow_up_select.svg'
+import { useMemo, useRef } from 'react'
+import { useReactFlowUpdateNode } from '../../../hooks'
 
 const strokes = [
   { value: 1, label: '1px' },
@@ -18,27 +20,51 @@ const ChooseStroke: React.FC = () => {
 
   const stroke = useRFStore((state) => state.stroke)
   const changeShapeStroke = useRFStore((state) => state.changeShapeStroke)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+
+  const nodeFocusedMemo = useMemo(() => {
+    if (nodeFocused?.type !== 'speech_ballon') return
+
+    return nodeFocused
+  }, [nodeFocused])
+
+  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+
+  const value = useRef<number | null>(null)
+
+  const nodeStyle = useMemo(() => {
+    if (!nodeFocusedMemo) return
+    const style = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    value.current = style.stroke
+    return style
+  }, [nodeFocusedMemo])
 
   const handleChangeValueStoke = (isUp?: boolean) => {
     if (!stroke) return
     const _stroke = stroke
-    let value = null
     if (isUp && _stroke < 5) {
-      value = _stroke + 1
+      value.current = _stroke + 1
     }
 
     if (!isUp && _stroke > 1) {
-      value = _stroke - 1
+      value.current = _stroke - 1
     }
-    value && changeShapeStroke(value)
+    value.current && changeShapeStroke(value.current)
+
+    if (value.current === nodeStyle?.stroke) return
+
+    const newNodeStyle = JSON.stringify({ ...nodeStyle, stroke: value.current })
+
+    handleValidType(newNodeStyle)
   }
 
+  console.log(value.current, nodeStyle?.stroke)
   return (
     <Tooltip title={t('stroke')} arrow>
       <Stack spacing={1.5} alignItems="center" direction="row" mr={1.5}>
         <StackBorder direction="row" spacing={1}>
           <Typography variant="body2" width={40}>
-            {strokes.find((e) => e.value === stroke)?.label}
+            {value.current + 'px' || strokes.find((e) => e.value === stroke)?.label}
           </Typography>
 
           <Stack>

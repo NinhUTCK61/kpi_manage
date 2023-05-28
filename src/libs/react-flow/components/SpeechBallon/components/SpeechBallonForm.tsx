@@ -1,3 +1,4 @@
+import { PANE_CLASS_NAME } from '@/libs/react-flow/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
@@ -26,6 +27,8 @@ export const SpeechBallonForm: React.FC = () => {
       text: data.text,
     },
   })
+
+  const style = JSON.parse(data.node_style || '{}')
 
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
@@ -74,8 +77,9 @@ export const SpeechBallonForm: React.FC = () => {
     }
   }
 
-  const handleClickAway = () => {
-    if (!data.text) {
+  const handleClickAway = (event: MouseEvent | TouchEvent) => {
+    const targetClass = (event.target as HTMLDivElement).className
+    if (targetClass === PANE_CLASS_NAME && !data.text) {
       removeSpeechBallon(data.id)
     }
 
@@ -98,10 +102,18 @@ export const SpeechBallonForm: React.FC = () => {
           name="text"
           autoComplete="off"
           onFocus={handleFocus}
+          inputProps={{ style }}
         />
       </form>
     </ClickAwayListener>
   ) : (
-    <InputSpeechBalloon control={control} multiline maxRows={5} name="text" readOnly />
+    <InputSpeechBalloon
+      control={control}
+      multiline
+      maxRows={5}
+      name="text"
+      readOnly
+      inputProps={{ style }}
+    />
   )
 }
