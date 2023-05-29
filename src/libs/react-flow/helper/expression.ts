@@ -5,14 +5,15 @@ const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   const spaceAfterIndex = inputString.indexOf(' ', cursorPosition)
   const startIndex = spaceBeforeIndex + 1
   const endIndex = spaceAfterIndex !== -1 ? spaceAfterIndex : inputString.length
-  const resultString = inputString.substring(startIndex, endIndex)
-  return resultString.replace(/[^a-zA-Z]/g, ' ')
+
+  const resultString = inputString.substring(startIndex, endIndex).replace(/[^a-zA-Z]/g, ' ')
+
+  return { resultString, startIndex, endIndex }
 }
 
 export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
   const inputElement = e.target as HTMLInputElement
   const selectionStart = inputElement.selectionStart
-  console.log('hihi', inputElement.value)
   if (selectionStart && selectionStart >= 1 && selectionStart <= inputElement.value.length) {
     return sliceKeyInsideSpace(inputElement.value.replace(/[^a-zA-Z0-9]/g, ' '), selectionStart)
   }
@@ -29,4 +30,13 @@ export const getSlugFromInputValue = (inputValue: string) => {
   })
 
   return slugs
+}
+
+export const convertFormula = (
+  inputValue: string,
+  valueReplate: string,
+  startIndex: number,
+  endIndex: number,
+) => {
+  return inputValue.substring(0, startIndex) + valueReplate + inputValue.substring(endIndex)
 }

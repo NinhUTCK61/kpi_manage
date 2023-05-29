@@ -1,4 +1,4 @@
-import { charNearCursor } from '@/libs/react-flow/helper/expression'
+import { charNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, Popper, styled } from '@mui/material'
 import { useState } from 'react'
@@ -27,11 +27,23 @@ function InputNodeFormula<T extends FieldValues>({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popper' : undefined
-
+  const [startIndex, setStartIndex] = useState<number>(0)
+  const [endIndex, setEndIndex] = useState<number>(0)
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const value = charNearCursor(e)
+    const data = charNearCursor(e)
+    if (!data) return
     setAnchorEl(e.currentTarget)
-    setValueSelected(value as string)
+    setValueSelected(data.resultString as string)
+    setStartIndex(data.startIndex)
+    setEndIndex(data.endIndex)
+  }
+
+  const handleSelect = (valueSelect: string) => {
+    setAnchorEl(null)
+    setValueSelected('')
+    const newValue = convertFormula(value, valueSelect, startIndex, endIndex)
+    console.log('newValue', newValue)
+    onChange(newValue)
   }
 
   return (
@@ -72,7 +84,7 @@ function InputNodeFormula<T extends FieldValues>({
       />
       {valueSelected && (
         <Popper id={id} open={open} anchorEl={anchorEl}>
-          <SelectNodeSlug value={valueSelected} />
+          <SelectNodeSlug value={valueSelected} handleSelect={handleSelect} />
         </Popper>
       )}
     </InputControlNode>

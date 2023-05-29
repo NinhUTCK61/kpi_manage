@@ -5,9 +5,10 @@ import { IconTop, List, ListItem, Paper } from './styled'
 
 type SelectNodeSlugProps = {
   value: string
+  handleSelect: (value: string) => void
 }
 
-const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({ value }) => {
+const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({ value, handleSelect }) => {
   const templateId = useRFStore((state) => state.templateId)
   const slug = value.replaceAll(' ', '').toUpperCase() //validate slug
   const { data } = api.node.searchSlug.useQuery(
@@ -27,7 +28,7 @@ const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({ value }) => {
         <IconTop />
         <List>
           {data.map((node, index) => (
-            <ListItem disablePadding key={index}>
+            <ListItem disablePadding key={index} onClick={() => handleSelect(node.slug)}>
               <ListItemButton sx={{ padding: 2 }}>
                 <Stack direction="row">
                   <Typography width={67} variant="body2" color="base.black">
