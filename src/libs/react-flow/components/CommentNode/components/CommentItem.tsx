@@ -4,25 +4,24 @@ import {
   CommentReplyOutputType,
   CreateCommentOutputType,
 } from '@/libs/schema/comment'
-import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
-import { Box, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import ImageFile from 'public/assets/imgs/file.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { useRef, useState } from 'react'
-import { Arrow, ButtonAction, ButtonMenu, InputStyled } from './styled'
-
-import { Popover } from '@mui/material'
 import { useOnClickOutside } from 'usehooks-ts'
 import {
   useCommentReplyDeleteMutation,
   useCommentReplyUpdateMutation,
   useCommentUpdateMutation,
 } from '../hooks'
+import { CommentAction } from './CommentAction'
+import { MenuAction } from './MenuAction'
+import { BackgroundDefault, ButtonAction, ButtonMenu } from './styled'
+
 type CommentItemProps = {
   data: CommentReplyOutputType | CommentOutputType
   isLast?: boolean
@@ -32,10 +31,12 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const {
     i18n: { language },
   } = useTranslation('home')
-  const { data: session } = useSession()
-  const [content, setContent] = useState<string | null>()
-  const { t } = useTranslation('file')
   const ref = useRef(null)
+  const { t } = useTranslation('file')
+  const { data: session } = useSession()
+  const [content, setContent] = useState<string | null>(null)
+  const [activeMenu, setActiveMenu] = useState<null | HTMLButtonElement>()
+
   const { mutate: updateReply } = useCommentReplyUpdateMutation()
   const { mutate: updateComment } = useCommentUpdateMutation()
   const { mutate: deleteReply } = useCommentReplyDeleteMutation()
@@ -62,7 +63,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   useOnClickOutside(ref, handleCloseEdit)
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(event?.target.value)
+    setContent(event.target.value)
   }
 
   const handleSaveContentChange = () => {
@@ -88,27 +89,37 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
     deleteReply({ id: data.id })
   }
 
-  const [activePoper, setActivePoper] = useState<null | HTMLButtonElement>()
-
-  const handleOpenPoper = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setActivePoper(event.currentTarget)
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setActiveMenu(event.currentTarget)
   }
-  const handleClosePoper = () => {
-    setActivePoper(null)
+
+  const handleCloseMenu = () => {
+    setActiveMenu(null)
   }
 
   const handleOpenEdit = () => {
     setContent(data.content)
-    handleClosePoper()
+    handleCloseMenu()
   }
 
   return (
-    <Stack p={2} bgcolor="base.white" ref={isLast ? scrollTo : undefined}>
+    <Stack
+      p={2}
+      bgcolor="base.white"
+      ref={isLast ? scrollTo : undefined}
+      sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}
+    >
       <Stack direction="row" justifyContent="space-between" mb={1}>
-        <Stack direction="row">
-          <Box mr={1} width={24} height={24} borderRadius="100%">
-            <Image src={data.author.image || ImageFile} alt="file" width={24} height={24} />
-          </Box>
+        <Stack direction="row" spacing={1}>
+          <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
+            {data?.author.image ? (
+              <Image src={data?.author.image} alt="file" width={32} height={32} />
+            ) : (
+              <BackgroundDefault width={24} height={24} justifyContent="center" alignItems="center">
+                <Typography variant="body2">{data?.author.name?.split('')[0]}</Typography>
+              </BackgroundDefault>
+            )}
+          </Stack>
 
           <Typography variant="body2" color={base.black} fontWeight={600}>
             {data.author.name}
@@ -125,63 +136,29 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
 
           {session?.user.id === data.author_id && (
             <Stack>
-              <ButtonAction onClick={handleOpenPoper}>
+              <ButtonAction onClick={handleOpenMenu}>
                 <Image src={MenuIcon} alt="menu icon" />
               </ButtonAction>
-              <Popover
-                open={!!activePoper}
-                anchorEl={activePoper}
-                onClose={handleClosePoper}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: -14,
-                }}
-                PaperProps={{
-                  style: {
-                    backgroundColor: 'transparent',
-                    boxShadow: 'none',
-                    borderRadius: 0,
-                  },
-                }}
-              >
-                <Arrow />
-                <Stack borderRadius={0.5} overflow="hidden">
-                  <ButtonMenu onClick={handleOpenEdit}>{t('edit_comment')}</ButtonMenu>
-                  {!isCommentNode(data) && (
-                    <ButtonMenu onClick={handleDeleteCommentReply}>
-                      {t('delete_comment')}
-                    </ButtonMenu>
-                  )}
-                </Stack>
-              </Popover>
+
+              <MenuAction activeMenu={activeMenu} handleCloseMenu={handleCloseMenu}>
+                <ButtonMenu onClick={handleOpenEdit}>{t('edit_comment')}</ButtonMenu>
+                {!isCommentNode(data) && (
+                  <ButtonMenu onClick={handleDeleteCommentReply}>{t('delete_comment')}</ButtonMenu>
+                )}
+              </MenuAction>
             </Stack>
           )}
         </Stack>
       </Stack>
-      {content ? (
-        <Stack direction="column" ref={ref}>
-          <InputStyled value={content} onChange={handleChangeContent} multiline maxRows={10} />
 
-          <Stack direction="row" justifyContent="flex-end">
-            <ButtonStyle variant="outlined" sx={{ mr: 1 }} onClick={handleCloseEdit}>
-              {t('cancel')}
-            </ButtonStyle>
-
-            <ButtonStyle variant="contained" onClick={handleSaveContentChange}>
-              {t('save')}
-            </ButtonStyle>
-          </Stack>
-        </Stack>
-      ) : (
-        <Typography
-          variant="body2"
-          color={greyScale[900]}
-          whiteSpace="pre-line"
-          sx={{ wordWrap: 'break-word' }}
-        >
-          {data.content}
-        </Typography>
-      )}
+      <CommentAction
+        ref={ref}
+        contentCurrent={data.content}
+        content={content}
+        handleChangeContent={handleChangeContent}
+        handleCloseEdit={handleCloseEdit}
+        handleSaveContentChange={handleSaveContentChange}
+      />
     </Stack>
   )
 }

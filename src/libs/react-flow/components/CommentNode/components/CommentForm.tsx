@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Box, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -11,7 +11,7 @@ import { useReactFlow } from 'reactflow'
 import { z } from 'zod'
 import { useCommentCreateMutation } from '../hooks'
 import { InputComment } from './InputComment'
-import { ButtonSend, CommentFormContainer } from './styled'
+import { ButtonAction, ButtonSendContainer, CommentFormContainer } from './styled'
 import CommentIcon from '/public/assets/svgs/comment_icon.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
@@ -97,10 +97,10 @@ const CommentForm: React.FC = () => {
         horizontal: 'left',
       }}
     >
-      <Stack direction="row" spacing={1} minHeight={48}>
-        <Box mt={1}>
+      <Stack direction="row" spacing={1} alignItems="center" minHeight={48}>
+        <Stack direction="row" alignItems="center">
           <Image src={CommentIcon} alt="comment icon" />
-        </Box>
+        </Stack>
 
         <Stack component="form" position="relative" width={382} onSubmit={handleSubmit}>
           <InputComment
@@ -114,9 +114,11 @@ const CommentForm: React.FC = () => {
             maxRows={10}
           />
 
-          <ButtonSend type="submit">
-            <Image src={SendIcon} alt="send" />
-          </ButtonSend>
+          <ButtonSendContainer direction="row" alignItems="center">
+            <ButtonAction type="submit">
+              <Image src={SendIcon} alt="send" />
+            </ButtonAction>
+          </ButtonSendContainer>
         </Stack>
       </Stack>
     </CommentFormContainer>

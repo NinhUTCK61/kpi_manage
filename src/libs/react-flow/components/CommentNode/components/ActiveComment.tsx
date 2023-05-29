@@ -1,14 +1,15 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Stack, Typography } from '@mui/material'
+import { Popover, Stack, Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CloseIcon from 'public/assets/svgs/close.svg'
 import MenuIcon from 'public/assets/svgs/more.svg'
+import { useState } from 'react'
 import { useCommentNodeContext } from '../context'
 import { useCommentDeleteMutation } from '../hooks'
 import { ListComment } from './ListComment'
-import { ButtonAction, CommentActive, CommentContainer, HeaderComment } from './styled'
+import { ButtonAction, ButtonMenu, CommentActive, CommentContainer, HeaderComment } from './styled'
 
 const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
@@ -25,6 +26,15 @@ const ActiveComment: React.FC = () => {
 
   const handleDeleteComment = () => {
     deleteComment(data)
+  }
+
+  const [activeMenu, setActiveMenu] = useState<HTMLButtonElement | null>()
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setActiveMenu(event.currentTarget)
+  }
+  const handleCloseMenu = () => {
+    setActiveMenu(null)
   }
 
   return (
@@ -50,9 +60,24 @@ const ActiveComment: React.FC = () => {
 
           <Stack spacing={1} direction="row" alignItems="center">
             {session?.user.id === data.author_id && (
-              <ButtonAction onClick={handleDeleteComment}>
-                <Image src={MenuIcon} alt="menu" />
-              </ButtonAction>
+              <Stack>
+                <ButtonAction onClick={handleOpenMenu}>
+                  <Image src={MenuIcon} alt="menu icon" />
+                </ButtonAction>
+                <Popover
+                  open={!!activeMenu}
+                  anchorEl={activeMenu}
+                  onClose={handleCloseMenu}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Stack borderRadius={0.5} overflow="hidden">
+                    <ButtonMenu onClick={handleDeleteComment}>Delete Thread</ButtonMenu>
+                  </Stack>
+                </Popover>
+              </Stack>
             )}
 
             <ButtonAction onClick={handleClose}>

@@ -1,6 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import {
-  CreateCommentRepliesOutputType,
+  CommentReplyOutputType,
   DeleteCommentInputType,
   UpdateCommentInputType,
   UpdateCommentReplyInputType,
@@ -46,9 +46,18 @@ export type RFStore = {
   addComment: (node: ReactFlowCommentNode) => void
   updateComment: (data: UpdateCommentInputType) => void
   removeComment: (commentId: string) => void
-  addCommentReply: (reply: CreateCommentRepliesOutputType) => void
+  getComment: (id: string) => ReactFlowCommentNode | undefined
+  addCommentReply: (
+    reply: CommentReplyOutputType,
+    remove?: CommentReplyOutputType,
+    commentReplyIndex?: number,
+  ) => void
   updateCommentReply: (reply: UpdateCommentReplyInputType & { comment_id: string }) => void
-  removeCommentReply: (reply: DeleteCommentInputType & { comment_id: string }) => void
+  removeCommentReply: (reply: DeleteCommentInputType & { comment_id: string }) => {
+    remove: CommentReplyOutputType | undefined
+    commentReplyIndex: number | undefined
+  }
+  getCommentReply: (id: string, comment_id: string) => CommentReplyOutputType | undefined
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void

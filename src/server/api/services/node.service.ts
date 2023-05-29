@@ -145,6 +145,7 @@ export class NodeService extends NodeHelper {
           include: {
             author: true,
           },
+          orderBy: { created_at: 'asc' },
         },
         author: true,
       },

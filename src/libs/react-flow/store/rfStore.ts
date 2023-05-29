@@ -1,6 +1,8 @@
 import { ViewPortAction } from '@/features/node/constant'
+import { CommentReplyOutputType } from '@/libs/schema/comment'
 import { hierarchy } from 'd3-hierarchy'
 import { produce } from 'immer'
+import { cloneDeep } from 'lodash'
 import {
   Connection,
   EdgeChange,
@@ -245,20 +247,35 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
-      addCommentReply(reply) {
+      getComment(id: string) {
+        const _nodes = get().nodes
+        const nodes = _nodes.find<ReactFlowCommentNode>(
+          (data): data is ReactFlowCommentNode => data.id === id && data.type === 'comment',
+        )
+
+        return nodes
+      },
+      addCommentReply(reply, remove, commentReplyIndex) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
             (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
-          comment?.data?.replies.push(reply)
+
+          if (remove && commentReplyIndex !== undefined) {
+            comment?.data?.replies.splice(commentReplyIndex, 0, remove)
+          } else {
+            comment?.data?.replies.push(reply)
+          }
         })
 
         set({ nodes })
       },
       removeCommentReply(reply) {
         const _nodes = get().nodes
+        let remove: CommentReplyOutputType | undefined
+        let commentReplyIndex: number | undefined
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
@@ -266,29 +283,47 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           )
 
           if (comment) {
-            comment.data.replies = comment.data.replies.filter(
-              (replyComment) => replyComment.id !== reply.id,
-            )
+            commentReplyIndex = comment.data.replies.findIndex((r) => r.id === reply.id)
+
+            if (commentReplyIndex !== -1) {
+              const [_remove] = comment.data.replies.splice(commentReplyIndex, 1)
+              remove = cloneDeep(_remove)
+            }
           }
         })
-        console.log(nodes)
+
         set({ nodes })
+        return { remove, commentReplyIndex }
       },
-      updateCommentReply(reply) {
+      updateCommentReply({ id, comment_id, content }) {
         const _nodes = get().nodes
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === comment_id,
           )
 
           comment?.data.replies.filter((data) => {
-            if (data.id === reply.id) {
-              data.content = reply.content
+            if (data.id === id) {
+              data.content = content
             }
           })
         })
 
         set({ nodes })
+      },
+      getCommentReply(id: string, comment_id: string) {
+        let prevData
+        const _nodes = get().nodes
+
+        const comment = _nodes.find<ReactFlowCommentNode>(
+          (cmt): cmt is ReactFlowCommentNode => cmt.type === 'comment' && cmt.id === comment_id,
+        )
+
+        if (comment) {
+          prevData = comment.data.replies.find((el) => el.id === id)
+        }
+
+        return prevData
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {
