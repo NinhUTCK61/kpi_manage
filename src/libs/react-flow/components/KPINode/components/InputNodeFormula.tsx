@@ -14,6 +14,7 @@ function InputNodeFormula<T extends FieldValues>({
   label,
   controlProps,
   required,
+  ...props
 }: InputNodeProps<T>) {
   const {
     field: { ref, value, onChange, ...inputProps },
@@ -44,7 +45,7 @@ function InputNodeFormula<T extends FieldValues>({
           onChange(value)
         }}
         onChange={() => undefined}
-        overwrite
+        style={props?.inputProps?.style || {}}
         {...inputProps}
       />
     </InputControlNode>
