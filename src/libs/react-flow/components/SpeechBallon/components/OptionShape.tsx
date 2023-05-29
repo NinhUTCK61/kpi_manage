@@ -1,3 +1,4 @@
+import { base, customPrimary } from '@/libs/config/theme'
 import { styled } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useSpeechBallonContext } from '../context'
@@ -5,31 +6,40 @@ import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
   const { data } = useSpeechBallonContext()
+
   const style = JSON.parse(data.node_style || '{}')
+
   const stroke = useMemo(() => {
     return style.stroke || 1
   }, [style.stroke])
 
+  const isFill = data.stroke === 'Fill'
+
+  const conventionBg = style.background || customPrimary[700]
+
+  const color = style.color || base.black
   return (
     <MuiOptionShapeType
-      sx={{
+      sx={(theme) => ({
         ...style,
-        border: `${stroke}px solid ${style.color}`,
-      }}
+        color,
+        border: !isFill && `${stroke}px solid ${conventionBg}`,
+        background: isFill ? conventionBg : theme.palette.base.white,
+      })}
     >
       <SpeechBallonForm />
       <Arrow
         sx={(theme) => ({
-          borderTop: `20px solid ${style.background || theme.palette.customPrimary[600]}`,
+          borderTop: `20px solid ${isFill ? conventionBg : theme.palette.base.white}`,
           ' &:before': {
             content: '""',
-            top: `-${23 - stroke}px`,
+            top: `-${20 - stroke}px`,
             left: '50%',
             transform: 'translateX(-50%)',
             position: 'absolute',
             borderLeft: `${12 + stroke}px solid transparent`,
             borderRight: `${12 + stroke}px solid transparent`,
-            borderTop: `${20 + stroke}px solid ${style.color}`,
+            borderTop: `${20 + stroke}px solid ${style.background}`,
             zIndex: -1,
           },
         })}
@@ -39,7 +49,6 @@ export const OptionShape: React.FC = () => {
 }
 
 const MuiOptionShapeType = styled('div')(({ theme }) => ({
-  background: theme.palette.customPrimary[600],
   minWidth: 210,
   padding: '6px 12px',
   borderRadius: 12,

@@ -28,7 +28,8 @@ export const SpeechBallonForm: React.FC = () => {
     },
   })
 
-  const style = JSON.parse(data.node_style || '{}')
+  let style = JSON.parse(data.node_style || '{}')
+  style = { ...style, background: 'inherit' }
 
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()

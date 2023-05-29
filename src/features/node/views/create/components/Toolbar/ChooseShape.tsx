@@ -1,6 +1,6 @@
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
-import { Select as MuiSelect, SelectChangeEvent, Stack, Tooltip, styled } from '@mui/material'
+import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
@@ -23,24 +23,20 @@ const ChooseShape: React.FC = () => {
   const changeShape = useRFStore((state) => state.changeShapeType)
 
   return (
-    <Tooltip title={t('shape')} arrow>
-      <Stack direction="row" alignItems="center" spacing={1.5}>
-        <Select
-          value={shape}
-          onChange={(event: SelectChangeEvent<unknown>) =>
-            changeShape(event.target.value as string)
-          }
-          input={<CustomInput />}
-          IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
-        >
-          {shapes.map((item) => (
-            <MenuItem key={item.value} value={item.value} sx={{ width: 72 }}>
-              <Image alt="shape" src={item.icon} />
-            </MenuItem>
-          ))}
-        </Select>
-      </Stack>
-    </Tooltip>
+    <Stack direction="row" alignItems="center" spacing={1.5}>
+      <Select
+        value={shape}
+        onChange={(event: SelectChangeEvent<unknown>) => changeShape(event.target.value as string)}
+        input={<CustomInput />}
+        IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
+      >
+        {shapes.map((item) => (
+          <MenuItem key={item.value} value={item.value} sx={{ width: 72 }}>
+            <Image alt="shape" src={item.icon} />
+          </MenuItem>
+        ))}
+      </Select>
+    </Stack>
   )
 }
 
