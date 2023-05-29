@@ -54,8 +54,20 @@ export const useReactFlowUpdateNode = (
         break
     }
   }
-
+  const handleUpdateStroke = (typeLayout: string) => {
+    if (!nodeFocusedMemo) return
+    const data = { ...nodeFocusedMemo.data, stroke: typeLayout }
+    nodeFocusedMemo.data = data
+    updateSpeechBallon(data)
+    setNodeFocused(nodeFocusedMemo)
+    if (nodeFocusedMemo.data.is_saved) {
+      updateSbApi({
+        id: nodeFocusedMemo?.id as string,
+      })
+    }
+  }
   return {
     handleValidType,
+    handleUpdateStroke,
   }
 }

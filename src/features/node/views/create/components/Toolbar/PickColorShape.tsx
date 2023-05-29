@@ -18,7 +18,7 @@ import { useReactFlowUpdateNode } from '../../../hooks'
 const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
 
-  const [pickColor, setPickColor] = useState<string>(customPrimary[600])
+  const [pickColor, setPickColor] = useState<string>(customPrimary[700])
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
@@ -38,11 +38,11 @@ const PickColorShape: React.FC = () => {
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
-      setPickColor(customPrimary[600])
+      setPickColor(customPrimary[700])
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       isNewFocusNode.current = true
-      setPickColor(nodeStyle.background || customPrimary[600])
+      setPickColor(nodeStyle.background || customPrimary[700])
     }
   }, [nodeFocusedMemo])
 
