@@ -74,7 +74,7 @@ const ActiveComment: React.FC = () => {
                   }}
                 >
                   <Stack borderRadius={0.5} overflow="hidden">
-                    <ButtonMenu onClick={handleDeleteComment}>Delete Thread</ButtonMenu>
+                    <ButtonMenu onClick={handleDeleteComment}>{t('delete_thread')}</ButtonMenu>
                   </Stack>
                 </Popover>
               </Stack>
