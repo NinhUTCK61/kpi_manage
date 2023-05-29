@@ -1,8 +1,11 @@
-import { base, greyScale, red } from '@/libs/config/theme'
+import { base, greyScale, red, second } from '@/libs/config/theme'
 import {
   Box,
+  List as MuiList,
+  ListItem as MuiListItem,
   Menu as MuiMenu,
   MenuItem as MuiMenuItem,
+  Paper as MuiPaper,
   Stack,
   SvgIcon,
   SvgIconProps,
@@ -136,6 +139,40 @@ function NodeIcon(props: SvgIconProps) {
   )
 }
 
+const Paper = styled(MuiPaper)({
+  borderRadius: 12,
+  position: 'absolute',
+  bottom: -45,
+  transform: 'translate(-25%,100%)',
+})
+
+const List = styled(MuiList)(({ theme }) => ({
+  maxHeight: 270,
+  width: 262,
+  zIndex: 2,
+  overflow: 'auto',
+  borderRadius: 12,
+  background: theme.palette.common.white,
+}))
+
+const IconTop = styled(Stack)({
+  position: 'absolute',
+  top: 5,
+  left: '5%',
+  transform: 'translateY(-50%)',
+  width: 24,
+  height: 24,
+  background: second[0],
+  borderRadius: '40px',
+  // zIndex: -1,
+})
+
+const ListItem = styled(MuiListItem)(({ theme }) => ({
+  '&:hover': {
+    background: theme.palette.customPrimary[0],
+  },
+}))
+
 export {
   LeftHandler,
   BottomHandler,
@@ -150,4 +187,8 @@ export {
   MenuItem,
   StackError,
   NodeIcon,
+  Paper,
+  List,
+  ListItem,
+  IconTop,
 }
