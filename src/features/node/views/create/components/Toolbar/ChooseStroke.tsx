@@ -30,12 +30,12 @@ const ChooseStroke: React.FC = () => {
 
   const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
 
-  const value = useRef<number | null>(null)
+  const value = useRef<number>(1)
 
   const nodeStyle = useMemo(() => {
     if (!nodeFocusedMemo) return
     const style = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    value.current = style.stroke
+    value.current = style.stroke || 1
     return style
   }, [nodeFocusedMemo])
 
@@ -58,7 +58,6 @@ const ChooseStroke: React.FC = () => {
     handleValidType(newNodeStyle)
   }
 
-  console.log(value.current, nodeStyle?.stroke)
   return (
     <Tooltip title={t('stroke')} arrow>
       <Stack spacing={1.5} alignItems="center" direction="row" mr={1.5}>

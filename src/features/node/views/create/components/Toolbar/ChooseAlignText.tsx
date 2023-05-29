@@ -32,7 +32,6 @@ const editors = [
 const ChooseStyleAlignText: React.FC = () => {
   const [textAlign, setTextAlign] = useState<TextAlign>(TextAlign.Unset)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const viewportAction = useRFStore((state) => state.viewportAction)
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
