@@ -1,12 +1,13 @@
 import { api } from '@/libs/api'
+import { getCommentReply } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { useTranslation } from 'react-i18next'
 
 const useCommentReplyUpdateMutation = () => {
   const utils = api.useContext()
   const updateCommentReply = useRFStore((state) => state.updateCommentReply)
-  const getCommentReply = useRFStore((state) => state.getCommentReply)
+  const nodes = useRFStore((state) => state.nodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { t } = useTranslation('common')
 
@@ -14,9 +15,9 @@ const useCommentReplyUpdateMutation = () => {
     onMutate(variables) {
       if (nodeFocused) {
         const comment_id = nodeFocused.id
+        const prevData = getCommentReply(nodes, variables.id, comment_id)
         updateCommentReply({ ...variables, comment_id })
 
-        const prevData = getCommentReply(variables.id, comment_id)
         return { prevData }
       }
     },
@@ -26,9 +27,9 @@ const useCommentReplyUpdateMutation = () => {
       })
       if (ctx?.prevData) {
         const data = {
-          id: ctx?.prevData.id,
-          comment_id: ctx?.prevData.comment_id,
-          content: ctx?.prevData.content,
+          id: ctx.prevData.id,
+          comment_id: ctx.prevData.comment_id,
+          content: ctx.prevData.content,
         }
         updateCommentReply(data)
       }

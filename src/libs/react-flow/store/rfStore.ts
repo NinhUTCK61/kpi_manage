@@ -234,28 +234,20 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
-      updateComment(CommentNode) {
+      updateComment(commentNode) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === CommentNode?.id,
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentNode.id,
           )
 
-          if (comment) comment.data = { ...comment?.data, ...CommentNode }
+          if (comment) comment.data = { ...comment.data, ...commentNode }
         })
 
         set({ nodes })
       },
-      getComment(id: string) {
-        const _nodes = get().nodes
-        const nodes = _nodes.find<ReactFlowCommentNode>(
-          (data): data is ReactFlowCommentNode => data.id === id && data.type === 'comment',
-        )
-
-        return nodes
-      },
-      addCommentReply(reply, remove, commentReplyIndex) {
+      addCommentReply(reply, commentReplyIndex) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
@@ -263,10 +255,10 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
             (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
 
-          if (remove && commentReplyIndex !== undefined) {
-            comment?.data?.replies.splice(commentReplyIndex, 0, remove)
+          if (commentReplyIndex !== undefined) {
+            comment?.data.replies.splice(commentReplyIndex, 0, reply)
           } else {
-            comment?.data?.replies.push(reply)
+            comment?.data.replies.push(reply)
           }
         })
 
@@ -310,20 +302,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
 
         set({ nodes })
-      },
-      getCommentReply(id: string, comment_id: string) {
-        let prevData
-        const _nodes = get().nodes
-
-        const comment = _nodes.find<ReactFlowCommentNode>(
-          (cmt): cmt is ReactFlowCommentNode => cmt.type === 'comment' && cmt.id === comment_id,
-        )
-
-        if (comment) {
-          prevData = comment.data.replies.find((el) => el.id === id)
-        }
-
-        return prevData
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode) {

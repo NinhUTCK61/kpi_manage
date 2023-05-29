@@ -1,5 +1,4 @@
-import { useRFStore } from '@/libs/react-flow/hooks'
-import { Popover, Stack, Typography } from '@mui/material'
+import { ClickAwayListener, Popper, Stack, Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -13,35 +12,32 @@ import { ButtonAction, ButtonMenu, CommentActive, CommentContainer, HeaderCommen
 
 const ActiveComment: React.FC = () => {
   const { t } = useTranslation('file')
-  const { active, handleSetActive } = useCommentNodeContext()
+  const { commentAnchor, handleSetCommentAnchor } = useCommentNodeContext()
   const { data: session } = useSession()
   const { data } = useCommentNodeContext()
   const { mutate: deleteComment } = useCommentDeleteMutation()
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+  const [menuAnchor, setMenuAnchor] = useState<HTMLButtonElement | null>()
 
-  const handleClose = () => {
-    handleSetActive(null)
-    setNodeFocused(null)
+  const handleCloseComment = () => {
+    handleSetCommentAnchor(null)
   }
 
   const handleDeleteComment = () => {
     deleteComment(data)
   }
 
-  const [activeMenu, setActiveMenu] = useState<HTMLButtonElement | null>()
-
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setActiveMenu(event.currentTarget)
+    setMenuAnchor(event.currentTarget)
   }
   const handleCloseMenu = () => {
-    setActiveMenu(null)
+    setMenuAnchor(null)
   }
 
   return (
     <CommentActive
-      open={!!active}
-      anchorEl={active}
-      onClose={handleClose}
+      open={!!commentAnchor}
+      anchorEl={commentAnchor}
+      onClose={handleCloseComment}
       autoFocus
       anchorOrigin={{
         vertical: 'bottom',
@@ -64,23 +60,17 @@ const ActiveComment: React.FC = () => {
                 <ButtonAction onClick={handleOpenMenu}>
                   <Image src={MenuIcon} alt="menu icon" />
                 </ButtonAction>
-                <Popover
-                  open={!!activeMenu}
-                  anchorEl={activeMenu}
-                  onClose={handleCloseMenu}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                >
-                  <Stack borderRadius={0.5} overflow="hidden">
-                    <ButtonMenu onClick={handleDeleteComment}>{t('delete_thread')}</ButtonMenu>
-                  </Stack>
-                </Popover>
+                <Popper open={!!menuAnchor} anchorEl={menuAnchor} disablePortal sx={{ zIndex: 10 }}>
+                  <ClickAwayListener onClickAway={handleCloseMenu}>
+                    <Stack borderRadius={0.5} overflow="hidden">
+                      <ButtonMenu onClick={handleDeleteComment}>{t('delete_thread')}</ButtonMenu>
+                    </Stack>
+                  </ClickAwayListener>
+                </Popper>
               </Stack>
             )}
 
-            <ButtonAction onClick={handleClose}>
+            <ButtonAction onClick={handleCloseComment}>
               <Image src={CloseIcon} alt="close" />
             </ButtonAction>
           </Stack>

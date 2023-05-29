@@ -36,7 +36,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
 
   const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    if (!getValues().content) {
+    if (!getValues().content.trim()) {
       return
     }
 

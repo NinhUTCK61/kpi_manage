@@ -34,6 +34,15 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
     background: trueGrey[100],
     color: theme.palette.base.black,
     borderRadius: 12,
+    '&::-webkit-scrollbar': {
+      width: 8,
+    },
+    '&::-webkit-scrollbar-track': {
+      background: greyScale[300],
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: greyScale[700],
+    },
   },
   padding: 0,
 }))
@@ -45,6 +54,8 @@ const ButtonAction = styled(Button)({
 
 const ButtonSendContainer = styled(Stack)({
   height: 48,
+  alignItems: 'center',
+  justifyContent: 'center',
   position: 'absolute',
   right: 16,
   bottom: 0,
@@ -66,11 +77,28 @@ const ButtonMenu = styled(ButtonBase)(({ theme }) => ({
   '&::hover': {
     background: theme.palette.base.black,
   },
+  '&.MuiButtonBase-root': {
+    justifyContent: 'flex-start',
+  },
 }))
 
 const BackgroundDefault = styled(Stack)({
   backgroundColor: greyScale[200],
   borderRadius: '100%',
+})
+
+const ListCommentContainer = styled(Box)({
+  maxHeight: 400,
+  overflowY: 'auto',
+  '&::-webkit-scrollbar': {
+    width: 8,
+  },
+  '&::-webkit-scrollbar-track': {
+    background: greyScale[300],
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: greyScale[700],
+  },
 })
 
 export {
@@ -84,4 +112,5 @@ export {
   CommentActive,
   ButtonMenu,
   BackgroundDefault,
+  ListCommentContainer,
 }

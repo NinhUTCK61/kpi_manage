@@ -1,7 +1,7 @@
 import { greyScale } from '@/libs/config/theme'
 import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
 import { Stack, Typography } from '@mui/material'
-import { RefObject } from 'react'
+import { MutableRefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputStyled } from './styled'
 
@@ -10,23 +10,36 @@ type CommentActionType = {
   content: string | null
   handleCloseEdit: () => void
   handleSaveContentChange: () => void
-  contentCurrent: string
-  ref: RefObject<HTMLDivElement>
+  currentContent: string
+  commentRef: MutableRefObject<HTMLDivElement | null>
 }
 
 const CommentAction: React.FC<CommentActionType> = ({
-  ref,
-  contentCurrent,
+  commentRef,
+  currentContent,
   handleChangeContent,
   handleCloseEdit,
   handleSaveContentChange,
   content,
 }) => {
   const { t } = useTranslation('file')
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSaveContentChange()
+    }
+  }
 
   return content !== null ? (
-    <Stack direction="column" ref={ref}>
-      <InputStyled value={content} onChange={handleChangeContent} multiline maxRows={10} />
+    <Stack ref={commentRef}>
+      <InputStyled
+        autoFocus
+        value={content}
+        onChange={handleChangeContent}
+        onKeyDown={handleKeyDown}
+        multiline
+        maxRows={10}
+      />
 
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end" mt={1}>
         <ButtonStyle variant="outlined" onClick={handleCloseEdit} sx={{ mt: 0 }}>
@@ -44,8 +57,9 @@ const CommentAction: React.FC<CommentActionType> = ({
       color={greyScale[900]}
       whiteSpace="pre-line"
       sx={{ wordWrap: 'break-word' }}
+      pr={3}
     >
-      {contentCurrent}
+      {currentContent}
     </Typography>
   )
 }

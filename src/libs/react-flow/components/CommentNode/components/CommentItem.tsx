@@ -1,10 +1,7 @@
 import { base, greyScale } from '@/libs/config/theme'
-import {
-  CommentOutputType,
-  CommentReplyOutputType,
-  CreateCommentOutputType,
-} from '@/libs/schema/comment'
-import { Stack, Typography } from '@mui/material'
+import { isCommentNode } from '@/libs/react-flow/helper'
+import { CommentOutputType, CommentReplyOutputType } from '@/libs/schema/comment'
+import { ClickAwayListener, Popper, Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useSession } from 'next-auth/react'
@@ -19,7 +16,6 @@ import {
   useCommentUpdateMutation,
 } from '../hooks'
 import { CommentAction } from './CommentAction'
-import { MenuAction } from './MenuAction'
 import { BackgroundDefault, ButtonAction, ButtonMenu } from './styled'
 
 type CommentItemProps = {
@@ -31,24 +27,16 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const {
     i18n: { language },
   } = useTranslation('home')
-  const ref = useRef(null)
+  const commentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation('file')
   const { data: session } = useSession()
   const [content, setContent] = useState<string | null>(null)
-  const [activeMenu, setActiveMenu] = useState<null | HTMLButtonElement>()
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>()
+  const isComment = isCommentNode(data)
 
   const { mutate: updateReply } = useCommentReplyUpdateMutation()
   const { mutate: updateComment } = useCommentUpdateMutation()
   const { mutate: deleteReply } = useCommentReplyDeleteMutation()
-
-  function isCommentNode(
-    data: CommentReplyOutputType | CreateCommentOutputType,
-  ): data is CreateCommentOutputType {
-    return (
-      (data as CreateCommentOutputType).x !== undefined &&
-      (data as CreateCommentOutputType).y !== undefined
-    )
-  }
 
   const scrollTo = (el: HTMLDivElement) => {
     if (el) {
@@ -60,28 +48,29 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
     setContent(null)
   }
 
-  useOnClickOutside(ref, handleCloseEdit)
+  useOnClickOutside(commentRef, handleCloseEdit)
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value)
   }
 
   const handleSaveContentChange = () => {
-    if (isCommentNode(data)) {
-      const comment = {
-        id: data.id,
-        content: content as string,
-        x: data.x,
-        y: data.y,
+    if (content?.trim())
+      if (isComment) {
+        const comment = {
+          id: data.id,
+          content: content as string,
+          x: data.x,
+          y: data.y,
+        }
+        updateComment(comment)
+      } else {
+        const comment = {
+          id: data.id,
+          content: content as string,
+        }
+        updateReply(comment)
       }
-      updateComment(comment)
-    } else {
-      const comment = {
-        id: data.id,
-        content: content as string,
-      }
-      updateReply(comment)
-    }
     handleCloseEdit()
   }
 
@@ -90,11 +79,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   }
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setActiveMenu(event.currentTarget)
+    setMenuAnchor(event.currentTarget)
   }
 
   const handleCloseMenu = () => {
-    setActiveMenu(null)
+    setMenuAnchor(null)
   }
 
   const handleOpenEdit = () => {
@@ -140,20 +129,27 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
                 <Image src={MenuIcon} alt="menu icon" />
               </ButtonAction>
 
-              <MenuAction activeMenu={activeMenu} handleCloseMenu={handleCloseMenu}>
-                <ButtonMenu onClick={handleOpenEdit}>{t('edit_comment')}</ButtonMenu>
-                {!isCommentNode(data) && (
-                  <ButtonMenu onClick={handleDeleteCommentReply}>{t('delete_comment')}</ButtonMenu>
-                )}
-              </MenuAction>
+              <Popper open={!!menuAnchor} anchorEl={menuAnchor} disablePortal sx={{ zIndex: 10 }}>
+                <ClickAwayListener onClickAway={handleCloseMenu}>
+                  <Stack borderRadius={0.5} overflow="hidden">
+                    <ButtonMenu onClick={handleOpenEdit}>{t('edit_comment')}</ButtonMenu>
+
+                    {!isComment && (
+                      <ButtonMenu onClick={handleDeleteCommentReply}>
+                        {t('delete_comment')}
+                      </ButtonMenu>
+                    )}
+                  </Stack>
+                </ClickAwayListener>
+              </Popper>
             </Stack>
           )}
         </Stack>
       </Stack>
 
       <CommentAction
-        ref={ref}
-        contentCurrent={data.content}
+        commentRef={commentRef}
+        currentContent={data.content}
         content={content}
         handleChangeContent={handleChangeContent}
         handleCloseEdit={handleCloseEdit}

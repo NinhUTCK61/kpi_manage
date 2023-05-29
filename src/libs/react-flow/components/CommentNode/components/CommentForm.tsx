@@ -55,7 +55,7 @@ const CommentForm: React.FC = () => {
 
   const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    if (!getValues().content) {
+    if (!getValues().content.trim()) {
       return
     }
 
@@ -87,8 +87,8 @@ const CommentForm: React.FC = () => {
   return (
     <CommentFormContainer
       open={open}
-      onClose={handleClose}
       anchorReference="anchorPosition"
+      onClose={handleClose}
       anchorPosition={
         activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
       }
@@ -98,7 +98,7 @@ const CommentForm: React.FC = () => {
       }}
     >
       <Stack direction="row" spacing={1} alignItems="center" minHeight={48}>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" alignItems="center" justifyContent="center">
           <Image src={CommentIcon} alt="comment icon" />
         </Stack>
 
@@ -114,7 +114,7 @@ const CommentForm: React.FC = () => {
             maxRows={10}
           />
 
-          <ButtonSendContainer direction="row" alignItems="center">
+          <ButtonSendContainer>
             <ButtonAction type="submit">
               <Image src={SendIcon} alt="send" />
             </ButtonAction>
