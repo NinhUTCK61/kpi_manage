@@ -1,4 +1,5 @@
-import { Box, Button, InputBase, Popover, Stack, styled } from '@mui/material'
+import { greyScale, trueGrey } from '@/libs/config/theme'
+import { Box, Button, ButtonBase, InputBase, Popover, Stack, styled } from '@mui/material'
 
 const CommentFormContainer = styled(Popover)({
   '.MuiPopover-paper': {
@@ -8,40 +9,42 @@ const CommentFormContainer = styled(Popover)({
   overflowY: 'scroll',
 })
 
-const CommentContainer = styled(Box)(({ theme }) => ({
+const CommentContainer = styled(Box)({
   width: 400,
-  background: theme.palette.trueGrey[50],
+  background: trueGrey[50],
   position: 'relative',
-}))
+})
 
-const HeaderComment = styled(Stack)(({ theme }) => ({
+const HeaderComment = styled(Stack)({
   width: '100%',
-  borderBottom: `1px solid ${theme.palette.greyScale[300]}`,
+  borderBottom: `1px solid ${greyScale[300]}`,
   padding: '0 16px',
   height: 56,
-}))
+})
 
-const CommentReplyContainer = styled(Stack)(({ theme }) => ({
-  borderTop: `1px solid ${theme.palette.greyScale[300]}`,
+const CommentReplyContainer = styled(Stack)({
+  borderTop: `1px solid ${greyScale[300]}`,
   padding: 16,
-}))
-
-const ButtonSend = styled(Button)({
-  position: 'absolute',
-  right: 16,
-  bottom: 19,
-  minWidth: 0,
-  padding: 0,
 })
 
 const InputStyled = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     padding: '13px 40px 13px 16px',
     ...theme.typography.body2,
-    background: theme.palette.trueGrey[100],
+    background: trueGrey[100],
     color: theme.palette.base.black,
     borderRadius: 12,
+    '&::-webkit-scrollbar': {
+      width: 8,
+    },
+    '&::-webkit-scrollbar-track': {
+      background: greyScale[300],
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: greyScale[700],
+    },
   },
+  padding: 0,
 }))
 
 const ButtonAction = styled(Button)({
@@ -49,21 +52,65 @@ const ButtonAction = styled(Button)({
   padding: 0,
 })
 
-const CommentActive = styled(CommentFormContainer)(({ theme }) => ({
+const ButtonSendContainer = styled(Stack)({
+  height: 48,
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  right: 16,
+  bottom: 0,
+})
+
+const CommentActive = styled(CommentFormContainer)({
   '& .MuiPaper-root': {
-    backgroundColor: theme.palette.greyScale[100],
+    backgroundColor: greyScale[100],
   },
   marginLeft: 8,
   marginTop: 36,
+})
+
+const ButtonMenu = styled(ButtonBase)(({ theme }) => ({
+  ...theme.typography.body2,
+  color: theme.palette.base.white,
+  background: theme.palette.base.black,
+  padding: '12px 16px',
+  '&::hover': {
+    background: theme.palette.base.black,
+  },
+  '&.MuiButtonBase-root': {
+    justifyContent: 'flex-start',
+  },
 }))
+
+const BackgroundDefault = styled(Stack)({
+  backgroundColor: greyScale[200],
+  borderRadius: '100%',
+})
+
+const ListCommentContainer = styled(Box)({
+  maxHeight: 400,
+  overflowY: 'auto',
+  '&::-webkit-scrollbar': {
+    width: 8,
+  },
+  '&::-webkit-scrollbar-track': {
+    background: greyScale[300],
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: greyScale[700],
+  },
+})
 
 export {
   CommentContainer,
   HeaderComment,
   CommentReplyContainer,
   InputStyled,
-  ButtonSend,
+  ButtonSendContainer,
   CommentFormContainer,
   ButtonAction,
   CommentActive,
+  ButtonMenu,
+  BackgroundDefault,
+  ListCommentContainer,
 }

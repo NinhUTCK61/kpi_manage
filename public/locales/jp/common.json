@@ -79,7 +79,14 @@
     "send_mail_fail": "メールを送信できませんでした。",
 
     "invalid_string_label": "タイトルは必須です。",
-    "invalid_empty_node_form": "内容を入力してください。"
+    "invalid_empty_node_form": "内容を入力してください。",
+
+    "create_comment": "Create comment fail",
+    "create_comment_reply": "Create comment reply fail",
+    "update_comment": "Update comment fail",
+    "update_comment_reply": "Update comment reply fail",
+    "remove_comment": "Remove comment fail",
+    "remove_comment_reply": "Remove comment reply fail"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",

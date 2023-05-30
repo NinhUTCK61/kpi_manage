@@ -88,4 +88,26 @@ export class CommentService extends CommentHelper {
 
     return comment
   }
+
+  async delete(id: string, author_id: string) {
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id,
+        author_id,
+      },
+    })
+
+    if (!comment) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.comment_not_found',
+      })
+    }
+
+    await prisma.comment.delete({
+      where: { id },
+    })
+
+    return 'comment.delete_comment'
+  }
 }
