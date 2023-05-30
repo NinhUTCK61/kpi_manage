@@ -1,6 +1,6 @@
 import { greyScale } from '@/libs/config/theme'
 import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
-import { Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { MutableRefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputStyled } from './styled'
@@ -31,7 +31,7 @@ const CommentAction: React.FC<CommentActionType> = ({
   }
 
   return content !== null ? (
-    <Stack ref={commentRef}>
+    <Box ref={commentRef}>
       <InputStyled
         autoFocus
         value={content}
@@ -39,6 +39,7 @@ const CommentAction: React.FC<CommentActionType> = ({
         onKeyDown={handleKeyDown}
         multiline
         maxRows={10}
+        fullWidth
       />
 
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end" mt={1}>
@@ -50,7 +51,7 @@ const CommentAction: React.FC<CommentActionType> = ({
           {t('save')}
         </ButtonStyle>
       </Stack>
-    </Stack>
+    </Box>
   ) : (
     <Typography
       variant="body2"

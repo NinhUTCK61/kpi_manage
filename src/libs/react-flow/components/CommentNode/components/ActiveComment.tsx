@@ -29,6 +29,7 @@ const ActiveComment: React.FC = () => {
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget)
   }
+
   const handleCloseMenu = () => {
     setMenuAnchor(null)
   }
@@ -60,6 +61,7 @@ const ActiveComment: React.FC = () => {
                 <ButtonAction onClick={handleOpenMenu}>
                   <Image src={MenuIcon} alt="menu icon" />
                 </ButtonAction>
+
                 <Popper open={!!menuAnchor} anchorEl={menuAnchor} disablePortal sx={{ zIndex: 10 }}>
                   <ClickAwayListener onClickAway={handleCloseMenu}>
                     <Stack borderRadius={0.5} overflow="hidden">
