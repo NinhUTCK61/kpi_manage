@@ -13,14 +13,14 @@ import {
   useTransition,
 } from 'react'
 import { useDebounce } from 'usehooks-ts'
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 
 const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
-  const [pickColor, setPickColor] = useState(base.black)
+  const [pickColor, setPickColor] = useState(base.white)
   const debouncedColor = useDebounce(pickColor, 300)
 
   const isNewFocusNode = useRef(false)
@@ -31,15 +31,15 @@ const PickColorNode: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
-      setPickColor(base.black)
+      setPickColor(base.white)
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       isNewFocusNode.current = true
-      setPickColor(nodeStyle.color || base.black)
+      setPickColor(nodeStyle.color || base.white)
     }
   }, [nodeFocusedMemo])
 
@@ -51,7 +51,7 @@ const PickColorNode: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, color: debouncedColor })
 
-    handleUpdateStyle(newNodeStyle)
+    updateStyle(newNodeStyle)
   }, [nodeFocusedMemo, debouncedColor])
 
   useEffect(() => {

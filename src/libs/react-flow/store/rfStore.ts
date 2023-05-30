@@ -16,13 +16,7 @@ import {
   reLayout,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import {
-  RFStore,
-  ReactFlowCommentNode,
-  ReactFlowKPINode,
-  ReactFlowNode,
-  ReactFlowSpeechBallonNode,
-} from '../types'
+import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 const initialRootNode: ReactFlowKPINode = {
@@ -265,7 +259,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = get().nodes
         nodes.push(speechBallonNode)
 
-        set({ nodes: [...nodes] })
+        set({ nodes: [...nodes], nodeFocused: speechBallonNode })
       },
       removeEmptySpeechBallon() {
         const _nodes = get().nodes
@@ -279,23 +273,27 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
         set({ nodes })
       },
-      updateSpeechBallon(node) {
+      updateSpeechBallon(SpeechBallonData, shouldFocus) {
         const _nodes = get().nodes
 
-        const nodes = produce(_nodes, (draft) => {
-          const speechBallon = draft.find<ReactFlowSpeechBallonNode>(
-            (el): el is ReactFlowSpeechBallonNode =>
-              el.type === 'speech_ballon' && el.id === node.id,
-          )
+        const node = _nodes.find(
+          (n) => n.type === 'speech_ballon' && n.data.id === SpeechBallonData.id,
+        )
+        if (node) {
+          node.data = { ...node.data, ...SpeechBallonData }
 
-          if (speechBallon) {
-            speechBallon.data = {
-              ...speechBallon.data,
-              ...node,
+          const nodes = _nodes.map((el) => {
+            if (el.id === node.id) {
+              return (el = node)
             }
+            return el
+          })
+
+          if (shouldFocus) {
+            set({ nodes, nodeFocused: node })
           }
-        })
-        set({ nodes: nodes })
+          set({ nodes })
+        }
       },
       //function zoom
       handleZoom(isZoomIn) {

@@ -4,7 +4,7 @@ import { InputBase, Select as MuiSelect, SelectChangeEvent, styled } from '@mui/
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down_select.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 
 const fontSizes = [
   {
@@ -49,7 +49,7 @@ const ChooseFontSize: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -69,7 +69,7 @@ const ChooseFontSize: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
 
-    handleUpdateStyle(newNodeStyle)
+    updateStyle(newNodeStyle)
   }
 
   return (

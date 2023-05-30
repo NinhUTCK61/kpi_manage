@@ -15,7 +15,7 @@ const useUpdateSpeechBallonMutation = () => {
       updateSpeechBallon(data)
     },
     onError(_, _variables) {
-      enqueueSnackbar(t('err.update_SpeechBallon'), {
+      enqueueSnackbar(t('err.update_speech_ballon'), {
         variant: 'error',
       })
     },

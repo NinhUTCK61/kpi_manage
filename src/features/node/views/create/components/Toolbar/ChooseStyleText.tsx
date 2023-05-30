@@ -6,8 +6,7 @@ import EditorBoldActive from 'public/assets/svgs/editor_bold_active.svg'
 import EditorItalic from 'public/assets/svgs/editor_italic.svg'
 import EditorItalicActive from 'public/assets/svgs/editor_italic_active.svg'
 import { useEffect, useMemo, useState } from 'react'
-
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -56,7 +55,7 @@ const ChooseStyleText: React.FC = () => {
     })
   }, [nodeFocusedMemo])
 
-  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
 
   const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
     if (!nodeFocusedMemo) return
@@ -75,7 +74,7 @@ const ChooseStyleText: React.FC = () => {
       ..._styleText,
     })
 
-    handleUpdateStyle(newNodeStyle)
+    updateStyle(newNodeStyle)
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move

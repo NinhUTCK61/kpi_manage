@@ -13,7 +13,7 @@ import {
   useTransition,
 } from 'react'
 import { useDebounce } from 'usehooks-ts'
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 
 const PickColorShape: React.FC = () => {
   const { t } = useTranslation('file')
@@ -34,7 +34,7 @@ const PickColorShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
@@ -54,7 +54,7 @@ const PickColorShape: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, background: debouncedColor })
 
-    handleUpdateStyle(newNodeStyle)
+    updateStyle(newNodeStyle)
   }, [nodeFocusedMemo, debouncedColor])
 
   useEffect(() => {

@@ -1,2 +1,2 @@
+export * from './useNodeUpdateHanlder'
 export * from './useReactFlowHandler'
-export * from './useReactFlowUpdateNode'

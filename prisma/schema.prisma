@@ -142,8 +142,13 @@ model Node {
   speech_ballon  SpeechBallon[]
 }
 
+enum LayoutType {
+  STROKE
+  FILL
+}
+
 model SpeechBallon {
-  id          String   @id @default(nanoid())
+  id          String     @id @default(nanoid())
   template_id String
   node_id     String?
   text        String
@@ -151,11 +156,11 @@ model SpeechBallon {
   y           Float
   shape       String
   node_style  String?
-  stroke      String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  template    Template @relation(fields: [template_id], references: [id], onDelete: Cascade)
-  node        Node?    @relation(fields: [node_id], references: [id], onDelete: Cascade)
+  layout      LayoutType @default(FILL)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  template    Template   @relation(fields: [template_id], references: [id], onDelete: Cascade)
+  node        Node?      @relation(fields: [node_id], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

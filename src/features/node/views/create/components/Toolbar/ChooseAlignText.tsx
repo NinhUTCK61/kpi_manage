@@ -8,7 +8,7 @@ import EditorLeftActive from 'public/assets/svgs/editor_left_active.svg'
 import EditorRight from 'public/assets/svgs/editor_right.svg'
 import EditorRightActive from 'public/assets/svgs/editor_right_active.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -32,13 +32,12 @@ const editors = [
 const ChooseStyleAlignText: React.FC = () => {
   const [textAlign, setTextAlign] = useState<TextAlign>(TextAlign.Unset)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const viewportAction = useRFStore((state) => state.viewportAction)
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
 
-  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -63,7 +62,7 @@ const ChooseStyleAlignText: React.FC = () => {
       ...nodeStyle,
       textAlign: value,
     })
-    handleUpdateStyle(newNodeStyle)
+    updateStyle(newNodeStyle)
   }
   const isShowForSpeech = nodeFocusedMemo?.type === 'speech_ballon'
 

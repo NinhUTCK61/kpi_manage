@@ -5,67 +5,69 @@ import {
   useRFStore,
 } from '@/libs/react-flow'
 import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
+import { LayoutType } from '@prisma/client'
 
-export const useReactFlowUpdateNode = (
+export const useNodeUpdateHanlder = (
   nodeFocusedMemo: ReactFlowKPINode | ReactFlowSpeechBallonNode | undefined,
 ) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
-  const { mutate: update } = useNodeUpdateMutation()
-  const { mutate: updateSbApi } = useUpdateSpeechBallonMutation()
 
-  const handleUpdateStyleNode = (newNodeStyle: string) => {
+  const { mutate: mutateNode } = useNodeUpdateMutation()
+  const { mutate: mutateSpeechBallon } = useUpdateSpeechBallonMutation()
+
+  const updateStyleNode = (newNodeStyle: string) => {
     // Case the node has not been saved to the database
     if (!nodeFocusedMemo?.data.is_saved && nodeFocusedMemo) {
-      const data = { ...nodeFocusedMemo.data, node_style: newNodeStyle }
-      nodeFocusedMemo.data = data
       updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
       return
     }
 
-    update({
+    mutateNode({
       id: nodeFocusedMemo?.id as string,
       node_style: newNodeStyle,
     })
   }
 
-  const handleUpdateStyleSpeechBallon = (newNodeStyle: string) => {
+  const updateStyleSpeechBallon = (newNodeStyle: string) => {
     if (nodeFocusedMemo) {
       const data = { ...nodeFocusedMemo.data, node_style: newNodeStyle }
-      nodeFocusedMemo.data = data
-      updateSpeechBallon(data)
+      updateSpeechBallon(data, true)
     }
     if (!nodeFocusedMemo?.data.is_saved) return
-    updateSbApi({
+    mutateSpeechBallon({
       id: nodeFocusedMemo?.id as string,
       node_style: newNodeStyle,
     })
   }
-  const handleUpdateStyle = (newNodeStyle: string) => {
+
+  const updateStyle = (newNodeStyle: string) => {
     switch (nodeFocusedMemo?.type) {
       case 'kpi':
-        handleUpdateStyleNode(newNodeStyle)
+        updateStyleNode(newNodeStyle)
         break
       case 'speech_ballon':
-        handleUpdateStyleSpeechBallon(newNodeStyle)
+        updateStyleSpeechBallon(newNodeStyle)
         break
       default:
         break
     }
   }
-  const handleUpdateStroke = (typeLayout: string) => {
+
+  const updateStroke = (typeLayout: LayoutType) => {
     if (!nodeFocusedMemo) return
-    const data = { ...nodeFocusedMemo.data, stroke: typeLayout }
-    nodeFocusedMemo.data = data
-    updateSpeechBallon(data)
+    const data = { ...nodeFocusedMemo.data, layout: typeLayout }
+    updateSpeechBallon(data, true)
+
     if (!nodeFocusedMemo?.data.is_saved) return
-    updateSbApi({
+    mutateSpeechBallon({
       id: data.id,
-      stroke: typeLayout,
+      layout: typeLayout,
     })
   }
+
   return {
-    handleUpdateStyle,
-    handleUpdateStroke,
+    updateStyle,
+    updateStroke,
   }
 }

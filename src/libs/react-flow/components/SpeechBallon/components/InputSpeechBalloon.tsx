@@ -25,7 +25,7 @@ function InputSpeechBalloon<T extends FieldValues>({
   )
 }
 
-const InputStyled = styled(InputBase)(({ theme, readOnly }) => ({
+const InputStyled = styled(InputBase)(({ readOnly }) => ({
   color: 'inherit',
   fontSize: 15,
   fontWeight: 400,

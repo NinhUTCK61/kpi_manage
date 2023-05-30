@@ -24,7 +24,7 @@
   "save": "Save",
   "enter_comment": "Add a comment",
   "err":{
-    "create_SpeechBallon": "Failed to create speech balloon.",
-    "update_SpeechBallon": "Failed to update speech balloon."
+    "create_speech_ballon": "Failed to create speech balloon.",
+    "update_speech_ballon": "Failed to update speech balloon."
   }
 }

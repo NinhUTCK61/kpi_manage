@@ -76,7 +76,7 @@ export const useReactFlowHandler = () => {
           node_id: null,
           x,
           y,
-          stroke: 'Fill',
+          layout: 'FILL',
           created_at: new Date(),
           updated_at: new Date(),
           is_saved: false,

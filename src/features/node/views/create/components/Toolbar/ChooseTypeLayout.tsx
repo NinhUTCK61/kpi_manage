@@ -1,18 +1,19 @@
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, Typography, styled } from '@mui/material'
+import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useReactFlowUpdateNode } from '../../../hooks'
+import { useNodeUpdateHanlder } from '../../../hooks'
 
 const shapes = [
-  { value: '1', type: 'Fill' },
-  { value: '2', type: 'Stroke' },
+  { value: '1', type: 'FILL', label: 'Fill' },
+  { value: '2', type: 'STROKE', label: 'Stroke' },
 ]
 
 const ChooseTypeLayout: React.FC = () => {
-  const [type, setType] = useState<string>('Fill')
+  const [type, setType] = useState<LayoutType>('FILL')
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
@@ -21,27 +22,29 @@ const ChooseTypeLayout: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleUpdateStroke } = useReactFlowUpdateNode(nodeFocuseMemo)
+  const { updateStroke } = useNodeUpdateHanlder(nodeFocuseMemo)
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: LayoutType) => {
     setType(value)
 
     if (!nodeFocuseMemo) return
 
-    handleUpdateStroke(value)
+    updateStroke(value)
   }
 
   useEffect(() => {
     if (!nodeFocuseMemo) return
-    const typeStroke = nodeFocuseMemo.data.stroke
-    typeStroke ? setType(typeStroke) : setType('Fill')
+    const typeStroke = nodeFocuseMemo.data.layout
+    typeStroke ? setType(typeStroke) : setType('FILL')
   }, [nodeFocuseMemo])
 
   return (
     <Stack direction="row" alignItems="center" spacing={1.5}>
       <Select
         value={type}
-        onChange={(event: SelectChangeEvent<unknown>) => handleChange(event.target.value as string)}
+        onChange={(event: SelectChangeEvent<unknown>) =>
+          handleChange(event.target.value as LayoutType)
+        }
         input={<CustomInput />}
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
         defaultValue={type}
@@ -51,10 +54,10 @@ const ChooseTypeLayout: React.FC = () => {
             key={item.value}
             value={item.type}
             sx={{ padding: '8px 12px' }}
-            autoFocus={item.type === 'Fill'}
+            autoFocus={item.type === 'FILL'}
           >
             <Typography variant="body2" color="base.black">
-              {item.type}
+              {item.label}
             </Typography>
           </MenuItem>
         ))}
