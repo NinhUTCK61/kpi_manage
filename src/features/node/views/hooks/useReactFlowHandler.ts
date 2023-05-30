@@ -1,4 +1,5 @@
 import {
+  CommentNodeType,
   RFStore,
   ReactFlowNodeData,
   isEmptyKPINodeForm,
@@ -6,6 +7,7 @@ import {
   useNodeDeleteMutation,
   useRFStore,
 } from '@/libs/react-flow'
+import { useCommentUpdateMutation } from '@/libs/react-flow/components/CommentNode/hooks'
 import { nanoid } from 'nanoid'
 import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode, useReactFlow } from 'reactflow'
@@ -40,6 +42,7 @@ export const useReactFlowHandler = () => {
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
+  const { mutate: updateCommentNode } = useCommentUpdateMutation()
   const { project } = useReactFlow()
 
   const handleWheel = useCallback(
@@ -125,6 +128,19 @@ export const useReactFlowHandler = () => {
     [removeEmptyNode, setNodeFocused],
   )
 
+  const handleDragNode = (_: MouseEvent, node: RFNode<CommentNodeType>) => {
+    if (node.type === 'comment') {
+      const data = {
+        id: node.id,
+        x: node.position.x,
+        y: node.position.y,
+        content: node.data.content,
+      }
+
+      updateCommentNode(data)
+    }
+  }
+
   return {
     handleWheel,
     handleNodesChange,
@@ -132,5 +148,6 @@ export const useReactFlowHandler = () => {
     handlePaneClick,
     handleNodesDelete,
     handleNodeClick,
+    handleDragNode,
   }
 }
