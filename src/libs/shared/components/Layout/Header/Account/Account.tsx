@@ -45,7 +45,7 @@ const Account = () => {
     {
       title: t('menu.log_out'),
       icon: LogOutIcon,
-      handle: signOut,
+      handle: () => signOut({ callbackUrl: '/' }),
     },
   ]
 
