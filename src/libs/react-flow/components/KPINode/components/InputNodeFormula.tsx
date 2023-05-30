@@ -1,12 +1,12 @@
 import { api } from '@/libs/api'
-import { charNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
+import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, Popper, styled } from '@mui/material'
 import { useRef, useState } from 'react'
-import type { FieldValues } from 'react-hook-form'
-import { useController } from 'react-hook-form'
+import { FieldValues, useController, useFormContext } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
+import { NodeFormProps } from '../hooks'
 import { InputControlNode } from './InputControlNode'
 import { SelectNodeSlug } from './SelectNodeSlug'
 
@@ -24,7 +24,9 @@ function InputNodeFormula<T extends FieldValues>({
   const {
     field: { ref, value, onChange, ...inputProps },
   } = useController({ name, control, defaultValue })
-
+  const { setError } = useFormContext<NodeFormProps>()
+  const findNodeBySlug = useRFStore((state) => state.findNodeBySlug)
+  const templateId = useRFStore((state) => state.templateId)
   const [valueSelected, setValueSelected] = useState<string>('')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -32,7 +34,6 @@ function InputNodeFormula<T extends FieldValues>({
   const [startIndex, setStartIndex] = useState(0)
   const [endIndex, setEndIndex] = useState(0)
   const [currentState, setCurrentState] = useState(0)
-  const templateId = useRFStore((state) => state.templateId)
   const elementRef = useRef<HTMLUListElement>(null)
 
   const { data } = api.node.searchSlug.useQuery(
@@ -84,14 +85,26 @@ function InputNodeFormula<T extends FieldValues>({
   }
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') return
-    const data = charNearCursor(e)
-    if (!data) return
+    const data = charFullNearCursor(e)
 
-    setAnchorEl(e.currentTarget)
-    setValueSelected(data.resultString as string)
-    setStartIndex(data.startIndex)
-    setEndIndex(data.endIndex)
+    if (!data?.resultString.replaceAll(' ', '')) {
+      setAnchorEl(null)
+      setValueSelected('')
+      return
+    }
+
+    const check = findNodeBySlug(data.resultString.replaceAll(' ', '').toUpperCase())
+    if (check) {
+      setAnchorEl(e.currentTarget)
+      setValueSelected(data.resultString as string)
+      setStartIndex(data.startIndex)
+      setEndIndex(data.endIndex)
+      return
+    }
+
+    setError('input_value', {
+      message: 'not found node',
+    })
   }
 
   const handleSelect = (valueSelect: string) => {

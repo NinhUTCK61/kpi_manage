@@ -41,6 +41,10 @@ export const useNodeForm = (data: KPINodeType) => {
     if (errors.input_title?.message) {
       setError(handleError(errors.input_title.message as string))
     }
+
+    if (errors.input_value?.message) {
+      setError(handleError(errors.input_value.message as string))
+    }
   }, [forms.formState.errors, handleError])
 
   useEffect(() => {

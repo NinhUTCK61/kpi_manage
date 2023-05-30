@@ -208,6 +208,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         nodeCopy = nodes.find((n) => n.id === node) || null
         set({ nodeCopy })
       },
+      findNodeBySlug(slug) {
+        const nodes = get().d3Root
+        const node = nodes.find((n) => n.data.type === 'kpi' && n.data.data.slug === slug)
+        return !!node
+      },
       //function toolbar
       changeViewportAction(action) {
         if (action === get().viewportAction) return
