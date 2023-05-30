@@ -1,6 +1,5 @@
 import {
   RFStore,
-  ReactFlowNode,
   ReactFlowNodeData,
   isEmptyKPINodeForm,
   isReactFlowKPINode,
@@ -121,8 +120,7 @@ export const useReactFlowHandler = () => {
       if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
         removeEmptyNode()
       }
-
-      setNodeFocused(node as ReactFlowNode)
+      setNodeFocused(node.id)
     },
     [removeEmptyNode, setNodeFocused],
   )
