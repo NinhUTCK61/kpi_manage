@@ -17,6 +17,8 @@ export const OptionShape: React.FC = () => {
 
   const conventionBg = style.background || customPrimary[700]
 
+  const resizeBorder = isFill ? 0 : stroke
+
   const color = style.color || base.black
   return (
     <MuiOptionShapeType
@@ -33,13 +35,13 @@ export const OptionShape: React.FC = () => {
           borderTop: `20px solid ${isFill ? conventionBg : theme.palette.base.white}`,
           ' &:before': {
             content: '""',
-            top: `-${20 - stroke}px`,
+            top: `-${20 - resizeBorder}px`,
             left: '50%',
             transform: 'translateX(-50%)',
             position: 'absolute',
-            borderLeft: `${12 + stroke}px solid transparent`,
-            borderRight: `${12 + stroke}px solid transparent`,
-            borderTop: `${20 + stroke}px solid ${style.background}`,
+            borderLeft: `${12 + resizeBorder}px solid transparent`,
+            borderRight: `${12 + resizeBorder}px solid transparent`,
+            borderTop: `${20 + resizeBorder}px solid ${conventionBg}`,
             zIndex: -1,
           },
         })}

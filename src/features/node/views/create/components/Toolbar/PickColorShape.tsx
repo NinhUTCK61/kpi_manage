@@ -34,7 +34,7 @@ const PickColorShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
@@ -54,7 +54,7 @@ const PickColorShape: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, background: debouncedColor })
 
-    handleValidType(newNodeStyle)
+    handleUpdateStyle(newNodeStyle)
   }, [nodeFocusedMemo, debouncedColor])
 
   useEffect(() => {

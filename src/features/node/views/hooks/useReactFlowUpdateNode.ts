@@ -11,7 +11,6 @@ export const useReactFlowUpdateNode = (
 ) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { mutate: update } = useNodeUpdateMutation()
   const { mutate: updateSbApi } = useUpdateSpeechBallonMutation()
 
@@ -35,14 +34,14 @@ export const useReactFlowUpdateNode = (
       const data = { ...nodeFocusedMemo.data, node_style: newNodeStyle }
       nodeFocusedMemo.data = data
       updateSpeechBallon(data)
-      setNodeFocused(nodeFocusedMemo)
-      updateSbApi({
-        id: nodeFocusedMemo?.id as string,
-        node_style: newNodeStyle,
-      })
     }
+    if (!nodeFocusedMemo?.data.is_saved) return
+    updateSbApi({
+      id: nodeFocusedMemo?.id as string,
+      node_style: newNodeStyle,
+    })
   }
-  const handleValidType = (newNodeStyle: string) => {
+  const handleUpdateStyle = (newNodeStyle: string) => {
     switch (nodeFocusedMemo?.type) {
       case 'kpi':
         handleUpdateStyleNode(newNodeStyle)
@@ -59,15 +58,14 @@ export const useReactFlowUpdateNode = (
     const data = { ...nodeFocusedMemo.data, stroke: typeLayout }
     nodeFocusedMemo.data = data
     updateSpeechBallon(data)
-    setNodeFocused(nodeFocusedMemo)
-    if (nodeFocusedMemo.data.is_saved) {
-      updateSbApi({
-        id: nodeFocusedMemo?.id as string,
-      })
-    }
+    if (!nodeFocusedMemo?.data.is_saved) return
+    updateSbApi({
+      id: data.id,
+      stroke: typeLayout,
+    })
   }
   return {
-    handleValidType,
+    handleUpdateStyle,
     handleUpdateStroke,
   }
 }

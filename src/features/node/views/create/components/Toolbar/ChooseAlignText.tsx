@@ -38,7 +38,7 @@ const ChooseStyleAlignText: React.FC = () => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
 
-  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -63,7 +63,7 @@ const ChooseStyleAlignText: React.FC = () => {
       ...nodeStyle,
       textAlign: value,
     })
-    handleValidType(newNodeStyle)
+    handleUpdateStyle(newNodeStyle)
   }
   const isShowForSpeech = nodeFocusedMemo?.type === 'speech_ballon'
 

@@ -56,7 +56,7 @@ const ChooseStyleText: React.FC = () => {
     })
   }, [nodeFocusedMemo])
 
-  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
     if (!nodeFocusedMemo) return
@@ -75,7 +75,7 @@ const ChooseStyleText: React.FC = () => {
       ..._styleText,
     })
 
-    handleValidType(newNodeStyle)
+    handleUpdateStyle(newNodeStyle)
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move

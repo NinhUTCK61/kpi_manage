@@ -49,7 +49,7 @@ const ChooseFontSize: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { handleValidType } = useReactFlowUpdateNode(nodeFocusedMemo)
+  const { handleUpdateStyle } = useReactFlowUpdateNode(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -69,7 +69,7 @@ const ChooseFontSize: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
 
-    handleValidType(newNodeStyle)
+    handleUpdateStyle(newNodeStyle)
   }
 
   return (
