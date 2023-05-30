@@ -1,7 +1,9 @@
+import { api } from '@/libs/api'
 import { charNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
+import { useRFStore } from '@/libs/react-flow/hooks'
 import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, Popper, styled } from '@mui/material'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FieldValues } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
@@ -27,11 +29,65 @@ function InputNodeFormula<T extends FieldValues>({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popper' : undefined
-  const [startIndex, setStartIndex] = useState<number>(0)
-  const [endIndex, setEndIndex] = useState<number>(0)
+  const [startIndex, setStartIndex] = useState(0)
+  const [endIndex, setEndIndex] = useState(0)
+  const [currentState, setCurrentState] = useState(0)
+  const templateId = useRFStore((state) => state.templateId)
+  const elementRef = useRef<HTMLUListElement>(null)
+
+  const { data } = api.node.searchSlug.useQuery(
+    {
+      template_id: templateId,
+      slug: valueSelected.replaceAll(' ', '').toUpperCase(),
+    },
+    {
+      initialData: [],
+    },
+  )
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      const isDown = e.key === 'ArrowDown'
+      const stateDown = currentState === data.length - 1 ? 0 : currentState + 1
+      const stateUp = currentState === 0 ? data.length - 1 : currentState - 1
+      const _currentState = isDown ? stateDown : stateUp
+
+      setCurrentState(_currentState)
+      if (elementRef.current) {
+        let top = 0
+        if (isDown && _currentState >= 4) {
+          top = _currentState * 54
+        }
+        if (!isDown) {
+          top = _currentState * 54
+        }
+        elementRef.current.scrollTop = top
+      }
+      e.preventDefault()
+      return
+    }
+
+    if (e.key === 'Enter') {
+      const newValue = convertFormula(
+        value,
+        data[currentState]?.slug as string,
+        startIndex,
+        endIndex,
+      )
+      onChange(newValue)
+      setCurrentState(0)
+      setValueSelected('')
+      setAnchorEl(null)
+      e.preventDefault()
+      return
+    }
+  }
+
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') return
     const data = charNearCursor(e)
     if (!data) return
+
     setAnchorEl(e.currentTarget)
     setValueSelected(data.resultString as string)
     setStartIndex(data.startIndex)
@@ -42,7 +98,6 @@ function InputNodeFormula<T extends FieldValues>({
     setAnchorEl(null)
     setValueSelected('')
     const newValue = convertFormula(value, valueSelect, startIndex, endIndex)
-    console.log('newValue', newValue)
     onChange(newValue)
   }
 
@@ -69,7 +124,7 @@ function InputNodeFormula<T extends FieldValues>({
             mapToRadix: ['.'],
           },
           {
-            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/?]{0,999}$/i,
+            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/? ]{0,999}$/i,
           },
         ]}
         unmask
@@ -79,12 +134,18 @@ function InputNodeFormula<T extends FieldValues>({
         onChange={() => undefined}
         style={props?.inputProps?.style || {}}
         autoComplete={'off'}
+        onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         {...inputProps}
       />
       {valueSelected && (
         <Popper id={id} open={open} anchorEl={anchorEl}>
-          <SelectNodeSlug value={valueSelected} handleSelect={handleSelect} />
+          <SelectNodeSlug
+            value={valueSelected}
+            handleSelect={handleSelect}
+            currentState={currentState}
+            elementRef={elementRef}
+          />
         </Popper>
       )}
     </InputControlNode>

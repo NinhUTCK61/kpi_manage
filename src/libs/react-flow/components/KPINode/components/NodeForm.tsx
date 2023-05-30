@@ -85,11 +85,18 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
           required
           label="Label"
           inputProps={{ style }}
+          autoComplete="off"
         />
 
         <InputNodeFormula control={control} name="input_value" label="=" inputProps={{ style }} />
 
-        <InputNode control={control} name="unit" label="Unit" inputProps={{ style }} />
+        <InputNode
+          control={control}
+          name="unit"
+          label="Unit"
+          inputProps={{ style }}
+          autoComplete="off"
+        />
 
         <input type="submit" hidden />
       </Stack>

@@ -153,6 +153,7 @@ const List = styled(MuiList)(({ theme }) => ({
   overflow: 'auto',
   borderRadius: 12,
   background: theme.palette.common.white,
+  scrollBehavior: 'smooth',
 }))
 
 const IconTop = styled(Stack)({
@@ -167,7 +168,10 @@ const IconTop = styled(Stack)({
   // zIndex: -1,
 })
 
-const ListItem = styled(MuiListItem)(({ theme }) => ({
+const ListItem = styled(MuiListItem)<{ active: string }>(({ theme, active }) => ({
+  ...(active === 'true' && {
+    background: theme.palette.customPrimary[0],
+  }),
   '&:hover': {
     background: theme.palette.customPrimary[0],
   },

@@ -6,9 +6,16 @@ import { IconTop, List, ListItem, Paper } from './styled'
 type SelectNodeSlugProps = {
   value: string
   handleSelect: (value: string) => void
+  currentState: number
+  elementRef: React.RefObject<HTMLUListElement>
 }
 
-const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({ value, handleSelect }) => {
+const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
+  value,
+  handleSelect,
+  currentState,
+  elementRef,
+}) => {
   const templateId = useRFStore((state) => state.templateId)
   const slug = value.replaceAll(' ', '').toUpperCase() //validate slug
   const { data } = api.node.searchSlug.useQuery(
@@ -20,15 +27,21 @@ const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({ value, handleSelect }) 
       initialData: [],
     },
   )
+
   if (!value || !data.length) return null
 
   return (
     <Paper elevation={2}>
       <Box sx={{ position: 'relative' }}>
         <IconTop />
-        <List>
+        <List ref={elementRef}>
           {data.map((node, index) => (
-            <ListItem disablePadding key={index} onClick={() => handleSelect(node.slug)}>
+            <ListItem
+              active={String(index === currentState)}
+              disablePadding
+              key={index}
+              onClick={() => handleSelect(node.slug)}
+            >
               <ListItemButton sx={{ padding: 2 }}>
                 <Stack direction="row">
                   <Typography width={67} variant="body2" color="base.black">
