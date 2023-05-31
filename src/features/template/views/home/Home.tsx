@@ -70,7 +70,7 @@ const Home = () => {
       description: t('detail_dialog_delete_per'),
       handleConfirm: handleConfirmAction,
       type: 'delete',
-      textSubmit: t('permanently_delete'),
+      textSubmit: t('delete'),
       action: () =>
         mutationDelete.mutate({
           id: String(nodeId),
