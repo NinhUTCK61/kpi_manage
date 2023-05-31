@@ -1,10 +1,10 @@
 import { styled } from '@mui/material'
 import React from 'react'
-import { useSelectStyle } from '../helper'
+import { useShapeStyle } from '../helper'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
-  const { getShapeStyles, getArrowStyles } = useSelectStyle()
+  const { getShapeStyles, getArrowStyles } = useShapeStyle()
 
   return (
     <MuiOptionShapeType sx={getShapeStyles}>

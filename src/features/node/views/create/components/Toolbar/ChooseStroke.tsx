@@ -29,7 +29,7 @@ const ChooseStroke: React.FC = () => {
 
   const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
-  const [value, setValue] = useState<number>(1)
+  const [value, setValue] = useState(1)
 
   const handleChangeValueStoke = (isUp?: boolean) => {
     if (!nodeFocusedMemo) return

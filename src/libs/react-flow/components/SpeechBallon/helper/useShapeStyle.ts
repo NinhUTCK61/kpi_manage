@@ -1,7 +1,7 @@
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
 
-export const useSelectStyle = () => {
+export const useShapeStyle = () => {
   const { data } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1

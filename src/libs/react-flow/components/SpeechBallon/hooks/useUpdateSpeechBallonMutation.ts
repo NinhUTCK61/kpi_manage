@@ -17,12 +17,12 @@ const useUpdateSpeechBallonMutation = () => {
       return { prevData }
     },
     onError(err, _, ctx) {
-      enqueueSnackbar(t('error.update_comment'), {
+      enqueueSnackbar(t('error.update_speech'), {
         variant: 'error',
       })
       if (ctx?.prevData) {
         const speech_ballon = convertToReactFlowSpeechBallonSingle(ctx.prevData.data)
-        updateSpeechBallon(speech_ballon)
+        updateSpeechBallon(speech_ballon, true)
       }
     },
     onSettled() {

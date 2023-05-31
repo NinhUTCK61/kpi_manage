@@ -1,7 +1,6 @@
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
-import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import ShapeType1Icon from 'public/assets/svgs/shape_1.svg'
@@ -17,16 +16,18 @@ const shapes = [
 ]
 
 const ChooseShape: React.FC = () => {
-  const { t } = useTranslation('file')
-
   const shape = useRFStore((state) => state.shape)
   const changeShape = useRFStore((state) => state.changeShapeType)
+
+  const handleShapeChange = (event: SelectChangeEvent<unknown>) => {
+    changeShape(event.target.value as string)
+  }
 
   return (
     <Stack direction="row" alignItems="center" spacing={1.5}>
       <Select
         value={shape}
-        onChange={(event: SelectChangeEvent<unknown>) => changeShape(event.target.value as string)}
+        onChange={handleShapeChange}
         input={<CustomInput />}
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
       >

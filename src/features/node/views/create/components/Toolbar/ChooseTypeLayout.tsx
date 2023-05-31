@@ -8,8 +8,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
 
 const shapes = [
-  { value: '1', type: 'FILL', label: 'Fill' },
-  { value: '2', type: 'STROKE', label: 'Stroke' },
+  { value: '1', type: LayoutType.FILL, label: 'Fill' },
+  { value: '2', type: LayoutType.STROKE, label: 'Stroke' },
 ]
 
 const ChooseTypeLayout: React.FC = () => {
@@ -22,20 +22,20 @@ const ChooseTypeLayout: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStroke } = useNodeUpdateHandler(nodeFocuseMemo)
+  const { updateSpeechBallonLayout } = useNodeUpdateHandler(nodeFocuseMemo)
 
   const handleChange = (value: LayoutType) => {
     setType(value)
 
     if (!nodeFocuseMemo) return
 
-    updateStroke(value)
+    updateSpeechBallonLayout(value)
   }
 
   useEffect(() => {
     if (!nodeFocuseMemo) return
-    const typeStroke = nodeFocuseMemo.data.layout
-    typeStroke ? setType(typeStroke) : setType('FILL')
+    const layoutType = nodeFocuseMemo.data.layout
+    layoutType ? setType(layoutType) : setType('FILL')
   }, [nodeFocuseMemo])
 
   return (

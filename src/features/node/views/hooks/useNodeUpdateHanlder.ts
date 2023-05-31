@@ -54,7 +54,7 @@ export const useNodeUpdateHandler = (
     }
   }
 
-  const updateStroke = (typeLayout: LayoutType) => {
+  const updateSpeechBallonLayout = (typeLayout: LayoutType) => {
     if (!nodeFocusedMemo) return
     const data = { ...nodeFocusedMemo.data, layout: typeLayout }
     updateSpeechBallon(data, true)
@@ -68,6 +68,6 @@ export const useNodeUpdateHandler = (
 
   return {
     updateStyle,
-    updateStroke,
+    updateSpeechBallonLayout,
   }
 }

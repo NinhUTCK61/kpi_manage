@@ -19,6 +19,7 @@ const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const viewportAction = useRFStore((state) => state.viewportAction)
 
   const [pickColor, setPickColor] = useState(base.black)
   const debouncedColor = useDebounce(pickColor, 300)
@@ -33,26 +34,31 @@ const PickColorNode: React.FC = () => {
 
   const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
+  const updateSpeechBallonStyle = useCallback(
+    (newNodeStyle: string) => updateStyle(newNodeStyle),
+    [updateStyle],
+  )
+
   useLayoutEffect(() => {
+    console.log(nodeFocusedMemo)
     if (!nodeFocusedMemo?.data.node_style) {
-      setPickColor(base.black)
+      setPickColor(nodeFocusedMemo?.type === 'kpi' ? base.black : base.white)
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       isNewFocusNode.current = true
-      setPickColor(nodeStyle.color || base.black)
+      setPickColor(nodeStyle.color || base.white)
     }
-  }, [nodeFocusedMemo])
+  }, [nodeFocusedMemo, viewportAction])
 
   const handleUpdate = useCallback(() => {
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-
     if (debouncedColor === nodeStyle?.color) return
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, color: debouncedColor })
 
-    updateStyle(newNodeStyle)
-  }, [nodeFocusedMemo, debouncedColor])
+    updateSpeechBallonStyle(newNodeStyle)
+  }, [nodeFocusedMemo, debouncedColor, updateSpeechBallonStyle])
 
   useEffect(() => {
     if (isNewFocusNode.current) return

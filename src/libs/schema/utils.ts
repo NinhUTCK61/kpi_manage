@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const NonEmptyPassword = z.string().trim().min(1, {
+export const NonEmptyPassword = z.string().min(1, {
   message: 'error.message_password',
 })
 

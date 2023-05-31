@@ -268,7 +268,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((n) => n.id !== empty.id)
         set({ nodes })
       },
-      removeSpeechBallon(speechBallonId: string) {
+      removeSpeechBallon(speechBallonId) {
         const _nodes = get().nodes
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
         set({ nodes })
@@ -283,10 +283,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           node.data = { ...node.data, ...SpeechBallonData }
 
           const nodes = _nodes.map((el) => {
-            if (el.id === node.id) {
-              return (el = node)
-            }
-            return el
+            return el.id === node.id ? node : el
           })
 
           if (shouldFocus) {

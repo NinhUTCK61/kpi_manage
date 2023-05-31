@@ -36,6 +36,11 @@ const PickColorShape: React.FC = () => {
 
   const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
+  const updateSpeechBallonStyle = useCallback(
+    (newNodeStyle: string) => updateStyle(newNodeStyle),
+    [updateStyle],
+  )
+
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
       setPickColor(customPrimary[700])
@@ -54,8 +59,8 @@ const PickColorShape: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, background: debouncedColor })
 
-    updateStyle(newNodeStyle)
-  }, [nodeFocusedMemo, debouncedColor])
+    updateSpeechBallonStyle(newNodeStyle)
+  }, [nodeFocusedMemo, debouncedColor, updateSpeechBallonStyle])
 
   useEffect(() => {
     if (isNewFocusNode.current) return
