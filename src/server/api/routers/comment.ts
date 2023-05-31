@@ -3,10 +3,12 @@ import {
   CreateCommentOutputSchema,
   CreateCommentRepliesOutputSchema,
   CreateCommentReplyInputSchema,
+  DeleteCommentInputSchema,
   UpdateCommentInputSchema,
   UpdateCommentRepliesInputSchema,
 } from '@/libs/schema/comment'
 
+import { z } from 'zod'
 import { CommentService } from '../services/comment.service'
 import { CommentReply } from '../services/commentReply.service'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
@@ -42,5 +44,19 @@ export const commentRouter = createTRPCRouter({
     .output(CreateCommentRepliesOutputSchema)
     .mutation(({ input, ctx }) => {
       return commentReplyService.update(input, ctx.session.user.id)
+    }),
+  delete: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/delete' } })
+    .input(DeleteCommentInputSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return commentService.delete(input.id, ctx.session.user.id)
+    }),
+  deleteReply: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/comment-reply' } })
+    .input(DeleteCommentInputSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return commentReplyService.delete(input.id, ctx.session.user.id)
     }),
 })

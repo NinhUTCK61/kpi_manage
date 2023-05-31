@@ -1,6 +1,8 @@
 import { ViewPortAction } from '@/features/node/constant'
+import { CommentReplyOutputType } from '@/libs/schema/comment'
 import { hierarchy } from 'd3-hierarchy'
-import { produce } from 'immer'
+import { produce, setAutoFreeze } from 'immer'
+import { cloneDeep } from 'lodash'
 import {
   Connection,
   EdgeChange,
@@ -18,6 +20,8 @@ import {
 } from '../helper'
 import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
 import { d3RootMiddleware } from './middleware'
+
+setAutoFreeze(false)
 
 const initialRootNode: ReactFlowKPINode = {
   id: 'root',
@@ -226,29 +230,71 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
         set({ nodes })
       },
-      addCommentReply(reply) {
+      updateComment(commentNode) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentNode.id,
+          )
+
+          if (comment) comment.data = { ...comment.data, ...commentNode }
+        })
+
+        set({ nodes })
+      },
+      addCommentReply(reply, commentReplyIndex) {
         const _nodes = get().nodes
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
             (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
-          comment?.data?.replies.push(reply)
+
+          if (commentReplyIndex !== undefined) {
+            comment?.data.replies.splice(commentReplyIndex, 0, reply)
+          } else {
+            comment?.data.replies.push(reply)
+          }
         })
 
         set({ nodes })
       },
-      removeCommentReply(commentId: string, replyId: string) {
+      removeCommentReply(reply) {
         const _nodes = get().nodes
+        let remove: CommentReplyOutputType | undefined
+        let commentReplyIndex: number | undefined
 
         const nodes = produce(_nodes, (draft) => {
           const comment = draft.find<ReactFlowCommentNode>(
-            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === commentId,
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === reply.comment_id,
           )
 
           if (comment) {
-            comment.data.replies = comment.data.replies.filter((reply) => reply.id !== replyId)
+            commentReplyIndex = comment.data.replies.findIndex((r) => r.id === reply.id)
+
+            if (commentReplyIndex !== -1) {
+              const [_remove] = comment.data.replies.splice(commentReplyIndex, 1)
+              remove = cloneDeep(_remove)
+            }
           }
+        })
+
+        set({ nodes })
+        return { remove, commentReplyIndex }
+      },
+      updateCommentReply({ id, comment_id, content }) {
+        const _nodes = get().nodes
+        const nodes = produce(_nodes, (draft) => {
+          const comment = draft.find<ReactFlowCommentNode>(
+            (el): el is ReactFlowCommentNode => el.type === 'comment' && el.id === comment_id,
+          )
+
+          comment?.data.replies.filter((data) => {
+            if (data.id === id) {
+              data.content = content
+            }
+          })
         })
 
         set({ nodes })

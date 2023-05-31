@@ -1,2 +1,6 @@
 export * from './useCommentCreateMutation'
-export * from './useCommentRepliesCreateMutation'
+export * from './useCommentDeleteMutation'
+export * from './useCommentReplyCreateMutation'
+export * from './useCommentReplyDeleteMutation'
+export * from './useCommentReplyUpdateMutation'
+export * from './useCommentUpdateMutation'

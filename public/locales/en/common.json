@@ -78,8 +78,15 @@
     "user_not_found": "User not found",
     "send_mail_fail": "Send mail failed!",
 
-    "invalid_string_label":"A title is required.",
-    "invalid_empty_node_form":"Please enter the content."
+    "invalid_string_label": "A title is required.",
+    "invalid_empty_node_form": "Please enter the content.",
+
+    "create_comment": "Create comment fail",
+    "create_comment_reply": "Create comment reply fail",
+    "update_comment": "Update comment fail",
+    "update_comment_reply": "Update comment reply fail",
+    "remove_comment": "Remove comment fail",
+    "remove_comment_reply": "Remove comment reply fail"
   },
   "template": {
     "move_to_trash": "Move to trash success!",

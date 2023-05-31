@@ -1,8 +1,15 @@
+import { CommentReplyOutputType, CreateCommentOutputType } from '@/libs/schema/comment'
 import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith } from 'lodash'
 import { Node as RFNode } from 'reactflow'
 import { NodeFormProps } from '../components'
-import { KPINodeType, ReactFlowKPINode, ReactFlowNode, ReactFlowSpeechBallonNode } from '../types'
+import {
+  KPINodeType,
+  ReactFlowCommentNode,
+  ReactFlowKPINode,
+  ReactFlowNode,
+  ReactFlowSpeechBallonNode,
+} from '../types'
 
 export function isEmptyKPINodeForm(node: KPINodeType | NodeFormProps) {
   return !node.input_title && !node.input_value && !node.unit
@@ -14,6 +21,10 @@ export function isReactFlowKPINode(node: RFNode): node is ReactFlowKPINode {
 
 export function isReactFlowKPISpeechBallon(node: RFNode): node is ReactFlowSpeechBallonNode {
   return node.type === 'speech_ballon'
+}
+
+export function isReactFlowKPIComment(node: RFNode): node is ReactFlowCommentNode {
+  return node.type === 'comment'
 }
 
 export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {
@@ -32,8 +43,39 @@ export function filterKpiNodes<
 }
 
 export function getSpeechBallon(_nodes: ReactFlowNode[], id: string) {
-  const nodes = _nodes.find<ReactFlowSpeechBallonNode>(
+  const node = _nodes.find<ReactFlowSpeechBallonNode>(
     (data): data is ReactFlowSpeechBallonNode => data.id === id && data.type === 'comment',
   )
-  return nodes
+  return node
+}
+
+export function isCommentNode(
+  data: CommentReplyOutputType | CreateCommentOutputType,
+): data is CreateCommentOutputType {
+  return (
+    (data as CreateCommentOutputType).x !== undefined &&
+    (data as CreateCommentOutputType).y !== undefined
+  )
+}
+
+export function getCommentReply(_nodes: ReactFlowNode[], id: string, comment_id: string) {
+  let commentReply
+
+  const comment = _nodes.find<ReactFlowCommentNode>(
+    (cmt): cmt is ReactFlowCommentNode => cmt.type === 'comment' && cmt.id === comment_id,
+  )
+
+  if (comment) {
+    commentReply = comment.data.replies.find((el) => el.id === id)
+  }
+
+  return commentReply
+}
+
+export function getComment(_nodes: ReactFlowNode[], id: string) {
+  const node = _nodes.find<ReactFlowCommentNode>(
+    (data): data is ReactFlowCommentNode => data.id === id && data.type === 'comment',
+  )
+
+  return node
 }

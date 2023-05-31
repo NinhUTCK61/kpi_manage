@@ -3,8 +3,8 @@ import { CommentNodeType } from '../../types'
 
 export type CommentNodeContextType = {
   data: CommentNodeType
-  active: null | HTMLDivElement | HTMLButtonElement
-  handleSetActive: (el: HTMLDivElement | HTMLButtonElement | null) => void
+  commentAnchor: null | HTMLDivElement | HTMLButtonElement
+  handleSetCommentAnchor: (el: HTMLDivElement | HTMLButtonElement | null) => void
 }
 
 export const CommentNodeContext = createContext<CommentNodeContextType | null>(null)

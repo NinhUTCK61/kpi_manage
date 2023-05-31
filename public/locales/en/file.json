@@ -18,7 +18,7 @@
     "delete": "Delete"
   },
   "comment_title": "Comment",
-  "deleted_thread": "Delete thread",
+  "delete_thread": "Delete thread",
   "edit_comment": "Edit comment",
   "cancel": "Cancel",
   "save": "Save",
@@ -26,5 +26,6 @@
   "err":{
     "create_speech_ballon": "Failed to create speech balloon.",
     "update_speech_ballon": "Failed to update speech balloon."
-  }
+  },
+  "delete_comment": "Delete comment"
 }

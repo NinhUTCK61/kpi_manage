@@ -18,7 +18,7 @@
     "delete": "削除"
   },
   "comment_title": "コメント",
-  "deleted_thread": "スレッドを削除",
+  "delete_thread": "スレッドを削除",
   "edit_comment": "コメントを編集",
   "cancel": "キャンセル",
   "save": "保存",
@@ -26,5 +26,6 @@
   "err":{
     "create_speech_ballon": "吹き出しの作成に失敗しました。",
     "update_speech_ballon": "吹き出しの更新に失敗しました。"
-  }
+  },
+  "delete_comment": "コメントを削除"
 }

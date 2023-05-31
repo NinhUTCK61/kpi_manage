@@ -7,15 +7,17 @@ export const CommentNodeProvider: React.FC<
     data: CommentNodeType
   }>
 > = ({ children, data }) => {
-  const [active, setActive] = useState<null | HTMLButtonElement | HTMLDivElement>(null)
+  const [commentAnchor, setCommentAnchor] = useState<null | HTMLButtonElement | HTMLDivElement>(
+    null,
+  )
 
-  const handleSetActive = useCallback((el: HTMLDivElement | HTMLButtonElement | null) => {
-    setActive(el)
+  const handleSetCommentAnchor = useCallback((el: HTMLDivElement | HTMLButtonElement | null) => {
+    setCommentAnchor(el)
   }, [])
 
   const contextValue = useMemo(
-    () => ({ data, active, handleSetActive }),
-    [active, data, handleSetActive],
+    () => ({ data, commentAnchor, handleSetCommentAnchor }),
+    [data, commentAnchor, handleSetCommentAnchor],
   )
 
   return <CommentNodeContext.Provider value={contextValue}>{children}</CommentNodeContext.Provider>

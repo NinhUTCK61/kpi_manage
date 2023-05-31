@@ -1,15 +1,19 @@
-import { Box, Stack } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useCommentRepliesCreateMutation } from '../hooks'
+import { useCommentReplyCreateMutation } from '../hooks'
 import { CommentFormType } from './CommentForm'
 import { InputComment } from './InputComment'
-import { ButtonSend, CommentReplyContainer } from './styled'
-import ImageFile from '/public/assets/imgs/file.png'
+import {
+  BackgroundDefault,
+  ButtonAction,
+  ButtonSendContainer,
+  CommentReplyContainer,
+} from './styled'
 import SendIcon from '/public/assets/svgs/send.svg'
 
 type CommentReplyFormProps = {
@@ -18,7 +22,7 @@ type CommentReplyFormProps = {
 
 const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
   const { t } = useTranslation('file')
-  const { mutate: create } = useCommentRepliesCreateMutation()
+  const { mutate: createReply } = useCommentReplyCreateMutation()
   const { data } = useSession()
   const { control, setFocus, reset, getValues } = useForm<CommentFormType>({
     defaultValues: {
@@ -32,7 +36,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
 
   const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault()
-    if (!getValues().content) {
+    if (!getValues().content.trim()) {
       return
     }
 
@@ -42,7 +46,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
       comment_id: commentId,
     }
 
-    create(newCommentReply, {
+    createReply(newCommentReply, {
       onSuccess() {
         reset({ content: '' })
       },
@@ -58,9 +62,15 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
 
   return (
     <CommentReplyContainer spacing={1} justifyContent="space-between" direction="row">
-      <Box width={32} height={32} mt={1.5} borderRadius="100%">
-        <Image src={data?.user.image || ImageFile} alt="file" width={32} height={32} />
-      </Box>
+      <Stack width={32} height={48} borderRadius="100%" direction="row" alignItems="center">
+        {data?.user.image ? (
+          <Image src={data?.user.image} alt="file" width={32} height={32} />
+        ) : (
+          <BackgroundDefault width={32} height={32} justifyContent="center" alignItems="center">
+            <Typography variant="body1">{data?.user.name?.split('')[0]}</Typography>
+          </BackgroundDefault>
+        )}
+      </Stack>
 
       <Stack component="form" position="relative" width="100%" onSubmit={handleSubmit}>
         <InputComment
@@ -74,9 +84,11 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
           maxRows={10}
         />
 
-        <ButtonSend type="submit">
-          <Image src={SendIcon} alt="send" />
-        </ButtonSend>
+        <ButtonSendContainer direction="row" alignItems="center">
+          <ButtonAction type="submit">
+            <Image src={SendIcon} alt="send" />
+          </ButtonAction>
+        </ButtonSendContainer>
       </Stack>
     </CommentReplyContainer>
   )
