@@ -44,8 +44,6 @@ function InputNodeFormula<T extends FieldValues>({
   const { setError } = useFormContext<NodeFormProps>()
   const elementRef = useRef<HTMLUListElement>(null)
   const [state, setState] = useState<StateProps>(defaultValueState)
-  const open = Boolean(state.anchorEl)
-  const id = 'simple-popper'
   const nodeSearch = useRFStore((state) => state.nodeSearch)
   const filterNodeSearch = useRFStore((state) => state.filterNodeSearch)
 
@@ -160,7 +158,7 @@ function InputNodeFormula<T extends FieldValues>({
         {...inputProps}
       />
       {state.valueSelected && (
-        <Popper id={id} open={open} anchorEl={state.anchorEl}>
+        <Popper open={!!state.anchorEl} anchorEl={state.anchorEl}>
           <SelectNodeSlug
             value={state.valueSelected}
             handleSelect={handleSelect}
