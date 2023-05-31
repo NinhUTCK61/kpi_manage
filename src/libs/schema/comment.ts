@@ -51,6 +51,7 @@ export type CreateCommentReplyInput = z.infer<typeof CreateCommentReplyInputSche
 export const UpdateCommentInputSchema = CreateCommentInputSchema.merge(
   z.object({
     id: z.string(),
+    content: z.string().optional(),
   }),
 ).omit({ template_id: true })
 

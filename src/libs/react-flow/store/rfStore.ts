@@ -1,7 +1,7 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { CommentReplyOutputType } from '@/libs/schema/comment'
 import { hierarchy } from 'd3-hierarchy'
-import { produce } from 'immer'
+import { produce, setAutoFreeze } from 'immer'
 import { cloneDeep } from 'lodash'
 import {
   Connection,
@@ -26,6 +26,8 @@ import {
   ReactFlowSpeechBallonNode,
 } from '../types'
 import { d3RootMiddleware } from './middleware'
+
+setAutoFreeze(false)
 
 const initialRootNode: ReactFlowKPINode = {
   id: 'root',

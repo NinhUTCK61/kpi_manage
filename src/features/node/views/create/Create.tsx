@@ -49,6 +49,7 @@ export const CreateView: React.FC = () => {
     handleWheel,
     handleNodesDelete,
     handleNodeClick,
+    handleNodeDragStop,
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
@@ -92,6 +93,7 @@ export const CreateView: React.FC = () => {
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           onPaneClick={handlePaneClick}
+          onNodeDragStop={handleNodeDragStop}
           proOptions={{
             hideAttribution: true,
           }}

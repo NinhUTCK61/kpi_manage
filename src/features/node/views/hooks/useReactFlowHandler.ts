@@ -3,8 +3,10 @@ import {
   ReactFlowNodeData,
   isEmptyKPINodeForm,
   isReactFlowKPINode,
+  useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
+  useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
 import { nanoid } from 'nanoid'
 import React, { MouseEvent, useCallback } from 'react'
@@ -40,6 +42,8 @@ export const useReactFlowHandler = () => {
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
+  const { mutate: updateCommentNode } = useCommentUpdateMutation()
+  const { mutate: updateSpeechBallonNode } = useUpdateSpeechBallonMutation()
   const { project } = useReactFlow()
 
   const handleWheel = useCallback(
@@ -125,6 +129,28 @@ export const useReactFlowHandler = () => {
     [removeEmptyNode, setNodeFocused],
   )
 
+  const handleNodeDragStop = useCallback(
+    (_: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
+      const data = {
+        id: node.id,
+        x: node.position.x,
+        y: node.position.y,
+      }
+
+      switch (node.type) {
+        case 'comment':
+          updateCommentNode(data)
+          break
+        case 'speech_ballon':
+          updateSpeechBallonNode(data)
+          break
+        default:
+          break
+      }
+    },
+    [updateCommentNode, updateSpeechBallonNode],
+  )
+
   return {
     handleWheel,
     handleNodesChange,
@@ -132,5 +158,6 @@ export const useReactFlowHandler = () => {
     handlePaneClick,
     handleNodesDelete,
     handleNodeClick,
+    handleNodeDragStop,
   }
 }
