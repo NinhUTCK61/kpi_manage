@@ -75,7 +75,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
         {!!error && (
           <StackError spacing={0.5} direction="row">
             <Image src={AlertIcon} alt="alert" />
-            <Typography color="red.400" whiteSpace="nowrap">
+            <Typography color="red.400" whiteSpace="nowrap" fontSize={14} lineHeight={'20px'}>
               {error}
             </Typography>
           </StackError>

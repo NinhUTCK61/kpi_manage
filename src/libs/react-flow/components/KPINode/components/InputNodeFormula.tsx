@@ -3,6 +3,7 @@ import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/exp
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, Popper, styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import { useRef, useState } from 'react'
 import { FieldValues, useController, useFormContext } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
@@ -24,6 +25,7 @@ function InputNodeFormula<T extends FieldValues>({
   const {
     field: { ref, value, onChange, ...inputProps },
   } = useController({ name, control, defaultValue })
+  const { t } = useTranslation()
   const { setError } = useFormContext<NodeFormProps>()
   const findNodeBySlug = useRFStore((state) => state.findNodeBySlug)
   const templateId = useRFStore((state) => state.templateId)
@@ -47,6 +49,7 @@ function InputNodeFormula<T extends FieldValues>({
   )
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!valueSelected) return
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       const isDown = e.key === 'ArrowDown'
       const stateDown = currentState === data.length - 1 ? 0 : currentState + 1
@@ -85,6 +88,7 @@ function InputNodeFormula<T extends FieldValues>({
   }
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') return
     const data = charFullNearCursor(e)
 
     if (!data?.resultString.replaceAll(' ', '')) {
@@ -92,8 +96,7 @@ function InputNodeFormula<T extends FieldValues>({
       setValueSelected('')
       return
     }
-
-    const check = findNodeBySlug(data.resultString.replaceAll(' ', '').toUpperCase())
+    const check = findNodeBySlug(data.resultStringFull.replaceAll(' ', '').toUpperCase())
     if (check) {
       setAnchorEl(e.currentTarget)
       setValueSelected(data.resultString as string)
@@ -103,7 +106,7 @@ function InputNodeFormula<T extends FieldValues>({
     }
 
     setError('input_value', {
-      message: 'not found node',
+      message: t('error.node_not_found_1') + data.resultStringFull + t('error.node_not_found_2'),
     })
   }
 

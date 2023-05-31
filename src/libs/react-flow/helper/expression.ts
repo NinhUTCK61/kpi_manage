@@ -14,8 +14,10 @@ const sliceKeyInsideSpaceFullSlug = (inputString: string, cursorPosition: number
   const spaceAfterIndex = inputString.indexOf(' ', cursorPosition)
   const startIndex = spaceBeforeIndex + 1
   const endIndex = spaceAfterIndex !== -1 ? spaceAfterIndex : inputString.length
-  const resultString = inputString.substring(startIndex, endIndex)
-  return { resultString, startIndex, endIndex }
+  const resultStringFull = inputString.substring(startIndex, endIndex)
+  const resultString = inputString.substring(startIndex, endIndex).replace(/[^a-zA-Z]/g, ' ')
+
+  return { resultString, resultStringFull, startIndex, endIndex }
 }
 
 export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
