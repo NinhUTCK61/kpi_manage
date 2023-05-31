@@ -2,14 +2,12 @@ import {
   RFStore,
   ReactFlowNodeData,
   isEmptyKPINodeForm,
-  isReactFlowKPIComment,
   isReactFlowKPINode,
-  isReactFlowKPISpeechBallon,
+  useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
+  useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
-import { useCommentUpdateMutation } from '@/libs/react-flow/components/CommentNode/hooks'
-import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
 import { nanoid } from 'nanoid'
 import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode, useReactFlow } from 'reactflow'
@@ -131,26 +129,27 @@ export const useReactFlowHandler = () => {
     [removeEmptyNode, setNodeFocused],
   )
 
-  const handleDragNode = (_: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
-    const data = {
-      id: node.id,
-      x: node.position.x,
-      y: node.position.y,
-    }
+  const handleNodeDragStop = useCallback(
+    (_: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
+      const data = {
+        id: node.id,
+        x: node.position.x,
+        y: node.position.y,
+      }
 
-    switch (true) {
-      case isReactFlowKPIComment(node):
-        updateCommentNode(data)
-        break
-
-      case isReactFlowKPISpeechBallon(node):
-        updateSpeechBallonNode(data)
-        break
-
-      default:
-        break
-    }
-  }
+      switch (node.type) {
+        case 'comment':
+          updateCommentNode(data)
+          break
+        case 'speech_ballon':
+          updateSpeechBallonNode(data)
+          break
+        default:
+          break
+      }
+    },
+    [updateCommentNode, updateSpeechBallonNode],
+  )
 
   return {
     handleWheel,
@@ -159,6 +158,6 @@ export const useReactFlowHandler = () => {
     handlePaneClick,
     handleNodesDelete,
     handleNodeClick,
-    handleDragNode,
+    handleNodeDragStop,
   }
 }
