@@ -20,7 +20,7 @@ const PickColorNode: React.FC = () => {
   const [_, startTransition] = useTransition()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
-  const [pickColor, setPickColor] = useState(base.white)
+  const [pickColor, setPickColor] = useState(base.black)
   const debouncedColor = useDebounce(pickColor, 300)
 
   const isNewFocusNode = useRef(false)
@@ -35,11 +35,11 @@ const PickColorNode: React.FC = () => {
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
-      setPickColor(base.white)
+      setPickColor(base.black)
     } else {
       const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style)
       isNewFocusNode.current = true
-      setPickColor(nodeStyle.color || base.white)
+      setPickColor(nodeStyle.color || base.black)
     }
   }, [nodeFocusedMemo])
 

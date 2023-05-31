@@ -30,3 +30,10 @@ export function filterKpiNodes<
 >(nodes: T[]) {
   return nodes.filter<V>((node): node is V => node.type === 'kpi')
 }
+
+export function getSpeechBallon(_nodes: ReactFlowNode[], id: string) {
+  const nodes = _nodes.find<ReactFlowSpeechBallonNode>(
+    (data): data is ReactFlowSpeechBallonNode => data.id === id && data.type === 'comment',
+  )
+  return nodes
+}

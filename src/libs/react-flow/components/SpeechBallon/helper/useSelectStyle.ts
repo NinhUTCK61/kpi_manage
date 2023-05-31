@@ -8,16 +8,16 @@ export const useSelectStyle = () => {
   const isFill = data.layout === 'FILL'
   const conventionBg = style.background || customPrimary[700]
   const resizeBorder = isFill ? 0 : stroke
-  const color = style.color || base.black
+  const color = style.color || base.white
 
-  const getShapeStyled = {
+  const getShapeStyles = {
     ...style,
     color,
     border: !isFill && `${stroke}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
   }
 
-  const getArrowStyled = {
+  const getArrowStyles = {
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
     '&:before': {
       content: '""',
@@ -31,5 +31,5 @@ export const useSelectStyle = () => {
       zIndex: -1,
     },
   }
-  return { getShapeStyled, getArrowStyled }
+  return { getShapeStyles, getArrowStyles }
 }
