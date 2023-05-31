@@ -8,7 +8,7 @@ import EditorLeftActive from 'public/assets/svgs/editor_left_active.svg'
 import EditorRight from 'public/assets/svgs/editor_right.svg'
 import EditorRightActive from 'public/assets/svgs/editor_right_active.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useNodeUpdateHanlder } from '../../../hooks'
+import { useNodeUpdateHandler } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -37,7 +37,7 @@ const ChooseStyleAlignText: React.FC = () => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {

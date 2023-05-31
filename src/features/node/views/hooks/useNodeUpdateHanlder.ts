@@ -7,7 +7,7 @@ import {
 import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
 import { LayoutType } from '@prisma/client'
 
-export const useNodeUpdateHanlder = (
+export const useNodeUpdateHandler = (
   nodeFocusedMemo: ReactFlowKPINode | ReactFlowSpeechBallonNode | undefined,
 ) => {
   const updateNode = useRFStore((state) => state.updateKPINode)

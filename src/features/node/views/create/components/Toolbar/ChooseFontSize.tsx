@@ -4,7 +4,7 @@ import { InputBase, Select as MuiSelect, SelectChangeEvent, styled } from '@mui/
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down_select.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useNodeUpdateHanlder } from '../../../hooks'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const fontSizes = [
   {
@@ -49,7 +49,7 @@ const ChooseFontSize: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {

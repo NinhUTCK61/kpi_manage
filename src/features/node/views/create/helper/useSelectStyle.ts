@@ -10,14 +10,14 @@ export const useSelectStyle = () => {
   const resizeBorder = isFill ? 0 : stroke
   const color = style.color || base.black
 
-  const getStyleShape = {
+  const getShapeStyled = {
     ...style,
     color,
     border: !isFill && `${stroke}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
   }
 
-  const getStyleArrow = {
+  const getArrowStyled = {
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
     '&:before': {
       content: '""',
@@ -31,5 +31,5 @@ export const useSelectStyle = () => {
       zIndex: -1,
     },
   }
-  return { getStyleShape, getStyleArrow }
+  return { getShapeStyled, getArrowStyled }
 }

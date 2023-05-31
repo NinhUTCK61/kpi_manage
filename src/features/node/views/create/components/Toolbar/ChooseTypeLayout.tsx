@@ -5,7 +5,7 @@ import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useNodeUpdateHanlder } from '../../../hooks'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const shapes = [
   { value: '1', type: 'FILL', label: 'Fill' },
@@ -22,7 +22,7 @@ const ChooseTypeLayout: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStroke } = useNodeUpdateHanlder(nodeFocuseMemo)
+  const { updateStroke } = useNodeUpdateHandler(nodeFocuseMemo)
 
   const handleChange = (value: LayoutType) => {
     setType(value)

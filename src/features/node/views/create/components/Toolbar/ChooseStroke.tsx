@@ -5,7 +5,7 @@ import Image from 'next/image'
 import DownIcon from 'public/assets/svgs/arrow_down_select.svg'
 import UpIcon from 'public/assets/svgs/arrow_up_select.svg'
 import { useEffect, useMemo, useState } from 'react'
-import { useNodeUpdateHanlder } from '../../../hooks'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const strokes = [
   { value: 1, label: '1px' },
@@ -27,7 +27,7 @@ const ChooseStroke: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   const [value, setValue] = useState<number>(1)
 

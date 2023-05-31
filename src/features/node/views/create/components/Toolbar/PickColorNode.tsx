@@ -13,7 +13,7 @@ import {
   useTransition,
 } from 'react'
 import { useDebounce } from 'usehooks-ts'
-import { useNodeUpdateHanlder } from '../../../hooks'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const PickColorNode: React.FC = () => {
   const { t } = useTranslation('file')
@@ -31,7 +31,7 @@ const PickColorNode: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHanlder(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {

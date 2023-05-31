@@ -4,12 +4,12 @@ import React from 'react'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
-  const { getStyleShape, getStyleArrow } = useSelectStyle()
+  const { getShapeStyled, getArrowStyled } = useSelectStyle()
 
   return (
-    <MuiOptionShapeType sx={getStyleShape}>
+    <MuiOptionShapeType sx={getShapeStyled}>
       <SpeechBallonForm />
-      <Arrow sx={getStyleArrow} />
+      <Arrow sx={getArrowStyled} />
     </MuiOptionShapeType>
   )
 }
