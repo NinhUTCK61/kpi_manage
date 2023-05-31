@@ -148,7 +148,6 @@ const Paper = styled(MuiPaper)({
 
 const List = styled(MuiList)(({ theme }) => ({
   maxHeight: 270,
-  width: 262,
   zIndex: 2,
   overflow: 'auto',
   borderRadius: 12,
@@ -165,15 +164,15 @@ const IconTop = styled(Stack)({
   height: 24,
   background: second[0],
   borderRadius: '40px',
-  // zIndex: -1,
 })
 
 const ListItem = styled(MuiListItem)<{ active: string }>(({ theme, active }) => ({
   ...(active === 'true' && {
     background: theme.palette.customPrimary[0],
   }),
+  width: 262,
   '&:hover': {
-    background: theme.palette.customPrimary[0],
+    background: theme.palette.greyScale[100],
   },
 }))
 

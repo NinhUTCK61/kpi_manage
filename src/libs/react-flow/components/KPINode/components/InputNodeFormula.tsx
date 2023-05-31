@@ -13,6 +13,22 @@ import { SelectNodeSlug } from './SelectNodeSlug'
 
 type InputNodeProps<T extends FieldValues> = BaseInputProps<T> & InputBaseProps
 
+type StateProps = {
+  anchorEl: null | HTMLElement
+  valueSelected: string
+  startIndex: number
+  endIndex: number
+  currentState: number
+}
+
+const defaultValueState = {
+  anchorEl: null,
+  valueSelected: '',
+  startIndex: 0,
+  endIndex: 0,
+  currentState: 0,
+}
+
 function InputNodeFormula<T extends FieldValues>({
   name,
   control,
@@ -29,19 +45,15 @@ function InputNodeFormula<T extends FieldValues>({
   const { setError } = useFormContext<NodeFormProps>()
   const findNodeBySlug = useRFStore((state) => state.findNodeBySlug)
   const templateId = useRFStore((state) => state.templateId)
-  const [valueSelected, setValueSelected] = useState<string>('')
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const id = open ? 'simple-popper' : undefined
-  const [startIndex, setStartIndex] = useState(0)
-  const [endIndex, setEndIndex] = useState(0)
-  const [currentState, setCurrentState] = useState(0)
   const elementRef = useRef<HTMLUListElement>(null)
+  const [state, setState] = useState<StateProps>(defaultValueState)
+  const open = Boolean(state.anchorEl)
+  const id = 'simple-popper'
 
   const { data } = api.node.searchSlug.useQuery(
     {
       template_id: templateId,
-      slug: valueSelected.replaceAll(' ', '').toUpperCase(),
+      slug: state.valueSelected.replaceAll(' ', '').toUpperCase(),
     },
     {
       initialData: [],
@@ -49,59 +61,62 @@ function InputNodeFormula<T extends FieldValues>({
   )
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!valueSelected) return
+    if (!state.valueSelected) return
+    const _state = state
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       const isDown = e.key === 'ArrowDown'
-      const stateDown = currentState === data.length - 1 ? 0 : currentState + 1
-      const stateUp = currentState === 0 ? data.length - 1 : currentState - 1
-      const _currentState = isDown ? stateDown : stateUp
+      const _currentState = _state.currentState
+      const stateDown = _currentState === data.length - 1 ? 0 : _currentState + 1
+      const stateUp = _currentState === 0 ? data.length - 1 : _currentState - 1
+      const currentState = isDown ? stateDown : stateUp
 
-      setCurrentState(_currentState)
+      _state.currentState = currentState
+      setState({ ..._state })
+
       if (elementRef.current) {
         let top = 0
-        if (isDown && _currentState >= 4) {
-          top = _currentState * 54
+        if (isDown && currentState >= 4) {
+          top = currentState * 54
         }
         if (!isDown) {
-          top = _currentState * 54
+          top = currentState * 54
         }
         elementRef.current.scrollTop = top
       }
       e.preventDefault()
-      return
     }
 
     if (e.key === 'Enter') {
       const newValue = convertFormula(
         value,
-        data[currentState]?.slug as string,
-        startIndex,
-        endIndex,
+        data[state.currentState]?.slug as string,
+        state.startIndex,
+        state.endIndex,
       )
       onChange(newValue)
-      setCurrentState(0)
-      setValueSelected('')
-      setAnchorEl(null)
+      setState(defaultValueState)
       e.preventDefault()
-      return
     }
   }
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') return
     const data = charFullNearCursor(e)
-
+    const _state = state
     if (!data?.resultString.replaceAll(' ', '')) {
-      setAnchorEl(null)
-      setValueSelected('')
+      setState(defaultValueState)
       return
     }
+
     const check = findNodeBySlug(data.resultStringFull.replaceAll(' ', '').toUpperCase())
     if (check) {
-      setAnchorEl(e.currentTarget)
-      setValueSelected(data.resultString as string)
-      setStartIndex(data.startIndex)
-      setEndIndex(data.endIndex)
+      setState({
+        ..._state,
+        anchorEl: e.currentTarget,
+        valueSelected: data.resultStringFull as string,
+        startIndex: data.startIndex,
+        endIndex: data.endIndex,
+      })
       return
     }
 
@@ -111,10 +126,9 @@ function InputNodeFormula<T extends FieldValues>({
   }
 
   const handleSelect = (valueSelect: string) => {
-    setAnchorEl(null)
-    setValueSelected('')
-    const newValue = convertFormula(value, valueSelect, startIndex, endIndex)
+    const newValue = convertFormula(value, valueSelect, state.startIndex, state.endIndex)
     onChange(newValue)
+    setState(defaultValueState)
   }
 
   return (
@@ -154,12 +168,12 @@ function InputNodeFormula<T extends FieldValues>({
         onKeyUp={handleKeyUp}
         {...inputProps}
       />
-      {valueSelected && (
-        <Popper id={id} open={open} anchorEl={anchorEl}>
+      {state.valueSelected && (
+        <Popper id={id} open={open} anchorEl={state.anchorEl}>
           <SelectNodeSlug
-            value={valueSelected}
+            value={state.valueSelected}
             handleSelect={handleSelect}
-            currentState={currentState}
+            currentState={state.currentState}
             elementRef={elementRef}
           />
         </Popper>
