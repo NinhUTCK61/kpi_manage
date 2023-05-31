@@ -23,6 +23,10 @@ export function isReactFlowKPISpeechBallon(node: RFNode): node is ReactFlowSpeec
   return node.type === 'speech_ballon'
 }
 
+export function isReactFlowKPIComment(node: RFNode): node is ReactFlowCommentNode {
+  return node.type === 'comment'
+}
+
 export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {
   const diff = differenceWith(nodes, queryNodes, (a, b) => {
     return a.id === b.id && a.position.x === b.position.x && a.position.y === b.position.y
