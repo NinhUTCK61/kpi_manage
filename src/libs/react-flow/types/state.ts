@@ -35,7 +35,8 @@ export type RFStore = {
   getKPINodeById: (id: string) => ReactFlowNode | null
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
-  findNodeBySlug: (slug: string) => boolean
+  nodeSearch: ReactFlowKPINode[]
+  filterNodeSearch: (slug: string) => ReactFlowKPINode[]
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void

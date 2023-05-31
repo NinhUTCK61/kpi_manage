@@ -1,4 +1,3 @@
-import { api } from '@/libs/api'
 import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { BaseInputProps } from '@/libs/shared/components'
@@ -43,31 +42,22 @@ function InputNodeFormula<T extends FieldValues>({
   } = useController({ name, control, defaultValue })
   const { t } = useTranslation()
   const { setError } = useFormContext<NodeFormProps>()
-  const findNodeBySlug = useRFStore((state) => state.findNodeBySlug)
-  const templateId = useRFStore((state) => state.templateId)
   const elementRef = useRef<HTMLUListElement>(null)
   const [state, setState] = useState<StateProps>(defaultValueState)
   const open = Boolean(state.anchorEl)
   const id = 'simple-popper'
-
-  const { data } = api.node.searchSlug.useQuery(
-    {
-      template_id: templateId,
-      slug: state.valueSelected.replaceAll(' ', '').toUpperCase(),
-    },
-    {
-      initialData: [],
-    },
-  )
+  const nodeSearch = useRFStore((state) => state.nodeSearch)
+  const filterNodeSearch = useRFStore((state) => state.filterNodeSearch)
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!state.valueSelected) return
+    if (nodeSearch.length === 0) return
     const _state = state
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       const isDown = e.key === 'ArrowDown'
       const _currentState = _state.currentState
-      const stateDown = _currentState === data.length - 1 ? 0 : _currentState + 1
-      const stateUp = _currentState === 0 ? data.length - 1 : _currentState - 1
+      const stateDown = _currentState === nodeSearch.length - 1 ? 0 : _currentState + 1
+      const stateUp = _currentState === 0 ? nodeSearch.length - 1 : _currentState - 1
       const currentState = isDown ? stateDown : stateUp
 
       _state.currentState = currentState
@@ -89,7 +79,7 @@ function InputNodeFormula<T extends FieldValues>({
     if (e.key === 'Enter') {
       const newValue = convertFormula(
         value,
-        data[state.currentState]?.slug as string,
+        nodeSearch[state.currentState]?.data?.slug as string,
         state.startIndex,
         state.endIndex,
       )
@@ -108,8 +98,9 @@ function InputNodeFormula<T extends FieldValues>({
       return
     }
 
-    const check = findNodeBySlug(data.resultStringFull.replaceAll(' ', '').toUpperCase())
-    if (check) {
+    const check = filterNodeSearch(data.resultStringFull.replaceAll(' ', '').toUpperCase())
+
+    if (check.length !== 0) {
       setState({
         ..._state,
         anchorEl: e.currentTarget,
@@ -175,6 +166,7 @@ function InputNodeFormula<T extends FieldValues>({
             handleSelect={handleSelect}
             currentState={state.currentState}
             elementRef={elementRef}
+            nodeSearch={nodeSearch}
           />
         </Popper>
       )}

@@ -1,5 +1,4 @@
-import { api } from '@/libs/api'
-import { useRFStore } from '@/libs/react-flow/hooks'
+import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { Box, ListItemButton, Stack, Typography } from '@mui/material'
 import { IconTop, List, ListItem, Paper } from './styled'
 
@@ -8,6 +7,7 @@ type SelectNodeSlugProps = {
   handleSelect: (value: string) => void
   currentState: number
   elementRef: React.RefObject<HTMLUListElement>
+  nodeSearch: ReactFlowKPINode[]
 }
 
 const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
@@ -15,40 +15,29 @@ const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
   handleSelect,
   currentState,
   elementRef,
+  nodeSearch,
 }) => {
-  const templateId = useRFStore((state) => state.templateId)
-  const slug = value.replaceAll(' ', '').toUpperCase() //validate slug
-  const { data } = api.node.searchSlug.useQuery(
-    {
-      template_id: templateId,
-      slug,
-    },
-    {
-      initialData: [],
-    },
-  )
-
-  if (!value || !data.length) return null
+  if (!value || !nodeSearch?.length) return null
 
   return (
     <Paper elevation={2}>
       <Box sx={{ position: 'relative' }}>
         <IconTop />
         <List ref={elementRef}>
-          {data.map((node, index) => (
+          {nodeSearch.map((node, index) => (
             <ListItem
               active={String(index === currentState)}
               disablePadding
               key={index}
-              onClick={() => handleSelect(node.slug)}
+              onClick={() => handleSelect(node.data.slug)}
             >
               <ListItemButton sx={{ padding: 2 }}>
                 <Stack direction="row">
                   <Typography width={67} variant="body2" color="base.black">
-                    {node.slug}
+                    {node.data.slug}
                   </Typography>
                   <Typography variant="body2" color="base.black">
-                    {node.input_title}
+                    {node.data.input_title}
                   </Typography>
                 </Stack>
               </ListItemButton>
