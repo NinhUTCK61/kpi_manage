@@ -166,11 +166,13 @@ const IconTop = styled(Stack)({
   borderRadius: '40px',
 })
 
-const ListItem = styled(MuiListItem)<{ active: string }>(({ theme, active }) => ({
-  ...(active === 'true' && {
+const ListItem = styled(MuiListItem, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
+  ...(active && {
     background: theme.palette.customPrimary[0],
   }),
-  width: 262,
+  width: 316,
   '&:hover': {
     background: theme.palette.greyScale[100],
   },

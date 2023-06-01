@@ -26,14 +26,14 @@ const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
         <List ref={elementRef}>
           {nodeSearch.map((node, index) => (
             <ListItem
-              active={String(index === currentState)}
+              active={index === currentState}
               disablePadding
               key={index}
               onClick={() => handleSelect(node.data.slug)}
             >
               <ListItemButton sx={{ padding: 2 }}>
-                <Stack direction="row">
-                  <Typography width={67} variant="body2" color="base.black">
+                <Stack direction="row" spacing={2}>
+                  <Typography width={100} variant="body2" color="base.black">
                     {node.data.slug}
                   </Typography>
                   <Typography variant="body2" color="base.black">
