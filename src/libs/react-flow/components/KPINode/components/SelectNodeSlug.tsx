@@ -1,23 +1,10 @@
-import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { Box, ListItemButton, Stack, Typography } from '@mui/material'
+import { useNodeFormulaContext } from '../context'
 import { IconTop, List, ListItem, Paper } from './styled'
 
-type SelectNodeSlugProps = {
-  value: string
-  handleSelect: (value: string) => void
-  currentState: number
-  elementRef: React.RefObject<HTMLUListElement>
-  nodeSearch: ReactFlowKPINode[]
-}
-
-const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
-  value,
-  handleSelect,
-  currentState,
-  elementRef,
-  nodeSearch,
-}) => {
-  if (!value || !nodeSearch?.length) return null
+const SelectNodeSlug: React.FC = ({}) => {
+  const { state, nodeSearch, elementRef, handleSelect } = useNodeFormulaContext()
+  if (!state.valueSelected || !nodeSearch?.length) return null
 
   return (
     <Paper elevation={2}>
@@ -26,7 +13,7 @@ const SelectNodeSlug: React.FC<SelectNodeSlugProps> = ({
         <List ref={elementRef}>
           {nodeSearch.map((node, index) => (
             <ListItem
-              active={index === currentState}
+              active={index === state.currentState}
               disablePadding
               key={index}
               onClick={() => handleSelect(node.data.slug)}

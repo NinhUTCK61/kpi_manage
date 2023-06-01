@@ -28,7 +28,9 @@ export const charNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
   }
 }
 
-export const charFullNearCursor = (e: React.KeyboardEvent<HTMLInputElement>) => {
+export const charFullNearCursor = (
+  e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLInputElement>,
+) => {
   const inputElement = e.target as HTMLInputElement
   const selectionStart = inputElement.selectionStart
   if (selectionStart && selectionStart >= 1 && selectionStart <= inputElement.value.length) {

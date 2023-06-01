@@ -59,7 +59,6 @@ const DEFAULT_STATE: Partial<RFStore> = {
   nodeFocused: null,
   activePosition: null,
   container: null,
-  nodeSearch: [],
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -208,14 +207,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         let nodeCopy: ReactFlowNode | null = null
         nodeCopy = nodes.find((n) => n.id === node) || null
         set({ nodeCopy })
-      },
-      filterNodeSearch(slug) {
-        const _nodes = get().nodes
-        const nodeSearch = _nodes.filter(
-          (n) => n.type === 'kpi' && n.data.slug.includes(slug),
-        ) as ReactFlowKPINode[]
-        set({ nodeSearch })
-        return nodeSearch
       },
       //function toolbar
       changeViewportAction(action) {
