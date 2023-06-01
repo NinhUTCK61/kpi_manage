@@ -1,7 +1,7 @@
 import { useRenameTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
 import { TemplateDataSchema } from '@/libs/schema'
-import { Menu, MenuItem } from '@/libs/shared/components'
+import { CustomLink, Menu, MenuItem } from '@/libs/shared/components'
 import { getImageUrl } from '@/libs/utils/misc'
 import {
   CardContent,
@@ -111,13 +111,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         },
       ]
 
-  const redirectTemplate = () => {
-    !template.deleted_at &&
-      router.push({
-        pathname: 'file/' + template.template_id,
-      })
-  }
-
   return (
     <Card elevation={0}>
       <CardHeader
@@ -157,15 +150,17 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         )}
       </Menu>
 
-      <CardContent sx={{ p: 0 }} onClick={redirectTemplate}>
-        <Image
-          src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
-          alt="file"
-          style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
-          width={268}
-          height={206}
-        />
-      </CardContent>
+      <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
+        <CardContent sx={{ p: 0 }}>
+          <Image
+            src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
+            alt="file"
+            style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
+            width={268}
+            height={206}
+          />
+        </CardContent>
+      </CustomLink>
 
       <TemplateAction
         onSaveName={onSaveName}
