@@ -42,6 +42,13 @@ export function filterKpiNodes<
   return nodes.filter<V>((node): node is V => node.type === 'kpi')
 }
 
+export function getSpeechBallon(_nodes: ReactFlowNode[], id: string) {
+  const node = _nodes.find<ReactFlowSpeechBallonNode>(
+    (data): data is ReactFlowSpeechBallonNode => data.id === id && data.type === 'comment',
+  )
+  return node
+}
+
 export function isCommentNode(
   data: CommentReplyOutputType | CreateCommentOutputType,
 ): data is CreateCommentOutputType {
@@ -66,9 +73,9 @@ export function getCommentReply(_nodes: ReactFlowNode[], id: string, comment_id:
 }
 
 export function getComment(_nodes: ReactFlowNode[], id: string) {
-  const nodes = _nodes.find<ReactFlowCommentNode>(
+  const node = _nodes.find<ReactFlowCommentNode>(
     (data): data is ReactFlowCommentNode => data.id === id && data.type === 'comment',
   )
 
-  return nodes
+  return node
 }

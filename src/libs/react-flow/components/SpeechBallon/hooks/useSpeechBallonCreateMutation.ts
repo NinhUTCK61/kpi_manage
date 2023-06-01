@@ -1,9 +1,11 @@
 import { api } from '@/libs/api'
 import { convertToReactFlowSpeechBallonSingle } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
 const useSpeechBallonCreateMutation = () => {
+  const { t } = useTranslation(['file'])
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
   const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
   const utils = api.useContext()
@@ -14,7 +16,7 @@ const useSpeechBallonCreateMutation = () => {
       addSpeechBallon(dataConvert)
     },
     onError(_, variables) {
-      enqueueSnackbar('err.create_SpeechBallon', {
+      enqueueSnackbar(t('err.create_SpeechBallon'), {
         variant: 'error',
       })
       removeSpeechBallon(variables.id)

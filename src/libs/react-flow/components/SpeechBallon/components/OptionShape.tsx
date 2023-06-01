@@ -1,29 +1,30 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { useShapeStyle } from '../helper'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
+  const { getShapeStyles, getArrowStyles } = useShapeStyle()
+
   return (
-    <MuiOptionShapeType>
+    <MuiOptionShapeType sx={getShapeStyles}>
       <SpeechBallonForm />
-      <Arrow />
+      <Arrow sx={getArrowStyles} />
     </MuiOptionShapeType>
   )
 }
 
-const MuiOptionShapeType = styled('div')(({ theme }) => ({
-  background: theme.palette.customPrimary[600],
+const MuiOptionShapeType = styled('div')({
   minWidth: 210,
   padding: '6px 12px',
   borderRadius: 12,
   position: 'relative',
-}))
+})
 
-export const Arrow = styled('div')(({ theme }) => ({
+export const Arrow = styled('div')({
   position: 'absolute',
   content: '""',
   left: 30,
   borderLeft: '12px solid transparent',
   borderRight: '12px solid transparent',
-  borderTop: `20px solid ${theme.palette.customPrimary[600]}`,
-}))
+})

@@ -4,6 +4,8 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import DownIcon from 'public/assets/svgs/arrow_down_select.svg'
 import UpIcon from 'public/assets/svgs/arrow_up_select.svg'
+import { useEffect, useMemo, useState } from 'react'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const strokes = [
   { value: 1, label: '1px' },
@@ -13,32 +15,59 @@ const strokes = [
   { value: 5, label: '5px' },
 ]
 
+const DEFAULT_STROKE_SIZE = 1
+
 const ChooseStroke: React.FC = () => {
   const { t } = useTranslation('file')
 
-  const stroke = useRFStore((state) => state.stroke)
-  const changeShapeStroke = useRFStore((state) => state.changeShapeStroke)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const nodeFocusedMemo = useMemo(() => {
+    if (nodeFocused?.type !== 'speech_ballon') return
+
+    return nodeFocused
+  }, [nodeFocused])
+
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+
+  const [value, setValue] = useState(1)
 
   const handleChangeValueStoke = (isUp?: boolean) => {
-    if (!stroke) return
-    const _stroke = stroke
-    let value = null
-    if (isUp && _stroke < 5) {
-      value = _stroke + 1
+    if (!nodeFocusedMemo) return
+    let count = value
+    if (isUp && value < 5) {
+      count += 1
     }
 
-    if (!isUp && _stroke > 1) {
-      value = _stroke - 1
+    if (!isUp && value > 1) {
+      count -= 1
     }
-    value && changeShapeStroke(value)
+
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
+    setValue(count)
+
+    if (nodeStyle.stroke === count) return
+
+    const newNodeStyle = JSON.stringify({ ...nodeStyle, stroke: count })
+
+    updateStyle(newNodeStyle)
   }
+
+  useEffect(() => {
+    if (!nodeFocusedMemo) {
+      setValue(DEFAULT_STROKE_SIZE)
+      return
+    }
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    setValue(nodeStyle.stroke ? nodeStyle.stroke : DEFAULT_STROKE_SIZE)
+  }, [nodeFocusedMemo])
 
   return (
     <Tooltip title={t('stroke')} arrow>
       <Stack spacing={1.5} alignItems="center" direction="row" mr={1.5}>
         <StackBorder direction="row" spacing={1}>
           <Typography variant="body2" width={40}>
-            {strokes.find((e) => e.value === stroke)?.label}
+            {strokes.find((e) => e.value === value)?.label}
           </Typography>
 
           <Stack>

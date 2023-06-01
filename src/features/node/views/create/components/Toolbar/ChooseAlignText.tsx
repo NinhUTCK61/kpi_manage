@@ -1,4 +1,4 @@
-import { TextAlign, ViewPortAction } from '@/features/node/constant'
+import { TextAlign } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorCenter from 'public/assets/svgs/editor_center.svg'
@@ -8,6 +8,7 @@ import EditorLeftActive from 'public/assets/svgs/editor_left_active.svg'
 import EditorRight from 'public/assets/svgs/editor_right.svg'
 import EditorRightActive from 'public/assets/svgs/editor_right_active.svg'
 import { useEffect, useMemo, useState } from 'react'
+import { useNodeUpdateHandler } from '../../../hooks'
 import { StackEditor } from './StackEditor'
 
 const editors = [
@@ -31,13 +32,12 @@ const editors = [
 const ChooseStyleAlignText: React.FC = () => {
   const [textAlign, setTextAlign] = useState<TextAlign>(TextAlign.Unset)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const viewportAction = useRFStore((state) => state.viewportAction)
 
   const nodeFocusedMemo = useMemo(() => {
-    if (nodeFocused?.type !== 'kpi') return
-
-    return nodeFocused
+    if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
+
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -52,10 +52,19 @@ const ChooseStyleAlignText: React.FC = () => {
   }, [nodeFocusedMemo])
 
   const handleChangeTextAlign = (value: TextAlign) => {
-    setTextAlign(textAlign !== value ? value : TextAlign.Unset)
-  }
+    if (!nodeFocusedMemo) return
 
-  const isShowForSpeech = viewportAction === ViewPortAction.SpeechBallon
+    setTextAlign(textAlign !== value ? value : TextAlign.Unset)
+
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
+    const newNodeStyle = JSON.stringify({
+      ...nodeStyle,
+      textAlign: value,
+    })
+    updateStyle(newNodeStyle)
+  }
+  const isShowForSpeech = nodeFocusedMemo?.type === 'speech_ballon'
 
   return (
     <StackEditor direction="row" spacing={0.5} mr={3} disabled={!isShowForSpeech}>

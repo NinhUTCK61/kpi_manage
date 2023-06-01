@@ -23,5 +23,9 @@
   "cancel": "キャンセル",
   "save": "保存",
   "enter_comment": "コメントを追加",
+  "err":{
+    "create_speech_ballon": "吹き出しの作成に失敗しました。",
+    "update_speech_ballon": "吹き出しの更新に失敗しました。"
+  },
   "delete_comment": "コメントを削除"
 }

@@ -3,6 +3,7 @@ import {
   ReactFlowNodeData,
   isEmptyKPINodeForm,
   isReactFlowKPINode,
+  isReactFlowKPISpeechBallon,
   useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
@@ -79,7 +80,7 @@ export const useReactFlowHandler = () => {
           node_id: null,
           x,
           y,
-          stroke: '1px',
+          layout: 'FILL',
           created_at: new Date(),
           updated_at: new Date(),
           is_saved: false,
@@ -142,6 +143,7 @@ export const useReactFlowHandler = () => {
           updateCommentNode(data)
           break
         case 'speech_ballon':
+          if (isReactFlowKPISpeechBallon(node) && !node.data.is_saved) return
           updateSpeechBallonNode(data)
           break
         default:

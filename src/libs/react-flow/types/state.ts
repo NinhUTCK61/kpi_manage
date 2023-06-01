@@ -41,7 +41,7 @@ export type RFStore = {
   removeEmptySpeechBallon: () => void
   nodeCopy: ReactFlowNode | null
   setNodeCopy: (node: string | null) => void
-  updateSpeechBallon: (node: UpdateSpeechBallonInputType) => void
+  updateSpeechBallon: (node: UpdateSpeechBallonInputType, shouldFocus?: boolean) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   updateComment: (data: UpdateCommentInputType) => void
