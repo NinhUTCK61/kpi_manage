@@ -23,7 +23,7 @@ function InputNodeFormulaControl<T extends FieldValues>({
     field: { ref, value, onChange, ...inputProps },
   } = useController({ name, control, defaultValue })
 
-  const { stateSuggest, handleClick, handleKeyDown, handleKeyUp } = useNodeFormulaContext()
+  const { suggestState, handleClick, handleKeyDown, handleKeyUp } = useNodeFormulaContext()
 
   return (
     <InputControlNode
@@ -57,14 +57,14 @@ function InputNodeFormulaControl<T extends FieldValues>({
         }}
         onChange={() => undefined}
         style={props?.inputProps?.style || {}}
-        autoComplete={'off'}
+        autoComplete="off"
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onClick={handleClick}
         {...inputProps}
       />
-      {stateSuggest.textSelected && (
-        <Popper open={!!stateSuggest.anchorEl} anchorEl={stateSuggest.anchorEl}>
+      {suggestState.textSelected && (
+        <Popper open={!!suggestState.anchorEl} anchorEl={suggestState.anchorEl}>
           <SelectNodeSlug />
         </Popper>
       )}

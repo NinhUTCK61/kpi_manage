@@ -1,9 +1,9 @@
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { createContext, useContext } from 'react'
-import { StateSuggestProps } from './NodeFormulaProvider'
+import { SuggestStateProps } from './NodeFormulaProvider'
 
 export type NodeFormulaContextType = {
-  stateSuggest: StateSuggestProps
+  suggestState: SuggestStateProps
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
   handleKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void
   handleSelect: (value: string) => void
