@@ -6,6 +6,7 @@ import {
 } from '@/libs/react-flow'
 import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
 import { LayoutType } from '@prisma/client'
+import { ShapeType } from '../create'
 
 export const useNodeUpdateHandler = (
   nodeFocusedMemo: ReactFlowKPINode | ReactFlowSpeechBallonNode | undefined,
@@ -66,8 +67,21 @@ export const useNodeUpdateHandler = (
     })
   }
 
+  const updateSpeechBallonShape = (typeShape: ShapeType) => {
+    if (!nodeFocusedMemo) return
+    const data = { ...nodeFocusedMemo.data, shape: typeShape }
+    updateSpeechBallon(data, true)
+
+    if (!nodeFocusedMemo?.data.is_saved) return
+    mutateSpeechBallon({
+      id: data.id,
+      shape: typeShape,
+    })
+  }
+
   return {
     updateStyle,
     updateSpeechBallonLayout,
+    updateSpeechBallonShape,
   }
 }
