@@ -190,6 +190,10 @@ const colorAlphabet = {
   Z: '#275CD4',
 }
 
+const second = {
+  0: '#FFE5F4',
+}
+
 export {
   green,
   grey,
@@ -206,4 +210,5 @@ export {
   customPrimary,
   black,
   colorAlphabet,
+  second,
 }

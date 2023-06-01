@@ -1,8 +1,11 @@
-import { base, greyScale, red } from '@/libs/config/theme'
+import { base, greyScale, red, second } from '@/libs/config/theme'
 import {
   Box,
+  List as MuiList,
+  ListItem as MuiListItem,
   Menu as MuiMenu,
   MenuItem as MuiMenuItem,
+  Paper as MuiPaper,
   Stack,
   SvgIcon,
   SvgIconProps,
@@ -136,6 +139,45 @@ function NodeIcon(props: SvgIconProps) {
   )
 }
 
+const Paper = styled(MuiPaper)({
+  borderRadius: 12,
+  position: 'absolute',
+  bottom: -45,
+  transform: 'translate(-25%,100%)',
+})
+
+const List = styled(MuiList)(({ theme }) => ({
+  maxHeight: 270,
+  zIndex: 2,
+  overflow: 'auto',
+  borderRadius: 12,
+  background: theme.palette.common.white,
+  scrollBehavior: 'smooth',
+}))
+
+const IconTop = styled(Stack)({
+  position: 'absolute',
+  top: 5,
+  left: '5%',
+  transform: 'translateY(-50%)',
+  width: 24,
+  height: 24,
+  background: second[0],
+  borderRadius: '40px',
+})
+
+const ListItem = styled(MuiListItem, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
+  ...(active && {
+    background: theme.palette.customPrimary[0],
+  }),
+  width: 316,
+  '&:hover': {
+    background: theme.palette.greyScale[100],
+  },
+}))
+
 export {
   LeftHandler,
   BottomHandler,
@@ -150,4 +192,8 @@ export {
   MenuItem,
   StackError,
   NodeIcon,
+  Paper,
+  List,
+  ListItem,
+  IconTop,
 }

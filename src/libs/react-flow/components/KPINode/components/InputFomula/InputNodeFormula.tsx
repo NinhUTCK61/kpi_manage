@@ -1,13 +1,16 @@
 import { BaseInputProps } from '@/libs/shared/components'
-import { InputBaseProps, styled } from '@mui/material'
-import type { FieldValues } from 'react-hook-form'
-import { useController } from 'react-hook-form'
+import { InputBaseProps, Popper, styled } from '@mui/material'
+import { FieldValues, useController } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
-import { InputControlNode } from './InputControlNode'
+import { NodeFormProps } from '../../hooks'
+import { InputControlNode } from '../InputControlNode'
+import { NodeFormulaProvider } from './NodeFormulaProvider'
+import { SelectNodeSlug } from './SelectNodeSlug'
+import { useNodeFormulaContext } from './context'
 
 type InputNodeProps<T extends FieldValues> = BaseInputProps<T> & InputBaseProps
 
-function InputNodeFormula<T extends FieldValues>({
+function InputNodeFormulaControl<T extends FieldValues>({
   name,
   control,
   defaultValue,
@@ -20,8 +23,16 @@ function InputNodeFormula<T extends FieldValues>({
     field: { ref, value, onChange, ...inputProps },
   } = useController({ name, control, defaultValue })
 
+  const { suggestState, handleClick, handleKeyDown, handleKeyUp } = useNodeFormulaContext()
+
   return (
-    <InputControlNode label={label} required={required} value={value} {...controlProps}>
+    <InputControlNode
+      label={label}
+      required={required}
+      value={value}
+      sx={{ position: 'relative' }}
+      {...controlProps}
+    >
       <InputStyled
         inputRef={ref}
         value={value}
@@ -37,7 +48,7 @@ function InputNodeFormula<T extends FieldValues>({
             mapToRadix: ['.'],
           },
           {
-            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{0,999}$/i,
+            mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/? ]{0,999}$/i,
           },
         ]}
         unmask
@@ -46,8 +57,17 @@ function InputNodeFormula<T extends FieldValues>({
         }}
         onChange={() => undefined}
         style={props?.inputProps?.style || {}}
+        autoComplete="off"
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        onClick={handleClick}
         {...inputProps}
       />
+      {suggestState.textSelected && (
+        <Popper open={!!suggestState.anchorEl} anchorEl={suggestState.anchorEl}>
+          <SelectNodeSlug />
+        </Popper>
+      )}
     </InputControlNode>
   )
 }
@@ -67,5 +87,13 @@ const InputStyled = styled(IMaskInput)(({ theme }) => ({
     outline: 'none',
   },
 }))
+
+const InputNodeFormula = (props: InputNodeProps<NodeFormProps>) => {
+  return (
+    <NodeFormulaProvider>
+      <InputNodeFormulaControl {...props} />
+    </NodeFormulaProvider>
+  )
+}
 
 export { InputNodeFormula }

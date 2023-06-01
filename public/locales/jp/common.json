@@ -80,6 +80,8 @@
 
     "invalid_string_label": "タイトルは必須です。",
     "invalid_empty_node_form": "内容を入力してください。",
+    "node_not_found_1": "ノード",
+    "node_not_found_2": "は実在しない",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",

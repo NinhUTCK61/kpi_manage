@@ -4,10 +4,11 @@ import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
 import React, { FormEvent, KeyboardEvent, memo } from 'react'
+import { FormProvider } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
 import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
+import { InputNodeFormula } from './InputFomula'
 import { InputNode } from './InputNode'
-import { InputNodeFormula } from './InputNodeFormula'
 import { StackError } from './styled'
 
 type NodeFormMemoTypes = {
@@ -16,7 +17,8 @@ type NodeFormMemoTypes = {
 
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
-  const { control, getValues, setFocus, error } = useNodeForm(data)
+  const method = useNodeForm(data)
+  const { control, getValues, setFocus, error } = method
   const { saveHandler } = useNodeHandler()
 
   const saveValue = () => {
@@ -73,25 +75,33 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
         {!!error && (
           <StackError spacing={0.5} direction="row">
             <Image src={AlertIcon} alt="alert" />
-            <Typography color="red.400" whiteSpace="nowrap">
+            <Typography color="red.400" whiteSpace="nowrap" fontSize={14} lineHeight={'20px'}>
               {error}
             </Typography>
           </StackError>
         )}
+        <FormProvider {...method}>
+          <InputNode
+            control={control}
+            name="input_title"
+            required
+            label="Label"
+            inputProps={{ style }}
+            autoComplete="off"
+          />
 
-        <InputNode
-          control={control}
-          name="input_title"
-          required
-          label="Label"
-          inputProps={{ style }}
-        />
+          <InputNodeFormula control={control} name="input_value" label="=" inputProps={{ style }} />
 
-        <InputNodeFormula control={control} name="input_value" label="=" inputProps={{ style }} />
+          <InputNode
+            control={control}
+            name="unit"
+            label="Unit"
+            inputProps={{ style }}
+            autoComplete="off"
+          />
 
-        <InputNode control={control} name="unit" label="Unit" inputProps={{ style }} />
-
-        <input type="submit" hidden />
+          <input type="submit" hidden />
+        </FormProvider>
       </Stack>
     </ClickAwayListener>
   )
