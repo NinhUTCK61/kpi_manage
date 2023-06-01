@@ -74,7 +74,7 @@ export const useReactFlowHandler = () => {
         data: {
           id,
           template_id: templateId,
-          shape: 'square',
+          shape: '',
           node_style: null,
           text: '',
           node_id: null,
