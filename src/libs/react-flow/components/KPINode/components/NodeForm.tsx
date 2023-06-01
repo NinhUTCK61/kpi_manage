@@ -7,8 +7,8 @@ import React, { FormEvent, KeyboardEvent, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
 import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
+import { InputNodeFormula } from './InputFomula'
 import { InputNode } from './InputNode'
-import { InputNodeFormula } from './InputNodeFormula'
 import { StackError } from './styled'
 
 type NodeFormMemoTypes = {

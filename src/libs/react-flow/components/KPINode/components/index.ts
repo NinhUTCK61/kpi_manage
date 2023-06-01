@@ -1,5 +1,6 @@
 export * from './ActiveNode'
 export * from './InActiveNode'
 export * from './InputControlNode'
+export * from './InputFomula'
 export * from './InputNode'
 export * from './NodeForm'

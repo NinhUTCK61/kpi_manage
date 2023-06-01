@@ -1,10 +1,10 @@
 import { Box, ListItemButton, Stack, Typography } from '@mui/material'
-import { useNodeFormulaContext } from '../context'
-import { IconTop, List, ListItem, Paper } from './styled'
+import { IconTop, List, ListItem, Paper } from '../styled'
+import { useNodeFormulaContext } from './context'
 
-const SelectNodeSlug: React.FC = ({}) => {
-  const { state, nodeSearch, elementRef, handleSelect } = useNodeFormulaContext()
-  if (!state.valueSelected || !nodeSearch?.length) return null
+const SelectNodeSlug: React.FC = () => {
+  const { stateSuggest, nodeSearch, elementRef, handleSelect } = useNodeFormulaContext()
+  if (!stateSuggest.textSelected || !nodeSearch?.length) return null
 
   return (
     <Paper elevation={2}>
@@ -13,7 +13,7 @@ const SelectNodeSlug: React.FC = ({}) => {
         <List ref={elementRef}>
           {nodeSearch.map((node, index) => (
             <ListItem
-              active={index === state.currentState}
+              active={index === stateSuggest.indexSuggest}
               disablePadding
               key={index}
               onClick={() => handleSelect(node.data.slug)}

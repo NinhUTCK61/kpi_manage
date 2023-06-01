@@ -1,3 +1,4 @@
+import { HEIGHT_ITEM_SUGGEST } from '@/libs/react-flow/constant'
 import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode, ReactFlowNode } from '@/libs/react-flow/types'
@@ -12,27 +13,27 @@ import React, {
   useState,
 } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { NodeFormulaContext } from '../context'
-import { NodeFormProps } from '../hooks'
+import { NodeFormProps } from '../../hooks'
+import { NodeFormulaContext } from './context'
 
 export const defaultValueState = {
   anchorEl: null,
-  valueSelected: '',
-  startIndex: 0,
-  endIndex: 0,
-  currentState: 0,
+  textSelected: '',
+  startIndexText: 0,
+  endIndexText: 0,
+  indexSuggest: 0,
 }
 
-export type StateProps = {
+export type StateSuggestProps = {
   anchorEl: null | HTMLElement
-  valueSelected: string
-  startIndex: number
-  endIndex: number
-  currentState: number
+  textSelected: string
+  startIndexText: number
+  endIndexText: number
+  indexSuggest: number
 }
 
 export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<StateProps>(defaultValueState)
+  const [stateSuggest, setStateSuggest] = useState<StateSuggestProps>(defaultValueState)
   const { setError, getValues, setValue } = useFormContext<NodeFormProps>()
   const [nodeSearch, setNodeSearch] = useState<ReactFlowKPINode[]>([])
   const elementRef = useRef<HTMLUListElement>(null)
@@ -41,26 +42,26 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
-      if (!state.valueSelected) return
-      if (nodes.length === 0) return
-      const _state = state
+      if (!stateSuggest.textSelected) return
+      if (nodeSearch.length === 0) return
+      const _state = stateSuggest
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         const isDown = e.key === 'ArrowDown'
-        const _currentState = _state.currentState
-        const stateDown = _currentState === nodeSearch.length - 1 ? 0 : _currentState + 1
-        const stateUp = _currentState === 0 ? nodeSearch.length - 1 : _currentState - 1
-        const currentState = isDown ? stateDown : stateUp
+        const _indexSuggest = _state.indexSuggest
+        const stateDown = _indexSuggest === nodeSearch.length - 1 ? 0 : _indexSuggest + 1
+        const stateUp = _indexSuggest === 0 ? nodeSearch.length - 1 : _indexSuggest - 1
+        const indexSuggest = isDown ? stateDown : stateUp
 
-        _state.currentState = currentState
-        setState({ ..._state })
+        _state.indexSuggest = indexSuggest
+        setStateSuggest({ ..._state })
 
         if (elementRef.current) {
           let top = 0
-          if (isDown && currentState >= 4) {
-            top = currentState * 54
+          if (isDown && indexSuggest >= 4) {
+            top = indexSuggest * HEIGHT_ITEM_SUGGEST
           }
           if (!isDown) {
-            top = currentState * 54
+            top = indexSuggest * HEIGHT_ITEM_SUGGEST
           }
           elementRef.current.scrollTop = top
         }
@@ -70,24 +71,24 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       if (e.key === 'Enter') {
         const newValue = convertFormula(
           getValues('input_value') as string,
-          nodeSearch[state.currentState]?.data?.slug as string,
-          state.startIndex,
-          state.endIndex,
+          nodeSearch[stateSuggest.indexSuggest]?.data?.slug as string,
+          stateSuggest.startIndexText,
+          stateSuggest.endIndexText,
         )
         setValue('input_value', newValue)
-        setState(defaultValueState)
+        setStateSuggest(defaultValueState)
         e.preventDefault()
       }
     },
-    [getValues, nodeSearch, nodes.length, setValue, state],
+    [getValues, nodeSearch, setValue, stateSuggest],
   )
 
   const handlingData = useCallback(
     (e: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>) => {
       const data = charFullNearCursor(e)
-      const _state = state
+      const _state = stateSuggest
       if (!data?.resultString.replaceAll(' ', '')) {
-        setState(defaultValueState)
+        setStateSuggest(defaultValueState)
         return
       }
 
@@ -98,12 +99,12 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       ) as ReactFlowKPINode[]
 
       if (check.length !== 0) {
-        setState({
+        setStateSuggest({
           ..._state,
           anchorEl: e.currentTarget,
-          valueSelected: data.resultStringFull as string,
-          startIndex: data.startIndex,
-          endIndex: data.endIndex,
+          textSelected: data.resultStringFull as string,
+          startIndexText: data.startIndex,
+          endIndexText: data.endIndex,
         })
         setNodeSearch(check)
         return
@@ -113,7 +114,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         message: t('error.node_not_found_1') + data.resultStringFull + t('error.node_not_found_2'),
       })
     },
-    [nodes, setError, state, t],
+    [nodes, setError, stateSuggest, t],
   )
 
   const handleKeyUp = useCallback(
@@ -136,18 +137,18 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       const newValue = convertFormula(
         getValues('input_value') as string,
         valueSelect,
-        state.startIndex,
-        state.endIndex,
+        stateSuggest.startIndexText,
+        stateSuggest.endIndexText,
       )
       setValue('input_value', newValue)
-      setState(defaultValueState)
+      setStateSuggest(defaultValueState)
     },
-    [getValues, setValue, state.endIndex, state.startIndex],
+    [getValues, setValue, stateSuggest.endIndexText, stateSuggest.startIndexText],
   )
 
   const contextValue = useMemo(
     () => ({
-      state,
+      stateSuggest,
       handleKeyDown,
       handleKeyUp,
       handleSelect,
@@ -155,7 +156,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       nodeSearch,
       elementRef,
     }),
-    [handleClick, handleKeyDown, handleKeyUp, handleSelect, nodeSearch, state],
+    [handleClick, handleKeyDown, handleKeyUp, handleSelect, nodeSearch, stateSuggest],
   )
 
   return <NodeFormulaContext.Provider value={contextValue}>{children}</NodeFormulaContext.Provider>

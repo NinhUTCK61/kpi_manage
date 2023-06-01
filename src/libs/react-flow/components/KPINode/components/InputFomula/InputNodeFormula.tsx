@@ -2,11 +2,11 @@ import { BaseInputProps } from '@/libs/shared/components'
 import { InputBaseProps, Popper, styled } from '@mui/material'
 import { FieldValues, useController } from 'react-hook-form'
 import { IMaskInput } from 'react-imask'
-import { useNodeFormulaContext } from '../context'
-import { NodeFormProps } from '../hooks'
-import { InputControlNode } from './InputControlNode'
+import { NodeFormProps } from '../../hooks'
+import { InputControlNode } from '../InputControlNode'
 import { NodeFormulaProvider } from './NodeFormulaProvider'
 import { SelectNodeSlug } from './SelectNodeSlug'
+import { useNodeFormulaContext } from './context'
 
 type InputNodeProps<T extends FieldValues> = BaseInputProps<T> & InputBaseProps
 
@@ -23,7 +23,7 @@ function InputNodeFormulaControl<T extends FieldValues>({
     field: { ref, value, onChange, ...inputProps },
   } = useController({ name, control, defaultValue })
 
-  const { state, handleClick, handleKeyDown, handleKeyUp } = useNodeFormulaContext()
+  const { stateSuggest, handleClick, handleKeyDown, handleKeyUp } = useNodeFormulaContext()
 
   return (
     <InputControlNode
@@ -63,8 +63,8 @@ function InputNodeFormulaControl<T extends FieldValues>({
         onClick={handleClick}
         {...inputProps}
       />
-      {state.valueSelected && (
-        <Popper open={!!state.anchorEl} anchorEl={state.anchorEl}>
+      {stateSuggest.textSelected && (
+        <Popper open={!!stateSuggest.anchorEl} anchorEl={stateSuggest.anchorEl}>
           <SelectNodeSlug />
         </Popper>
       )}
