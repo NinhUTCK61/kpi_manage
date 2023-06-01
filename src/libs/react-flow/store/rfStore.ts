@@ -100,7 +100,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
-        get().setNodeFocused(node.data.id)
+        get().setNodeFocused(node)
 
         set({
           nodes: _nodes,

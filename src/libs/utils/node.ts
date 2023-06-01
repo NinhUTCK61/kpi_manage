@@ -17,7 +17,7 @@ export function generateDefaultNode(
     x: 0,
     y: 0,
     unit: '',
-    style: undefined,
+    node_style: JSON.stringify({ color: '#222222' }),
   }
 
   const rootNode: Prisma.NodeCreateManyInput = {

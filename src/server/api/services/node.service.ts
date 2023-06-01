@@ -110,21 +110,26 @@ export class NodeService extends NodeHelper {
       })
     }
 
-    const node: KPINodeType[] = await prisma.$queryRaw`WITH RECURSIVE node_tree AS (
-        SELECT *
-        FROM "Node"
-        WHERE ID = ${checkUserTemplate.template.root_note_id}
-        UNION ALL
-        SELECT n.*
-        FROM "Node" n
-        JOIN node_tree nt ON n."parent_node_id" = nt.id
-      )
-      SELECT * FROM node_tree
-      ORDER BY 
-        CASE
-          WHEN slug = 'root' THEN 0
-          ELSE 1
-        END, slug;`
+    const node: KPINodeType[] = await prisma.$queryRaw`
+    WITH RECURSIVE node_tree AS (
+      SELECT *, substring(slug from '[0-9]+') as number_part
+      FROM "Node"
+      WHERE ID = ${checkUserTemplate.template.root_note_id}
+      UNION ALL
+      SELECT n.*, substring(n.slug from '[0-9]+') as number_part
+      FROM "Node" n
+      JOIN node_tree nt ON n."parent_node_id" = nt.id
+    )
+    SELECT *
+    FROM node_tree
+    ORDER BY 
+      CASE
+        WHEN slug = 'root' THEN 0
+        ELSE CAST(CASE
+          WHEN number_part = '' THEN '0'
+          ELSE number_part
+        END AS INTEGER)
+      END, slug;`
 
     const d3Root = stratify<KPINodeType>()
       .id((n) => n.id)

@@ -10,7 +10,7 @@ export const DEFAULT_NODE_ATTRIBUTES = {
   input_title: '',
   input_value: '',
   is_formula: false,
-  node_style: null,
+  node_style: JSON.stringify({ color: '#222222' }),
   unit: '',
   value2number: null,
   template_id: '',
