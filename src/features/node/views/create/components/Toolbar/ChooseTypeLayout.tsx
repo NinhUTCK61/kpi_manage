@@ -71,7 +71,7 @@ const Select = styled(MuiSelect)(({ theme }) => ({
   paddingRight: 8,
   marginRight: 12,
   height: 32,
-  minWidth: 73,
+  minWidth: 99,
   background: theme.palette.common.white,
   '& .MuiSelect-icon': {
     top: 'auto',
