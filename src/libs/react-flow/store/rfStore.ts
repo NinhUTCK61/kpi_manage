@@ -343,16 +343,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       handleZoom(isZoomIn) {
         const zoomValues = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
         const currentZoom = get().zoom
-        let index = zoomValues.indexOf(currentZoom)
+        const currentIndex = zoomValues.indexOf(currentZoom)
+        let index = currentIndex
 
         if (index === -1) {
-          index = Number(
-            isZoomIn
-              ? zoomValues.findIndex((e) => e > currentZoom)
-              : zoomValues.reverse().findIndex((e) => e < currentZoom),
-          )
+          const _index = zoomValues.findIndex((e) => e > currentZoom)
+          index = isZoomIn ? _index : _index - 1
         } else {
-          index = isZoomIn ? index + 1 : index - 1
+          index = isZoomIn ? currentIndex + 1 : currentIndex - 1
 
           if (index < 0 || index >= zoomValues.length) {
             return
