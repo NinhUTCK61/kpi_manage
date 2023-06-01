@@ -341,16 +341,22 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       },
       //function zoom
       handleZoom(isZoomIn) {
-        const zoomValues = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+        const zoomValues = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
         const currentZoom = get().zoom
-        const index = zoomValues.indexOf(currentZoom)
-        const newIndex = isZoomIn ? index + 1 : index - 1
+        const currentIndex = zoomValues.indexOf(currentZoom)
+        let index = currentIndex
 
-        if (newIndex < 0 || newIndex >= zoomValues.length) {
-          return
+        if (index === -1) {
+          const _index = zoomValues.findIndex((e) => e > currentZoom)
+          index = isZoomIn ? _index : _index - 1
+        } else {
+          index = isZoomIn ? currentIndex + 1 : currentIndex - 1
+
+          if (index < 0 || index >= zoomValues.length) {
+            return
+          }
         }
-
-        const newZoom = zoomValues[newIndex]
+        const newZoom = zoomValues[index]
         set({ zoom: newZoom })
       },
       scrollZoom(isZoomIn) {
