@@ -40,7 +40,6 @@ const PickColorNode: React.FC = () => {
   )
 
   useLayoutEffect(() => {
-    console.log(nodeFocusedMemo)
     if (!nodeFocusedMemo?.data.node_style) {
       setPickColor(nodeFocusedMemo?.type === 'kpi' ? base.black : base.white)
     } else {
