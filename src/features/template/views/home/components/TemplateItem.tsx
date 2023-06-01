@@ -111,14 +111,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         },
       ]
 
-  const redirectTemplate = () => {
-    console.log('12334')
-    !template.deleted_at &&
-      router.push({
-        pathname: 'file/' + template.template_id,
-      })
-  }
-
   return (
     <Card elevation={0}>
       <CardHeader
