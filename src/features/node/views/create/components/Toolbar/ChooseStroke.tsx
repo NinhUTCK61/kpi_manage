@@ -50,7 +50,7 @@ const ChooseStroke: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, stroke: count })
 
-    updateStyle(newNodeStyle)
+    updateStyle({ node_style: newNodeStyle })
   }
 
   useEffect(() => {

@@ -34,7 +34,7 @@ const ChooseShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateSpeechBallonShape } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   const handleShapeChange = (event: SelectChangeEvent<unknown>) => {
     const value = event.target.value as ShapeType
@@ -42,7 +42,7 @@ const ChooseShape: React.FC = () => {
 
     if (!nodeFocusedMemo) return
 
-    updateSpeechBallonShape(value)
+    updateStyle({ shape: value })
   }
 
   useEffect(() => {

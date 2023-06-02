@@ -8,6 +8,12 @@ import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/Spee
 import { LayoutType } from '@prisma/client'
 import { ShapeType } from '../create'
 
+type DataType = {
+  layout?: LayoutType
+  shape?: ShapeType
+  node_style?: string
+}
+
 export const useNodeUpdateHandler = (
   nodeFocusedMemo: ReactFlowKPINode | ReactFlowSpeechBallonNode | undefined,
 ) => {
@@ -30,58 +36,32 @@ export const useNodeUpdateHandler = (
     })
   }
 
-  const updateStyleSpeechBallon = (newNodeStyle: string) => {
+  const updateStyleSpeechBallon = (nodeData: DataType) => {
     if (nodeFocusedMemo) {
-      const data = { ...nodeFocusedMemo.data, node_style: newNodeStyle }
+      const data = { ...nodeFocusedMemo.data, ...nodeData }
       updateSpeechBallon(data, true)
     }
     if (!nodeFocusedMemo?.data.is_saved) return
     mutateSpeechBallon({
       id: nodeFocusedMemo?.id as string,
-      node_style: newNodeStyle,
+      ...nodeData,
     })
   }
 
-  const updateStyle = (newNodeStyle: string) => {
+  const updateStyle = (data: DataType) => {
     switch (nodeFocusedMemo?.type) {
       case 'kpi':
-        updateStyleNode(newNodeStyle)
+        updateStyleNode(data.node_style as string)
         break
       case 'speech_ballon':
-        updateStyleSpeechBallon(newNodeStyle)
+        updateStyleSpeechBallon(data)
         break
       default:
         break
     }
   }
 
-  const updateSpeechBallonLayout = (typeLayout: LayoutType) => {
-    if (!nodeFocusedMemo) return
-    const data = { ...nodeFocusedMemo.data, layout: typeLayout }
-    updateSpeechBallon(data, true)
-
-    if (!nodeFocusedMemo?.data.is_saved) return
-    mutateSpeechBallon({
-      id: data.id,
-      layout: typeLayout,
-    })
-  }
-
-  const updateSpeechBallonShape = (typeShape: ShapeType) => {
-    if (!nodeFocusedMemo) return
-    const data = { ...nodeFocusedMemo.data, shape: typeShape }
-    updateSpeechBallon(data, true)
-
-    if (!nodeFocusedMemo?.data.is_saved) return
-    mutateSpeechBallon({
-      id: data.id,
-      shape: typeShape,
-    })
-  }
-
   return {
     updateStyle,
-    updateSpeechBallonLayout,
-    updateSpeechBallonShape,
   }
 }

@@ -74,7 +74,7 @@ const ChooseStyleText: React.FC = () => {
       ..._styleText,
     })
 
-    updateStyle(newNodeStyle)
+    updateStyle({ node_style: newNodeStyle })
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move

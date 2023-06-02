@@ -62,7 +62,7 @@ const ChooseStyleAlignText: React.FC = () => {
       ...nodeStyle,
       textAlign: value,
     })
-    updateStyle(newNodeStyle)
+    updateStyle({ node_style: newNodeStyle })
   }
   const isShowForSpeech = nodeFocusedMemo?.type === 'speech_ballon'
 

@@ -37,7 +37,7 @@ const PickColorShape: React.FC = () => {
   const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   const updateSpeechBallonStyle = useCallback(
-    (newNodeStyle: string) => updateStyle(newNodeStyle),
+    (newNodeStyle: string) => updateStyle({ node_style: newNodeStyle }),
     [updateStyle],
   )
 

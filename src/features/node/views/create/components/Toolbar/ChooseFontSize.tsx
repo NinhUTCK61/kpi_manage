@@ -69,7 +69,7 @@ const ChooseFontSize: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
 
-    updateStyle(newNodeStyle)
+    updateStyle({ node_style: newNodeStyle })
   }
 
   return (

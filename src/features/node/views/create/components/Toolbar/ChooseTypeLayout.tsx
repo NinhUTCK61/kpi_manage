@@ -17,26 +17,26 @@ const ChooseTypeLayout: React.FC = () => {
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
-  const nodeFocuseMemo = useMemo(() => {
+  const nodeFocusedMemo = useMemo(() => {
     if (!nodeFocused || nodeFocused.type !== 'speech_ballon') return
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateSpeechBallonLayout } = useNodeUpdateHandler(nodeFocuseMemo)
+  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
 
   const handleChange = (value: LayoutType) => {
     setType(value)
 
-    if (!nodeFocuseMemo) return
+    if (!nodeFocusedMemo) return
 
-    updateSpeechBallonLayout(value)
+    updateStyle({ layout: value })
   }
 
   useEffect(() => {
-    if (!nodeFocuseMemo) return
-    const layoutType = nodeFocuseMemo.data.layout
+    if (!nodeFocusedMemo) return
+    const layoutType = nodeFocusedMemo.data.layout
     layoutType ? setType(layoutType) : setType('FILL')
-  }, [nodeFocuseMemo])
+  }, [nodeFocusedMemo])
 
   return (
     <Stack direction="row" alignItems="center" spacing={1.5}>
