@@ -95,6 +95,7 @@ const TextOverflow = styled(Typography)({
   maxWidth: 125,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 })
 
 const Menu = styled(MuiMenu)(({ theme }) => ({
