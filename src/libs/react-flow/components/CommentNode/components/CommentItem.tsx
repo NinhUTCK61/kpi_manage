@@ -20,10 +20,9 @@ import { BackgroundDefault, ButtonAction, ButtonMenu } from './styled'
 
 type CommentItemProps = {
   data: CommentReplyOutputType | CommentOutputType
-  isLast?: boolean
 }
 
-const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
+const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   const {
     i18n: { language },
   } = useTranslation('home')
@@ -37,12 +36,6 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   const { mutate: updateReply } = useCommentReplyUpdateMutation()
   const { mutate: updateComment } = useCommentUpdateMutation()
   const { mutate: deleteReply } = useCommentReplyDeleteMutation()
-
-  const scrollTo = (el: HTMLDivElement) => {
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
 
   const handleCloseEdit = () => {
     setContent(null)
@@ -92,12 +85,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data, isLast }) => {
   }
 
   return (
-    <Stack
-      p={2}
-      bgcolor="base.white"
-      ref={isLast ? scrollTo : undefined}
-      sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}
-    >
+    <Stack p={2} bgcolor="base.white" sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}>
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row" spacing={1}>
           <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
