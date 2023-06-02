@@ -83,7 +83,7 @@
     "prisma": "^4.15.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.4",
-    "vitest": "^0.31.3"
+    "vitest": "^0.31.4"
   },
   "ct3aMetadata": {
     "initVersion": "7.10.1"
