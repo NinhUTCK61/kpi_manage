@@ -1,4 +1,4 @@
-import { useRFStore } from '@/libs/react-flow'
+import { NodeType, useRFStore } from '@/libs/react-flow'
 import { MenuItem } from '@/libs/shared/components'
 import { InputBase, Select as MuiSelect, SelectChangeEvent, styled } from '@mui/material'
 import Image from 'next/image'
@@ -49,7 +49,7 @@ const ChooseFontSize: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -69,7 +69,14 @@ const ChooseFontSize: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, fontSize: value })
 
-    updateStyle({ node_style: newNodeStyle })
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      nodeFocusedMemo.type as NodeType,
+    )
   }
 
   return (

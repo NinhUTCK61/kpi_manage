@@ -22,14 +22,21 @@ const ChooseTypeLayout: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   const handleChange = (value: LayoutType) => {
     setType(value)
 
     if (!nodeFocusedMemo) return
 
-    updateStyle({ layout: value })
+    updateReactFlowNode(
+      {
+        layout: value,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      'speech_ballon',
+    )
   }
 
   useEffect(() => {

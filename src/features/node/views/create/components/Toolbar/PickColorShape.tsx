@@ -34,12 +34,7 @@ const PickColorShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
-
-  const updateSpeechBallonStyle = useCallback(
-    (newNodeStyle: string) => updateStyle({ node_style: newNodeStyle }),
-    [updateStyle],
-  )
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
@@ -59,8 +54,15 @@ const PickColorShape: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, background: debouncedColor })
 
-    updateSpeechBallonStyle(newNodeStyle)
-  }, [nodeFocusedMemo, debouncedColor, updateSpeechBallonStyle])
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      'speech_ballon',
+    )
+  }, [nodeFocusedMemo, debouncedColor, updateReactFlowNode])
 
   useEffect(() => {
     if (isNewFocusNode.current) return

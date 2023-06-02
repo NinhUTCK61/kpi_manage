@@ -1,3 +1,4 @@
+import { ShapeType } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
@@ -9,13 +10,6 @@ import SquareShape3Icon from 'public/assets/svgs/shape_3.svg'
 import SquareShape4Icon from 'public/assets/svgs/shape_4.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
-
-export const enum ShapeType {
-  SQUARE = 'SQUARE',
-  CIRCULAR = 'CIRCULAR',
-  MEDIUM_ROUND_SQUARE = 'MEDIUM_ROUND_SQUARE',
-  ROUND_SQUARE = 'ROUND_SQUARE',
-}
 
 const shapes = [
   { icon: SquareShape1Icon, type: ShapeType.SQUARE },
@@ -34,7 +28,7 @@ const ChooseShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   const handleShapeChange = (event: SelectChangeEvent<unknown>) => {
     const value = event.target.value as ShapeType
@@ -42,7 +36,14 @@ const ChooseShape: React.FC = () => {
 
     if (!nodeFocusedMemo) return
 
-    updateStyle({ shape: value })
+    updateReactFlowNode(
+      {
+        shape: value,
+        id: nodeFocusedMemo.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      'speech_ballon',
+    )
   }
 
   useEffect(() => {

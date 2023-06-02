@@ -27,7 +27,7 @@ const ChooseStroke: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   const [value, setValue] = useState(1)
 
@@ -50,7 +50,14 @@ const ChooseStroke: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, stroke: count })
 
-    updateStyle({ node_style: newNodeStyle })
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      'speech_ballon',
+    )
   }
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { FontStyle, FontWeight, StyleText, ViewPortAction } from '@/features/node/constant'
-import { useRFStore } from '@/libs/react-flow'
+import { NodeType, useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorBoldActive from 'public/assets/svgs/editor_bold_active.svg'
@@ -55,7 +55,7 @@ const ChooseStyleText: React.FC = () => {
     })
   }, [nodeFocusedMemo])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
     if (!nodeFocusedMemo) return
@@ -74,7 +74,14 @@ const ChooseStyleText: React.FC = () => {
       ..._styleText,
     })
 
-    updateStyle({ node_style: newNodeStyle })
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      nodeFocusedMemo.type as NodeType,
+    )
   }
 
   const isShowForNode = viewportAction === ViewPortAction.Move
