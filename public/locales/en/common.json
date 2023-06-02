@@ -66,7 +66,7 @@
     "template_deleted": "The template has been deleted.",
     "internal_server_error": "An internal server error occurred.",
     "invalid_token": "Token not found or expired!",
-    "email_conflict": "Email already exists!",
+    "email_conflict": "Invalid email format.",
     "error_match_password": "Password and Confirm Password does not match.",
     "kpi_issue_required": "Please choose the KPI Issue.",
     "kpi_reason_required": "Please choose How I learned about KPI Master.",
