@@ -22,11 +22,15 @@ export const SpeechBallonForm: React.FC = () => {
   const { data, xPos, yPos, isEditing: editable, handleSetEditing } = useSpeechBallonContext()
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
-  const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
+  const { control, getValues, setFocus, setValue } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: data.text,
     },
   })
+
+  useEffect(() => {
+    setValue('text', data.text)
+  }, [setValue, data.text])
 
   let style = JSON.parse(data.node_style || '{}')
   style = { ...style, background: 'inherit' }
@@ -110,11 +114,14 @@ export const SpeechBallonForm: React.FC = () => {
   ) : (
     <InputSpeechBalloon
       control={control}
+      onKeyDown={handleKeyDown}
       multiline
       maxRows={5}
       name="text"
-      readOnly
+      autoComplete="off"
+      onFocus={handleFocus}
       inputProps={{ style }}
+      readOnly
     />
   )
 }

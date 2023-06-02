@@ -1,5 +1,10 @@
-import { CreateSpeechBallonInputSchema, UpdateSpeechInputSchema } from '@/libs/schema/speechballon'
+import {
+  CreateSpeechBallonInputSchema,
+  DeleteSpeechInputSchema,
+  UpdateSpeechInputSchema,
+} from '@/libs/schema/speechballon'
 import { SpeechBallonSchema } from 'prisma/generated/zod'
+import { z } from 'zod'
 import { SpeechBallonService } from '../services/speechballon.service'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -22,5 +27,14 @@ export const speechBallonRoute = createTRPCRouter({
     .output(SpeechBallonSchema)
     .mutation(({ input, ctx }) => {
       return speechBallonService.update(ctx.session.user, input)
+    }),
+  delete: protectedProcedure
+    .meta({
+      openapi: { method: 'DELETE', path: '/delete', protect: true },
+    })
+    .input(DeleteSpeechInputSchema)
+    .output(z.string())
+    .mutation(({ input, ctx }) => {
+      return speechBallonService.delete(input, ctx.session.user)
     }),
 })

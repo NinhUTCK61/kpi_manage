@@ -10,5 +10,12 @@ export const UpdateSpeechInputSchema = SpeechBallonSchema.partial().required({
   id: true,
 })
 
+export const DeleteSpeechInputSchema = z.object({
+  id: z.string(),
+  template_id: z.string(),
+  node_id: z.string().nullable(),
+})
+
 export type CreateSpeechBallonInputType = z.infer<typeof CreateSpeechBallonInputSchema>
 export type UpdateSpeechBallonInputType = z.infer<typeof UpdateSpeechInputSchema>
+export type DeleteSpeechBallonInputType = z.infer<typeof DeleteSpeechInputSchema>
