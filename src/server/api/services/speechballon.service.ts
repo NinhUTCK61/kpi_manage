@@ -1,5 +1,6 @@
 import {
   CreateSpeechBallonInputType,
+  DeleteSpeechBallonInputType,
   UpdateSpeechBallonInputType,
 } from '@/libs/schema/speechballon'
 import { prisma } from '@/server/db'
@@ -56,5 +57,32 @@ export class SpeechBallonService extends CommonHelper {
     })
 
     return updateData
+  }
+
+  async delete({ id, node_id, template_id }: DeleteSpeechBallonInputType, user: User) {
+    const querySpeechBallon = await prisma.speechBallon.findFirst({
+      where: {
+        id,
+        node_id,
+        template_id,
+      },
+    })
+
+    if (!querySpeechBallon) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.speechballon_not_found',
+      })
+    }
+
+    await this.validateUserTemplate(querySpeechBallon.template_id, user.id)
+
+    await prisma.speechBallon.delete({
+      where: {
+        id,
+      },
+    })
+
+    return 'speechBallon.delete_speechBallon'
   }
 }

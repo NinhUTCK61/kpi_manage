@@ -26,6 +26,7 @@ export const SpeechBallonForm: React.FC = () => {
     defaultValues: {
       text: data.text,
     },
+    values: { text: data.text },
   })
 
   let style = JSON.parse(data.node_style || '{}')

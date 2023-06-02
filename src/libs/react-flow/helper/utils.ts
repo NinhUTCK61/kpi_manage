@@ -44,7 +44,7 @@ export function filterKpiNodes<
 
 export function getSpeechBallon(_nodes: ReactFlowNode[], id: string) {
   const node = _nodes.find<ReactFlowSpeechBallonNode>(
-    (data): data is ReactFlowSpeechBallonNode => data.id === id && data.type === 'comment',
+    (data): data is ReactFlowSpeechBallonNode => data.id === id && data.type === 'speech_ballon',
   )
   return node
 }
