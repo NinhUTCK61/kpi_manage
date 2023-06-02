@@ -25,9 +25,10 @@ const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) 
         cursor: `url(${HandDragIcon.src}),auto`,
       },
     }),
-    ...(action !== ViewPortAction.Move && {
-      '& .react-flow__node': {
+    ...(action === ViewPortAction.Pan && {
+      '&& .react-flow__node': {
         cursor: 'unset',
+        pointerEvents: 'none !important',
       },
     }),
   }

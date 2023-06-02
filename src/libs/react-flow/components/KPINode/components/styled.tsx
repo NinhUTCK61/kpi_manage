@@ -24,6 +24,8 @@ const LeftHandler = styled(Handle)({
     width: 0,
     minWidth: 0,
     minHeight: 0,
+    pointerEvents: 'none',
+    cursor: 'unset',
   },
 })
 
@@ -38,7 +40,9 @@ const BottomHandler = styled(Handle)({
   },
 })
 
-const RightHandler = styled(Handle)({
+const RightHandler = styled(Handle, {
+  shouldForwardProp: (prop) => prop !== 'disabled',
+})<{ disabled?: boolean }>(({ disabled }) => ({
   '&.react-flow__handle-right': {
     top: '50%',
     right: -20,
@@ -46,8 +50,13 @@ const RightHandler = styled(Handle)({
     width: 0,
     minWidth: 0,
     minHeight: 0,
+    cursor: 'unset',
+    ...(disabled && {
+      pointerEvents: 'none',
+      cursor: 'unset',
+    }),
   },
-})
+}))
 
 const TextId = styled(Typography)(({ theme }) => ({
   position: 'absolute',
