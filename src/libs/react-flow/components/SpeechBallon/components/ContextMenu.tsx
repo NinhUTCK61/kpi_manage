@@ -39,10 +39,12 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   const { setNodeFocused } = useRFStore(storeSelector, shallow)
   const { data, handleSetEditing } = useSpeechBallonContext()
   const { mutate: deleteSpeechBallon } = useSpeechBallonDeleteMutation()
-  const setNodeCopy = useRFStore((state) => state.setNodeCopy)
-  const nodeCopy = useRFStore((state) => state.nodeCopy)
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: create } = useSpeechBallonCreateMutation()
+
+  const setNodeCopy = useRFStore((state) => state.setNodeCopy)
+  const nodeCopy = useRFStore((state) => state.nodeCopy)
+  const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
 
   const contextMenuItem: ContextMenuItem[] = [
     {
@@ -94,13 +96,21 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
     }
   }
 
+  const handleDelete = () => {
+    if (data.is_saved) {
+      deleteSpeechBallon(data)
+    } else {
+      removeSpeechBallon(data.id)
+    }
+  }
+
   const handleMenuSelect = (type: string) => {
     switch (type) {
       case CtxMenuType.Edit:
         handleEdit()
         break
       case CtxMenuType.Delete:
-        if (data.is_saved) deleteSpeechBallon(data)
+        handleDelete()
         break
       case CtxMenuType.Copy:
         setNodeCopy(data.id)
@@ -111,15 +121,14 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       default:
         break
     }
+
     onClose()
   }
 
-  const disabledMenu = (menuType: CtxMenuType) => {
-    const isDeleteDisabled = menuType === CtxMenuType.Delete && !data.is_saved
+  const getDisabled = (menuType: CtxMenuType) => {
     const isPasteDisabled = menuType === CtxMenuType.Paste && !nodeCopy
-    const disabled = isDeleteDisabled || isPasteDisabled
 
-    return disabled
+    return isPasteDisabled
   }
 
   return (
@@ -132,7 +141,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       {contextMenuItem.map((menu) => (
         <MenuItem
           key={menu.title}
-          disabled={disabledMenu(menu.type)}
+          disabled={getDisabled(menu.type)}
           isDelete={menu.type === CtxMenuType.Delete}
           onClick={() => handleMenuSelect(menu.type)}
         >
