@@ -10,8 +10,8 @@ const ListComment = () => {
     <ListCommentContainer>
       <CommentItem data={data} />
 
-      {data.replies.map((comment, index) => (
-        <CommentItem isLast={index === data.replies.length - 1} key={comment.id} data={comment} />
+      {data.replies.map((comment) => (
+        <CommentItem key={comment.id} data={comment} />
       ))}
 
       <CommentReplyForm commentId={data.id} />

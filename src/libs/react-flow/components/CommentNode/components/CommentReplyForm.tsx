@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCommentReplyCreateMutation } from '../hooks'
 import { CommentFormType } from './CommentForm'
@@ -24,6 +24,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
   const { t } = useTranslation('file')
   const { mutate: createReply } = useCommentReplyCreateMutation()
   const { data } = useSession()
+  const [scroll, setScroll] = useState(false)
   const { control, setFocus, reset, getValues } = useForm<CommentFormType>({
     defaultValues: {
       content: '',
@@ -40,6 +41,8 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
       return
     }
 
+    setScroll(true)
+
     const newCommentReply = {
       id: nanoid(),
       content: getValues().content,
@@ -49,6 +52,7 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
     createReply(newCommentReply, {
       onSuccess() {
         reset({ content: '' })
+        setScroll(false)
       },
     })
   }
@@ -60,8 +64,19 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
     }
   }
 
+  const scrollTo = (el: HTMLDivElement) => {
+    if (el) {
+      el.scrollIntoView(false)
+    }
+  }
+
   return (
-    <CommentReplyContainer spacing={1} justifyContent="space-between" direction="row">
+    <CommentReplyContainer
+      spacing={1}
+      justifyContent="space-between"
+      direction="row"
+      ref={scroll ? scrollTo : undefined}
+    >
       <Stack width={32} height={48} borderRadius="100%" direction="row" alignItems="center">
         {data?.user.image ? (
           <Image src={data?.user.image} alt="file" width={32} height={32} />
