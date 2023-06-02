@@ -1,3 +1,4 @@
+import { ViewPortAction } from '@/features/node/constant'
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
 import { memo, useMemo, useState } from 'react'
@@ -12,10 +13,13 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
+  const viewportAction = useRFStore((state) => state.viewportAction)
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
 
   const isMatches = nodeFocused?.id === data.id
-  const isActive = (data.slug === 'root' && isMatches) || (isMatches && selected)
+  const isActive =
+    ((data.slug === 'root' && isMatches) || (isMatches && selected)) &&
+    viewportAction === ViewPortAction.Move
   const contextValue = useMemo(() => ({ data, isConnectable }), [data, isConnectable])
 
   const handleContextMenu = (event: React.MouseEvent) => {

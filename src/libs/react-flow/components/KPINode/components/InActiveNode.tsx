@@ -46,7 +46,11 @@ const InActive: React.FC = () => {
         </TextOverflow>
       )}
 
-      <RightHandler type="source" position={Position.Right}>
+      <RightHandler
+        type="source"
+        position={Position.Right}
+        disabled={viewportAction === ViewPortAction.Pan}
+      >
         {data.slug !== 'root' && hasChild && (
           <NodeIcon
             sx={{
