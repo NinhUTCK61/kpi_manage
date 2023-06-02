@@ -1,27 +1,56 @@
+import { ShapeType } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
-import ShapeType1Icon from 'public/assets/svgs/shape_1.svg'
-import ShapeType2Icon from 'public/assets/svgs/shape_2.svg'
-import ShapeType3Icon from 'public/assets/svgs/shape_3.svg'
-import ShapeType4Icon from 'public/assets/svgs/shape_4.svg'
+import SquareShape1Icon from 'public/assets/svgs/shape_1.svg'
+import SquareShape2Icon from 'public/assets/svgs/shape_2.svg'
+import SquareShape3Icon from 'public/assets/svgs/shape_3.svg'
+import SquareShape4Icon from 'public/assets/svgs/shape_4.svg'
+import { useEffect, useMemo, useState } from 'react'
+import { useNodeUpdateHandler } from '../../../hooks'
 
 const shapes = [
-  { value: '1', icon: ShapeType1Icon },
-  { value: '2', icon: ShapeType2Icon },
-  { value: '3', icon: ShapeType3Icon },
-  { value: '4', icon: ShapeType4Icon },
+  { icon: SquareShape1Icon, type: ShapeType.SQUARE },
+  { icon: SquareShape2Icon, type: ShapeType.CIRCULAR },
+  { icon: SquareShape3Icon, type: ShapeType.MEDIUM_ROUND_SQUARE },
+  { icon: SquareShape4Icon, type: ShapeType.ROUND_SQUARE },
 ]
 
 const ChooseShape: React.FC = () => {
-  const shape = useRFStore((state) => state.shape)
-  const changeShape = useRFStore((state) => state.changeShapeType)
+  const [shape, setShape] = useState<ShapeType>(ShapeType.MEDIUM_ROUND_SQUARE)
+
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+
+  const nodeFocusedMemo = useMemo(() => {
+    if (!nodeFocused || nodeFocused.type !== 'speech_ballon') return
+    return nodeFocused
+  }, [nodeFocused])
+
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   const handleShapeChange = (event: SelectChangeEvent<unknown>) => {
-    changeShape(event.target.value as string)
+    const value = event.target.value as ShapeType
+    setShape(value)
+
+    if (!nodeFocusedMemo) return
+
+    updateReactFlowNode(
+      {
+        shape: value,
+        id: nodeFocusedMemo.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      'speech_ballon',
+    )
   }
+
+  useEffect(() => {
+    if (!nodeFocusedMemo) return
+    const shapeType = nodeFocusedMemo.data.shape
+    shapeType ? setShape(shapeType as ShapeType) : setShape(ShapeType.MEDIUM_ROUND_SQUARE)
+  }, [nodeFocusedMemo])
 
   return (
     <Stack direction="row" alignItems="center" spacing={1.5}>
@@ -31,8 +60,13 @@ const ChooseShape: React.FC = () => {
         input={<CustomInput />}
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
       >
-        {shapes.map((item) => (
-          <MenuItem key={item.value} value={item.value} sx={{ width: 72 }}>
+        {shapes.map((item, index) => (
+          <MenuItem
+            key={index}
+            value={item.type}
+            sx={{ width: 72 }}
+            autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
+          >
             <Image alt="shape" src={item.icon} />
           </MenuItem>
         ))}
@@ -46,7 +80,7 @@ const Select = styled(MuiSelect)(({ theme }) => ({
   paddingRight: 8,
   marginRight: 12,
   height: 32,
-  width: 72,
+  width: 76,
   background: theme.palette.common.white,
   '& .MuiSelect-icon': {
     top: 'auto',

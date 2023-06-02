@@ -1,73 +1,63 @@
-import {
-  ReactFlowKPINode,
-  ReactFlowSpeechBallonNode,
-  useNodeUpdateMutation,
-  useRFStore,
-} from '@/libs/react-flow'
+import { NodeType, useNodeUpdateMutation, useRFStore } from '@/libs/react-flow'
 import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
-import { LayoutType } from '@prisma/client'
+import { UpdateNodeInputType } from '@/libs/schema/node'
+import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
+import { useCallback } from 'react'
 
-export const useNodeUpdateHandler = (
-  nodeFocusedMemo: ReactFlowKPINode | ReactFlowSpeechBallonNode | undefined,
-) => {
-  const updateNode = useRFStore((state) => state.updateKPINode)
-  const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
+type DbSavedType = {
+  is_saved: boolean
+}
+
+type UpdateNodeInput = UpdateNodeInputType & DbSavedType
+type UpdateSpeechBallonInput = UpdateSpeechBallonInputType & DbSavedType
+
+export const useNodeUpdateHandler = () => {
+  const updateNodeStore = useRFStore((state) => state.updateKPINode)
+  const updateSpeechBallonStore = useRFStore((state) => state.updateSpeechBallon)
 
   const { mutate: mutateNode } = useNodeUpdateMutation()
   const { mutate: mutateSpeechBallon } = useUpdateSpeechBallonMutation()
 
-  const updateStyleNode = (newNodeStyle: string) => {
-    // Case the node has not been saved to the database
-    if (!nodeFocusedMemo?.data.is_saved && nodeFocusedMemo) {
-      updateNode({ ...nodeFocusedMemo.data, node_style: newNodeStyle }, true)
-      return
-    }
+  const updateKpiNode = useCallback(
+    (newNodeData: UpdateNodeInput) => {
+      // Case the node has not been saved to the database
+      if (!newNodeData.is_saved) {
+        updateNodeStore(newNodeData, true)
+        return
+      }
 
-    mutateNode({
-      id: nodeFocusedMemo?.id as string,
-      node_style: newNodeStyle,
-    })
-  }
+      mutateNode(newNodeData)
+    },
+    [mutateNode, updateNodeStore],
+  )
 
-  const updateStyleSpeechBallon = (newNodeStyle: string) => {
-    if (nodeFocusedMemo) {
-      const data = { ...nodeFocusedMemo.data, node_style: newNodeStyle }
-      updateSpeechBallon(data, true)
-    }
-    if (!nodeFocusedMemo?.data.is_saved) return
-    mutateSpeechBallon({
-      id: nodeFocusedMemo?.id as string,
-      node_style: newNodeStyle,
-    })
-  }
+  const updateSpeechBallonNode = useCallback(
+    (newSpeechBallonData: UpdateSpeechBallonInput) => {
+      if (!newSpeechBallonData.is_saved) {
+        updateSpeechBallonStore(newSpeechBallonData, true)
+        return
+      }
 
-  const updateStyle = (newNodeStyle: string) => {
-    switch (nodeFocusedMemo?.type) {
-      case 'kpi':
-        updateStyleNode(newNodeStyle)
-        break
-      case 'speech_ballon':
-        updateStyleSpeechBallon(newNodeStyle)
-        break
-      default:
-        break
-    }
-  }
+      mutateSpeechBallon(newSpeechBallonData)
+    },
+    [mutateSpeechBallon, updateSpeechBallonStore],
+  )
 
-  const updateSpeechBallonLayout = (typeLayout: LayoutType) => {
-    if (!nodeFocusedMemo) return
-    const data = { ...nodeFocusedMemo.data, layout: typeLayout }
-    updateSpeechBallon(data, true)
+  const updateReactFlowNode = useCallback(
+    (data: UpdateNodeInput | UpdateSpeechBallonInput, type: NodeType) => {
+      switch (type) {
+        case 'kpi':
+          updateKpiNode(data)
+          break
+        case 'speech_ballon':
+          updateSpeechBallonNode(data)
+          break
+        default:
+          break
+      }
+    },
+    [updateKpiNode, updateSpeechBallonNode],
+  )
 
-    if (!nodeFocusedMemo?.data.is_saved) return
-    mutateSpeechBallon({
-      id: data.id,
-      layout: typeLayout,
-    })
-  }
-
-  return {
-    updateStyle,
-    updateSpeechBallonLayout,
-  }
+  return { updateReactFlowNode }
 }

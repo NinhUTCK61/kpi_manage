@@ -1,5 +1,5 @@
 import { TextAlign } from '@/features/node/constant'
-import { useRFStore } from '@/libs/react-flow'
+import { NodeType, useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorCenter from 'public/assets/svgs/editor_center.svg'
 import EditorCenterActive from 'public/assets/svgs/editor_center_active.svg'
@@ -37,7 +37,7 @@ const ChooseStyleAlignText: React.FC = () => {
     if (nodeFocused?.type === 'kpi' || nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   useEffect(() => {
     if (!nodeFocusedMemo) {
@@ -62,7 +62,15 @@ const ChooseStyleAlignText: React.FC = () => {
       ...nodeStyle,
       textAlign: value,
     })
-    updateStyle(newNodeStyle)
+
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      nodeFocusedMemo.type as NodeType,
+    )
   }
   const isShowForSpeech = nodeFocusedMemo?.type === 'speech_ballon'
 

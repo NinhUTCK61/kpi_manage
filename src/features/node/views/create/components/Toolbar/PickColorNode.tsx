@@ -1,5 +1,5 @@
 import { base } from '@/libs/config/theme'
-import { useRFStore } from '@/libs/react-flow'
+import { NodeType, useRFStore } from '@/libs/react-flow'
 import { InputStyled } from '@/libs/shared/components'
 import { Button, Stack, Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -32,12 +32,7 @@ const PickColorNode: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const { updateStyle } = useNodeUpdateHandler(nodeFocusedMemo)
-
-  const updateSpeechBallonStyle = useCallback(
-    (newNodeStyle: string) => updateStyle(newNodeStyle),
-    [updateStyle],
-  )
+  const { updateReactFlowNode } = useNodeUpdateHandler()
 
   useLayoutEffect(() => {
     if (!nodeFocusedMemo?.data.node_style) {
@@ -56,8 +51,15 @@ const PickColorNode: React.FC = () => {
 
     const newNodeStyle = JSON.stringify({ ...nodeStyle, color: debouncedColor })
 
-    updateSpeechBallonStyle(newNodeStyle)
-  }, [nodeFocusedMemo, debouncedColor, updateSpeechBallonStyle])
+    updateReactFlowNode(
+      {
+        node_style: newNodeStyle,
+        id: nodeFocusedMemo.data.id,
+        is_saved: nodeFocusedMemo.data.is_saved,
+      },
+      nodeFocusedMemo.type as NodeType,
+    )
+  }, [nodeFocusedMemo, debouncedColor, updateReactFlowNode])
 
   useEffect(() => {
     if (isNewFocusNode.current) return

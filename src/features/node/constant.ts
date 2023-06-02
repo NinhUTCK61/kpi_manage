@@ -27,3 +27,10 @@ export enum TextAlign {
   Right = 'right',
   Unset = 'unset',
 }
+
+export enum ShapeType {
+  SQUARE = 'SQUARE',
+  CIRCULAR = 'CIRCULAR',
+  MEDIUM_ROUND_SQUARE = 'MEDIUM_ROUND_SQUARE',
+  ROUND_SQUARE = 'ROUND_SQUARE',
+}
