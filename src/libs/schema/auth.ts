@@ -2,13 +2,15 @@ import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NonEmptyPassword } from './utils'
 
+export const emailPolicySchema = z.string().min(1, { message: 'error.message_email' }).email()
+
 export const LoginSchema = z.object({
-  email: z.string().email(),
+  email: emailPolicySchema,
   password: NonEmptyPassword,
 })
 
 export const ForgotPasswordInputSchema = z.object({
-  email: z.string().email(),
+  email: emailPolicySchema,
 })
 
 export type SignInType = z.infer<typeof LoginSchema>
@@ -29,9 +31,9 @@ export const passwordPolicySchema = z
 
 export const SignUpInputSchema = z
   .object({
-    first_name: z.string().max(255).min(1),
-    last_name: z.string().max(255).min(1),
-    email: z.string().email(),
+    first_name: z.string().max(255).trim().min(1),
+    last_name: z.string().max(255).trim().min(1),
+    email: emailPolicySchema,
     password: passwordPolicySchema,
     company_name: z.string().min(1),
     role_in_company: z.string().min(1),
@@ -81,7 +83,7 @@ export const ResetPasswordInputSchema = z
 export type ResetPasswordType = z.infer<typeof ResetPasswordInputSchema>
 
 export const ResendEmailVerify = z.object({
-  email: z.string().email(),
+  email: emailPolicySchema,
 })
 
 export type ResendEmailVerifyType = z.infer<typeof ResendEmailVerify>
