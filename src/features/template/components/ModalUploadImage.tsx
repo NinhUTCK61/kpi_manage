@@ -129,7 +129,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
                 alt={nameImage}
                 width={286}
                 height={206}
-                style={{ marginBottom: 0 }}
+                style={{ marginBottom: 0, objectFit: 'cover' }}
                 onLoad={() => {
                   URL.revokeObjectURL(previewURL)
                 }}

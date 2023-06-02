@@ -112,14 +112,42 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       ]
 
   return (
-    <Card elevation={0}>
-      <CardHeader
-        action={
-          <IconButton onClick={handleClick}>
-            <Image src={MenuIcon} alt="menu" />
-          </IconButton>
-        }
-      />
+    <>
+      <Card elevation={0}>
+        <CardHeader
+          action={
+            <IconButton onClick={handleClick}>
+              <Image src={MenuIcon} alt="menu" />
+            </IconButton>
+          }
+        />
+
+        <CardContent sx={{ padding: '0 !important', height: 206 }}>
+          <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
+            <Image
+              src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
+              alt="file"
+              style={{
+                cursor: template.deleted_at ? 'default' : 'pointer',
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+                objectFit: 'cover',
+              }}
+              width={268}
+              height={206}
+              loading="lazy"
+            />
+          </CustomLink>
+        </CardContent>
+
+        <TemplateAction
+          onSaveName={onSaveName}
+          template={template}
+          name={name}
+          handleChangeName={handleChangeName}
+          inputNameRef={inputNameRef}
+        />
+      </Card>
 
       <Menu
         anchorEl={anchorEl}
@@ -149,27 +177,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
           ),
         )}
       </Menu>
-
-      <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
-        <CardContent sx={{ p: 0 }}>
-          <Image
-            src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
-            alt="file"
-            style={{ cursor: template.deleted_at ? 'default' : 'pointer' }}
-            width={268}
-            height={206}
-          />
-        </CardContent>
-      </CustomLink>
-
-      <TemplateAction
-        onSaveName={onSaveName}
-        template={template}
-        name={name}
-        handleChangeName={handleChangeName}
-        inputNameRef={inputNameRef}
-      />
-    </Card>
+    </>
   )
 }
 
