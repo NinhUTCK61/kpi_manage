@@ -26,7 +26,6 @@ type ContextMenuItem = {
 }
 
 export type CtxMenuProps = MenuProps & {
-  disabledMenu?: CtxMenuType[]
   onClose: () => void
 }
 
@@ -115,6 +114,14 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
     onClose()
   }
 
+  const disabledMenu = (menuType: CtxMenuType) => {
+    const isDeleteDisabled = menuType === CtxMenuType.Delete && !data.is_saved
+    const isPasteDisabled = menuType === CtxMenuType.Paste && !nodeCopy
+    const disabled = isDeleteDisabled || isPasteDisabled
+
+    return disabled
+  }
+
   return (
     <Menu
       open={open}
@@ -125,10 +132,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       {contextMenuItem.map((menu) => (
         <MenuItem
           key={menu.title}
-          disabled={
-            (menu.type === CtxMenuType.Delete && !data.is_saved) ||
-            (menu.type === CtxMenuType.Paste && !nodeCopy)
-          }
+          disabled={disabledMenu(menu.type)}
           isDelete={menu.type === CtxMenuType.Delete}
           onClick={() => handleMenuSelect(menu.type)}
         >

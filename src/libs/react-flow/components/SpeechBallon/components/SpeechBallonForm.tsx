@@ -118,10 +118,10 @@ export const SpeechBallonForm: React.FC = () => {
       multiline
       maxRows={5}
       name="text"
+      readOnly
       autoComplete="off"
       onFocus={handleFocus}
       inputProps={{ style }}
-      readOnly
     />
   )
 }
