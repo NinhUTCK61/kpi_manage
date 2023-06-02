@@ -53,7 +53,6 @@ const RightHandler = styled(Handle, {
     cursor: 'unset',
     ...(disabled && {
       pointerEvents: 'none',
-      cursor: 'unset',
     }),
   },
 }))
