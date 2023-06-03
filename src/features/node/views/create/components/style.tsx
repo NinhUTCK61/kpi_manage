@@ -32,4 +32,4 @@ function MediumRoundSquare(props: SvgIconProps) {
   )
 }
 
-export { Circular, SquareShape, RoundSquare, MediumRoundSquare }
+export { Circular, MediumRoundSquare, RoundSquare, SquareShape }
