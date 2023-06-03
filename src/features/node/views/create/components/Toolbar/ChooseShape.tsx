@@ -1,21 +1,20 @@
 import { ShapeType } from '@/features/node/constant'
+import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
+import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
-import SquareShape1Icon from 'public/assets/svgs/shape_1.svg'
-import SquareShape2Icon from 'public/assets/svgs/shape_2.svg'
-import SquareShape3Icon from 'public/assets/svgs/shape_3.svg'
-import SquareShape4Icon from 'public/assets/svgs/shape_4.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
+import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../style'
 
 const shapes = [
-  { icon: SquareShape1Icon, type: ShapeType.SQUARE },
-  { icon: SquareShape2Icon, type: ShapeType.CIRCULAR },
-  { icon: SquareShape3Icon, type: ShapeType.MEDIUM_ROUND_SQUARE },
-  { icon: SquareShape4Icon, type: ShapeType.ROUND_SQUARE },
+  { el: SquareShape, type: ShapeType.SQUARE },
+  { el: Circular, type: ShapeType.CIRCULAR },
+  { el: MediumRoundSquare, type: ShapeType.MEDIUM_ROUND_SQUARE },
+  { el: RoundSquare, type: ShapeType.ROUND_SQUARE },
 ]
 
 const ChooseShape: React.FC = () => {
@@ -27,6 +26,13 @@ const ChooseShape: React.FC = () => {
     if (!nodeFocused || nodeFocused.type !== 'speech_ballon') return
     return nodeFocused
   }, [nodeFocused])
+
+  const fillColor = () => {
+    if (!nodeFocusedMemo) return
+    const bgStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    if (nodeFocusedMemo.data.layout === LayoutType.STROKE) return base.white
+    return bgStyle.background || customPrimary[700]
+  }
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
@@ -57,19 +63,22 @@ const ChooseShape: React.FC = () => {
       <Select
         value={shape}
         onChange={handleShapeChange}
-        input={<CustomInput />}
+        input={<CustomInput sx={{ '& svg': { fill: fillColor } }} />}
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
       >
-        {shapes.map((item, index) => (
-          <MenuItem
-            key={index}
-            value={item.type}
-            sx={{ width: 72 }}
-            autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
-          >
-            <Image alt="shape" src={item.icon} />
-          </MenuItem>
-        ))}
+        {shapes.map((item, index) => {
+          const SvgEl = item.el
+          return (
+            <MenuItem
+              key={index}
+              value={item.type}
+              sx={{ width: 72 }}
+              autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
+            >
+              <SvgEl />
+            </MenuItem>
+          )
+        })}
       </Select>
     </Stack>
   )
