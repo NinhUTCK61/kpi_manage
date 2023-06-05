@@ -7,6 +7,7 @@ import {
   Typography,
   type SvgIconProps,
 } from '@mui/material'
+
 function CheckedICon(props: SvgIconProps) {
   return (
     <SvgIcon viewBox="0 0 16 16" {...props}>
