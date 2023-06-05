@@ -56,7 +56,6 @@ export const useShapeStyle = () => {
 
   const getArrowStyles = {
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
-    display: shapeType !== ShapeType.ROUND_SQUARE ? 'none' : 'block',
     '&:before': {
       content: '""',
       top: `-${20 - resizeBorder}px`,
