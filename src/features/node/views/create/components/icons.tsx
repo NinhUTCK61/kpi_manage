@@ -2,8 +2,8 @@ import { SvgIcon, SvgIconProps } from '@mui/material'
 
 function Circular(props: SvgIconProps) {
   return (
-    <SvgIcon {...props} fontSize="large">
-      <rect x="1" y="7.693" width="29.344" height="18.839" strokeWidth="1.9" rx="9.42" ry="9.42" />
+    <SvgIcon {...props}>
+      <rect x="0.75" y="0.75" width="22.5" height="22.5" rx="11.25" strokeWidth="1.5" />
     </SvgIcon>
   )
 }
@@ -11,7 +11,7 @@ function Circular(props: SvgIconProps) {
 function SquareShape(props: SvgIconProps) {
   return (
     <SvgIcon {...props}>
-      <rect x="1.25" y="0.75" width="22.5" height="22.5" strokeWidth="1.5" />
+      <rect x="1.25" y="0.75" width="21.5" height="22.5" strokeWidth="1.5" />
     </SvgIcon>
   )
 }
@@ -19,7 +19,7 @@ function SquareShape(props: SvgIconProps) {
 function RoundSquare(props: SvgIconProps) {
   return (
     <SvgIcon {...props}>
-      <rect x="0.75" y="0.75" width="22.5" height="17.5" rx="6.25" strokeWidth="1.5" />
+      <rect x="0.75" y="2" width="22.5" height="19" rx="6.25" strokeWidth="1.5" />
     </SvgIcon>
   )
 }
@@ -32,4 +32,4 @@ function MediumRoundSquare(props: SvgIconProps) {
   )
 }
 
-export { Circular, SquareShape, RoundSquare, MediumRoundSquare }
+export { Circular, MediumRoundSquare, RoundSquare, SquareShape }

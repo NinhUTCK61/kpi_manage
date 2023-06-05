@@ -8,7 +8,7 @@ import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
-import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icon'
+import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icons'
 
 const shapes = [
   { el: SquareShape, type: ShapeType.SQUARE },
@@ -99,10 +99,6 @@ const ChooseShape: React.FC = () => {
                   color: svgColor.fill,
                   '& rect': { stroke: svgColor.stroke },
                 }}
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               />
             </MenuItem>
           )
