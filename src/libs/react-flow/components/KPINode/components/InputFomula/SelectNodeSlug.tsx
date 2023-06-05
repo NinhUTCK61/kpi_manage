@@ -1,4 +1,4 @@
-import { Box, ListItemButton, Stack, Typography } from '@mui/material'
+import { Box, ListItemButton, Stack, styled, Typography } from '@mui/material'
 import { IconTop, List, ListItem, Paper } from '../styled'
 import { useNodeFormulaContext } from './context'
 
@@ -23,9 +23,9 @@ const SelectNodeSlug: React.FC = () => {
                   <Typography width={100} variant="body2" color="base.black">
                     {node.data.slug}
                   </Typography>
-                  <Typography variant="body2" color="base.black">
+                  <TextOverflow variant="body2" color="base.black">
                     {node.data.input_title}
-                  </Typography>
+                  </TextOverflow>
                 </Stack>
               </ListItemButton>
             </ListItem>
@@ -35,5 +35,12 @@ const SelectNodeSlug: React.FC = () => {
     </Paper>
   )
 }
+
+const TextOverflow = styled(Typography)({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  maxWidth: 180,
+})
 
 export { SelectNodeSlug }

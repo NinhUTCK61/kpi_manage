@@ -181,7 +181,7 @@ const ListItem = styled(MuiListItem, {
   ...(active && {
     background: theme.palette.customPrimary[0],
   }),
-  width: 316,
+  width: 319,
   '&:hover': {
     background: theme.palette.greyScale[100],
   },
