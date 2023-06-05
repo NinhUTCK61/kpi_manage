@@ -48,6 +48,7 @@ const ChooseShape: React.FC = () => {
       stroke: bgColor,
     })
   }
+
   const svgColor = filterColor()
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
