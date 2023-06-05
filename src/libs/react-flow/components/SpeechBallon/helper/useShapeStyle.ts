@@ -43,6 +43,15 @@ export const useShapeStyle = () => {
 
   const sizeStyle = sizeStyleMapping[shapeType]
 
+  const arrowCircular =
+    shapeType === ShapeType.CIRCULAR
+      ? {
+          transform: 'rotate(30deg)',
+          left: 48,
+          top: 'calc(100% - 9px)',
+        }
+      : {}
+
   const getShapeStyles = {
     ...style,
     ...sizeStyle,
@@ -55,8 +64,8 @@ export const useShapeStyle = () => {
   }
 
   const getArrowStyles = {
+    ...arrowCircular,
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
-    display: shapeType !== ShapeType.ROUND_SQUARE ? 'none' : 'block',
     '&:before': {
       content: '""',
       top: `-${20 - resizeBorder}px`,

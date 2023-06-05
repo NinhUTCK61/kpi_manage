@@ -1,7 +1,6 @@
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
 function Circular(props: SvgIconProps) {
-  console.log(props)
   return (
     <SvgIcon {...props}>
       <rect x="0.75" y="0.75" width="22.5" height="22.5" rx="11.25" strokeWidth="1.5" />
@@ -33,4 +32,4 @@ function MediumRoundSquare(props: SvgIconProps) {
   )
 }
 
-export { Circular, SquareShape, RoundSquare, MediumRoundSquare }
+export { Circular, MediumRoundSquare, RoundSquare, SquareShape }

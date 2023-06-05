@@ -57,4 +57,4 @@ const Header = () => {
   )
 }
 
-export { Header, HEADER_HEIGHT }
+export { HEADER_HEIGHT, Header }

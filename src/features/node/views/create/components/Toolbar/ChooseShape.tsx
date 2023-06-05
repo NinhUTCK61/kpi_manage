@@ -8,7 +8,7 @@ import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
-import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icon'
+import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icons'
 
 const shapes = [
   { el: SquareShape, type: ShapeType.SQUARE },
