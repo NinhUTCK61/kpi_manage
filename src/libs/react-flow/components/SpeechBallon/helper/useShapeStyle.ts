@@ -51,6 +51,8 @@ export const useShapeStyle = () => {
       : {}
 
   const getShapeStyles = {
+    ...style,
+    ...sizeStyle,
     color,
     border: `${!isFill && stroke}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
