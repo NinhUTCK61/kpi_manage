@@ -33,15 +33,15 @@ const ChooseShape: React.FC = () => {
       stroke: base.black,
     }
     if (!nodeFocusedMemo) return style
-    const bgStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    const colorBg = bgStyle.background || customPrimary[700]
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    const bgColor = nodeStyle.background || customPrimary[700]
 
     if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
       return style
     }
 
-    style.fill = colorBg
-    style.stroke = colorBg
+    style.fill = bgColor
+    style.stroke = bgColor
     return style
   }
 
@@ -93,10 +93,15 @@ const ChooseShape: React.FC = () => {
               autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
             >
               <SvgEl
+                inheritViewBox
                 sx={{
                   color: svgColor.fill,
                   '& rect': { stroke: svgColor.stroke },
                 }}
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               />
             </MenuItem>
           )
