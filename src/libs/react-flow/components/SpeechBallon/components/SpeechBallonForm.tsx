@@ -100,7 +100,7 @@ export const SpeechBallonForm: React.FC = () => {
           control={control}
           onKeyDown={handleKeyDown}
           multiline
-          maxRows={5}
+          maxRows={6}
           name="text"
           autoComplete="off"
           onFocus={handleFocus}
@@ -112,7 +112,7 @@ export const SpeechBallonForm: React.FC = () => {
     <InputSpeechBalloon
       control={control}
       multiline
-      maxRows={5}
+      maxRows={6}
       name="text"
       readOnly
       inputProps={{ style }}

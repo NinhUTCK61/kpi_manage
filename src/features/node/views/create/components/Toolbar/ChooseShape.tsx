@@ -8,7 +8,7 @@ import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
-import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../style'
+import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icon'
 
 const shapes = [
   { el: SquareShape, type: ShapeType.SQUARE },
@@ -18,7 +18,7 @@ const shapes = [
 ]
 
 const ChooseShape: React.FC = () => {
-  const [shape, setShape] = useState<ShapeType>(ShapeType.MEDIUM_ROUND_SQUARE)
+  const [shape, setShape] = useState<ShapeType>(ShapeType.ROUND_SQUARE)
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
@@ -33,16 +33,17 @@ const ChooseShape: React.FC = () => {
       stroke: base.black,
     }
     if (!nodeFocusedMemo) return style
-    const bgStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    const colorBg = bgStyle.background || customPrimary[700]
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    const bgColor = nodeStyle.background || customPrimary[700]
 
     if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
       return style
     }
 
-    style.fill = colorBg
-    style.stroke = colorBg
-    return style
+    return Object.assign(style, {
+      fill: bgColor,
+      stroke: bgColor,
+    })
   }
 
   const svgColor = filterColor()
@@ -68,7 +69,7 @@ const ChooseShape: React.FC = () => {
   useEffect(() => {
     if (!nodeFocusedMemo) return
     const shapeType = nodeFocusedMemo.data.shape
-    shapeType ? setShape(shapeType as ShapeType) : setShape(ShapeType.MEDIUM_ROUND_SQUARE)
+    shapeType ? setShape(shapeType as ShapeType) : setShape(ShapeType.ROUND_SQUARE)
   }, [nodeFocusedMemo])
 
   return (
@@ -90,9 +91,10 @@ const ChooseShape: React.FC = () => {
               key={index}
               value={item.type}
               sx={{ width: 72 }}
-              autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
+              autoFocus={item.type === ShapeType.ROUND_SQUARE}
             >
               <SvgEl
+                inheritViewBox
                 sx={{
                   color: svgColor.fill,
                   '& rect': { stroke: svgColor.stroke },
