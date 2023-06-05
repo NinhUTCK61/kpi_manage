@@ -92,7 +92,12 @@ const ChooseShape: React.FC = () => {
               sx={{ width: 72 }}
               autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
             >
-              <SvgEl style={svgColor} />
+              <SvgEl
+                sx={{
+                  color: svgColor.fill,
+                  '& rect': { stroke: svgColor.stroke },
+                }}
+              />
             </MenuItem>
           )
         })}
