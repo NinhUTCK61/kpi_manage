@@ -27,12 +27,25 @@ const ChooseShape: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const fillColor = () => {
-    if (!nodeFocusedMemo) return
+  const filterColor = () => {
+    const style = {
+      fill: base.white,
+      stroke: base.black,
+    }
+    if (!nodeFocusedMemo) return style
     const bgStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
-    if (nodeFocusedMemo.data.layout === LayoutType.STROKE) return base.white
-    return bgStyle.background || customPrimary[700]
+    const colorBg = bgStyle.background || customPrimary[700]
+
+    if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
+      return style
+    }
+
+    style.fill = colorBg
+    style.stroke = colorBg
+    return style
   }
+
+  const svgColor = filterColor()
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
@@ -63,7 +76,11 @@ const ChooseShape: React.FC = () => {
       <Select
         value={shape}
         onChange={handleShapeChange}
-        input={<CustomInput sx={{ '& svg': { fill: fillColor } }} />}
+        input={
+          <CustomInput
+            sx={{ '& svg': { fill: svgColor.fill }, '& svg rect': { stroke: svgColor.stroke } }}
+          />
+        }
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
       >
         {shapes.map((item, index) => {
@@ -75,7 +92,7 @@ const ChooseShape: React.FC = () => {
               sx={{ width: 72 }}
               autoFocus={item.type === ShapeType.MEDIUM_ROUND_SQUARE}
             >
-              <SvgEl />
+              <SvgEl style={svgColor} />
             </MenuItem>
           )
         })}
