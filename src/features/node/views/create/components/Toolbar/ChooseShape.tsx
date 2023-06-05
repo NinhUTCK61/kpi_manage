@@ -102,10 +102,6 @@ const ChooseShape: React.FC = () => {
                   color: svgColor.fill,
                   '& rect': { stroke: svgColor.stroke },
                 }}
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               />
             </MenuItem>
           )
