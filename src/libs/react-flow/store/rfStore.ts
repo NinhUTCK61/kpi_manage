@@ -322,22 +322,21 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
         set({ nodes })
       },
-      updateSpeechBallon(SpeechBallonData, shouldFocus) {
+      updateSpeechBallon(speechBallonData, shouldFocus) {
         const _nodes = get().nodes
 
         const node = _nodes.find(
-          (n) => n.type === 'speech_ballon' && n.data.id === SpeechBallonData.id,
+          (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
         if (node) {
-          node.data = { ...node.data, ...SpeechBallonData }
+          node.data = { ...node.data, ...speechBallonData }
 
           const nodes = _nodes.map((el) => {
             return el.id === node.id ? node : el
           })
 
           if (shouldFocus) {
-            console.log(node)
-            set({ nodes, nodeFocused: node })
+            set({ nodes, nodeFocused: { ...node } })
             return
           }
           set({ nodes })
