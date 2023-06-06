@@ -336,6 +336,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
 
           if (shouldFocus) {
+            console.log(node)
             set({ nodes, nodeFocused: node })
             return
           }
