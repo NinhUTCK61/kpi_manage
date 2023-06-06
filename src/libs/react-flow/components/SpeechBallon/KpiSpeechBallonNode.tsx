@@ -1,7 +1,7 @@
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
 import React, { useCallback, useMemo, useState } from 'react'
-import { NodeProps } from 'reactflow'
+import { NodeProps, NodeResizer } from 'reactflow'
 import { SpeechBallonNodeType } from '../../types'
 import { ContextMenu } from './components/ContextMenu'
 import { OptionShape } from './components/OptionShape'
@@ -40,8 +40,11 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
 
   return (
     <SpeechBallonProvider value={contextValue}>
-      <Stack onContextMenu={handleContextMenu}>
+      <Stack onContextMenu={handleContextMenu} height="100%">
+        <NodeResizer minWidth={234} minHeight={48} />
+
         <OptionShape />
+
         <ContextMenu
           open={!!contextMenu}
           onClose={handleClose}
