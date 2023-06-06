@@ -34,7 +34,6 @@ const ChooseShape: React.FC = () => {
     if (!nodeFocusedMemo) return style
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const bgColor = nodeStyle.background || customPrimary[700]
-
     if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
       return Object.assign(style, {
         fill: base.white,
@@ -47,6 +46,7 @@ const ChooseShape: React.FC = () => {
       stroke: bgColor,
     })
   }
+
   const svgColor = filterColor()
 
   const { updateReactFlowNode } = useNodeUpdateHandler()

@@ -14,7 +14,7 @@ const useUpdateSpeechBallonMutation = () => {
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-      updateSpeechBallon(variables)
+      updateSpeechBallon(variables, true)
       return { prevData }
     },
     onError(err, _, ctx) {
