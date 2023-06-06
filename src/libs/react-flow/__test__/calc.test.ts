@@ -7,12 +7,10 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
   const valid = new Map<string, string[] | boolean>()
   const stack: string[] = []
 
-  nodes.forEach((node) => {
-    const {
-      data: { slug, is_formula, input_value },
-    } = node
-
-    if (!is_formula) return
+  for (const {
+    data: { slug, is_formula, input_value },
+  } of nodes) {
+    if (!is_formula) continue
 
     const expressionArr = getSlugFromInputValue(input_value as string)
     const expressionStack = [...expressionArr, slug]
@@ -22,36 +20,36 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
     // Nếu không tồn tại => thêm vào stack
 
     // validate
-    expressionArr.forEach((_slug) => {
+    for (const _slug of expressionArr) {
       const exists = valid.get(_slug)
       if (exists) {
         if (Array.isArray(exists) && exists.includes(slug)) {
           throw new Error(`Cyclic dependency detected: ${_slug} -> ${slug}`)
         }
       }
-    })
+    }
 
     valid.set(slug, expressionArr)
     // validate expression
     if (!stack.length) {
       stack.push(...expressionStack)
-      return
+      continue
     }
 
-    expressionArr.forEach((_slug) => {
+    for (const _slug of expressionArr) {
       if (!stack.includes(_slug)) {
         stack.unshift(_slug)
         valid.set(_slug, true)
       }
-    })
+    }
 
     let maxIndex = 0
-    expressionArr.forEach((_slug) => {
+    for (const _slug of expressionArr) {
       const indexSlug = stack.indexOf(_slug)
       if (indexSlug > maxIndex) {
         maxIndex = indexSlug
       }
-    })
+    }
 
     console.log(111, maxIndex, expressionArr, slug, stack)
 
@@ -64,7 +62,7 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
     }
 
     stack.splice(maxIndex + 1, 0, slug)
-  })
+  }
 
   return stack
 }
@@ -109,6 +107,33 @@ const nodes: ReactFlowKPINode[] = [
     },
     position: { x: 0, y: 0 },
   },
+  {
+    id: 'D',
+    data: {
+      ...DEFAULT_NODE_ATTRIBUTES,
+      is_saved: true,
+      slug: 'D',
+      is_formula: true,
+      input_value: '=A+E',
+      id: 'D',
+      parent_node_id: null,
+    },
+    position: { x: 0, y: 0 },
+  },
+  // error
+  {
+    id: 'B',
+    data: {
+      ...DEFAULT_NODE_ATTRIBUTES,
+      is_saved: true,
+      slug: 'B',
+      is_formula: true,
+      input_value: '=A+E',
+      id: 'B',
+      parent_node_id: null,
+    },
+    position: { x: 0, y: 0 },
+  },
 ]
 
 describe('generateCalculatorStack', () => {
@@ -118,7 +143,7 @@ describe('generateCalculatorStack', () => {
       console.log(stack)
       expect(stack).toEqual(['D', 'B', 'C', 'A'])
     } catch (error) {
-      console.log(error)
+      console.log(11111, error)
     }
   })
 })
