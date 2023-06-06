@@ -35,7 +35,6 @@ const ChooseShape: React.FC = () => {
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const bgColor = nodeStyle.background || customPrimary[700]
 
-    console.log(nodeFocused)
     if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
       return Object.assign(style, {
         fill: base.white,
