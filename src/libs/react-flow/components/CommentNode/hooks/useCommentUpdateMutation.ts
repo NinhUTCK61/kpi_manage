@@ -1,18 +1,18 @@
 import { api } from '@/libs/api'
-import { getComment } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { ReactFlowCommentNode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
 const useCommentUpdateMutation = () => {
   const utils = api.useContext()
   const updateComment = useRFStore((state) => state.updateComment)
-  const nodes = useRFStore((state) => state.nodes)
+  const getNodeById = useRFStore((state) => state.getNodeById)
   const { t } = useTranslation('common')
 
   const mutation = api.comment.update.useMutation({
     onMutate(variables) {
-      const prevData = getComment(nodes, variables.id)
+      const prevData = getNodeById(variables.id) as ReactFlowCommentNode | null
       updateComment(variables)
 
       return { prevData }

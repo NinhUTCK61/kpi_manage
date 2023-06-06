@@ -7,16 +7,15 @@ import { enqueueSnackbar } from 'notistack'
 const useCommentReplyUpdateMutation = () => {
   const utils = api.useContext()
   const updateCommentReply = useRFStore((state) => state.updateCommentReply)
-  const nodes = useRFStore((state) => state.nodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { t } = useTranslation('common')
 
   const mutation = api.comment.updateReply.useMutation({
     onMutate(variables) {
       if (nodeFocused) {
-        const comment_id = nodeFocused.id
-        const prevData = getCommentReply(nodes, variables.id, comment_id)
-        updateCommentReply({ ...variables, comment_id })
+        if (nodeFocused.type !== 'comment') return
+        const prevData = getCommentReply(nodeFocused, variables.id)
+        updateCommentReply({ ...variables, comment_id: nodeFocused.id })
 
         return { prevData }
       }

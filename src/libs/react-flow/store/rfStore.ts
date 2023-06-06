@@ -112,6 +112,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       deleteNodes(nodes) {
         console.log('onNodesDelete', nodes)
       },
+      getNodeById(id) {
+        return get().nodes.find((n) => n.id === id) || null
+      },
       // TODO: update kpi node
       updateKPINode(kpiNodeData, shouldFocus = false) {
         const _nodes = get().nodes

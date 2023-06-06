@@ -1,19 +1,19 @@
 import { api } from '@/libs/api'
-import { getSpeechBallon } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { ReactFlowSpeechBallonNode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
 const useSpeechBallonDeleteMutation = () => {
   const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
-  const nodes = useRFStore((state) => state.nodes)
+  const getNodeById = useRFStore((state) => state.getNodeById)
   const { t } = useTranslation('common')
   const utils = api.useContext()
 
   const mutation = api.speechBallon.delete.useMutation({
     onMutate(variables) {
-      const prevData = getSpeechBallon(nodes, variables.id)
+      const prevData = getNodeById(variables.id)
       removeSpeechBallon(variables.id)
 
       return { prevData }
@@ -22,7 +22,7 @@ const useSpeechBallonDeleteMutation = () => {
       enqueueSnackbar(t('error.remove_comment'), {
         variant: 'error',
       })
-      if (ctx?.prevData) addSpeechBallon(ctx.prevData)
+      if (ctx?.prevData) addSpeechBallon(ctx.prevData as ReactFlowSpeechBallonNode)
     },
     onSettled() {
       utils.node.list.invalidate()

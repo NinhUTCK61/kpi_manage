@@ -58,18 +58,8 @@ export function isCommentNode(
   )
 }
 
-export function getCommentReply(_nodes: ReactFlowNode[], id: string, comment_id: string) {
-  let commentReply
-
-  const comment = _nodes.find<ReactFlowCommentNode>(
-    (cmt): cmt is ReactFlowCommentNode => cmt.type === 'comment' && cmt.id === comment_id,
-  )
-
-  if (comment) {
-    commentReply = comment.data.replies.find((el) => el.id === id)
-  }
-
-  return commentReply
+export function getCommentReply(comment: ReactFlowCommentNode, reply_id: string) {
+  return comment.data.replies.find((el) => el.id === reply_id)
 }
 
 export function getComment(_nodes: ReactFlowNode[], id: string) {
