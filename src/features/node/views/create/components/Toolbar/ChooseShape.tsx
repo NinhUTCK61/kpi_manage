@@ -8,7 +8,7 @@ import Image from 'next/image'
 import ArrowDown from 'public/assets/svgs/arrow_down.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
-import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icon'
+import { Circular, MediumRoundSquare, RoundSquare, SquareShape } from '../icons'
 
 const shapes = [
   { el: SquareShape, type: ShapeType.SQUARE },
@@ -19,7 +19,6 @@ const shapes = [
 
 const ChooseShape: React.FC = () => {
   const [shape, setShape] = useState<ShapeType>(ShapeType.ROUND_SQUARE)
-
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   const nodeFocusedMemo = useMemo(() => {
@@ -36,8 +35,12 @@ const ChooseShape: React.FC = () => {
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const bgColor = nodeStyle.background || customPrimary[700]
 
+    console.log(nodeFocused)
     if (nodeFocusedMemo.data.layout === LayoutType.STROKE) {
-      return style
+      return Object.assign(style, {
+        fill: base.white,
+        stroke: base.black,
+      })
     }
 
     return Object.assign(style, {
@@ -45,7 +48,6 @@ const ChooseShape: React.FC = () => {
       stroke: bgColor,
     })
   }
-
   const svgColor = filterColor()
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
@@ -99,10 +101,6 @@ const ChooseShape: React.FC = () => {
                   color: svgColor.fill,
                   '& rect': { stroke: svgColor.stroke },
                 }}
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               />
             </MenuItem>
           )

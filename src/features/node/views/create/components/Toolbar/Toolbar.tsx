@@ -80,4 +80,4 @@ const Container = styled(Stack)(({ theme }) => ({
 
 const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
 
-export { Toolbar, TOOLBAR_HEIGHT }
+export { TOOLBAR_HEIGHT, Toolbar }

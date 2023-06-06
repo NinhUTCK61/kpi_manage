@@ -102,15 +102,15 @@ const ListCommentContainer = styled(Box)({
 })
 
 export {
-  CommentContainer,
-  HeaderComment,
-  CommentReplyContainer,
-  InputStyled,
-  ButtonSendContainer,
-  CommentFormContainer,
-  ButtonAction,
-  CommentActive,
-  ButtonMenu,
   BackgroundDefault,
+  ButtonAction,
+  ButtonMenu,
+  ButtonSendContainer,
+  CommentActive,
+  CommentContainer,
+  CommentFormContainer,
+  CommentReplyContainer,
+  HeaderComment,
+  InputStyled,
   ListCommentContainer,
 }
