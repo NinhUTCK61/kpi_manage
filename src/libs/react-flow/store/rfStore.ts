@@ -132,6 +132,24 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ nodes })
         }
       },
+      updateBulkKpiNode(nodes) {
+        const _nodes = [...get().nodes]
+        for (let i = 0; i < nodes.length; i++) {
+          const item = nodes[i]
+          if (!item) return
+          for (let j = 0; j < _nodes.length; j++) {
+            const node = _nodes[j]
+            if (node?.type !== 'kpi') return
+            if (node.id === item.id) {
+              const _data = item as typeof node.data
+              node.data = { ...node.data, ..._data, is_saved: true }
+              break
+              // break for loop if find node
+            }
+          }
+        }
+        set({ nodes: _nodes })
+      },
       removeNode(nodeId) {
         const { nodes, edges, d3Root } = get()
         const nodeToRemove = d3Root.find((n) => n.data.id === nodeId)
@@ -360,6 +378,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const node = _nodes.find(
           (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
+        console.log('before', node?.data)
         if (node) {
           node.data = { ...node.data, ...speechBallonData }
 

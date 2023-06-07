@@ -1,5 +1,9 @@
 import { SUGGEST_ITEM_HEIGHT } from '@/libs/react-flow/constant'
-import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
+import {
+  charFullNearCursor,
+  convertFormula,
+  getListNodeInvalid,
+} from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode, ReactFlowNode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
@@ -8,6 +12,7 @@ import React, {
   MouseEvent,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -36,10 +41,11 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const [suggestState, setSuggestState] = useState<SuggestStateProps>(defaultValueState)
   const { setError, getValues, setValue } = useFormContext<NodeFormProps>()
   const [nodeSearch, setNodeSearch] = useState<ReactFlowKPINode[]>([])
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const elementRef = useRef<HTMLUListElement>(null)
   const nodes = useRFStore((state) => state.nodes)
   const { t } = useTranslation()
-
+  const [listNodeInvalid, setListNodeInvalid] = useState<string[]>([])
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (!suggestState.textSelected) return
@@ -85,6 +91,14 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
   const handlingData = useCallback(
     (e: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>) => {
+      if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+      const listNode = nodes.filter(
+        (e) => e.type === 'kpi' && nodeFocused.id !== e.id,
+      ) as ReactFlowKPINode[]
+      const inputValue = getValues('input_value') as string
+      //get list slug node invalid
+      const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
+      setListNodeInvalid(list)
       const data = charFullNearCursor(e)
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
@@ -95,7 +109,9 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       const check = nodes.filter(
         (e: ReactFlowNode) =>
           e.type === 'kpi' &&
-          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()),
+          e.id !== nodeFocused.id &&
+          (e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()) ||
+            e.data.slug.includes(data.resultStringFull.replaceAll(' ', ''))),
       ) as ReactFlowKPINode[]
 
       if (check.length !== 0) {
@@ -109,13 +125,21 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         setNodeSearch(check)
         return
       }
-
-      setError('input_value', {
-        message: t('error.node_not_found_1') + data.resultStringFull + t('error.node_not_found_2'),
-      })
     },
-    [nodes, setError, suggestState, t],
+    [getValues, nodeFocused, nodes, suggestState],
   )
+
+  useEffect(() => {
+    if (!listNodeInvalid.length) {
+      setError('input_value', { message: '' })
+      return
+    }
+
+    setError('input_value', {
+      message:
+        t('error.node_not_found_1') + listNodeInvalid.join(',') + t('error.node_not_found_2'),
+    })
+  }, [listNodeInvalid, listNodeInvalid.length, setError, t])
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {

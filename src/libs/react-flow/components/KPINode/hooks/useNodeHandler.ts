@@ -1,5 +1,6 @@
+import { calculatorValue2number } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType } from '@/libs/react-flow/types'
+import { KPINodeType, ReactFlowKPINode } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { useCallback } from 'react'
 import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
@@ -15,6 +16,7 @@ const useNodeHandler = () => {
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
   const updateKPINode = useRFStore((state) => state.updateKPINode)
+  const nodes = useRFStore((state) => state.nodes)
   const { mutate: create } = useNodeCreateMutation()
   const { mutate: update } = useNodeUpdateMutation()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
@@ -30,7 +32,10 @@ const useNodeHandler = () => {
       data.value2number = Number(input_value) || null
     } else {
       // TODO: handler calculate formula here
-      data.value2number = null
+      data.value2number = calculatorValue2number(
+        data.input_value as string,
+        nodes.filter((e) => e.type === 'kpi') as ReactFlowKPINode[],
+      )
     }
     data.is_formula = is_formula
 

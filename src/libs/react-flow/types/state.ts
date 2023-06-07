@@ -30,6 +30,7 @@ export type RFStore = {
   hasChild(nodeId: string): boolean
   removeEmptyKPINode: () => void
   updateKPINode: (node: UpdateNodeInputType & { is_saved?: boolean }, shouldFocus?: boolean) => void
+  updateBulkKpiNode: (nodes: UpdateNodeInputType[]) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
