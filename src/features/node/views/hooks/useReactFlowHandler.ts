@@ -140,10 +140,7 @@ export const useReactFlowHandler = () => {
         y: node.position.y,
       }
 
-      if (
-        !nodeFocused?.position ||
-        (nodeFocused?.position.x === data.x && nodeFocused?.position.y === data.y)
-      ) {
+      if (nodeFocused?.position.x === data.x && nodeFocused?.position.y === data.y) {
         return
       }
 

@@ -29,6 +29,9 @@ const sizeStyleMapping = {
   },
 }
 
+const DEFAULT_SIZE_ARROW = 12
+const BORDER_SIZE_ARROW = 20
+
 export const useShapeStyle = () => {
   const { data } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
@@ -43,13 +46,10 @@ export const useShapeStyle = () => {
 
   const sizeStyle = sizeStyleMapping[shapeType]
 
-  const defaultSizeArrow = 12
-  const borderSizeArrow = 20
-
   const arrowCircular =
     shapeType === ShapeType.CIRCULAR
       ? {
-          left: `calc(50% - ${defaultSizeArrow}px)`,
+          left: `calc(50% - ${DEFAULT_SIZE_ARROW}px)`,
         }
       : {}
 
@@ -57,7 +57,7 @@ export const useShapeStyle = () => {
     ...style,
     ...sizeStyle,
     color,
-    border: `${!isFill && stroke}px solid ${conventionBg}`,
+    border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
     borderRadius: `${borderStyle}px`,
     display: 'flex',
@@ -69,13 +69,13 @@ export const useShapeStyle = () => {
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
     '&:before': {
       content: '""',
-      top: `-${borderSizeArrow - resizeBorder}px`,
+      top: `-${BORDER_SIZE_ARROW - resizeBorder}px`,
       left: '50%',
       transform: 'translateX(-50%)',
       position: 'absolute',
-      borderLeft: `${defaultSizeArrow + resizeBorder}px solid transparent`,
-      borderRight: `${defaultSizeArrow + resizeBorder}px solid transparent`,
-      borderTop: `${borderSizeArrow + resizeBorder}px solid ${conventionBg}`,
+      borderLeft: `${DEFAULT_SIZE_ARROW + resizeBorder}px solid transparent`,
+      borderRight: `${DEFAULT_SIZE_ARROW + resizeBorder}px solid transparent`,
+      borderTop: `${BORDER_SIZE_ARROW + resizeBorder}px solid ${conventionBg}`,
       zIndex: -1,
     },
   }
