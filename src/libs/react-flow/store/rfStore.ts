@@ -378,7 +378,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const node = _nodes.find(
           (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
-        console.log('before', node?.data)
         if (node) {
           node.data = { ...node.data, ...speechBallonData }
 

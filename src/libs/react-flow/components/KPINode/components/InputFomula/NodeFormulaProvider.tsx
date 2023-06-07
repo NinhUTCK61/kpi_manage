@@ -97,8 +97,10 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       ) as ReactFlowKPINode[]
       const inputValue = (e.target as HTMLInputElement).value
       //get list slug node invalid
-      const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
-      setListNodeInvalid(list)
+      if (inputValue.startsWith('=')) {
+        const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
+        setListNodeInvalid(list)
+      }
       const data = charFullNearCursor(e)
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {

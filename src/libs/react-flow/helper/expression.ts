@@ -142,7 +142,6 @@ export const getListNodeInvalid = (
   nodeFocuses: ReactFlowKPINode,
 ) => {
   const list: string[] = []
-  if (!inputValue.startsWith('=')) return list
   const _inputValue = inputValue.trim().replace('=', '')
   if (!_inputValue) return list
   //Convert "A1+B1" to [A1,B1]
