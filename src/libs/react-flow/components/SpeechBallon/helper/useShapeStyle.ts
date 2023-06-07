@@ -43,10 +43,13 @@ export const useShapeStyle = () => {
 
   const sizeStyle = sizeStyleMapping[shapeType]
 
+  const defaultSizeArrow = 12
+  const borderSizeArrow = 20
+
   const arrowCircular =
     shapeType === ShapeType.CIRCULAR
       ? {
-          left: 'calc(50% - 12px)',
+          left: `calc(50% - ${defaultSizeArrow}px)`,
         }
       : {}
 
@@ -66,13 +69,13 @@ export const useShapeStyle = () => {
     borderTop: `20px solid ${isFill ? conventionBg : base.white}`,
     '&:before': {
       content: '""',
-      top: `-${20 - resizeBorder}px`,
+      top: `-${borderSizeArrow - resizeBorder}px`,
       left: '50%',
       transform: 'translateX(-50%)',
       position: 'absolute',
-      borderLeft: `${12 + resizeBorder}px solid transparent`,
-      borderRight: `${12 + resizeBorder}px solid transparent`,
-      borderTop: `${20 + resizeBorder}px solid ${conventionBg}`,
+      borderLeft: `${defaultSizeArrow + resizeBorder}px solid transparent`,
+      borderRight: `${defaultSizeArrow + resizeBorder}px solid transparent`,
+      borderTop: `${borderSizeArrow + resizeBorder}px solid ${conventionBg}`,
       zIndex: -1,
     },
   }
