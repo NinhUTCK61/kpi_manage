@@ -104,6 +104,7 @@ export const SpeechBallonForm: React.FC = () => {
           autoComplete="off"
           onFocus={handleFocus}
           inputProps={{ style }}
+          sx={{ width: '100%', height: '100%' }}
         />
       </form>
     </ClickAwayListener>

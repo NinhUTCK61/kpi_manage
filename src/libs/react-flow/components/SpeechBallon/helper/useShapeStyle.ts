@@ -33,7 +33,7 @@ const DEFAULT_SIZE_ARROW = 12
 const BORDER_SIZE_ARROW = 20
 
 export const useShapeStyle = () => {
-  const { data } = useSpeechBallonContext()
+  const { data, isSetSize } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'
@@ -53,15 +53,20 @@ export const useShapeStyle = () => {
         }
       : {}
 
+  const dimensions = isSetSize && { width: '100%', height: '100%' }
+
   const getShapeStyles = {
     ...style,
     ...sizeStyle,
+    ...dimensions,
+    padding: '6px 12px',
     color,
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
     borderRadius: `${borderStyle}px`,
     display: 'flex',
     alignItems: 'center',
+    borderRadius: borderStyle && `${borderStyle}px`,
   }
 
   const getArrowStyles = {

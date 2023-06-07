@@ -15,9 +15,9 @@ export const OptionShape: React.FC = () => {
 }
 
 const MuiOptionShapeType = styled('div')({
+  minWidth: 210,
   padding: 12,
   position: 'relative',
-  height: '100%',
 })
 
 export const Arrow = styled('div')({
