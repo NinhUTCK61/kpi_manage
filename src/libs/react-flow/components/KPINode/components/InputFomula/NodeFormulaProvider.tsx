@@ -95,7 +95,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       const listNode = nodes.filter(
         (e) => e.type === 'kpi' && nodeFocused.id !== e.id,
       ) as ReactFlowKPINode[]
-      const inputValue = getValues('input_value') as string
+      const inputValue = (e.target as HTMLInputElement).value
       //get list slug node invalid
       const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
       setListNodeInvalid(list)
@@ -126,7 +126,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
     },
-    [getValues, nodeFocused, nodes, suggestState],
+    [nodeFocused, nodes, suggestState],
   )
 
   useEffect(() => {
