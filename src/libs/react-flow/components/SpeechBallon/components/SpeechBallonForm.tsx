@@ -8,6 +8,7 @@ import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
+import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
 type SpeechBallonFormProps = {
   text: string
@@ -19,7 +20,14 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { data, xPos, yPos, isEditing: editable, handleSetEditing } = useSpeechBallonContext()
+  const {
+    data,
+    xPos,
+    yPos,
+    isEditing: editable,
+    handleSetEditing,
+    isResizing,
+  } = useSpeechBallonContext()
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
@@ -92,30 +100,41 @@ export const SpeechBallonForm: React.FC = () => {
     e.target.setSelectionRange(length, length)
   }
 
+  const widthWhenResize = isResizing ? '100%' : style.width && style.width
+  const heightWhenResize = isResizing ? '100%' : style.height && style.height
+
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <form onSubmit={handleSubmit}>
-        <InputSpeechBalloon
-          control={control}
-          onKeyDown={handleKeyDown}
-          multiline
-          maxRows={6}
-          name="text"
-          autoComplete="off"
-          onFocus={handleFocus}
-          inputProps={{ style }}
-          sx={{ width: '100%', height: '100%' }}
-        />
-      </form>
+      <SpeechBallonContainer width="100%">
+        <form onSubmit={handleSubmit}>
+          <InputSpeechBalloon
+            control={control}
+            onKeyDown={handleKeyDown}
+            multiline
+            name="text"
+            autoComplete="off"
+            onFocus={handleFocus}
+            fullWidth
+            sx={{
+              ...style,
+              width: '100%',
+              height: heightWhenResize,
+            }}
+          />
+        </form>
+      </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <InputSpeechBalloon
-      control={control}
-      multiline
-      maxRows={6}
-      name="text"
-      readOnly
-      inputProps={{ style }}
-    />
+    <SpeechBallonContainer sx={{ maxWidth: widthWhenResize }}>
+      <TextSpeechBallon
+        sx={{
+          ...style,
+          width: 'auto',
+          height: 'auto',
+        }}
+      >
+        {data.text}
+      </TextSpeechBallon>
+    </SpeechBallonContainer>
   )
 }

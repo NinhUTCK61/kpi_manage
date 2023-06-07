@@ -1,3 +1,4 @@
+import { ShapeType } from '@/features/node'
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
@@ -38,9 +39,14 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
     setEditing(value)
   }, [])
 
-  const [isSetSize, setSize] = useState(false)
-  const handleSetSize = useCallback((value: boolean) => {
-    setSize(value)
+  const [isResizeEnabled, setResizeEnabled] = useState(false)
+  const handleResize = useCallback((value: boolean) => {
+    setResizeEnabled(value)
+  }, [])
+
+  const [isResizing, setResizing] = useState(false)
+  const handleResizing = useCallback((value: boolean) => {
+    setResizing(value)
   }, [])
 
   const contextValue = useMemo(
@@ -50,15 +56,27 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
       yPos,
       isEditing,
       handleSetEditing,
-      isSetSize,
-      handleSetSize,
+      isResizeEnabled,
+      handleResize,
+      isResizing,
+      handleResizing,
     }),
-    [data, xPos, yPos, isEditing, handleSetEditing, isSetSize, handleSetSize],
+    [
+      data,
+      xPos,
+      yPos,
+      isEditing,
+      handleSetEditing,
+      isResizeEnabled,
+      handleResize,
+      isResizing,
+      handleResizing,
+    ],
   )
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
-  const onUpdateSize = (_: ResizeDragEvent, params: ResizeParams) => {
+  const onUpdateResize = (_: ResizeDragEvent, params: ResizeParams) => {
     if (!nodeFocused) return
     if (nodeFocused.type === 'speech_ballon') {
       const nodeStyle = JSON.parse(nodeFocused.data.node_style || '{}')
@@ -69,35 +87,64 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
         height: `${params.height}px`,
       })
 
-      updateSpeechBallon({
+      const dataUpdate = {
         id: nodeFocused.id,
         node_style: newNodeStyle,
         x: params.x,
         y: params.y,
-      })
+      }
 
-      handleSetSize(false)
+      updateSpeechBallon(dataUpdate)
+      handleResizing(false)
     }
+  }
+
+  const onResizing = (_: ResizeDragEvent) => {
+    handleResizing(true)
   }
 
   const resizeRef = useRef(null)
 
   const handleCloseResize = () => {
-    handleSetSize(false)
+    handleResize(false)
   }
 
   useOnClickOutside(resizeRef, handleCloseResize)
+
+  const minSizeMapping = {
+    [ShapeType.SQUARE]: {
+      minWidth: 190,
+      minHeight: 190,
+    },
+    [ShapeType.CIRCULAR]: {
+      minWidth: 190,
+      minHeight: 190,
+    },
+    [ShapeType.MEDIUM_ROUND_SQUARE]: {
+      minWidth: 190,
+      minHeight: 190,
+    },
+    [ShapeType.ROUND_SQUARE]: {
+      minWidth: 210,
+      minHeight: 44,
+    },
+  }
+
+  const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
+
+  const minSizeStyle = minSizeMapping[shapeType]
 
   return (
     <SpeechBallonProvider value={contextValue}>
       <Stack onContextMenu={handleContextMenu} height="100%" ref={resizeRef}>
         <NodeResizer
-          minWidth={234}
-          minHeight={48}
+          minWidth={minSizeStyle.minWidth}
+          minHeight={minSizeStyle.minHeight}
           handleStyle={{ width: 12, height: 12, zIndex: 100 }}
           lineStyle={{ padding: 2, zIndex: 100 }}
-          isVisible={isSetSize}
-          onResizeEnd={onUpdateSize}
+          isVisible={isResizeEnabled}
+          onResizeEnd={onUpdateResize}
+          onResize={onResizing}
         />
 
         <OptionShape />

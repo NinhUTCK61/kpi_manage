@@ -38,7 +38,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   const { t } = useTranslation(['file'])
 
   const { setNodeFocused } = useRFStore(storeSelector, shallow)
-  const { data, handleSetEditing } = useSpeechBallonContext()
+  const { data, handleSetEditing, handleResize } = useSpeechBallonContext()
   const { mutate: deleteSpeechBallon } = useSpeechBallonDeleteMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: create } = useSpeechBallonCreateMutation()
@@ -46,7 +46,6 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
   const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
-  const { handleSetSize } = useSpeechBallonContext()
 
   const contextMenuItem: ContextMenuItem[] = [
     {
@@ -125,7 +124,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
         handlePaste()
         break
       case CtxMenuType.Resize:
-        handleSetSize(true)
+        handleResize(true)
         break
       default:
         break

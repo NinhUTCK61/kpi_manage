@@ -7,8 +7,10 @@ type SpeechBallonContextType = {
   yPos: number
   isEditing: boolean
   handleSetEditing: (isEditing: boolean) => void
-  isSetSize: boolean
-  handleSetSize: (isSetSize: boolean) => void
+  isResizeEnabled: boolean
+  handleResize: (isResizeEnabled: boolean) => void
+  isResizing: boolean
+  handleResizing: (isResizeEnabled: boolean) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)

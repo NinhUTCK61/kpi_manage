@@ -5,7 +5,6 @@ import { SpeechBallonForm } from './SpeechBallonForm'
 
 export const OptionShape: React.FC = () => {
   const { getShapeStyles, getArrowStyles } = useShapeStyle()
-
   return (
     <MuiOptionShapeType sx={getShapeStyles}>
       <SpeechBallonForm />
@@ -15,9 +14,8 @@ export const OptionShape: React.FC = () => {
 }
 
 const MuiOptionShapeType = styled('div')({
-  minWidth: 210,
-  padding: 12,
   position: 'relative',
+  padding: '10px 12px',
 })
 
 export const Arrow = styled('div')({

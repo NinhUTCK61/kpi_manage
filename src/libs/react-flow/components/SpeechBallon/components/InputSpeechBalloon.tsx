@@ -30,6 +30,8 @@ const InputStyled = styled(InputBase)(({ readOnly }) => ({
   fontSize: 15,
   fontWeight: 400,
   lineHeight: '22px',
+  minHeight: 36,
+  padding: 0,
   ...(readOnly && {
     cursor: 'grab !important',
   }),
