@@ -43,7 +43,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const [nodeSearch, setNodeSearch] = useState<ReactFlowKPINode[]>([])
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const elementRef = useRef<HTMLUListElement>(null)
-  const nodes = useRFStore((state) => state.nodes)
+  const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { t } = useTranslation()
   const [listNodeInvalid, setListNodeInvalid] = useState<string[]>([])
   const handleKeyDown = useCallback(
@@ -94,6 +94,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
 
       const data = charFullNearCursor(e)
+      const nodes = getKpiNodes()
       const listNode = nodes.filter(
         (e) => e.type === 'kpi' && nodeFocused.id !== e.id,
       ) as ReactFlowKPINode[]
@@ -127,7 +128,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
     },
-    [nodeFocused, nodes, suggestState],
+    [getKpiNodes, nodeFocused, suggestState],
   )
 
   useEffect(() => {
