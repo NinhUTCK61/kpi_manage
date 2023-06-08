@@ -5,7 +5,7 @@ import {
   getListNodeInvalid,
 } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { ReactFlowKPINode, ReactFlowNode } from '@/libs/react-flow/types'
+import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import React, {
   KeyboardEvent,
@@ -92,6 +92,8 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const handlingData = useCallback(
     (e: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>) => {
       if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+
+      const data = charFullNearCursor(e)
       const listNode = nodes.filter(
         (e) => e.type === 'kpi' && nodeFocused.id !== e.id,
       ) as ReactFlowKPINode[]
@@ -101,19 +103,16 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
         setListNodeInvalid(list)
       }
-      const data = charFullNearCursor(e)
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
         setSuggestState(defaultValueState)
         return
       }
 
-      const check = nodes.filter(
-        (e: ReactFlowNode) =>
-          e.type === 'kpi' &&
-          e.id !== nodeFocused.id &&
-          (e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()) ||
-            e.data.slug.includes(data.resultStringFull.replaceAll(' ', ''))),
+      const check = listNode.filter(
+        (e) =>
+          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()) ||
+          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '')),
       ) as ReactFlowKPINode[]
 
       if (check.length !== 0) {

@@ -56,6 +56,10 @@ export const getSlugFromInputValue = (inputValue: string) => {
   return slugs
 }
 
+function isNumeric(str: string) {
+  return /^(\d+(\.\d*)?|\.\d+)$/.test(str)
+}
+
 // convert "A+B" to value2Number
 export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINode[]) => {
   let output = ''
@@ -77,10 +81,16 @@ export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINo
   if (!components.length) return 0
 
   components.forEach((component, index) => {
-    const node = nodes.find((node) => node.data.slug === component.text)
-    if (!node) return
-
-    const value = node.data.value2number || 0 // Assign 0 if component is not found in values
+    let value = 0
+    if (!isNumeric(component.text)) {
+      const node = nodes.find((node) => node.data.slug === component.text)
+      if (node) {
+        value = node.data.value2number || 0 // Assign 0 if component is not found in values
+      }
+    } else {
+      value = Number(component.text)
+    }
+    console.log('value', value)
     const indexString = Number(components[index - 1]?.end) + 1
     if (index !== 0) {
       const separator = inputValue.substring(indexString, component.start)
@@ -146,7 +156,7 @@ export const getListNodeInvalid = (
   if (!_inputValue) return list
   //Convert "A1+B1" to [A1,B1]
   _inputValue
-    .replace(/[^a-zA-Z0-9]/g, ' ')
+    .replace(/[^a-zA-Z]/g, ' ')
     .split(' ')
     .forEach((slug) => {
       if (!slug) return
