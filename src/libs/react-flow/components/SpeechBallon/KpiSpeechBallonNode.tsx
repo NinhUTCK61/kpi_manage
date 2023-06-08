@@ -8,7 +8,7 @@ import { useRFStore } from '../../hooks'
 import { SpeechBallonNodeType } from '../../types'
 import { ContextMenu } from './components/ContextMenu'
 import { OptionShape } from './components/OptionShape'
-import { SpeechBallonProvider } from './context'
+import { SpeechBallonActionProvider, SpeechBallonProvider } from './context'
 import { useUpdateSpeechBallonMutation } from './hooks'
 
 type KpiSpeechBallonNodeProps = NodeProps<SpeechBallonNodeType>
@@ -55,23 +55,19 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
       xPos,
       yPos,
       isEditing,
+    }),
+    [data, xPos, yPos, isEditing],
+  )
+
+  const actionContextValue = useMemo(
+    () => ({
       handleSetEditing,
       isResizeEnabled,
       handleResize,
       isResizing,
       handleResizing,
     }),
-    [
-      data,
-      xPos,
-      yPos,
-      isEditing,
-      handleSetEditing,
-      isResizeEnabled,
-      handleResize,
-      isResizing,
-      handleResizing,
-    ],
+    [handleSetEditing, isResizeEnabled, handleResize, isResizing, handleResizing],
   )
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -105,13 +101,14 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
 
   const resizeRef = useRef(null)
 
-  const handleCloseResize = () => {
-    handleResize(false)
+  const handleCloseResize = (event: MouseEvent) => {
+    const styleArea = document.getElementById('menu-speech-ballon')
+    if (!styleArea?.contains(event.target as HTMLElement)) handleResize(false)
   }
 
   useOnClickOutside(resizeRef, handleCloseResize)
 
-  const minSizeMapping = {
+  const minSizeResize = {
     [ShapeType.SQUARE]: {
       minWidth: 190,
       minHeight: 190,
@@ -126,37 +123,38 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
     },
     [ShapeType.ROUND_SQUARE]: {
       minWidth: 210,
-      minHeight: 44,
+      minHeight: 36,
     },
   }
 
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
-
-  const minSizeStyle = minSizeMapping[shapeType]
+  const minSizeStyle = minSizeResize[shapeType]
 
   return (
     <SpeechBallonProvider value={contextValue}>
-      <Stack onContextMenu={handleContextMenu} height="100%" ref={resizeRef}>
-        <NodeResizer
-          minWidth={minSizeStyle.minWidth}
-          minHeight={minSizeStyle.minHeight}
-          handleStyle={{ width: 12, height: 12, zIndex: 100 }}
-          lineStyle={{ padding: 2, zIndex: 100 }}
-          isVisible={isResizeEnabled}
-          onResizeEnd={onUpdateResize}
-          onResize={onResizing}
-        />
+      <SpeechBallonActionProvider value={actionContextValue}>
+        <Stack onContextMenu={handleContextMenu} height="100%" ref={resizeRef}>
+          <NodeResizer
+            minWidth={minSizeStyle.minWidth}
+            minHeight={minSizeStyle.minHeight}
+            handleStyle={{ width: 12, height: 12, zIndex: 100 }}
+            lineStyle={{ padding: 2, zIndex: 100 }}
+            isVisible={isResizeEnabled}
+            onResizeEnd={onUpdateResize}
+            onResize={onResizing}
+          />
 
-        <OptionShape />
+          <OptionShape />
 
-        <ContextMenu
-          open={!!contextMenu}
-          onClose={handleClose}
-          anchorPosition={
-            !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
-          }
-        />
-      </Stack>
+          <ContextMenu
+            open={!!contextMenu}
+            onClose={handleClose}
+            anchorPosition={
+              !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
+            }
+          />
+        </Stack>
+      </SpeechBallonActionProvider>
     </SpeechBallonProvider>
   )
 }

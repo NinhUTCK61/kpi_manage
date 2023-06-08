@@ -56,12 +56,30 @@ const ChooseShape: React.FC = () => {
     setShape(value)
 
     if (!nodeFocusedMemo) return
+    const style =
+      nodeFocusedMemo.type === 'speech_ballon' &&
+      JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
+    const isCircularShape = value !== 'ROUND_SQUARE' && style.width && style.height
+
+    const height =
+      isCircularShape && Number(style.width.split('px')[0]) > Number(style.height.split('px')[0])
+        ? style.width
+        : style.height
+
+    const width =
+      isCircularShape && Number(style.height.split('px')[0]) > Number(style.width.split('px')[0])
+        ? style.height
+        : style.width
+
+    const newNodeStyle = JSON.stringify({ ...style, height, width })
 
     updateReactFlowNode(
       {
         shape: value,
         id: nodeFocusedMemo.id,
         is_saved: nodeFocusedMemo.data.is_saved,
+        node_style: newNodeStyle,
       },
       'speech_ballon',
     )

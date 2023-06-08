@@ -1,3 +1,4 @@
+import { ShapeType } from '@/features/node'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -5,7 +6,7 @@ import { ClickAwayListener } from '@mui/material'
 import { FocusEvent, FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
-import { useSpeechBallonContext } from '../context'
+import { useSpeechBallonActionContext, useSpeechBallonContext } from '../context'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
@@ -20,14 +21,8 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const {
-    data,
-    xPos,
-    yPos,
-    isEditing: editable,
-    handleSetEditing,
-    isResizing,
-  } = useSpeechBallonContext()
+  const { data, xPos, yPos, isEditing: editable } = useSpeechBallonContext()
+  const { handleSetEditing, isResizing } = useSpeechBallonActionContext()
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
@@ -101,11 +96,14 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const widthWhenResize = isResizing ? '100%' : style.width && style.width
-  const heightWhenResize = isResizing ? '100%' : style.height && style.height
+  const styleCicular =
+    data.shape === ShapeType.CIRCULAR
+      ? { width: '50%', height: '100%', margin: 'auto' }
+      : { width: 'auto', height: 'auto' }
 
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <SpeechBallonContainer width="100%">
+      <SpeechBallonContainer>
         <form onSubmit={handleSubmit}>
           <InputSpeechBalloon
             control={control}
@@ -114,12 +112,12 @@ export const SpeechBallonForm: React.FC = () => {
             name="text"
             autoComplete="off"
             onFocus={handleFocus}
+            autoFocus
             fullWidth
-            sx={{
-              ...style,
-              width: '100%',
-              height: heightWhenResize,
+            inputProps={{
+              style,
             }}
+            sx={{ ...styleCicular, minHeight: 0 }}
           />
         </form>
       </SpeechBallonContainer>
@@ -129,8 +127,7 @@ export const SpeechBallonForm: React.FC = () => {
       <TextSpeechBallon
         sx={{
           ...style,
-          width: 'auto',
-          height: 'auto',
+          ...styleCicular,
         }}
       >
         {data.text}

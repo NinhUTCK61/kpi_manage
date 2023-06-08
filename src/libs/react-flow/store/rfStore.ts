@@ -361,6 +361,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
         if (node) {
+          const style = JSON.parse(speechBallonData.node_style || '{}')
+
+          if (style.width && style.height) {
+            const height = Number(style.height.split('px')[0])
+            const width = Number(style.width.split('px')[0])
+
+            node.style = { width, height }
+          }
+
           node.data = { ...node.data, ...speechBallonData }
 
           const nodes = _nodes.map((el) => {
