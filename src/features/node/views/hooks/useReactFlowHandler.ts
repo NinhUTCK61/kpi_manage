@@ -26,6 +26,7 @@ const storeSelector = (state: RFStore) => ({
   addSpeechBallon: state.addSpeechBallon,
   container: state.container,
   templateId: state.templateId,
+  nodeFocused: state.nodeFocused,
 })
 
 export const useReactFlowHandler = () => {
@@ -40,6 +41,7 @@ export const useReactFlowHandler = () => {
     addSpeechBallon,
     container,
     templateId,
+    nodeFocused,
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
@@ -138,6 +140,10 @@ export const useReactFlowHandler = () => {
         y: node.position.y,
       }
 
+      if (nodeFocused?.position.x === data.x && nodeFocused?.position.y === data.y) {
+        return
+      }
+
       switch (node.type) {
         case 'comment':
           updateCommentNode(data)
@@ -150,7 +156,7 @@ export const useReactFlowHandler = () => {
           break
       }
     },
-    [updateCommentNode, updateSpeechBallonNode],
+    [updateCommentNode, updateSpeechBallonNode, nodeFocused],
   )
 
   return {
