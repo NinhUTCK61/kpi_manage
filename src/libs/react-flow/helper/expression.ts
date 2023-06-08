@@ -162,7 +162,7 @@ export const getListNodeInvalid = (
     .replace(/[^a-zA-Z]/g, ' ')
     .split(' ')
     .forEach((slug) => {
-      if (!slug) return
+      if (slug === '') return
       if (slug === nodeFocuses.data.slug) {
         list.push(slug)
         return

@@ -52,7 +52,7 @@ const useNodeHandler = () => {
     return nodeFocused.data.value2number !== newData.value2number
   }
 
-  const getBuldUpdateData = (newData: KPINodeType) => {
+  const getBulkUpdateData = (newData: KPINodeType) => {
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
     const nodes = getKpiNodes().filter((e) => e.type === 'kpi')
     const newNodes = produce(nodes, (draft) => {
@@ -73,9 +73,8 @@ const useNodeHandler = () => {
       case 'UPDATE':
         setNodeFocused(null)
         if (isBulkUpdate(newData)) {
-          const bulkUpdateData = getBuldUpdateData(newData)
+          const bulkUpdateData = getBulkUpdateData(newData)
           if (!bulkUpdateData) return
-          console.log(bulkUpdateData)
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data), { ...newData }]
           mutateBulkUpdate(_bulkUpdateData)
           return
