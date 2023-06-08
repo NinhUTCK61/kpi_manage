@@ -57,7 +57,7 @@ export const getSlugFromInputValue = (inputValue: string) => {
 }
 
 function isNumeric(str: string) {
-  return /^(\d+(\.\d*)?|\.\d+)$/.test(str)
+  return /^-?\d+(\+\d+)?$/.test(str)
 }
 
 // convert "A+B" to value2Number
@@ -65,14 +65,15 @@ export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINo
   let output = ''
   let lastIndex = 0
   if (!inputValue) return 0
-  const matches = inputValue
+  const _inputValue = inputValue.trim().replace('=', '')
+  const matches = _inputValue
     .replace('=', '')
     .replace(/[^a-zA-Z0-9]/g, ' ')
     .split(' ')
   if (!matches?.length) return 0
 
   const components = matches.map((match) => {
-    const start = inputValue.indexOf(match, lastIndex)
+    const start = _inputValue.indexOf(match, lastIndex)
     const end = start + match.length - 1
     lastIndex = end + 1
     return { text: match, start, end }
@@ -84,23 +85,25 @@ export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINo
     let value = 0
     if (!isNumeric(component.text)) {
       const node = nodes.find((node) => node.data.slug === component.text)
-      if (node) {
-        value = node.data.value2number || 0 // Assign 0 if component is not found in values
-      }
+      value = node?.data.value2number || 0 // Assign 0 if component is not found in values
     } else {
       value = Number(component.text)
     }
-    console.log('value', value)
+
     const indexString = Number(components[index - 1]?.end) + 1
     if (index !== 0) {
-      const separator = inputValue.substring(indexString, component.start)
+      const separator = _inputValue.substring(indexString, component.start)
+      console.log('separator', separator)
       output += separator
     }
+    console.log(value, output)
     output += value
     if (index === components.length - 1) {
-      output += inputValue.substring(component.end + 1)
+      output += _inputValue.substring(component.end + 1)
     }
   })
+
+  console.log(output)
 
   return evaluate(output)
 }
