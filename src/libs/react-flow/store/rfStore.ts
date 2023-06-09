@@ -327,12 +327,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ nodes })
       },
       // speech ballon node
-      addSpeechBallon(speechBallonNode) {
+      addSpeechBallon(speechBallonNode, shouldFocus) {
         get().removeEmptySpeechBallon()
         const nodes = get().nodes
         nodes.push(speechBallonNode)
 
-        set({ nodes: [...nodes], nodeFocused: speechBallonNode })
+        if (shouldFocus) {
+          set({ nodes: [...nodes], nodeFocused: speechBallonNode })
+
+          return
+        }
+
+        set({ nodes: [...nodes] })
       },
       removeEmptySpeechBallon() {
         const _nodes = get().nodes

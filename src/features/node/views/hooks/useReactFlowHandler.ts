@@ -70,25 +70,28 @@ export const useReactFlowHandler = () => {
       const { top } = container?.getBoundingClientRect() || { top: 0, left: 0 }
       const { x, y } = project({ x: clientX, y: clientY - top })
 
-      addSpeechBallon({
-        id,
-        data: {
+      addSpeechBallon(
+        {
           id,
-          template_id: templateId,
-          shape: '',
-          node_style: null,
-          text: '',
-          node_id: null,
-          x,
-          y,
-          layout: 'FILL',
-          created_at: new Date(),
-          updated_at: new Date(),
-          is_saved: false,
+          data: {
+            id,
+            template_id: templateId,
+            shape: '',
+            node_style: null,
+            text: '',
+            node_id: null,
+            x,
+            y,
+            layout: 'FILL',
+            created_at: new Date(),
+            updated_at: new Date(),
+            is_saved: false,
+          },
+          position: { x, y },
+          type: 'speech_ballon',
         },
-        position: { x, y },
-        type: 'speech_ballon',
-      })
+        true,
+      )
     },
     [addSpeechBallon, container, project, templateId],
   )
@@ -96,7 +99,6 @@ export const useReactFlowHandler = () => {
   const handlePaneClick = useCallback(
     (e: MouseEvent<Element>) => {
       e.stopPropagation()
-
       setNodeFocused(null)
 
       if (viewportAction === ViewPortAction.Comment) {
@@ -106,11 +108,11 @@ export const useReactFlowHandler = () => {
         })
       }
 
-      if (viewportAction === ViewPortAction.SpeechBallon) {
+      if (viewportAction === ViewPortAction.SpeechBallon && !nodeFocused) {
         addTempSpeechBallon(e.clientX, e.clientY)
       }
     },
-    [setNodeFocused, viewportAction, setActivePosition, addTempSpeechBallon],
+    [setNodeFocused, viewportAction, nodeFocused, setActivePosition, addTempSpeechBallon],
   )
 
   const handleNodesDelete = useCallback(
@@ -124,7 +126,6 @@ export const useReactFlowHandler = () => {
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
       removeEmptyNode()
-
       setNodeFocused(node.id)
     },
     [removeEmptyNode, setNodeFocused],

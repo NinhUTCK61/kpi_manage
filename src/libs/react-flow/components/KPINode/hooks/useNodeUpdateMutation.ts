@@ -33,6 +33,7 @@ const useNodeUpdateMutation = () => {
       enqueueSnackbar(t('error.internal_server_error'), {
         variant: 'error',
       })
+      // TODO: update lại node trong store
 
       utils.node.list.setData({ template_id: ctx?.templateId as string }, ctx?.prevData)
     },

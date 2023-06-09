@@ -38,7 +38,7 @@ export type RFStore = {
   getNodeById: (id: string) => ReactFlowNode | null
   removeEmptyNode(): void
   // Speech ballon
-  addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
+  addSpeechBallon: (node: ReactFlowSpeechBallonNode, shouldFocus?: boolean) => void
   removeSpeechBallon: (speechBallonId: string) => void
   removeEmptySpeechBallon: () => void
   nodeCopy: ReactFlowNode | null

@@ -10,11 +10,12 @@ const useUpdateSpeechBallonMutation = () => {
   const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
   const getNodeById = useRFStore((state) => state.getNodeById)
   const utils = api.useContext()
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-      updateSpeechBallon(variables, true)
+      updateSpeechBallon(variables, !!nodeFocused)
       return { prevData }
     },
     onError(err, _, ctx) {
@@ -25,7 +26,7 @@ const useUpdateSpeechBallonMutation = () => {
         const speech_ballon = convertToReactFlowSpeechBallonSingle(
           ctx.prevData.data as SpeechBallonNodeType,
         )
-        updateSpeechBallon(speech_ballon, true)
+        updateSpeechBallon(speech_ballon, !!nodeFocused)
       }
     },
     onSettled() {
