@@ -304,9 +304,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
-      // FIXME: remove empty node
-      removeEmptyNode() {
+      removeEmptyNode(ignoreRemoveFocusedNode) {
         const _nodes = get().nodes
+        const nodeFocused = get().nodeFocused
 
         const nodes = _nodes.filter((node) => {
           if (node.type === 'comment') {
@@ -318,6 +318,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
 
           if (node.type === 'kpi') {
+            if (ignoreRemoveFocusedNode && nodeFocused?.id === node.id) return true
+
             return !isEmptyKPINodeForm(node.data)
           }
 

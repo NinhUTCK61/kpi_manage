@@ -41,6 +41,7 @@ export const useReactFlowHandler = () => {
     container,
     templateId,
     nodeFocused,
+    removeEmptyKPINode,
   } = useRFStore(storeSelector, shallow)
 
   const { mutate } = useNodeDeleteMutation()
@@ -125,7 +126,7 @@ export const useReactFlowHandler = () => {
 
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
-      removeEmptyNode()
+      removeEmptyNode(true)
       setNodeFocused(node.id)
     },
     [removeEmptyNode, setNodeFocused],
