@@ -1,4 +1,4 @@
-import { PANE_CLASS_NAME } from '@/libs/react-flow/constant'
+import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
@@ -80,9 +80,8 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
-    const targetClass = (event.target as HTMLDivElement).className
-    if (targetClass === PANE_CLASS_NAME && !data.text) {
-      removeSpeechBallon(data.id)
+    if (isPaneClick(event)) {
+      handleSubmit()
     }
 
     handleSetEditing(false)

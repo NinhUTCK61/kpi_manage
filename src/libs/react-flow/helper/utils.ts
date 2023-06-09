@@ -3,6 +3,7 @@ import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith } from 'lodash'
 import { Node as RFNode } from 'reactflow'
 import { NodeFormProps } from '../components'
+import { PANE_CLASS_NAME } from '../constant'
 import {
   KPINodeType,
   ReactFlowCommentNode,
@@ -68,4 +69,14 @@ export function getComment(_nodes: ReactFlowNode[], id: string) {
   )
 
   return node
+}
+
+export function isStyleAreaClick(e: MouseEvent | TouchEvent) {
+  const styleArea = document.getElementById('choose-style-area')
+  return styleArea && styleArea.contains(e.target as HTMLElement)
+}
+
+export function isPaneClick(e: MouseEvent | TouchEvent) {
+  const targetClass = (e.target as HTMLDivElement).className
+  return targetClass === PANE_CLASS_NAME
 }

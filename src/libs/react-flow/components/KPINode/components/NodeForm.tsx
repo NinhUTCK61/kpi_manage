@@ -1,5 +1,5 @@
 import { blue, red } from '@/libs/config/theme'
-import { PANE_CLASS_NAME } from '@/libs/react-flow/constant'
+import { isPaneClick } from '@/libs/react-flow/helper'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
@@ -51,8 +51,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
-    const targetClass = (event.target as HTMLDivElement).className
-    if (targetClass === PANE_CLASS_NAME) {
+    if (isPaneClick(event)) {
       saveValue()
     }
   }

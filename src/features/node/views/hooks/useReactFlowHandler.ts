@@ -1,8 +1,6 @@
 import {
   RFStore,
   ReactFlowNodeData,
-  isEmptyKPINodeForm,
-  isReactFlowKPINode,
   isReactFlowKPISpeechBallon,
   useCommentUpdateMutation,
   useNodeDeleteMutation,
@@ -20,13 +18,14 @@ const storeSelector = (state: RFStore) => ({
   handleEdgesChange: state.handleEdgesChange,
   setNodeFocused: state.setNodeFocused,
   scrollZoom: state.scrollZoom,
-  removeEmptyNode: state.removeEmptyNode,
+  removeEmptyKPINode: state.removeEmptyKPINode,
   setActivePosition: state.setActivePosition,
   viewportAction: state.viewportAction,
   addSpeechBallon: state.addSpeechBallon,
   container: state.container,
   templateId: state.templateId,
   nodeFocused: state.nodeFocused,
+  removeEmptyNode: state.removeEmptyNode,
 })
 
 export const useReactFlowHandler = () => {
@@ -124,9 +123,8 @@ export const useReactFlowHandler = () => {
 
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
-      if (isReactFlowKPINode(node) && !isEmptyKPINodeForm(node.data)) {
-        removeEmptyNode()
-      }
+      removeEmptyNode()
+
       setNodeFocused(node.id)
     },
     [removeEmptyNode, setNodeFocused],

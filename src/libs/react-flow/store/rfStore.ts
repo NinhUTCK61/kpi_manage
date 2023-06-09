@@ -157,7 +157,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ edges })
         return edges
       },
-      removeEmptyNode() {
+      removeEmptyKPINode() {
         const oldNodes = get().nodes
         const oldEdges = get().edges
         const emptyNode = oldNodes.find((n) => n.type === 'kpi' && isEmptyKPINodeForm(n.data))
@@ -191,7 +191,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ nodeFocused })
 
         if (!node) {
-          get().removeEmptyNode()
+          get().removeEmptyKPINode()
         }
       },
       onNodeClick(_, node) {
@@ -210,6 +210,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       //function toolbar
       changeViewportAction(action) {
         if (action === get().viewportAction) return
+        get().removeEmptyNode()
 
         set({
           viewportAction: action,
@@ -222,6 +223,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       changeShapeType(shape) {
         set({ shape })
       },
+
       // comment node
       addComment(node) {
         const _nodes = get().nodes
@@ -298,6 +300,28 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
               data.content = content
             }
           })
+        })
+
+        set({ nodes })
+      },
+      // FIXME: remove empty node
+      removeEmptyNode() {
+        const _nodes = get().nodes
+
+        const nodes = _nodes.filter((node) => {
+          if (node.type === 'comment') {
+            return node.data.content !== ''
+          }
+
+          if (node.type === 'speech_ballon') {
+            return node.data.text !== ''
+          }
+
+          if (node.type === 'kpi') {
+            return !isEmptyKPINodeForm(node.data)
+          }
+
+          return true
         })
 
         set({ nodes })

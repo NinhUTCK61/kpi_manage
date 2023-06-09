@@ -27,40 +27,44 @@ export const ToolbarInner: React.FC = () => {
 
           <Image src={RedoIcon} alt="undo" />
         </Stack>
-        <Stack
-          direction="row"
-          {...(!nodeFocused && {
-            style: {
-              opacity: 0.3,
-              pointerEvents: 'none',
-            },
-          })}
-        >
-          <ChooseFontSize />
 
-          <ChooseStyleText />
+        <Stack direction="row" id="choose-style-area">
+          <Stack
+            direction="row"
+            {...(!nodeFocused && {
+              style: {
+                opacity: 0.3,
+                pointerEvents: 'none',
+              },
+            })}
+          >
+            <ChooseFontSize />
 
-          <ChooseStyleAlignText />
+            <ChooseStyleText />
 
-          <PickColorNode />
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            ...(nodeFocused?.type !== 'speech_ballon' && {
-              opacity: 0.3,
-              pointerEvents: 'none',
-            }),
-          }}
-        >
-          <ChooseStroke />
+            <ChooseStyleAlignText />
 
-          <PickColorShape />
+            <PickColorNode />
+          </Stack>
 
-          <ChooseTypeLayout />
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              ...(nodeFocused?.type !== 'speech_ballon' && {
+                opacity: 0.3,
+                pointerEvents: 'none',
+              }),
+            }}
+          >
+            <ChooseStroke />
 
-          <ChooseShape />
+            <PickColorShape />
+
+            <ChooseTypeLayout />
+
+            <ChooseShape />
+          </Stack>
         </Stack>
       </Stack>
 

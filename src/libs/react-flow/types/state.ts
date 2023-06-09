@@ -28,7 +28,7 @@ export type RFStore = {
   addKPINode: (parentId: string) => ReactFlowKPINode
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   hasChild(nodeId: string): boolean
-  removeEmptyNode: () => void
+  removeEmptyKPINode: () => void
   updateKPINode: (node: UpdateNodeInputType & { is_saved?: boolean }, shouldFocus?: boolean) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
@@ -36,6 +36,7 @@ export type RFStore = {
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
   getNodeById: (id: string) => ReactFlowNode | null
+  removeEmptyNode(): void
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode) => void
   removeSpeechBallon: (speechBallonId: string) => void
