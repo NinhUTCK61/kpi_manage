@@ -54,14 +54,14 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
-    if (name === '' || name === null || name === template.name) {
+    if (name?.trim() === '' || name === null || name === template.name) {
       setName(null)
       return
     }
     mutationRename.mutate(
       {
         id: template.template_id,
-        name: name as string,
+        name: name.trim() as string,
       },
       {
         onSettled() {
