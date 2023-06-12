@@ -309,6 +309,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodeFocused = get().nodeFocused
 
         const nodes = _nodes.filter((node) => {
+          if (ignoreRemoveFocusedNode && nodeFocused?.id === node.id) return true
+
           if (node.type === 'comment') {
             return node.data.content !== ''
           }
@@ -318,8 +320,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
 
           if (node.type === 'kpi') {
-            if (ignoreRemoveFocusedNode && nodeFocused?.id === node.id) return true
-
             return !isEmptyKPINodeForm(node.data)
           }
 
