@@ -59,12 +59,10 @@ export class SpeechBallonService extends CommonHelper {
     return updateData
   }
 
-  async delete({ id, node_id, template_id }: DeleteSpeechBallonInputType, user: User) {
+  async delete({ id }: DeleteSpeechBallonInputType, user: User) {
     const querySpeechBallon = await prisma.speechBallon.findFirst({
       where: {
         id,
-        node_id,
-        template_id,
       },
     })
 

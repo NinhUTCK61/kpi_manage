@@ -5,6 +5,7 @@ import {
   useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
+  useSpeechBallonDeleteMutation,
   useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
 import { nanoid } from 'nanoid'
@@ -26,6 +27,7 @@ const storeSelector = (state: RFStore) => ({
   templateId: state.templateId,
   nodeFocused: state.nodeFocused,
   removeEmptyNode: state.removeEmptyNode,
+  removeSpeechBallonNode: state.removeSpeechBallon,
 })
 
 export const useReactFlowHandler = () => {
@@ -41,10 +43,11 @@ export const useReactFlowHandler = () => {
     container,
     templateId,
     nodeFocused,
-    removeEmptyKPINode,
+    removeSpeechBallonNode,
   } = useRFStore(storeSelector, shallow)
 
-  const { mutate } = useNodeDeleteMutation()
+  const { mutate: deleteKPINode } = useNodeDeleteMutation()
+  const { mutate: deleteSpeechBallonNode } = useSpeechBallonDeleteMutation()
   const { mutate: updateCommentNode } = useCommentUpdateMutation()
   const { mutate: updateSpeechBallonNode } = useUpdateSpeechBallonMutation()
   const { project } = useReactFlow()
@@ -119,9 +122,25 @@ export const useReactFlowHandler = () => {
   const handleNodesDelete = useCallback(
     (nodes: RFNode[]) => {
       const rm = nodes[0] as RFNode
-      mutate({ id: rm.id })
+
+      switch (rm.type) {
+        case 'comment':
+          break
+        case 'speech_ballon':
+          if (rm.data.is_saved) {
+            deleteSpeechBallonNode({ id: rm.id })
+          } else {
+            removeSpeechBallonNode(rm.id)
+          }
+          break
+        case 'kpi':
+          deleteKPINode({ id: rm.id })
+          break
+        default:
+          break
+      }
     },
-    [mutate],
+    [deleteKPINode, deleteSpeechBallonNode, removeSpeechBallonNode],
   )
 
   const handleNodeClick = useCallback(
