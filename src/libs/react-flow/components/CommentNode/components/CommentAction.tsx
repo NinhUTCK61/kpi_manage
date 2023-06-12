@@ -1,7 +1,7 @@
 import { greyScale } from '@/libs/config/theme'
 import { ButtonStyle } from '@/libs/shared/components/Snackbar/styled'
 import { Box, Stack, Typography } from '@mui/material'
-import { MutableRefObject } from 'react'
+import { FocusEvent, MutableRefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputStyled } from './styled'
 
@@ -30,6 +30,11 @@ const CommentAction: React.FC<CommentActionType> = ({
     }
   }
 
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    const length = e.target.value.length
+    e.target.setSelectionRange(length, length)
+  }
+
   return content !== null ? (
     <Box ref={commentRef}>
       <InputStyled
@@ -37,6 +42,7 @@ const CommentAction: React.FC<CommentActionType> = ({
         value={content}
         onChange={handleChangeContent}
         onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
         multiline
         maxRows={10}
         fullWidth
