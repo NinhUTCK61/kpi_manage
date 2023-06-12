@@ -1,6 +1,5 @@
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import * as math from 'mathjs'
-import { evaluate } from 'mathjs'
 
 const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   const spaceBeforeIndex = inputString.lastIndexOf(' ', cursorPosition - 1)
@@ -62,64 +61,28 @@ function isNumeric(str: string) {
 
 // convert "A+B" to value2Number
 export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINode[]) => {
-  // let output = ''
-  // let lastIndex = 0
-  if (!inputValue) return 0
+  let value2Number = 0
+  let error = false
+  if (!inputValue) return { value2Number, error }
 
   const _inputValue = inputValue.trim().replace('=', '')
-  // const matches = _inputValue
-  //   .replace('=', '')
-  //   .replace(/[^a-zA-Z0-9]/g, ' ')
-  //   .split(' ')
-  // if (!matches?.length) return 0
-
-  // const components = matches.map((match) => {
-  //   const start = _inputValue.indexOf(match, lastIndex)
-  //   const end = start + match.length - 1
-  //   lastIndex = end + 1
-  //   return { text: match, start, end }
-  // })
-
-  // if (!components.length) return 0
-  // console.log(components)
-  // components.forEach((component, index) => {
-  //   let value = 0
-  //   if (!isNumeric(component.text)) {
-  //     const node = nodes.find((node) => node.data.slug === component.text)
-  //     value = node?.data.value2number || 0 // Assign 0 if component is not found in values
-  //   } else {
-  //     value = Number(component.text)
-  //   }
-
-  //   const indexString = Number(components[index - 1]?.end) + 1
-  //   if (index !== 0) {
-  //     const separator = _inputValue.substring(indexString, component.start)
-  //     console.log('separator', separator)
-  //     output += separator
-  //   }
-  //   console.log(value, output)
-  //   output += value
-  //   if (index === components.length - 1) {
-  //     output += _inputValue.substring(component.end + 1)
-  //   }
-  // })
-
-  const _nodes = nodes.map((node) => {
-    return { slug: node.data.slug, value: node.data.value2number || 0 }
-  })
-
-  console.log('_nodes', _nodes)
-
-  const output = _inputValue.replace(/[A-Z][0-9]+|[A-Z]/g, (match) => {
-    const item = _nodes.find((element) => element.slug === match)
-    if (item) {
-      return String(item.value)
-    } else {
-      return match
+  const _slugs = getSlugFromInputValue(_inputValue)
+  console.log(_slugs)
+  const slugData: { [key: string]: number } = {}
+  //convert data nodes to slugData
+  nodes.forEach((node) => {
+    if (_slugs.includes(node.data.slug)) {
+      slugData[node.data.slug] = node.data.value2number || 0
     }
   })
 
-  return evaluate(output)
+  try {
+    const node = math.parse(_inputValue) // parse 'A1+A2'
+    value2Number = node.evaluate(slugData) // slugData = {A1: 1, A2: 2}
+  } catch (_error) {
+    error = true
+  }
+  return { value2Number, error }
 }
 
 export const convertFormula = (
@@ -146,15 +109,17 @@ export const getDiffValue2Number = (node: ReactFlowKPINode, listNodeChange: Reac
   const nodes: ReactFlowKPINode[] = []
 
   listNodeChange.forEach((nodeChange) => {
+    const { value2Number } = calculatorValue2number(
+      nodeChange.data.input_value as string,
+      listNodeChange,
+    )
+
     if (checkIncludeFormula(node.data.slug, nodeChange)) {
       nodes.push({
         ...nodeChange,
         data: {
           ...nodeChange.data,
-          value2number: calculatorValue2number(
-            nodeChange.data.input_value as string,
-            listNodeChange,
-          ),
+          value2number: value2Number,
         },
       })
     }
@@ -173,35 +138,16 @@ export const getListNodeInvalid = (
   if (!_inputValue) return list
   //Convert "A1+B1" to [A1,B1]
   _inputValue
-    .replace(/[^a-zA-Z]/g, ' ')
+    .replace(/[^a-zA-Z0-9]/g, ' ')
     .split(' ')
     .forEach((slug) => {
       if (slug === '') return
-      if (slug.toUpperCase() === nodeFocuses.data.slug) {
+      if (slug === nodeFocuses.data.slug) {
         list.push(slug)
         return
       }
-      if (!listNode.find((e) => e.data.slug.toUpperCase() === slug.toUpperCase())) list.push(slug)
+      console.log('slug', slug)
+      if (!listNode.find((e) => e.data.slug === slug)) list.push(slug)
     })
   return list
 }
-
-// const arrayInput = [
-//   { text: 'A1', value: 1 },
-//   { text: 'A2', value: 2 },
-//   { text: 'A11', value: 3 },
-//   { text: 'B1', value: 4 },
-//   { text: 'B2', value: 5 },
-//   { text: 'B11', value: 6 },
-// ]
-// const valueTest = '=A1+A2--B1-B2+A11+B11'
-
-// const output = valueTest.replace(/[A-Z][0-9]+/g, (match: string) => {
-//   const item = arrayInput.find((element) => element.text === match)
-//   if (item) {
-//     return String(item.value)
-//   } else {
-//     return match
-//   }
-// })
-// console.log(output)

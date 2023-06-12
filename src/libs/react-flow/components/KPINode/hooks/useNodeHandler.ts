@@ -4,7 +4,7 @@ import { KPINodeType, ReactFlowKPINode } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
 import { useCallback } from 'react'
-import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
+import { useNodeCreateMutation, useNodeDeleteMutation, useNodeForm, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
@@ -27,6 +27,7 @@ const useNodeHandler = () => {
   const { mutate: deleteMutate } = useNodeDeleteMutation()
 
   const { data } = useKPINodeContext()
+  const { setError } = useNodeForm(data)
 
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
@@ -37,10 +38,20 @@ const useNodeHandler = () => {
       data.value2number = Number(input_value) || null
     } else {
       // TODO: handler calculate formula here
-      data.value2number = calculatorValue2number(
+      const { value2Number, error } = calculatorValue2number(
         input_value,
         nodes.filter((e) => e.type === 'kpi') as ReactFlowKPINode[],
       )
+
+      if (error) {
+        data.value2number = null
+        setError('input_value', {
+          message: 'Invalid formula',
+        })
+        return
+      }
+
+      data.value2number = value2Number
     }
     data.is_formula = is_formula
 
@@ -65,6 +76,7 @@ const useNodeHandler = () => {
   const saveHandler = (_newData: KPINodeType) => {
     const action = getSaveAction(_newData, data)
     const newData = handleData(_newData)
+    if (!newData) return
     consola.info('[MUTATE ACTION]', action) // keep it to debug
     switch (action) {
       case 'CREATE':
