@@ -37,6 +37,7 @@ export const ToolbarInner: React.FC = () => {
                 pointerEvents: 'none',
               },
             })}
+            alignItems="center"
           >
             <ChooseFontSize />
 
