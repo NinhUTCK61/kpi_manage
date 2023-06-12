@@ -69,9 +69,22 @@ const ChooseStroke: React.FC = () => {
     setValue(nodeStyle.stroke ? nodeStyle.stroke : DEFAULT_STROKE_SIZE)
   }, [nodeFocusedMemo])
 
+  const isFillSpeechBallon = {
+    ...(nodeFocusedMemo?.data.layout === 'FILL' && {
+      opacity: 0.3,
+      pointerEvents: 'none',
+    }),
+  }
+
   return (
     <Tooltip title={t('stroke')} arrow>
-      <Stack spacing={1.5} alignItems="center" direction="row" mr={1.5}>
+      <Stack
+        spacing={1.5}
+        alignItems="center"
+        direction="row"
+        mr={1.5}
+        sx={{ ...isFillSpeechBallon }}
+      >
         <StackBorder direction="row" spacing={1}>
           <Typography variant="body2" width={40}>
             {strokes.find((e) => e.value === value)?.label}
