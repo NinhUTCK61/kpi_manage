@@ -11,7 +11,7 @@ const useNodeUpdateMutation = () => {
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
-  const mutation = api.node.update.useMutation({
+  const update = api.node.update.useMutation({
     async onMutate(variables) {
       updateNode(variables, !!nodeFocused)
 
@@ -43,7 +43,7 @@ const useNodeUpdateMutation = () => {
     },
   })
 
-  const mutationBulk = api.node.bulkUpdate.useMutation({
+  const bulkUpdate = api.node.bulkUpdate.useMutation({
     onSuccess(data) {
       bulkUpdateKpiNode(data)
     },
@@ -54,7 +54,7 @@ const useNodeUpdateMutation = () => {
     },
   })
 
-  return { mutation, mutationBulk }
+  return { update, bulkUpdate }
 }
 
 export { useNodeUpdateMutation }

@@ -45,13 +45,14 @@ export const charFullNearCursor = (
 export const getSlugFromInputValue = (inputValue: string) => {
   const str = inputValue.trim().replace('=', '')
   const slugs: string[] = []
-  const nodeParse = math.parse(str)
-  nodeParse.traverse(function (node: math.MathNode) {
-    if (node.type === 'SymbolNode') {
-      slugs.push((node as math.SymbolNode).name)
-    }
-  })
-
+  try {
+    const nodeParse = math.parse(str)
+    nodeParse.traverse(function (node: math.MathNode) {
+      if (node.type === 'SymbolNode') {
+        slugs.push((node as math.SymbolNode).name)
+      }
+    })
+  } catch (error) {}
   return slugs
 }
 
@@ -67,7 +68,6 @@ export const calculatorValue2number = (inputValue: string, nodes: ReactFlowKPINo
 
   const _inputValue = inputValue.trim().replace('=', '')
   const _slugs = getSlugFromInputValue(_inputValue)
-  console.log(_slugs)
   const slugData: { [key: string]: number } = {}
   //convert data nodes to slugData
   nodes.forEach((node) => {

@@ -19,7 +19,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
   const { control, getValues, setFocus, error } = method
-  const { saveHandler } = useNodeHandler()
+  const { saveHandler } = useNodeHandler(method)
 
   const saveValue = () => {
     if (error) return

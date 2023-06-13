@@ -16,7 +16,7 @@ export const useNodeUpdateHandler = () => {
   const updateSpeechBallonStore = useRFStore((state) => state.updateSpeechBallon)
 
   const {
-    mutation: { mutate: mutateNode },
+    update: { mutate: mutateNode },
   } = useNodeUpdateMutation()
   const { mutate: mutateSpeechBallon } = useUpdateSpeechBallonMutation()
 

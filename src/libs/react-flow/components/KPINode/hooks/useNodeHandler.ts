@@ -4,7 +4,13 @@ import { KPINodeType, ReactFlowKPINode } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
 import { useCallback } from 'react'
-import { useNodeCreateMutation, useNodeDeleteMutation, useNodeForm, useNodeUpdateMutation } from '.'
+import { UseFormReturn } from 'react-hook-form'
+import {
+  NodeFormProps,
+  useNodeCreateMutation,
+  useNodeDeleteMutation,
+  useNodeUpdateMutation,
+} from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
@@ -12,7 +18,7 @@ export enum SaveReason {
   SubmitForm,
 }
 
-const useNodeHandler = () => {
+const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
@@ -20,14 +26,10 @@ const useNodeHandler = () => {
   const updateKPINode = useRFStore((state) => state.updateKPINode)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { mutate: create } = useNodeCreateMutation()
-  const {
-    mutation: { mutate: mutateUpdate },
-    mutationBulk: { mutate: mutateBulkUpdate },
-  } = useNodeUpdateMutation()
+  const { update, bulkUpdate } = useNodeUpdateMutation()
   const { mutate: deleteMutate } = useNodeDeleteMutation()
 
   const { data } = useKPINodeContext()
-  const { setError } = useNodeForm(data)
 
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
@@ -45,9 +47,10 @@ const useNodeHandler = () => {
 
       if (error) {
         data.value2number = null
-        setError('input_value', {
-          message: 'Invalid formula',
-        })
+        form &&
+          form.setError('input_value', {
+            message: 'Invalid formula',
+          })
         return
       }
 
@@ -56,21 +59,6 @@ const useNodeHandler = () => {
     data.is_formula = is_formula
 
     return data
-  }
-
-  const isBulkUpdate = (newData: KPINodeType) => {
-    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return false
-    return nodeFocused.data.value2number !== newData.value2number
-  }
-
-  const getBulkUpdateData = (newData: KPINodeType) => {
-    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
-    const nodes = getKpiNodes().filter((e) => e.type === 'kpi')
-    const newNodes = produce(nodes, (draft) => {
-      const newNode = draft.find((e) => e.id === nodeFocused?.id)
-      if (newNode) newNode.data = newData
-    })
-    return getDiffValue2Number(nodeFocused, newNodes)
   }
 
   const saveHandler = (_newData: KPINodeType) => {
@@ -88,10 +76,10 @@ const useNodeHandler = () => {
           const bulkUpdateData = getBulkUpdateData(newData)
           if (!bulkUpdateData) return
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data), { ...newData }]
-          mutateBulkUpdate(_bulkUpdateData)
+          bulkUpdate.mutate(_bulkUpdateData)
           return
         }
-        mutateUpdate({ ...newData })
+        update.mutate({ ...newData })
         break
       case 'DELETE':
         deleteMutate({ id: newData.id })
@@ -113,6 +101,21 @@ const useNodeHandler = () => {
       node_style: nodeCopy.data.node_style,
     })
   }, [data.id, nodeCopy, updateKPINode])
+
+  const isBulkUpdate = (newData: KPINodeType) => {
+    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return false
+    return nodeFocused.data.value2number !== newData.value2number
+  }
+
+  const getBulkUpdateData = (newData: KPINodeType) => {
+    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+    const nodes = getKpiNodes().filter((e) => e.type === 'kpi')
+    const newNodes = produce(nodes, (draft) => {
+      const newNode = draft.find((e) => e.id === nodeFocused?.id)
+      if (newNode) newNode.data = newData
+    })
+    return getDiffValue2Number(nodeFocused, newNodes)
+  }
 
   return { saveHandler, handlePaste }
 }
