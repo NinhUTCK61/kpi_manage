@@ -10,6 +10,7 @@ import { ChooseShape } from './ChooseShape'
 import { ChooseStroke } from './ChooseStroke'
 import { ChooseStyleText } from './ChooseStyleText'
 import { ChooseTypeLayout } from './ChooseTypeLayout'
+import { HelperFormula } from './HelperFormula'
 import { PickColorNode } from './PickColorNode'
 import { PickColorShape } from './PickColorShape'
 import { ViewportAction } from './ViewportAction'
@@ -67,6 +68,8 @@ export const ToolbarInner: React.FC = () => {
             <ChooseShape />
           </Stack>
         </Stack>
+
+        <HelperFormula />
       </Stack>
 
       <ViewportAction />
