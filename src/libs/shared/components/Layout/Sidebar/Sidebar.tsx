@@ -4,11 +4,11 @@ import { HEADER_HEIGHT } from '../Header/Header'
 import { useTranslation } from 'next-i18next'
 import KnowledgeIcon from 'public/assets/svgs/blog.svg'
 import ConsultationIcon from 'public/assets/svgs/consulation.svg'
-import FAQIcon from 'public/assets/svgs/faq.svg'
 import HomeIcon from 'public/assets/svgs/home.svg'
 import FavoriteIcon from 'public/assets/svgs/likes.svg'
-import UseCase from 'public/assets/svgs/use_case.svg'
 import { ListItemButton } from './ItemSidebar'
+// import FAQIcon from 'public/assets/svgs/faq.svg'
+// import UseCase from 'public/assets/svgs/use_case.svg'
 
 const SIDE_BAR_WIDTH = 250
 
@@ -19,8 +19,8 @@ const Sidebar = () => {
     { title: t('sidebar.favorite'), icon: FavoriteIcon, href: '/favorite' },
     { title: t('sidebar.consultation'), icon: ConsultationIcon, href: '/consultation' },
     { title: t('sidebar.knowledge_blog'), icon: KnowledgeIcon, href: '/knowledge' },
-    { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
-    { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
+    // { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
+    // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
   ]
 
   return (
