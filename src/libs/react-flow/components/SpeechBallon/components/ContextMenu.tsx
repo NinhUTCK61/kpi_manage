@@ -55,7 +55,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       type: CtxMenuType.Edit,
     },
     {
-      title: isResizeEnabled ? 'Cancel Resize' : 'Resize',
+      title: isResizeEnabled ? t('menu_context.cancel_resize') : t('menu_context.resize'),
       type: CtxMenuType.Resize,
     },
     {

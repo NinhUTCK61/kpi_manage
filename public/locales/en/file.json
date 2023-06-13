@@ -15,7 +15,9 @@
     "edit_speechBallon": "Edit speech balloon",
     "copy": "Copy",
     "paste": "Paste",
-    "delete": "Delete"
+    "delete": "Delete",
+    "resize": "Resize",
+    "cancel_resize": "Cancel resize"
   },
   "comment_title": "Comment",
   "delete_thread": "Delete thread",

@@ -15,7 +15,9 @@
     "edit_speechBallon": "吹き出しを編集",
     "copy": "コピー",
     "paste": "ペースト",
-    "delete": "削除"
+    "delete": "削除",
+    "resize": "リサイズ",
+    "cancel_resize": "リサイズをキャンセル"
   },
   "comment_title": "コメント",
   "delete_thread": "スレッドを削除",

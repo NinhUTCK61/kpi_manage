@@ -20,6 +20,7 @@ const sizeStyleMapping = {
   [ShapeType.CIRCULAR]: {
     width: 190,
     height: 190,
+    padding: '20px 0',
   },
   [ShapeType.MEDIUM_ROUND_SQUARE]: {
     width: 190,
@@ -56,14 +57,9 @@ export const useShapeStyle = () => {
         }
       : {}
 
-  const paddingCicular = shapeType === ShapeType.CIRCULAR && {
-    padding: style.height ? (style.height.split('px')[0] < 90 ? '20px 0' : '60px 0') : '60px 0',
-  }
-
   const getShapeStyles = {
     ...sizeStyle,
     ...style,
-    ...paddingCicular,
     ...(isResizing && { width: '100%', height: '100%' }),
     color,
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,

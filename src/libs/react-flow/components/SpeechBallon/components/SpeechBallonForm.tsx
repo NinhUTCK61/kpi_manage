@@ -98,13 +98,26 @@ export const SpeechBallonForm: React.FC = () => {
   const widthWhenResize = isResizing ? '100%' : style.width && style.width
   const styleCicular =
     data.shape === ShapeType.CIRCULAR
-      ? { width: '50%', height: '100%', margin: 'auto' }
-      : { width: 'auto', height: 'auto' }
+      ? {
+          width: '50%',
+          height: '100%',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          overflow: 'hidden',
+        }
+      : { width: '100%' }
+
+  const positionCicular = data.shape === ShapeType.CIRCULAR && {
+    position: 'relative',
+    height: '80%',
+  }
 
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <SpeechBallonContainer>
-        <form onSubmit={handleSubmit}>
+      <SpeechBallonContainer sx={{ ...positionCicular }}>
+        <form onSubmit={handleSubmit} style={{ height: '100%' }}>
           <InputSpeechBalloon
             control={control}
             onKeyDown={handleKeyDown}
@@ -115,15 +128,19 @@ export const SpeechBallonForm: React.FC = () => {
             autoFocus
             fullWidth
             inputProps={{
-              style,
+              style: {
+                ...style,
+                ...styleCicular,
+                height: '100%',
+              },
             }}
-            sx={{ ...styleCicular, minHeight: 0 }}
+            sx={{ height: '100%' }}
           />
         </form>
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer sx={{ maxWidth: widthWhenResize }}>
+    <SpeechBallonContainer sx={{ ...positionCicular, maxWidth: widthWhenResize }}>
       <TextSpeechBallon
         sx={{
           ...style,
