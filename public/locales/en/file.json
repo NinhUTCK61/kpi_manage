@@ -23,7 +23,7 @@
   "cancel": "Cancel",
   "save": "Save",
   "enter_comment": "Add a comment",
-  "err":{
+  "err": {
     "create_speech_ballon": "Failed to create speech balloon.",
     "update_speech_ballon": "Failed to update speech balloon."
   },

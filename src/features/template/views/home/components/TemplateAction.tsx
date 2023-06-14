@@ -5,6 +5,7 @@ import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { enqueueSnackbar } from 'notistack'
 import LikeIcon from 'public/assets/svgs/likes_pink.svg'
 import UnLikeIcon from 'public/assets/svgs/un_like.svg'
 import { Ref } from 'react'
@@ -28,10 +29,22 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
   const {
     i18n: { language },
   } = useTranslation('home')
+  const { t } = useTranslation('home')
 
   const { mutation: mutationLike } = useLikeTemplate()
   const handleLike = () => {
-    mutationLike.mutate({ id: template.template_id, is_favorite: !template.is_favorite })
+    mutationLike.mutate(
+      { id: template.template_id, is_favorite: !template.is_favorite },
+      {
+        onSuccess(data) {
+          if (data.is_favorite) {
+            enqueueSnackbar(t('favorite_template'), { variant: 'success' })
+            return
+          }
+          enqueueSnackbar(t('remove_favorite_template'), { variant: 'success' })
+        },
+      },
+    )
   }
 
   return (
