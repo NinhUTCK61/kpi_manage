@@ -83,6 +83,8 @@
     "invalid_empty_node_form": "Please enter the content.",
     "node_not_found_1": "Node ",
     "node_not_found_2": " does not exist",
+    "invalid_formula": "Invalid formula ",
+    "invalid_node": "Invalid node ",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",

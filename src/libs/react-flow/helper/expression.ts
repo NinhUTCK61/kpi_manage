@@ -1,5 +1,7 @@
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
+import { produce } from 'immer'
 import * as math from 'mathjs'
+import { generateCalculatorStack } from '../components/KPINode/helper'
 
 const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   const spaceBeforeIndex = inputString.lastIndexOf(' ', cursorPosition - 1)
@@ -105,24 +107,25 @@ const checkIncludeFormula = (slug: string, node: ReactFlowKPINode) => {
 }
 
 //get list node change value2number when one node in formula change
-export const getDiffValue2Number = (node: ReactFlowKPINode, listNodeChange: ReactFlowKPINode[]) => {
+export const getDiffValue2Number = (
+  nodeFocused: ReactFlowKPINode,
+  listNodeChange: ReactFlowKPINode[],
+) => {
   const nodes: ReactFlowKPINode[] = []
+  const slugs = generateCalculatorStack(listNodeChange)
+  console.log('slugs', slugs)
+  slugs.forEach((slug) => {
+    const node = listNodeChange.find((e) => e.data.slug === slug)
+    if (!node) return
+    const { value2Number } = calculatorValue2number(node.data.input_value as string, listNodeChange)
 
-  listNodeChange.forEach((nodeChange) => {
-    const { value2Number } = calculatorValue2number(
-      nodeChange.data.input_value as string,
-      listNodeChange,
-    )
-
-    if (checkIncludeFormula(node.data.slug, nodeChange)) {
-      nodes.push({
-        ...nodeChange,
-        data: {
-          ...nodeChange.data,
-          value2number: value2Number,
-        },
-      })
-    }
+    nodes.push({
+      ...node,
+      data: {
+        ...node.data,
+        value2number: value2Number,
+      },
+    })
   })
 
   return nodes
@@ -131,23 +134,49 @@ export const getDiffValue2Number = (node: ReactFlowKPINode, listNodeChange: Reac
 export const getListNodeInvalid = (
   inputValue: string,
   listNode: ReactFlowKPINode[],
-  nodeFocuses: ReactFlowKPINode,
+  nodeFocused: ReactFlowKPINode,
 ) => {
-  const list: string[] = []
+  let list: string[] = []
+  let error: string | null = null
+
+  try {
+    generateCalculatorStack(
+      produce(listNode, (draft) => {
+        const node = draft.find((e) => e.id === nodeFocused.id)
+        if (node) {
+          node.data.input_value = inputValue
+          node.data.is_formula = true
+        }
+      }),
+    )
+  } catch (error) {
+    list = (error as { message: string })?.message.split(':')
+    error = 'invalid_formula'
+    return { list, error }
+  }
+
   const _inputValue = inputValue.trim().replace('=', '')
-  if (!_inputValue) return list
+  if (!_inputValue) return { list, error }
   //Convert "A1+B1" to [A1,B1]
   _inputValue
     .replace(/[^a-zA-Z0-9]/g, ' ')
     .split(' ')
     .forEach((slug) => {
       if (slug === '' || isNumeric(slug)) return
-      if (slug === nodeFocuses.data.slug) {
+      if (slug === nodeFocused.data.slug) {
         list.push(slug)
         return
       }
-      console.log('slug', slug)
       if (!listNode.find((e) => e.data.slug === slug)) list.push(slug)
     })
-  return list
+  if (list.length === 0) return { list, error }
+
+  if (list.includes(nodeFocused.data.slug)) {
+    error = 'invalid_node'
+    list = [nodeFocused.data.slug]
+  } else {
+    error = 'node_not_found'
+  }
+
+  return { list, error }
 }

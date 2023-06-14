@@ -12,7 +12,6 @@ import React, {
   MouseEvent,
   PropsWithChildren,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -45,7 +44,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const elementRef = useRef<HTMLUListElement>(null)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { t } = useTranslation()
-  const [listNodeInvalid, setListNodeInvalid] = useState<string[]>([])
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (!suggestState.textSelected) return
@@ -95,14 +94,28 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
       const data = charFullNearCursor(e)
       const nodes = getKpiNodes()
-      const listNode = nodes.filter(
-        (e) => e.type === 'kpi' && nodeFocused.id !== e.id,
-      ) as ReactFlowKPINode[]
+      const listNode = nodes.filter((e) => e.type === 'kpi') as ReactFlowKPINode[]
       const inputValue = (e.target as HTMLInputElement).value
       //get list slug node invalid
       if (inputValue.startsWith('=')) {
-        const list = getListNodeInvalid(inputValue, listNode, nodeFocused)
-        setListNodeInvalid(list)
+        const { list, error } = getListNodeInvalid(inputValue, listNode, nodeFocused)
+
+        let message = ''
+        switch (error) {
+          case 'invalid_formula':
+            message = t('error.invalid_formula') + list.join('=>')
+            break
+          case 'invalid_node':
+            message = t('error.invalid_node') + list[0]
+            break
+          case 'node_not_found':
+            message = t('error.node_not_found_1') + list.join(',') + t('error.node_not_found_2')
+            break
+          default:
+            message = ''
+        }
+
+        setError('input_value', { message })
       }
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
@@ -126,20 +139,8 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
     },
-    [getKpiNodes, nodeFocused, suggestState],
+    [getKpiNodes, nodeFocused, setError, suggestState, t],
   )
-
-  useEffect(() => {
-    if (!listNodeInvalid.length) {
-      setError('input_value', { message: '' })
-      return
-    }
-
-    setError('input_value', {
-      message:
-        t('error.node_not_found_1') + listNodeInvalid.join(',') + t('error.node_not_found_2'),
-    })
-  }, [listNodeInvalid, listNodeInvalid.length, setError, t])
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {

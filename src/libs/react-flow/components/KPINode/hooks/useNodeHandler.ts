@@ -49,7 +49,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
         data.value2number = null
         form &&
           form.setError('input_value', {
-            message: 'Invalid formula',
+            message: 'invalid_formula',
           })
         return
       }
@@ -71,15 +71,16 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
         create({ ...newData, template_id: templateId })
         break
       case 'UPDATE':
-        setNodeFocused(null)
         if (isBulkUpdate(newData)) {
           const bulkUpdateData = getBulkUpdateData(newData)
           if (!bulkUpdateData) return
-          const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data), { ...newData }]
+          const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data)]
+
           bulkUpdate.mutate(_bulkUpdateData)
           return
         }
         update.mutate({ ...newData })
+        setNodeFocused(null)
         break
       case 'DELETE':
         deleteMutate({ id: newData.id })
