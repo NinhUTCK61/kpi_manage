@@ -1,4 +1,5 @@
 import {
+  DEFAULT_SPEECH_BALLON_ATTRIBUTES,
   RFStore,
   ReactFlowNodeData,
   isReactFlowKPISpeechBallon,
@@ -78,15 +79,12 @@ export const useReactFlowHandler = () => {
         {
           id,
           data: {
+            ...DEFAULT_SPEECH_BALLON_ATTRIBUTES,
             id,
             template_id: templateId,
-            shape: '',
-            node_style: null,
-            text: '',
             node_id: null,
             x,
             y,
-            layout: 'FILL',
             created_at: new Date(),
             updated_at: new Date(),
             is_saved: false,
