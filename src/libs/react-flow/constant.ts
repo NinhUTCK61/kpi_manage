@@ -1,3 +1,6 @@
+import { ShapeType, TextAlign } from '@/features/node'
+import { LayoutType } from '@prisma/client'
+
 export const NODE_WIDTH = 190
 export const NODE_HEIGHT = 106
 
@@ -22,3 +25,18 @@ export const NODE_HEIGHT_TEMPLATE = 79
 export const PANE_CLASS_NAME = 'react-flow__pane'
 
 export const SUGGEST_ITEM_HEIGHT = 54
+
+//speech ballon default data
+const DEFAULT_NODE_STYLE = JSON.stringify({
+  background: '#3E19A3',
+  textAlign: TextAlign.Left,
+  color: '#FFFFFF',
+  fontSize: '15px',
+})
+
+export const DEFAULT_SPEECH_BALLON_ATTRIBUTES = {
+  shape: ShapeType.ROUND_SQUARE,
+  node_style: DEFAULT_NODE_STYLE,
+  text: '',
+  layout: LayoutType.FILL,
+}
