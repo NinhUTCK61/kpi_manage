@@ -115,7 +115,7 @@ export const getDiffValue2Number = (
   const slugs = generateCalculatorStack(listNodeChange)
   console.log('slugs', slugs)
   slugs.forEach((slug) => {
-    const node = listNodeChange.find((e) => e.data.slug === slug)
+    const node = listNodeChange.find((e) => e.data.slug === slug && e.data.is_formula)
     if (!node) return
     const { value2Number } = calculatorValue2number(node.data.input_value as string, listNodeChange)
 

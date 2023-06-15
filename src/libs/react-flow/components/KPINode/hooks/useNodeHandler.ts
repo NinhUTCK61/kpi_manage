@@ -75,7 +75,11 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
           const bulkUpdateData = getBulkUpdateData(newData)
           if (!bulkUpdateData) return
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data)]
-
+          const nodeUpdate = _bulkUpdateData.find((e) => e.id === newData.id)
+          if (!nodeUpdate) {
+            _bulkUpdateData.push({ ...newData })
+          }
+          console.log('_bulkUpdateData', _bulkUpdateData)
           bulkUpdate.mutate(_bulkUpdateData)
           return
         }
