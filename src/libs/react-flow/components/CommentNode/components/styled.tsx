@@ -10,7 +10,7 @@ const CommentFormContainer = styled(Popover)({
 })
 
 const CommentContainer = styled(Box)({
-  width: 400,
+  width: 320,
   background: trueGrey[50],
   position: 'relative',
 })
@@ -35,7 +35,7 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
     color: theme.palette.base.black,
     borderRadius: 12,
     '&::-webkit-scrollbar': {
-      width: 8,
+      width: 6,
     },
     '&::-webkit-scrollbar-track': {
       background: greyScale[300],
@@ -88,10 +88,10 @@ const BackgroundDefault = styled(Stack)({
 })
 
 const ListCommentContainer = styled(Box)({
-  maxHeight: 400,
+  maxHeight: 300,
   overflowY: 'auto',
   '&::-webkit-scrollbar': {
-    width: 8,
+    width: 6,
   },
   '&::-webkit-scrollbar-track': {
     background: greyScale[300],
