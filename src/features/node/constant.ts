@@ -8,7 +8,6 @@ export enum ViewPortAction {
 // Style
 export enum StyleText {
   FontWeight = 'fontWeight',
-  FontStyle = 'fontStyle',
 }
 
 export enum FontWeight {
