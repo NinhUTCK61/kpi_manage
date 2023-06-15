@@ -32,7 +32,7 @@ export const ToolbarInner: React.FC = () => {
         <Stack direction="row" id="choose-style-area">
           <Stack
             direction="row"
-            {...(!nodeFocused && {
+            {...((!nodeFocused || nodeFocused?.type === 'comment') && {
               style: {
                 opacity: 0.3,
                 pointerEvents: 'none',
