@@ -1,10 +1,8 @@
-import { FontStyle, FontWeight, StyleText, ViewPortAction } from '@/features/node/constant'
+import { FontWeight, StyleText, ViewPortAction } from '@/features/node/constant'
 import { NodeType, useRFStore } from '@/libs/react-flow'
 import Image from 'next/image'
 import EditorBold from 'public/assets/svgs/editor_bold.svg'
 import EditorBoldActive from 'public/assets/svgs/editor_bold_active.svg'
-import EditorItalic from 'public/assets/svgs/editor_italic.svg'
-import EditorItalicActive from 'public/assets/svgs/editor_italic_active.svg'
 import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
 import { StackEditor } from './StackEditor'
@@ -16,18 +14,11 @@ const editors = [
     activeIcon: EditorBoldActive,
     value: FontWeight.Bold,
   },
-  {
-    key: StyleText.FontStyle,
-    icon: EditorItalic,
-    activeIcon: EditorItalicActive,
-    value: FontStyle.Italic,
-  },
 ]
 
 const ChooseStyleText: React.FC = () => {
   const [styleText, setStyleText] = useState({
     [StyleText.FontWeight]: FontWeight.Normal,
-    [StyleText.FontStyle]: FontStyle.Normal,
   })
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -41,7 +32,6 @@ const ChooseStyleText: React.FC = () => {
     if (!nodeFocusedMemo) {
       setStyleText({
         fontWeight: FontWeight.Normal,
-        fontStyle: FontStyle.Normal,
       })
 
       return
@@ -51,18 +41,17 @@ const ChooseStyleText: React.FC = () => {
 
     setStyleText({
       fontWeight: nodeStyle.fontWeight || FontWeight.Normal,
-      fontStyle: nodeStyle.fontStyle || FontStyle.Normal,
     })
   }, [nodeFocusedMemo])
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const handleChangeStyle = (key: StyleText, value: FontStyle | FontWeight) => {
+  const handleChangeStyle = (key: StyleText, value: FontWeight) => {
     if (!nodeFocusedMemo) return
 
     const _styleText = {
       ...styleText,
-      [key]: styleText[key] === value ? 'normal' : value,
+      [key]: styleText[key] === value ? FontWeight.Normal : value,
     }
 
     setStyleText(_styleText)
