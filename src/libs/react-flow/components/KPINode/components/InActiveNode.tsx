@@ -40,9 +40,9 @@ const InActive: React.FC = () => {
         {`${data.input_title}`}
       </TextOverflow>
 
-      {!!data.value2number && (
+      {data.input_value !== '' && (
         <TextOverflow variant="body2" style={style}>
-          {`${formatNumber(data.value2number)} ${data.unit && `(${data.unit})`} `}
+          {`${formatNumber(data.value2number || 0)} ${data.unit && `(${data.unit})`} `}
         </TextOverflow>
       )}
 
