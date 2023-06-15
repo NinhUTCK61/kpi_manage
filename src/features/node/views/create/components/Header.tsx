@@ -11,6 +11,7 @@ import { Button, InputBase, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { enqueueSnackbar } from 'notistack'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
@@ -18,7 +19,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 
 const HeaderTemplate: React.FC = () => {
   const router = useRouter()
-  const { t } = useTranslation('file')
+  const { t } = useTranslation(['file', 'home'])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
   const { mutationTemplate: mutationRename } = useRenameTemplate()
@@ -50,7 +51,18 @@ const HeaderTemplate: React.FC = () => {
   }, [name])
 
   const handleLike = () => {
-    mutationLike.mutate({ id: template.template_id, is_favorite: !template.is_favorite })
+    mutationLike.mutate(
+      { id: template.template_id, is_favorite: !template.is_favorite },
+      {
+        onSuccess(data) {
+          if (data.is_favorite) {
+            enqueueSnackbar(t('home:favorite_template'), { variant: 'success' })
+            return
+          }
+          enqueueSnackbar(t('home:remove_favorite_template'), { variant: 'success' })
+        },
+      },
+    )
   }
 
   const menu = [

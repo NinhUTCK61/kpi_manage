@@ -12,7 +12,7 @@
   "remove_favorite": "お気に入りを削除",
   "menu_context": {
     "edit": "ノードを編集",
-    "edit_speechBallon":"吹き出しを編集",
+    "edit_speechBallon": "吹き出しを編集",
     "copy": "コピー",
     "paste": "ペースト",
     "delete": "削除"
@@ -23,7 +23,7 @@
   "cancel": "キャンセル",
   "save": "保存",
   "enter_comment": "コメントを追加",
-  "err":{
+  "err": {
     "create_speech_ballon": "吹き出しの作成に失敗しました。",
     "update_speech_ballon": "吹き出しの更新に失敗しました。"
   },
