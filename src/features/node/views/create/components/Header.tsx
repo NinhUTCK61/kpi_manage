@@ -19,7 +19,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 
 const HeaderTemplate: React.FC = () => {
   const router = useRouter()
-  const { t } = useTranslation('file')
+  const { t } = useTranslation(['file', 'home'])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
   const { mutationTemplate: mutationRename } = useRenameTemplate()
@@ -56,10 +56,10 @@ const HeaderTemplate: React.FC = () => {
       {
         onSuccess(data) {
           if (data.is_favorite) {
-            enqueueSnackbar(t('favorite_template'), { variant: 'success' })
+            enqueueSnackbar(t('home:favorite_template'), { variant: 'success' })
             return
           }
-          enqueueSnackbar(t('remove_favorite_template'), { variant: 'success' })
+          enqueueSnackbar(t('home:remove_favorite_template'), { variant: 'success' })
         },
       },
     )
