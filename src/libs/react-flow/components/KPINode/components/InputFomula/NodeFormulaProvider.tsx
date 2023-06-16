@@ -106,7 +106,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
             message = t('error.invalid_formula') + list.join('=>')
             break
           case 'invalid_node':
-            message = t('error.invalid_node') + list[0]
+            message = t('error.invalid_node')
             break
           case 'node_not_found':
             message = t('error.node_not_found_1') + list.join(',') + t('error.node_not_found_2')

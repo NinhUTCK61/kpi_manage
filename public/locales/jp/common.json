@@ -84,7 +84,7 @@
     "node_not_found_1": "ノード",
     "node_not_found_2": "は実在しない",
     "invalid_formula": "Invalid formula ",
-    "invalid_node": "Invalid node ",
+    "invalid_node": "このボックス自体のIDは入力できません。",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",
