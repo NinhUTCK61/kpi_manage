@@ -73,13 +73,14 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
       case 'UPDATE':
         if (isBulkUpdate(newData)) {
           const bulkUpdateData = getBulkUpdateData(newData)
+          console.log('bulkUpdateData', bulkUpdateData)
           if (!bulkUpdateData) return
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data)]
+          // nếu chưa có node trong bulkUpdateData thì thêm vào (Ví dụ: trường hợp tạo mới hoặc thêm input_value mới )
           const nodeUpdate = _bulkUpdateData.find((e) => e.id === newData.id)
           if (!nodeUpdate) {
             _bulkUpdateData.unshift({ ...newData })
           }
-          console.log('_bulkUpdateData', _bulkUpdateData)
           bulkUpdate.mutate(_bulkUpdateData)
           return
         }

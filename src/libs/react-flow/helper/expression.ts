@@ -139,6 +139,7 @@ export const getDiffValue2Number = (
       !listSlugWithNodeFocused.includes(slug) &&
       checkIncludeFormulaWithSlugs(listSlugWithNodeFocused, node, nodeFocused.data.slug)
     ) {
+      //thêm các slug của các node liên quan đến nodeFocused vào listSlugWithNodeFocused
       listSlugWithNodeFocused.push(slug)
       const { value2Number } = calculatorValue2number(
         node.data.input_value as string,
@@ -161,7 +162,6 @@ export const getDiffValue2Number = (
       })
     }
   })
-
   return nodes
 }
 
