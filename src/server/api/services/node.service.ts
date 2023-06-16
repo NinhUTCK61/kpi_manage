@@ -45,7 +45,17 @@ export class NodeService extends NodeHelper {
 
     await this.validateNodeOfUser(nodeIds, user.id)
 
-    await prisma.$executeRaw(this.buildUpdateNodeQuery(nodes, nodeIds))
+    const updateQueries = nodes.map((node: Node) => {
+      return prisma.node.update({
+        where: {
+          id: node.id,
+        },
+        data: node,
+      })
+    })
+
+    await prisma.$transaction(updateQueries)
+
     const resultData: Node[] = await prisma.node.findMany({
       where: {
         id: {
