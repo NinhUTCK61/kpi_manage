@@ -106,6 +106,20 @@ const checkIncludeFormula = (slug: string, node: ReactFlowKPINode) => {
   return matches.includes(slug)
 }
 
+const checkIncludeFormulaWithSlugs = (
+  slugs: string[],
+  node: ReactFlowKPINode,
+  defaultSlug: string,
+) => {
+  const inputValue = node.data.input_value as string
+  const matches = inputValue
+    .replace('=', '')
+    .replace(/[^a-zA-Z0-9]/g, ' ')
+    .split(' ')
+
+  return !!matches.find((slug) => slugs.includes(slug) || slug === defaultSlug)
+}
+
 //get list node change value2number when one node in formula change
 export const getDiffValue2Number = (
   nodeFocused: ReactFlowKPINode,
@@ -114,18 +128,38 @@ export const getDiffValue2Number = (
   const nodes: ReactFlowKPINode[] = []
   const slugs = generateCalculatorStack(listNodeChange)
   console.log('slugs', slugs)
-  slugs.forEach((slug) => {
-    const node = listNodeChange.find((e) => e.data.slug === slug && e.data.is_formula)
-    if (!node) return
-    const { value2Number } = calculatorValue2number(node.data.input_value as string, listNodeChange)
+  let _listNOdeChange = listNodeChange
+  const listSlugWithNodeFocused: string[] = []
 
-    nodes.push({
-      ...node,
-      data: {
-        ...node.data,
-        value2number: value2Number,
-      },
-    })
+  slugs.forEach((slug) => {
+    const node = _listNOdeChange.find((e) => e.data.slug === slug && e.data.is_formula)
+    if (!node) return
+
+    if (
+      !listSlugWithNodeFocused.includes(slug) &&
+      checkIncludeFormulaWithSlugs(listSlugWithNodeFocused, node, nodeFocused.data.slug)
+    ) {
+      listSlugWithNodeFocused.push(slug)
+      const { value2Number } = calculatorValue2number(
+        node.data.input_value as string,
+        _listNOdeChange,
+      )
+      //todo: Cập nhật giá trị value2number mới cho node đó
+      _listNOdeChange = produce(_listNOdeChange, (draft) => {
+        const _node = draft.find((e) => e.id === node.id)
+        if (_node) {
+          _node.data.value2number = value2Number
+        }
+      })
+
+      nodes.push({
+        ...node,
+        data: {
+          ...node.data,
+          value2number: value2Number,
+        },
+      })
+    }
   })
 
   return nodes
