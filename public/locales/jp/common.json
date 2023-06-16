@@ -67,7 +67,7 @@
     "template_deleted": "このファイルを削除しました。",
     "internal_server_error": "内部サーバーエラーが発生しました。",
     "invalid_token": "トークンが見つからないか、期限切れです。",
-    "email_conflict": "このメールアドレスは無効です。",
+    "email_conflict": "このメールアドレスは既に登録されています。",
     "kpi_issue_required": "「KPIに関する課題」を選択してください。",
     "kpi_reason_required": "「KPI Masterを知ったきっかけ」を選択してください。",
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
