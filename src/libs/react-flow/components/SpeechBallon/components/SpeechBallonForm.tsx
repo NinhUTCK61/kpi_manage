@@ -102,28 +102,29 @@ export const SpeechBallonForm: React.FC = () => {
     e.target.setSelectionRange(length, length)
   }
 
-  const widthWhenResize = isResizing ? '100%' : style.width && style.width
-  const styleCircular =
-    data.shape === ShapeType.CIRCULAR
-      ? {
-          width: '50%',
-          height: '100%',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          overflow: 'hidden',
-        }
-      : { width: '100%' }
+  const widthWhenResize = isResizing ? '100%' : style.width
+  const isShapeCircular = data.shape === ShapeType.CIRCULAR
 
-  const positionCircular = data.shape === ShapeType.CIRCULAR && {
+  const styleShape = isShapeCircular
+    ? {
+        width: '50%',
+        height: '100%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflow: 'hidden',
+      }
+    : { width: '100%', height: style.height ? style.height : '100%' }
+
+  const positionShape = isShapeCircular && {
     position: 'relative',
     height: '80%',
   }
 
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <SpeechBallonContainer sx={{ ...positionCircular }}>
+      <SpeechBallonContainer sx={{ ...positionShape }}>
         <form onSubmit={handleSubmit} style={{ height: '100%' }}>
           <InputSpeechBalloon
             control={control}
@@ -137,21 +138,20 @@ export const SpeechBallonForm: React.FC = () => {
             inputProps={{
               style: {
                 ...style,
-                ...styleCircular,
-                height: '100%',
+                ...styleShape,
               },
             }}
-            sx={{ height: '100%' }}
+            controlProps={{ sx: { height: '100%' } }}
           />
         </form>
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer sx={{ ...positionCircular, maxWidth: widthWhenResize }}>
+    <SpeechBallonContainer sx={{ ...positionShape, maxWidth: widthWhenResize }}>
       <TextSpeechBallon
         sx={{
           ...style,
-          ...styleCircular,
+          ...styleShape,
         }}
       >
         {data.text}

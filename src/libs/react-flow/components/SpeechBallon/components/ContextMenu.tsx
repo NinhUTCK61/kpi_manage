@@ -145,7 +145,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       onClose={onClose}
       anchorReference="anchorPosition"
       anchorPosition={anchorPosition}
-      id="menu-speech-ballon"
+      id={`menu-speech-ballon-${data.id}`}
     >
       {contextMenuItem.map((menu) => (
         <MenuItem

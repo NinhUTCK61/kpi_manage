@@ -12,7 +12,8 @@ import {
   applyNodeChanges,
 } from 'reactflow'
 import { createStore } from 'zustand'
-import { pxToNumber } from '../components/SpeechBallon/helper/utils'
+
+import { pxToNumber } from '@/libs/utils/misc'
 import {
   generateNextReactFlowNode,
   isEmptyKPINodeForm,

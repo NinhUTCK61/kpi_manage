@@ -35,7 +35,7 @@ const SpeechBallonResizer = () => {
   const resizeRef = useRef(null)
 
   const handleCloseResize = (event: MouseEvent) => {
-    const styleArea = document.getElementById('menu-speech-ballon')
+    const styleArea = document.getElementById(`menu-speech-ballon-${data.id}`)
     if (!styleArea?.contains(event.target as HTMLElement)) handleResize(false)
   }
 

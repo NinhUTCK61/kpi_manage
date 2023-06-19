@@ -1,8 +1,9 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
-import { pxToNumber } from '@/libs/react-flow/components/SpeechBallon/helper/utils'
+
 import { InputStyled, MenuItem } from '@/libs/shared/components'
+import { pxToNumber } from '@/libs/utils/misc'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
@@ -61,7 +62,7 @@ const ChooseShape: React.FC = () => {
 
     const style = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const isRoundSquare = value === 'ROUND_SQUARE'
-    const isDimensionValue = style.width && style.height
+    const hasDimensionValue = style.width && style.height
 
     const dataUpdate = {
       shape: value,
@@ -69,7 +70,7 @@ const ChooseShape: React.FC = () => {
       is_saved: nodeFocusedMemo.data.is_saved,
     }
 
-    if (!isRoundSquare && isDimensionValue) {
+    if (!isRoundSquare && hasDimensionValue) {
       const height = pxToNumber(style.width) > pxToNumber(style.height) ? style.width : style.height
       const width = pxToNumber(style.height) > pxToNumber(style.width) ? style.height : style.width
       const newNodeStyle = JSON.stringify({ ...style, height, width })

@@ -19,12 +19,7 @@ function InputSpeechBalloon<T extends FieldValues>({
   } = useController({ name, control, defaultValue })
 
   return (
-    <FormControl
-      fullWidth={fullWidth}
-      required={required}
-      {...controlProps}
-      sx={{ height: '100%' }}
-    >
+    <FormControl fullWidth={fullWidth} required={required} {...controlProps}>
       <InputStyled {...inputProps} {...props} inputRef={ref} value={value} />
     </FormControl>
   )

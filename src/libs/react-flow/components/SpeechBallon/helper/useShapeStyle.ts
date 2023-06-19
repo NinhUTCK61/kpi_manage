@@ -62,7 +62,7 @@ export const useShapeStyle = () => {
     background: isFill ? conventionBg : base.white,
     display: 'flex',
     alignItems: 'center',
-    borderRadius: borderStyle && borderStyle,
+    ...(borderStyle && { borderRadius: borderStyle }),
   }
 
   const getArrowStyles = {
