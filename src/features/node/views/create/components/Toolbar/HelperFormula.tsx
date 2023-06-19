@@ -1,18 +1,20 @@
 import { Stack, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import HelpIcon from 'public/assets/svgs/help.svg'
 
 const HelperFormula = () => {
+  const { t } = useTranslation('file')
   return (
     <CustomToolTip
       arrow
       title={
         <Stack>
           <Typography variant="body2" fontWeight={600}>
-            ※注意：
+            {t('helper_1')}
           </Typography>
           <Typography variant="body2" maxWidth={215}>
-            ボックスの計算式項目に数字を正しく入力するには「半角英数字」か「英語」のキーボードに変更すること、又はテンキーを使用してください！
+            {t('helper_2')}
           </Typography>
         </Stack>
       }

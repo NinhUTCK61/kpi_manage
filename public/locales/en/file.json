@@ -29,5 +29,7 @@
     "create_speech_ballon": "Failed to create speech balloon.",
     "update_speech_ballon": "Failed to update speech balloon."
   },
-  "delete_comment": "Delete comment"
+  "delete_comment": "Delete comment",
+  "helper_1":"※Notice:",
+  "helper_2":"Please change to a 'half-width alphanumeric' or 'English' keyboard or use the numeric keypad to correctly enter numbers in the calculation formula item of the box."
 }
