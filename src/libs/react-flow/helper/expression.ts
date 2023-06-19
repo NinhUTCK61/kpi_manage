@@ -127,7 +127,6 @@ export const getDiffValue2Number = (
 ) => {
   const nodes: ReactFlowKPINode[] = []
   const slugs = generateCalculatorStack(listNodeChange)
-  console.log('slugs', slugs)
   let _listNOdeChange = listNodeChange
   const listSlugWithNodeFocused: string[] = []
 

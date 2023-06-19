@@ -13,7 +13,7 @@ import React, {
   useState,
 } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { NodeFormProps, nodeInputValidate } from '../../hooks'
+import { NodeFormProps, useFormularHanlder } from '../../hooks'
 import { NodeFormulaContext } from './context'
 
 export const defaultValueState = {
@@ -39,6 +39,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const elementRef = useRef<HTMLUListElement>(null)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
+  const { nodeInputValidate } = useFormularHanlder()
   const { t } = useTranslation()
 
   const handleKeyDown = useCallback(
@@ -94,15 +95,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       const inputValue = (e.target as HTMLInputElement).value
       //get list slug node invalid
       if (inputValue.startsWith('=')) {
-        const errorMessage = nodeInputValidate(
-          inputValue,
-          nodes,
-          nodeFocused,
-          t('error.invalid_formula'),
-          t('error.invalid_node'),
-          t('error.node_not_found_1'),
-          t('error.node_not_found_2'),
-        )
+        const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
 
         setError('input_value', { message: errorMessage })
       }
@@ -128,7 +121,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
     },
-    [getKpiNodes, nodeFocused, setError, suggestState, t],
+    [getKpiNodes, nodeFocused, nodeInputValidate, setError, suggestState],
   )
 
   const handleKeyUp = useCallback(
