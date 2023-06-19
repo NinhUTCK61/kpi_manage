@@ -6,7 +6,7 @@ import { ClickAwayListener } from '@mui/material'
 import { FocusEvent, FormEvent, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
-import { useSpeechBallonActionContext, useSpeechBallonContext } from '../context'
+import { useSpeechBallonContext } from '../context'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
@@ -21,8 +21,15 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { data, xPos, yPos, isEditing: editable } = useSpeechBallonContext()
-  const { handleSetEditing, isResizing } = useSpeechBallonActionContext()
+  const {
+    data,
+    xPos,
+    yPos,
+    isEditing: editable,
+    handleSetEditing,
+    isResizing,
+  } = useSpeechBallonContext()
+
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
@@ -96,7 +103,7 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const widthWhenResize = isResizing ? '100%' : style.width && style.width
-  const styleCicular =
+  const styleCircular =
     data.shape === ShapeType.CIRCULAR
       ? {
           width: '50%',
@@ -109,14 +116,14 @@ export const SpeechBallonForm: React.FC = () => {
         }
       : { width: '100%' }
 
-  const positionCicular = data.shape === ShapeType.CIRCULAR && {
+  const positionCircular = data.shape === ShapeType.CIRCULAR && {
     position: 'relative',
     height: '80%',
   }
 
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <SpeechBallonContainer sx={{ ...positionCicular }}>
+      <SpeechBallonContainer sx={{ ...positionCircular }}>
         <form onSubmit={handleSubmit} style={{ height: '100%' }}>
           <InputSpeechBalloon
             control={control}
@@ -130,7 +137,7 @@ export const SpeechBallonForm: React.FC = () => {
             inputProps={{
               style: {
                 ...style,
-                ...styleCicular,
+                ...styleCircular,
                 height: '100%',
               },
             }}
@@ -140,11 +147,11 @@ export const SpeechBallonForm: React.FC = () => {
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer sx={{ ...positionCicular, maxWidth: widthWhenResize }}>
+    <SpeechBallonContainer sx={{ ...positionCircular, maxWidth: widthWhenResize }}>
       <TextSpeechBallon
         sx={{
           ...style,
-          ...styleCicular,
+          ...styleCircular,
         }}
       >
         {data.text}

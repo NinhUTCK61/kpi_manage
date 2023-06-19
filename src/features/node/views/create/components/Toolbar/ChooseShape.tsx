@@ -1,6 +1,7 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
+import { pxToNumber } from '@/libs/react-flow/components/SpeechBallon/helper/utils'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import { LayoutType } from '@prisma/client'
@@ -56,19 +57,19 @@ const ChooseShape: React.FC = () => {
     setShape(value)
 
     if (!nodeFocusedMemo) return
-    const style =
-      nodeFocusedMemo.type === 'speech_ballon' &&
-      JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    if (nodeFocusedMemo.type !== 'speech_ballon') return
 
-    const isCircularShape = value !== 'ROUND_SQUARE' && style.width && style.height
+    const style = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    const isRoundSquare = value === 'ROUND_SQUARE'
+    const isDimensionValue = style.width && style.height
 
     const height =
-      isCircularShape && Number(style.width.split('px')[0]) > Number(style.height.split('px')[0])
+      !isRoundSquare && isDimensionValue && pxToNumber(style.width) > pxToNumber(style.height)
         ? style.width
         : style.height
 
     const width =
-      isCircularShape && Number(style.height.split('px')[0]) > Number(style.width.split('px')[0])
+      !isRoundSquare && isDimensionValue && pxToNumber(style.height) > pxToNumber(style.width)
         ? style.height
         : style.width
 

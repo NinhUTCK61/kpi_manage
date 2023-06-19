@@ -3,6 +3,8 @@ import React from 'react'
 import { useShapeStyle } from '../helper'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
+const ARROW_TO_SHAPE_DISTANCE = 4
+
 export const OptionShape: React.FC = () => {
   const { getShapeStyles, getArrowStyles } = useShapeStyle()
   return (
@@ -21,7 +23,7 @@ const MuiOptionShapeType = styled('div')({
 export const Arrow = styled('div')({
   position: 'absolute',
   content: '""',
-  top: 'calc(100% - 4px)',
+  top: `calc(100% - ${ARROW_TO_SHAPE_DISTANCE}px)`,
   left: 30,
   borderLeft: '12px solid transparent',
   borderRight: '12px solid transparent',

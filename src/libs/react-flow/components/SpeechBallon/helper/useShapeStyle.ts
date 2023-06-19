@@ -1,9 +1,6 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
-import {
-  useSpeechBallonActionContext,
-  useSpeechBallonContext,
-} from '@/libs/react-flow/components/SpeechBallon/context'
+import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -36,8 +33,7 @@ const DEFAULT_SIZE_ARROW = 12
 const BORDER_SIZE_ARROW = 20
 
 export const useShapeStyle = () => {
-  const { data } = useSpeechBallonContext()
-  const { isResizing } = useSpeechBallonActionContext()
+  const { data, isResizing } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'

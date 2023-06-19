@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 import React from 'react'
 import { shallow } from 'zustand/shallow'
 import { Menu, MenuItem } from '../../KPINode/components/styled'
-import { useSpeechBallonActionContext, useSpeechBallonContext } from '../context'
+import { useSpeechBallonContext } from '../context'
 import {
   useSpeechBallonCreateMutation,
   useSpeechBallonDeleteMutation,
@@ -38,9 +38,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   const { t } = useTranslation(['file'])
 
   const { setNodeFocused } = useRFStore(storeSelector, shallow)
-  const { data } = useSpeechBallonContext()
-  const { isResizeEnabled } = useSpeechBallonActionContext()
-  const { handleSetEditing, handleResize } = useSpeechBallonActionContext()
+  const { data, handleSetEditing, handleResize, isResizeEnabled } = useSpeechBallonContext()
   const { mutate: deleteSpeechBallon } = useSpeechBallonDeleteMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: create } = useSpeechBallonCreateMutation()
