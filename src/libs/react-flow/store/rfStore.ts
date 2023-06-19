@@ -219,7 +219,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({ nodeCopy })
       },
       getKpiNodes() {
-        return get().nodes.filter((n) => n.type === 'kpi') as ReactFlowKPINode[]
+        return get().nodes.filter<ReactFlowKPINode>((n): n is ReactFlowKPINode => n.type === 'kpi')
       },
       //function toolbar
       changeViewportAction(action) {

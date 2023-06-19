@@ -1,9 +1,5 @@
 import { SUGGEST_ITEM_HEIGHT } from '@/libs/react-flow/constant'
-import {
-  charFullNearCursor,
-  convertFormula,
-  getListNodeInvalid,
-} from '@/libs/react-flow/helper/expression'
+import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
@@ -17,7 +13,7 @@ import React, {
   useState,
 } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { NodeFormProps } from '../../hooks'
+import { NodeFormProps, nodeInputValidate } from '../../hooks'
 import { NodeFormulaContext } from './context'
 
 export const defaultValueState = {
@@ -94,28 +90,21 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
       const data = charFullNearCursor(e)
       const nodes = getKpiNodes()
-      const listNode = nodes.filter((e) => e.type === 'kpi') as ReactFlowKPINode[]
+
       const inputValue = (e.target as HTMLInputElement).value
       //get list slug node invalid
       if (inputValue.startsWith('=')) {
-        const { list, error } = getListNodeInvalid(inputValue, listNode, nodeFocused)
+        const errorMessage = nodeInputValidate(
+          inputValue,
+          nodes,
+          nodeFocused,
+          t('error.invalid_formula'),
+          t('error.invalid_node'),
+          t('error.node_not_found_1'),
+          t('error.node_not_found_2'),
+        )
 
-        let message = ''
-        switch (error) {
-          case 'invalid_formula':
-            message = t('error.invalid_formula') + list.join('=>')
-            break
-          case 'invalid_node':
-            message = t('error.invalid_node')
-            break
-          case 'node_not_found':
-            message = t('error.node_not_found_1') + list.join(',') + t('error.node_not_found_2')
-            break
-          default:
-            message = ''
-        }
-
-        setError('input_value', { message })
+        setError('input_value', { message: errorMessage })
       }
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
@@ -123,7 +112,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
 
-      const check = listNode.filter((e) =>
+      const check = nodes.filter((e) =>
         e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()),
       ) as ReactFlowKPINode[]
 

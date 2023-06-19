@@ -58,7 +58,7 @@ export const getSlugFromInputValue = (inputValue: string) => {
   return slugs
 }
 
-function isNumeric(str: string) {
+export function isNumeric(str: string) {
   return /^-?\d+(\+\d+)?$/.test(str)
 }
 

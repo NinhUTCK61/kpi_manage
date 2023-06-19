@@ -22,7 +22,7 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
       if (exists) {
         if (Array.isArray(exists) && exists.includes(slug)) {
           // throw new Error(`Cyclic dependency detected: ${_slug} -> ${slug}`)
-          throw new Error(` ${_slug}->${slug}`)
+          throw new Error(`${_slug}->${slug}`)
         }
       }
     }

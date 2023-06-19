@@ -1,6 +1,6 @@
 import { calculatorValue2number, getDiffValue2Number } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { KPINodeType, ReactFlowKPINode } from '@/libs/react-flow/types'
+import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
 import { useCallback } from 'react'
@@ -40,10 +40,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
       data.value2number = Number(input_value) || null
     } else {
       // TODO: handler calculate formula here
-      const { value2Number, error } = calculatorValue2number(
-        input_value,
-        nodes.filter((e) => e.type === 'kpi') as ReactFlowKPINode[],
-      )
+      const { value2Number, error } = calculatorValue2number(input_value, nodes)
 
       if (error) {
         data.value2number = null
@@ -115,7 +112,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
 
   const getBulkUpdateData = (newData: KPINodeType) => {
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
-    const nodes = getKpiNodes().filter((e) => e.type === 'kpi')
+    const nodes = getKpiNodes()
     const newNodes = produce(nodes, (draft) => {
       const newNode = draft.find((e) => e.id === nodeFocused?.id)
       if (newNode) newNode.data = newData
