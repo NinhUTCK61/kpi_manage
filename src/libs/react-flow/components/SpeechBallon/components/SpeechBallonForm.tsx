@@ -141,6 +141,7 @@ export const SpeechBallonForm: React.FC = () => {
                 ...styleShape,
               },
             }}
+            sx={{ height: '100%' }}
             controlProps={{ sx: { height: '100%' } }}
           />
         </form>
