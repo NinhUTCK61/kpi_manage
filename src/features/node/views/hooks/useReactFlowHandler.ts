@@ -29,6 +29,7 @@ const storeSelector = (state: RFStore) => ({
   nodeFocused: state.nodeFocused,
   removeEmptyNode: state.removeEmptyNode,
   removeSpeechBallonNode: state.removeSpeechBallon,
+  getNodeById: state.getNodeById,
 })
 
 export const useReactFlowHandler = () => {
@@ -44,6 +45,7 @@ export const useReactFlowHandler = () => {
     container,
     templateId,
     nodeFocused,
+    getNodeById,
     removeSpeechBallonNode,
   } = useRFStore(storeSelector, shallow)
 
@@ -143,10 +145,10 @@ export const useReactFlowHandler = () => {
 
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
-      removeEmptyNode(true)
+      removeEmptyNode(nodeFocused?.type !== 'kpi')
       setNodeFocused(node.id)
     },
-    [removeEmptyNode, setNodeFocused],
+    [removeEmptyNode, setNodeFocused, nodeFocused?.type],
   )
 
   const handleNodeDragStop = useCallback(
@@ -157,7 +159,9 @@ export const useReactFlowHandler = () => {
         y: node.position.y,
       }
 
-      if (nodeFocused?.position.x === data.x && nodeFocused?.position.y === data.y) {
+      const nodeById = getNodeById(node.id)
+
+      if (nodeById?.position.x === data.x && nodeById?.position.y === data.y) {
         return
       }
 
