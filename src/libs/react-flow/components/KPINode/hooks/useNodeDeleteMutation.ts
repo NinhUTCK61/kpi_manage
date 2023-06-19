@@ -14,6 +14,7 @@ import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
 const useNodeDeleteMutation = () => {
   const removeNode = useRFStore((state) => state.removeNode)
   const templateId = useRFStore((state) => state.templateId)
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
@@ -31,6 +32,8 @@ const useNodeDeleteMutation = () => {
           edges: edges as ReactFlowOutputEdge[],
         },
       )
+
+      setNodeFocused(null)
 
       return { prevData, templateId, nodes, edges }
     },

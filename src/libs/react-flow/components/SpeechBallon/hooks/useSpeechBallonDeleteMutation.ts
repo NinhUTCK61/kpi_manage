@@ -8,6 +8,7 @@ const useSpeechBallonDeleteMutation = () => {
   const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
   const getNodeById = useRFStore((state) => state.getNodeById)
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { t } = useTranslation('common')
   const utils = api.useContext()
 
@@ -16,6 +17,7 @@ const useSpeechBallonDeleteMutation = () => {
       const prevData = getNodeById(variables.id)
       removeSpeechBallon(variables.id)
 
+      setNodeFocused(null)
       return { prevData }
     },
     onError(err, _, ctx) {
