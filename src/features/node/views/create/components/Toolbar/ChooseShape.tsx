@@ -63,27 +63,26 @@ const ChooseShape: React.FC = () => {
     const isRoundSquare = value === 'ROUND_SQUARE'
     const isDimensionValue = style.width && style.height
 
-    const height =
-      !isRoundSquare && isDimensionValue && pxToNumber(style.width) > pxToNumber(style.height)
-        ? style.width
-        : style.height
+    const dataUpdate = {
+      shape: value,
+      id: nodeFocusedMemo.id,
+      is_saved: nodeFocusedMemo.data.is_saved,
+    }
 
-    const width =
-      !isRoundSquare && isDimensionValue && pxToNumber(style.height) > pxToNumber(style.width)
-        ? style.height
-        : style.width
+    if (!isRoundSquare && isDimensionValue) {
+      const height = pxToNumber(style.width) > pxToNumber(style.height) ? style.width : style.height
+      const width = pxToNumber(style.height) > pxToNumber(style.width) ? style.height : style.width
+      const newNodeStyle = JSON.stringify({ ...style, height, width })
 
-    const newNodeStyle = JSON.stringify({ ...style, height, width })
-
-    updateReactFlowNode(
-      {
-        shape: value,
-        id: nodeFocusedMemo.id,
-        is_saved: nodeFocusedMemo.data.is_saved,
-        node_style: newNodeStyle,
-      },
-      'speech_ballon',
-    )
+      updateReactFlowNode(
+        {
+          ...dataUpdate,
+          node_style: newNodeStyle,
+        },
+        'speech_ballon',
+      )
+    }
+    updateReactFlowNode(dataUpdate, 'speech_ballon')
   }
 
   useEffect(() => {
