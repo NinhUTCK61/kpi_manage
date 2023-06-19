@@ -4,7 +4,6 @@ import { ReactFlowKPINode } from '@/libs/react-flow/types'
 export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
   const valid = new Map<string, string[] | boolean>()
   const stack: string[] = []
-
   for (const {
     data: { slug, is_formula, input_value },
   } of nodes) {
@@ -22,7 +21,8 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
       const exists = valid.get(_slug)
       if (exists) {
         if (Array.isArray(exists) && exists.includes(slug)) {
-          throw new Error(`Cyclic dependency detected: ${_slug} -> ${slug}`)
+          // throw new Error(`Cyclic dependency detected: ${_slug} -> ${slug}`)
+          throw new Error(`${_slug}->${slug}`)
         }
       }
     }

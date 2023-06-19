@@ -1,8 +1,7 @@
 import { SUGGEST_ITEM_HEIGHT } from '@/libs/react-flow/constant'
 import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { ReactFlowKPINode, ReactFlowNode } from '@/libs/react-flow/types'
-import { useTranslation } from 'next-i18next'
+import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import React, {
   KeyboardEvent,
   MouseEvent,
@@ -13,7 +12,7 @@ import React, {
   useState,
 } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { NodeFormProps } from '../../hooks'
+import { NodeFormProps, useFormularHanlder } from '../../hooks'
 import { NodeFormulaContext } from './context'
 
 export const defaultValueState = {
@@ -36,9 +35,10 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const [suggestState, setSuggestState] = useState<SuggestStateProps>(defaultValueState)
   const { setError, getValues, setValue } = useFormContext<NodeFormProps>()
   const [nodeSearch, setNodeSearch] = useState<ReactFlowKPINode[]>([])
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const elementRef = useRef<HTMLUListElement>(null)
-  const nodes = useRFStore((state) => state.nodes)
-  const { t } = useTranslation()
+  const getKpiNodes = useRFStore((state) => state.getKpiNodes)
+  const { nodeInputValidate } = useFormularHanlder()
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
@@ -85,17 +85,25 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
   const handlingData = useCallback(
     (e: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>) => {
+      if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+
       const data = charFullNearCursor(e)
+      const nodes = getKpiNodes()
+
+      const inputValue = (e.target as HTMLInputElement).value
+      //get list slug node invalid
+      if (inputValue.startsWith('=')) {
+        const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
+        if (errorMessage) setError('input_value', { message: errorMessage })
+      }
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
         setSuggestState(defaultValueState)
         return
       }
 
-      const check = nodes.filter(
-        (e: ReactFlowNode) =>
-          e.type === 'kpi' &&
-          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()),
+      const check = nodes.filter((e) =>
+        e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()),
       ) as ReactFlowKPINode[]
 
       if (check.length !== 0) {
@@ -109,12 +117,8 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         setNodeSearch(check)
         return
       }
-
-      setError('input_value', {
-        message: t('error.node_not_found_1') + data.resultStringFull + t('error.node_not_found_2'),
-      })
     },
-    [nodes, setError, suggestState, t],
+    [getKpiNodes, nodeFocused, nodeInputValidate, setError, suggestState],
   )
 
   const handleKeyUp = useCallback(

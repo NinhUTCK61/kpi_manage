@@ -1,4 +1,5 @@
 import { ViewPortAction } from '@/features/node/constant'
+import { ReactFlowNode } from '@/libs/react-flow'
 import { CommentReplyOutputType } from '@/libs/schema/comment'
 import { hierarchy } from 'd3-hierarchy'
 import { produce, setAutoFreeze } from 'immer'
@@ -20,7 +21,7 @@ import {
   reLayout,
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
-import { RFStore, ReactFlowCommentNode, ReactFlowKPINode, ReactFlowNode } from '../types'
+import { RFStore, ReactFlowCommentNode, ReactFlowKPINode } from '../types'
 import { d3RootMiddleware } from './middleware'
 
 setAutoFreeze(false)
@@ -134,6 +135,16 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           set({ nodes })
         }
       },
+      bulkUpdateKpiNode(nodeUpdates) {
+        const _nodes = [...get().nodes]
+        const newNodes = produce(_nodes, (draft) => {
+          nodeUpdates.forEach((nodeUpdate) => {
+            const node = draft.find((n) => n.type === 'kpi' && n.data.id === nodeUpdate.id)
+            if (node) node.data = { ...node.data, ...nodeUpdate }
+          })
+        })
+        set({ nodes: newNodes })
+      },
       removeNode(nodeId) {
         const { nodes, edges, d3Root } = get()
         const nodeToRemove = d3Root.find((n) => n.data.id === nodeId)
@@ -208,6 +219,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         let nodeCopy: ReactFlowNode | null = null
         nodeCopy = nodes.find((n) => n.id === node) || null
         set({ nodeCopy })
+      },
+      getKpiNodes() {
+        return get().nodes.filter<ReactFlowKPINode>((n): n is ReactFlowKPINode => n.type === 'kpi')
       },
       //function toolbar
       changeViewportAction(action) {

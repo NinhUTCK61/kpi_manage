@@ -30,6 +30,7 @@ export type RFStore = {
   hasChild(nodeId: string): boolean
   removeEmptyKPINode: () => void
   updateKPINode: (node: UpdateNodeInputType & { is_saved?: boolean }, shouldFocus?: boolean) => void
+  bulkUpdateKpiNode: (nodes: UpdateNodeInputType[]) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
@@ -54,6 +55,7 @@ export type RFStore = {
     remove: CommentReplyOutputType | undefined
     commentReplyIndex: number | undefined
   }
+  getKpiNodes: () => ReactFlowKPINode[]
 
   // Toolbar action
   viewportAction: ViewPortAction

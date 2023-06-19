@@ -7,15 +7,16 @@ const useNodeUpdateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const templateId = useRFStore((state) => state.templateId)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const bulkUpdateKpiNode = useRFStore((state) => state.bulkUpdateKpiNode)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
-  const mutation = api.node.update.useMutation({
+  const update = api.node.update.useMutation({
     async onMutate(variables) {
       updateNode(variables, !!nodeFocused)
 
       const prevData = utils.node.list.getData({ template_id: templateId })
-
+      const prevDataNode = prevData?.nodes.find((node) => node.data.id === variables.id)
       utils.node.list.setData({ template_id: templateId }, (old) => {
         if (!old) return old
         const { nodes: _nodes = [], edges } = old
@@ -27,7 +28,7 @@ const useNodeUpdateMutation = () => {
         }
       })
 
-      return { prevData, templateId }
+      return { prevData, templateId, prevDataNode }
     },
     onError(err, _, ctx) {
       enqueueSnackbar(t('error.internal_server_error'), {
@@ -37,13 +38,23 @@ const useNodeUpdateMutation = () => {
 
       utils.node.list.setData({ template_id: ctx?.templateId as string }, ctx?.prevData)
     },
-
     onSettled() {
       utils.node.list.invalidate()
     },
   })
 
-  return mutation
+  const bulkUpdate = api.node.bulkUpdate.useMutation({
+    onSuccess(data) {
+      bulkUpdateKpiNode(data)
+    },
+    onError() {
+      enqueueSnackbar(t('error.internal_server_error'), {
+        variant: 'error',
+      })
+    },
+  })
+
+  return { update, bulkUpdate }
 }
 
 export { useNodeUpdateMutation }
