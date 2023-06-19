@@ -2,7 +2,6 @@ import { SUGGEST_ITEM_HEIGHT } from '@/libs/react-flow/constant'
 import { charFullNearCursor, convertFormula } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
-import { useTranslation } from 'next-i18next'
 import React, {
   KeyboardEvent,
   MouseEvent,
@@ -40,7 +39,6 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const elementRef = useRef<HTMLUListElement>(null)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { nodeInputValidate } = useFormularHanlder()
-  const { t } = useTranslation()
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
@@ -96,8 +94,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       //get list slug node invalid
       if (inputValue.startsWith('=')) {
         const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
-
-        setError('input_value', { message: errorMessage })
+        if (errorMessage) setError('input_value', { message: errorMessage })
       }
       const _state = suggestState
       if (!data?.resultString.replaceAll(' ', '')) {
