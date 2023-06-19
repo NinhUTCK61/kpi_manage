@@ -12,6 +12,8 @@ import {
   applyNodeChanges,
 } from 'reactflow'
 import { createStore } from 'zustand'
+
+import { pxToNumber } from '@/libs/utils/misc'
 import {
   generateNextReactFlowNode,
   isEmptyKPINodeForm,
@@ -361,6 +363,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
         if (node) {
+          const style = JSON.parse(speechBallonData.node_style || '{}')
+
+          if (style.width && style.height) {
+            const height = pxToNumber(style.height)
+            const width = pxToNumber(style.width)
+
+            node.style = { width, height }
+          }
+
           node.data = { ...node.data, ...speechBallonData }
 
           const nodes = _nodes.map((el) => {

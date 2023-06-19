@@ -18,6 +18,7 @@ export enum CtxMenuType {
   Copy = 'copy',
   Paste = 'paste',
   Delete = 'delete',
+  Resize = 'resize',
 }
 
 type ContextMenuItem = {
@@ -37,7 +38,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   const { t } = useTranslation(['file'])
 
   const { setNodeFocused } = useRFStore(storeSelector, shallow)
-  const { data, handleSetEditing } = useSpeechBallonContext()
+  const { data, handleSetEditing, handleResize, isResizeEnabled } = useSpeechBallonContext()
   const { mutate: deleteSpeechBallon } = useSpeechBallonDeleteMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: create } = useSpeechBallonCreateMutation()
@@ -50,6 +51,10 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
     {
       title: t('menu_context.edit_speechBallon'),
       type: CtxMenuType.Edit,
+    },
+    {
+      title: isResizeEnabled ? t('menu_context.cancel_resize') : t('menu_context.resize'),
+      type: CtxMenuType.Resize,
     },
     {
       title: t('menu_context.copy'),
@@ -118,6 +123,9 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       case CtxMenuType.Paste:
         handlePaste()
         break
+      case CtxMenuType.Resize:
+        handleResize(!isResizeEnabled)
+        break
       default:
         break
     }
@@ -137,6 +145,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
       onClose={onClose}
       anchorReference="anchorPosition"
       anchorPosition={anchorPosition}
+      id={`menu-speech-ballon-${data.id}`}
     >
       {contextMenuItem.map((menu) => (
         <MenuItem

@@ -4,9 +4,9 @@ import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallo
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
-  [ShapeType.CIRCULAR]: 120,
-  [ShapeType.MEDIUM_ROUND_SQUARE]: 10,
-  [ShapeType.ROUND_SQUARE]: 16,
+  [ShapeType.CIRCULAR]: '100%',
+  [ShapeType.MEDIUM_ROUND_SQUARE]: '10px',
+  [ShapeType.ROUND_SQUARE]: '16px',
 }
 
 const sizeStyleMapping = {
@@ -17,7 +17,7 @@ const sizeStyleMapping = {
   [ShapeType.CIRCULAR]: {
     width: 190,
     height: 190,
-    padding: 4,
+    padding: '20px 0',
   },
   [ShapeType.MEDIUM_ROUND_SQUARE]: {
     width: 190,
@@ -25,7 +25,7 @@ const sizeStyleMapping = {
   },
   [ShapeType.ROUND_SQUARE]: {
     width: 210,
-    minHeight: 44,
+    height: 36,
   },
 }
 
@@ -33,7 +33,7 @@ const DEFAULT_SIZE_ARROW = 12
 const BORDER_SIZE_ARROW = 20
 
 export const useShapeStyle = () => {
-  const { data } = useSpeechBallonContext()
+  const { data, isResizing } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'
@@ -54,14 +54,15 @@ export const useShapeStyle = () => {
       : {}
 
   const getShapeStyles = {
-    ...style,
     ...sizeStyle,
+    ...style,
+    ...(isResizing && { width: '100%', height: '100%' }),
     color,
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
     background: isFill ? conventionBg : base.white,
-    borderRadius: `${borderStyle}px`,
     display: 'flex',
     alignItems: 'center',
+    ...(borderStyle && { borderRadius: borderStyle }),
   }
 
   const getArrowStyles = {

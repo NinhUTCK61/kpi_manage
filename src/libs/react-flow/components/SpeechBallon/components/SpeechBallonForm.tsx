@@ -1,3 +1,4 @@
+import { ShapeType } from '@/features/node'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -8,6 +9,7 @@ import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
+import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
 type SpeechBallonFormProps = {
   text: string
@@ -19,7 +21,15 @@ const storeSelector = (state: RFStore) => ({
 })
 
 export const SpeechBallonForm: React.FC = () => {
-  const { data, xPos, yPos, isEditing: editable, handleSetEditing } = useSpeechBallonContext()
+  const {
+    data,
+    xPos,
+    yPos,
+    isEditing: editable,
+    handleSetEditing,
+    isResizing,
+  } = useSpeechBallonContext()
+
   const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
@@ -92,29 +102,60 @@ export const SpeechBallonForm: React.FC = () => {
     e.target.setSelectionRange(length, length)
   }
 
+  const widthWhenResize = isResizing ? '100%' : style.width
+  const isShapeCircular = data.shape === ShapeType.CIRCULAR
+
+  const styleShape = isShapeCircular
+    ? {
+        width: '50%',
+        height: '100%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflow: 'hidden',
+      }
+    : { width: '100%', height: style.height ? style.height : '100%' }
+
+  const positionShape = isShapeCircular && {
+    position: 'relative',
+    height: '80%',
+  }
+
   return isEditing ? (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
-      <form onSubmit={handleSubmit}>
-        <InputSpeechBalloon
-          control={control}
-          onKeyDown={handleKeyDown}
-          multiline
-          maxRows={6}
-          name="text"
-          autoComplete="off"
-          onFocus={handleFocus}
-          inputProps={{ style }}
-        />
-      </form>
+      <SpeechBallonContainer sx={{ ...positionShape }}>
+        <form onSubmit={handleSubmit} style={{ height: '100%' }}>
+          <InputSpeechBalloon
+            control={control}
+            onKeyDown={handleKeyDown}
+            multiline
+            name="text"
+            autoComplete="off"
+            onFocus={handleFocus}
+            autoFocus
+            fullWidth
+            inputProps={{
+              style: {
+                ...style,
+                ...styleShape,
+              },
+            }}
+            controlProps={{ sx: { height: '100%' } }}
+          />
+        </form>
+      </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <InputSpeechBalloon
-      control={control}
-      multiline
-      maxRows={6}
-      name="text"
-      readOnly
-      inputProps={{ style }}
-    />
+    <SpeechBallonContainer sx={{ ...positionShape, maxWidth: widthWhenResize }}>
+      <TextSpeechBallon
+        sx={{
+          ...style,
+          ...styleShape,
+        }}
+      >
+        {data.text}
+      </TextSpeechBallon>
+    </SpeechBallonContainer>
   )
 }

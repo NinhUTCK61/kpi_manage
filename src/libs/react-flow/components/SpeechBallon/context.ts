@@ -1,5 +1,5 @@
-import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { createContext, useContext } from 'react'
+import { SpeechBallonNodeType } from '../../types'
 
 type SpeechBallonContextType = {
   data: SpeechBallonNodeType
@@ -7,11 +7,13 @@ type SpeechBallonContextType = {
   yPos: number
   isEditing: boolean
   handleSetEditing: (isEditing: boolean) => void
+  isResizeEnabled: boolean
+  handleResize: (isResizeEnabled: boolean) => void
+  isResizing: boolean
+  handleResizing: (isResizeEnabled: boolean) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)
-
-export const SpeechBallonProvider = SpeechBallonContext.Provider
 
 export const useSpeechBallonContext = () => {
   const value = useContext(SpeechBallonContext)

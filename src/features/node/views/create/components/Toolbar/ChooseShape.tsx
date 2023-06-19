@@ -1,7 +1,9 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
+
 import { InputStyled, MenuItem } from '@/libs/shared/components'
+import { pxToNumber } from '@/libs/utils/misc'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
@@ -56,15 +58,32 @@ const ChooseShape: React.FC = () => {
     setShape(value)
 
     if (!nodeFocusedMemo) return
+    if (nodeFocusedMemo.type !== 'speech_ballon') return
 
-    updateReactFlowNode(
-      {
-        shape: value,
-        id: nodeFocusedMemo.id,
-        is_saved: nodeFocusedMemo.data.is_saved,
-      },
-      'speech_ballon',
-    )
+    const style = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    const isRoundSquare = value === 'ROUND_SQUARE'
+    const hasDimensionValue = style.width && style.height
+
+    const dataUpdate = {
+      shape: value,
+      id: nodeFocusedMemo.id,
+      is_saved: nodeFocusedMemo.data.is_saved,
+    }
+
+    if (!isRoundSquare && hasDimensionValue) {
+      const height = pxToNumber(style.width) > pxToNumber(style.height) ? style.width : style.height
+      const width = pxToNumber(style.height) > pxToNumber(style.width) ? style.height : style.width
+      const newNodeStyle = JSON.stringify({ ...style, height, width })
+
+      updateReactFlowNode(
+        {
+          ...dataUpdate,
+          node_style: newNodeStyle,
+        },
+        'speech_ballon',
+      )
+    }
+    updateReactFlowNode(dataUpdate, 'speech_ballon')
   }
 
   useEffect(() => {
