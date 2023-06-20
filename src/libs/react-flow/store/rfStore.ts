@@ -434,6 +434,34 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       setContainer(container) {
         set({ container })
       },
+      updateReactFlowNode(node) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const index = draft.findIndex((el) => el.id === node.id)
+          if (index !== -1) {
+            Object.assign(draft[index] as ReactFlowNode, node)
+          }
+        })
+
+        set({ nodes })
+      },
+      toggleDraggable(id, isDraggable) {
+        const _nodes = get().nodes
+
+        const nodes = produce(_nodes, (draft) => {
+          const index = draft.findIndex((el) => el.id === id)
+          if (index !== -1) {
+            if (isDraggable !== undefined) {
+              ;(draft[index] as ReactFlowNode).draggable = isDraggable
+              return
+            }
+            ;(draft[index] as ReactFlowNode).draggable = !(draft[index] as ReactFlowNode).draggable
+          }
+        })
+
+        set({ nodes })
+      },
     })),
   )
 

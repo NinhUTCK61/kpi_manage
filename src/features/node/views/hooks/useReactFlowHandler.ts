@@ -2,7 +2,6 @@ import {
   DEFAULT_SPEECH_BALLON_ATTRIBUTES,
   RFStore,
   ReactFlowNodeData,
-  isReactFlowKPISpeechBallon,
   useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
@@ -170,14 +169,13 @@ export const useReactFlowHandler = () => {
           updateCommentNode(data)
           break
         case 'speech_ballon':
-          if (isReactFlowKPISpeechBallon(node) && !node.data.is_saved) return
           updateSpeechBallonNode(data)
           break
         default:
           break
       }
     },
-    [updateCommentNode, updateSpeechBallonNode, nodeFocused],
+    [getNodeById, updateCommentNode, updateSpeechBallonNode],
   )
 
   return {

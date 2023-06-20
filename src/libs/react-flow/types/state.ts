@@ -75,4 +75,10 @@ export type RFStore = {
 
   container: HTMLDivElement | null
   setContainer: (container: HTMLDivElement | null) => void
+
+  updateReactFlowNode: (
+    node: Partial<ReactFlowNode> & { id: string },
+    shouldFocus?: boolean,
+  ) => void
+  toggleDraggable: (id: string, isDraggable?: boolean) => void
 }
