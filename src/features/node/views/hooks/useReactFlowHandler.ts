@@ -178,6 +178,20 @@ export const useReactFlowHandler = () => {
     [getNodeById, updateCommentNode, updateSpeechBallonNode],
   )
 
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+
+      if ((e.target as HTMLElement).className === 'react-flow__pane') {
+        setActivePosition({
+          x: e.clientX,
+          y: e.clientY,
+        })
+      }
+    },
+    [setActivePosition],
+  )
+
   return {
     handleWheel,
     handleNodesChange,
@@ -186,5 +200,6 @@ export const useReactFlowHandler = () => {
     handleNodesDelete,
     handleNodeClick,
     handleNodeDragStop,
+    handleContextMenu,
   }
 }

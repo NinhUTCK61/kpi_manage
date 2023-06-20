@@ -7,6 +7,7 @@ import {
   KpiNode,
   KpiSpeechBallonNode,
 } from '@/libs/react-flow/components'
+import { ContextMenu } from '@/libs/react-flow/components/ContextMenu'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'
@@ -50,6 +51,7 @@ export const CreateView: React.FC = () => {
     handleNodesDelete,
     handleNodeClick,
     handleNodeDragStop,
+    handleContextMenu,
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
@@ -105,7 +107,9 @@ export const CreateView: React.FC = () => {
           action={viewportAction}
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
+          onContextMenu={handleContextMenu}
         >
+          <ContextMenu />
           <CommentForm />
           <KpiControls />
         </KpiReactFlow>
