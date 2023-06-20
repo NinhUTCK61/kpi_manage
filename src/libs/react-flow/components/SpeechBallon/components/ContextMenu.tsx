@@ -134,7 +134,8 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
   }
 
   const getDisabled = (menuType: CtxMenuType) => {
-    const isPasteDisabled = menuType === CtxMenuType.Paste && !nodeCopy
+    const isPasteDisabled =
+      menuType === CtxMenuType.Paste && (!nodeCopy || nodeCopy?.type !== 'speech_ballon')
 
     return isPasteDisabled
   }
