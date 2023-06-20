@@ -160,7 +160,7 @@ export const useReactFlowHandler = () => {
 
       const nodeById = getNodeById(node.id)
 
-      if (nodeById?.position.x === data.x && nodeById?.position.y === data.y) {
+      if (nodeById?.data.x === data.x && nodeById?.data.y === data.y) {
         return
       }
 
