@@ -342,7 +342,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           return true
         })
 
-        set({ nodes })
+        const _nodesReLayout = reLayout(nodes)
+
+        set({ nodes: _nodesReLayout })
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode, shouldFocus) {
