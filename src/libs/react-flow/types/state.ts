@@ -37,7 +37,12 @@ export type RFStore = {
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
   nodeFocused: ReactFlowNode | null
   getNodeById: (id: string) => ReactFlowNode | null
-  removeEmptyNode(ignoreRemoveFocusedNode?: boolean): void
+  removeEmptyNode(options?: {
+    ignoreFocusNode?: boolean
+    ignoreSpeechBallon?: boolean
+    ignoreComment?: boolean
+    ignoreKpi?: boolean
+  }): void
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode, shouldFocus?: boolean) => void
   removeSpeechBallon: (speechBallonId: string) => void

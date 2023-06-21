@@ -2,6 +2,8 @@ import {
   DEFAULT_SPEECH_BALLON_ATTRIBUTES,
   RFStore,
   ReactFlowNodeData,
+  isEmptyKPINodeForm,
+  isReactFlowKPINode,
   useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
@@ -144,10 +146,13 @@ export const useReactFlowHandler = () => {
 
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
-      removeEmptyNode(nodeFocused?.type !== 'kpi')
+      removeEmptyNode({
+        ignoreFocusNode: nodeFocused?.type !== 'kpi',
+        ignoreKpi: isReactFlowKPINode(node) && isEmptyKPINodeForm(node.data),
+      })
       setNodeFocused(node.id)
     },
-    [removeEmptyNode, setNodeFocused, nodeFocused?.type],
+    [nodeFocused?.type, removeEmptyNode, setNodeFocused],
   )
 
   const handleNodeDragStop = useCallback(

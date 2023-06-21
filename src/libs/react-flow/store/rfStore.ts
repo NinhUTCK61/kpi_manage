@@ -320,26 +320,26 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
-      removeEmptyNode(ignoreRemoveFocusedNode) {
+      removeEmptyNode(ignoreOptions) {
         const _nodes = get().nodes
         const nodeFocused = get().nodeFocused
 
         const nodes = _nodes.filter((node) => {
-          if (ignoreRemoveFocusedNode && nodeFocused?.id === node.id) return true
+          if (ignoreOptions?.ignoreFocusNode && nodeFocused?.id === node.id) return true
 
-          if (node.type === 'comment') {
-            return node.data.content !== ''
+          switch (node.type) {
+            case 'comment':
+              if (ignoreOptions?.ignoreComment) return true
+              return node.data.content !== ''
+            case 'speech_ballon':
+              if (ignoreOptions?.ignoreSpeechBallon) return true
+              return node.data.text !== ''
+            case 'kpi':
+              if (ignoreOptions?.ignoreKpi) return true
+              return !isEmptyKPINodeForm(node.data)
+            default:
+              return true
           }
-
-          if (node.type === 'speech_ballon') {
-            return node.data.text !== ''
-          }
-
-          if (node.type === 'kpi') {
-            return !isEmptyKPINodeForm(node.data)
-          }
-
-          return true
         })
 
         const _nodesReLayout = reLayout(nodes)
