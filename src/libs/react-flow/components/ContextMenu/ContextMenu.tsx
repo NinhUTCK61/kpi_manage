@@ -1,3 +1,4 @@
+import { ViewPortAction } from '@/features/node'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
@@ -11,6 +12,7 @@ export const ContextMenu: React.FC = () => {
   const container = useRFStore((state) => state.container)
   const setActivePosition = useRFStore((state) => state.setActivePosition)
   const activePosition = useRFStore((state) => state.activePosition)
+  const viewportAction = useRFStore((state) => state.viewportAction)
   const { t } = useTranslation('file')
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { project } = useReactFlow()
@@ -40,7 +42,7 @@ export const ContextMenu: React.FC = () => {
   }
 
   const isDisablePaste = !nodeCopy || nodeCopy.type !== 'speech_ballon'
-  const open = Boolean(activePosition)
+  const open = Boolean(activePosition) && viewportAction === ViewPortAction.SpeechBallon
 
   return (
     <Menu
@@ -50,7 +52,6 @@ export const ContextMenu: React.FC = () => {
       anchorPosition={
         activePosition ? { top: activePosition.y, left: activePosition.x } : undefined
       }
-      onContextMenu={handleClose}
     >
       <MenuItem onClick={handlePaste} disabled={isDisablePaste}>
         {t('menu_context.paste')}

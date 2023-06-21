@@ -1,4 +1,5 @@
 export * from './CommentNode'
+export * from './ContextMenu'
 export * from './KPINode'
 export * from './KpiControl'
 export * from './KpiEdge'

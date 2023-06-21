@@ -2,12 +2,12 @@ import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs
 import {
   CommentForm,
   CommentNode,
+  ContextMenu,
   KpiControls,
   KpiEdge,
   KpiNode,
   KpiSpeechBallonNode,
 } from '@/libs/react-flow/components'
-import { ContextMenu } from '@/libs/react-flow/components/ContextMenu'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'

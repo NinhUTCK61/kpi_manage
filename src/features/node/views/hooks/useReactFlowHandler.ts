@@ -1,5 +1,6 @@
 import {
   DEFAULT_SPEECH_BALLON_ATTRIBUTES,
+  PANE_CLASS_NAME,
   RFStore,
   ReactFlowNodeData,
   useCommentUpdateMutation,
@@ -179,17 +180,20 @@ export const useReactFlowHandler = () => {
   )
 
   const handleContextMenu = useCallback(
-    (e: React.MouseEvent) => {
+    (e: MouseEvent) => {
       e.preventDefault()
 
-      if ((e.target as HTMLElement).className === 'react-flow__pane') {
+      const isSpeechBallonPane = viewportAction === ViewPortAction.SpeechBallon
+      const isPaneClick = (e.target as HTMLElement).className === PANE_CLASS_NAME
+
+      if (isPaneClick && isSpeechBallonPane) {
         setActivePosition({
           x: e.clientX,
           y: e.clientY,
         })
       }
     },
-    [setActivePosition],
+    [setActivePosition, viewportAction],
   )
 
   return {
