@@ -78,6 +78,8 @@
     "speechballon_not_found": "Speech ballon not found!",
     "user_not_found": "User not found",
     "send_mail_fail": "Send mail failed!",
+    "error_same_password": "This password has been used recently. Please set another password.",
+    "incorrect_password": "Password incorrect",
 
     "invalid_string_label": "Title is required.",
     "invalid_empty_node_form": "Please enter the content.",

@@ -3,6 +3,7 @@ import { IconButton, ListItemIcon, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import ChangeIcon from 'public/assets/svgs/change_pass.svg'
@@ -23,6 +24,7 @@ const Account = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  const router = useRouter()
 
   const { data: sessionData } = useSession()
 
@@ -35,7 +37,7 @@ const Account = () => {
     {
       title: t('menu.change_password'),
       icon: ChangeIcon,
-      handle: handleClose,
+      handle: () => router.push('/change-password'),
     },
     {
       title: t('menu.privacy_policy'),
