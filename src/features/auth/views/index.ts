@@ -1,5 +1,6 @@
 export * from './SignIn'
 export * from './change-password'
 export * from './forgot-password'
+export * from './profile'
 export * from './reset-password'
 export * from './sign-up'
