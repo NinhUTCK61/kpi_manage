@@ -48,10 +48,14 @@ export const authRouter = createTRPCRouter({
       return authService.resendVerifyEmail(input.email)
     }),
   changePassword: protectedProcedure
-    .meta({ openapi: { method: 'PUT', path: '/change-passsword' } })
+    .meta({ openapi: { method: 'PUT', path: '/change-password' } })
     .input(ChangePasswordInputSchema)
     .output(UserSchema)
     .mutation(({ input, ctx }) => {
-      return authService.changePassword(input.password, input.newPassword, ctx.session.user.id)
+      return authService.changePassword(
+        input['old-password'],
+        input['new-password'],
+        ctx.session.user.id,
+      )
     }),
 })

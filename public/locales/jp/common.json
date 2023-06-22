@@ -78,7 +78,7 @@
     "speechballon_not_found": "Speech ballon not found!",
     "user_not_found": "ユーザーが見つかりませんでした。",
     "send_mail_fail": "メールを送信できませんでした。",
-    "error_same_password": "このパスワードは最新使用されています。別のパスワードを設定してください。",
+    "same_password": "このパスワードは最新使用されています。別のパスワードを設定してください。",
     "incorrect_password": "パスワードが正しくありません。",
 
     "invalid_string_label": "タイトルの入力は必須です。",

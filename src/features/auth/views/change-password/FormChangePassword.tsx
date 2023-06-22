@@ -1,6 +1,6 @@
 import { ChangePasswordType } from '@/libs/schema'
 import { Input } from '@/libs/shared/components'
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { Control } from 'react-hook-form'
 
@@ -15,52 +15,47 @@ const FormChangePassword: React.FC<FormChangePasswordType> = ({
   handleSubmit,
   isLoading,
 }) => {
-  const { t } = useTranslation('change-password')
+  const { t } = useTranslation('change_password')
 
   return (
-    <Box width={450}>
-      <Box mb={3}>
-        <Typography variant="h3" fontWeight="700" textTransform="uppercase">
-          {t('seo_title')}
-        </Typography>
-      </Box>
+    <Stack spacing={2} component="form" onSubmit={handleSubmit}>
+      <Input
+        control={control}
+        name="old-password"
+        label={t('password') as string}
+        placeholder={t('enter_password') as string}
+        autoComplete="current-password"
+        readOnly={isLoading}
+        type="password"
+        fullWidth
+      />
 
-      <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit}>
-        <Input
-          control={control}
-          name="password"
-          label={t('password') as string}
-          fullWidth
-          placeholder={t('enter_password') as string}
-          readOnly={isLoading}
-          type="password"
-        />
+      <Input
+        control={control}
+        name="new-password"
+        label={t('new_password') as string}
+        placeholder={t('enter_new_password') as string}
+        autoComplete="new-password"
+        readOnly={isLoading}
+        type="password"
+        fullWidth
+      />
 
-        <Input
-          control={control}
-          name="newPassword"
-          label={t('new_password') as string}
-          fullWidth
-          placeholder={t('enter_new_password') as string}
-          readOnly={isLoading}
-          type="password"
-        />
+      <Input
+        control={control}
+        name="confirm-new-password"
+        label={t('confirm_password') as string}
+        placeholder={t('enter_new_password') as string}
+        autoComplete="new-password"
+        readOnly={isLoading}
+        type="password"
+        fullWidth
+      />
 
-        <Input
-          control={control}
-          name="confirmNewPassword"
-          label={t('confirm_password') as string}
-          fullWidth
-          placeholder={t('enter_new_password') as string}
-          readOnly={isLoading}
-          type="password"
-        />
-
-        <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
-          {t('save_change')}
-        </Button>
-      </Stack>
-    </Box>
+      <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
+        {t('save_change')}
+      </Button>
+    </Stack>
   )
 }
 
