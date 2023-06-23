@@ -10,7 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Link from 'next/link'
 import VerifyError from 'public/assets/svgs/verify_error.svg'
 import VerifySuccess from 'public/assets/svgs/verify_success.svg'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 export async function getServerSideProps({ locale, req, res, query }: GetServerSidePropsContext) {
   const session = await getServerSession(req, res, authOptions)
@@ -53,17 +53,18 @@ type Props = {
 
 const Verify: FC<Props> = ({ success, errorMessage }) => {
   const { t } = useTranslation('common')
+  const [_success] = useState(success)
 
   return (
     <LayoutUnAuth title={t('verify_title')}>
       <Stack mb={2} pt={5} alignItems="center">
         <Stack alignItems="center" mb={4}>
-          <MuiImage src={success ? VerifySuccess : VerifyError} alt="verify image" />
+          <MuiImage src={_success ? VerifySuccess : VerifyError} alt="verify image" />
           <Typography variant="h2" mb={0.5}>
-            {t(success ? 'verify_success' : 'verify_fail')}
+            {t(_success ? 'verify_success' : 'verify_fail')}
           </Typography>
           <Typography color="greyScale.600">
-            {t(success ? 'description_verify_success' : (errorMessage as string))}
+            {t(_success ? 'description_verify_success' : (errorMessage as string))}
           </Typography>
         </Stack>
 
