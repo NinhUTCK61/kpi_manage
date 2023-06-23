@@ -40,10 +40,10 @@ function InputNodeFormulaControl<T extends FieldValues>({
           {
             mask: Number,
             thousandsSeparator: ',',
-            scale: 3,
-            signed: false,
+            scale: 5,
+            signed: true,
             padFractionalZeros: false,
-            normalizeZeros: true,
+            normalizeZeros: false,
             radix: '.',
             mapToRadix: ['.'],
           },
@@ -51,9 +51,8 @@ function InputNodeFormulaControl<T extends FieldValues>({
             mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/? ]{0,999}$/i,
           },
         ]}
-        unmask
-        onAccept={(value: string) => {
-          onChange(value)
+        onAccept={(_value: string, imark) => {
+          onChange(imark.value)
         }}
         onChange={() => undefined}
         style={props?.inputProps?.style || {}}
