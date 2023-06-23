@@ -16,19 +16,13 @@ const useFormularHanlder = () => {
     let errorMessage = ''
 
     if (inputValue.includes('.')) {
-      console.log(
-        inputValue
-          .replace(/[=+\-*/]/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim(),
-      )
       const arr = inputValue
         .replace(/[=+\-*/]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
         .split(' ')
       let pass = false
-      console.log(arr)
+
       for (let i = 0; i < arr.length; i++) {
         if (arr[i]?.includes('.') && !isNumeric(arr[i]?.replace('.', '') ?? '')) {
           pass = true
