@@ -51,7 +51,7 @@ function InputNodeFormulaControl<T extends FieldValues>({
             mask: /^=[0-9a-zA-Z+$!@#$%^&*()_+\-\[\]{};':"\\|,.<>\/? ]{0,999}$/i,
           },
         ]}
-        onAccept={(_value: string, imark) => {
+        onAccept={(_value, imark) => {
           onChange(imark.value)
         }}
         onChange={() => undefined}
