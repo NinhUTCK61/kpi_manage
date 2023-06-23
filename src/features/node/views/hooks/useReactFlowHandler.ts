@@ -1,5 +1,6 @@
 import {
   DEFAULT_SPEECH_BALLON_ATTRIBUTES,
+  PANE_CLASS_NAME,
   RFStore,
   ReactFlowNodeData,
   isEmptyKPINodeForm,
@@ -183,6 +184,23 @@ export const useReactFlowHandler = () => {
     [getNodeById, updateCommentNode, updateSpeechBallonNode],
   )
 
+  const handleContextMenu = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault()
+
+      const isSpeechBallonPane = viewportAction === ViewPortAction.SpeechBallon
+      const isPaneClick = (e.target as HTMLElement).className === PANE_CLASS_NAME
+
+      if (isPaneClick && isSpeechBallonPane) {
+        setActivePosition({
+          x: e.clientX,
+          y: e.clientY,
+        })
+      }
+    },
+    [setActivePosition, viewportAction],
+  )
+
   return {
     handleWheel,
     handleNodesChange,
@@ -191,5 +209,6 @@ export const useReactFlowHandler = () => {
     handleNodesDelete,
     handleNodeClick,
     handleNodeDragStop,
+    handleContextMenu,
   }
 }

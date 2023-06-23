@@ -2,6 +2,7 @@ import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs
 import {
   CommentForm,
   CommentNode,
+  ContextMenu,
   KpiControls,
   KpiEdge,
   KpiNode,
@@ -50,6 +51,7 @@ export const CreateView: React.FC = () => {
     handleNodesDelete,
     handleNodeClick,
     handleNodeDragStop,
+    handleContextMenu,
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
@@ -105,7 +107,9 @@ export const CreateView: React.FC = () => {
           action={viewportAction}
           multiSelectionKeyCode={null}
           zoomActivationKeyCode={['ControlLeft', 'ControlRight']}
+          onContextMenu={handleContextMenu}
         >
+          <ContextMenu />
           <CommentForm />
           <KpiControls />
         </KpiReactFlow>
