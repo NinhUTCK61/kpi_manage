@@ -120,30 +120,55 @@ export class NodeService extends NodeHelper {
       })
     }
 
-    const node: KPINodeType[] = await prisma.$queryRaw`
+    const results: KPINodeType[] = await prisma.$queryRaw`
     WITH RECURSIVE node_tree AS (
-      SELECT *, substring(slug from '[0-9]+') as number_part
-      FROM "Node"
-      WHERE ID = ${checkUserTemplate.template.root_note_id}
-      UNION ALL
-      SELECT n.*, substring(n.slug from '[0-9]+') as number_part
-      FROM "Node" n
-      JOIN node_tree nt ON n."parent_node_id" = nt.id
-    )
-    SELECT *
-    FROM node_tree
-    ORDER BY 
-      CASE
-        WHEN slug = 'root' THEN 0
-        ELSE CAST(CASE
-          WHEN number_part = '' THEN '0'
-          ELSE number_part
-        END AS INTEGER)
-      END, slug;`
+        SELECT *
+        FROM "Node"
+        WHERE ID = ${checkUserTemplate.template.root_note_id}
+        UNION ALL
+        SELECT n.*
+        FROM "Node" n
+        JOIN node_tree nt ON n."parent_node_id" = nt.id
+      )
+      SELECT * FROM node_tree;`
+
+    const _nodes = results.map((result) => {
+      const match = result.slug.match(/([a-zA-Z]+)(\d*)/)
+      return {
+        ...result,
+        letterPart: match ? match[1] : '',
+        numberPart: match && match[2] ? parseInt(match[2]) : null,
+      }
+    })
+
+    _nodes.sort((a, b) => {
+      // So sánh độ dài các phần chữ
+      if ((a.letterPart?.length ?? 0) < (b.letterPart?.length ?? 0)) {
+        return -1
+      } else if ((a.letterPart?.length ?? 0) > (b.letterPart?.length ?? 0)) {
+        return 1
+      } else {
+        // Nếu độ dài các phần chữ giống nhau, so sánh các phần chữ
+        if ((a.letterPart ?? '') < (b.letterPart ?? '')) {
+          return -1
+        } else if ((a.letterPart ?? '') > (b.letterPart ?? '')) {
+          return 1
+        } else {
+          // Nếu các phần chữ giống nhau, so sánh các phần số
+          if ((a.numberPart ?? 0) < (b.numberPart ?? 0)) {
+            return -1
+          } else if ((a.numberPart ?? 0) > (b.numberPart ?? 0)) {
+            return 1
+          } else {
+            return 0
+          }
+        }
+      }
+    })
 
     const d3Root = stratify<KPINodeType>()
       .id((n) => n.id)
-      .parentId((n) => n.parent_node_id)(node)
+      .parentId((n) => n.parent_node_id)(_nodes)
 
     const speechBallon = await prisma.speechBallon.findMany({
       where: {
