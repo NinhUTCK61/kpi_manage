@@ -15,6 +15,23 @@ const useFormularHanlder = () => {
     let list: string[] = []
     let errorMessage = ''
 
+    if (inputValue.includes('.')) {
+      const arr = inputValue
+        .replace(/[=+\-*/]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .split(' ')
+      let pass = false
+
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i]?.includes('.') && !isNumeric(arr[i]?.replace('.', '') ?? '')) {
+          pass = true
+          break
+        }
+      }
+      if (pass) return t('error.invalid_formula')
+    }
+
     try {
       generateCalculatorStack(
         produce(listNode, (draft) => {
@@ -27,8 +44,7 @@ const useFormularHanlder = () => {
       )
     } catch (error) {
       list = (error as { message: string })?.message.split(':')
-      errorMessage = t('error.invalid_formula') + list.join('=>')
-      return errorMessage
+      return t('error.invalid_formula') + list.join('=>')
     }
 
     const _inputValue = inputValue.trim().replace('=', '')
