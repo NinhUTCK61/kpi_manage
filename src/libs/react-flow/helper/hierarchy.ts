@@ -37,7 +37,7 @@ export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
   }
 }
 
-export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
+export function _generateNextIdByFill(parentNode: HierarchyFlowNode): string {
   const { data, children } = parentNode
   const { slug } = data.data
   const existingSlugs = new Set(children?.map((child) => child.data.data.slug))
@@ -57,6 +57,39 @@ export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
     }
     return nextSlug
   }
+}
+
+export function generateNextIdByFill(parentNode: HierarchyFlowNode): string {
+  const { data, children } = parentNode
+  const { slug } = data.data
+  const existingSlugs = new Set(children?.map((child) => child.data.data.slug))
+
+  if (slug === 'root') {
+    let index = children?.length ?? 0
+    while (existingSlugs.has(indexToSlug(index))) {
+      index++
+    }
+    return indexToSlug(index)
+  } else {
+    let index = (children?.length ?? 0) + 1
+    let nextSlug = `${slug}${index}`
+    while (existingSlugs.has(nextSlug)) {
+      index++
+      nextSlug = `${slug}${index}`
+    }
+    return nextSlug
+  }
+}
+
+// Function to convert index to slug
+function indexToSlug(index: number): string {
+  let str = ''
+  do {
+    const remainder = index % 26
+    str = String.fromCharCode(65 + remainder) + str
+    index = Math.floor(index / 26) - 1
+  } while (index >= 0)
+  return str
 }
 
 export const generateNextId = generateNextIdByFill
