@@ -37,7 +37,8 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
     const is_formula = input_value.includes('=')
     const nodes = getKpiNodes()
     if (!is_formula) {
-      data.value2number = Number(input_value) || null
+      //format '123,123.123' to '123123.123'
+      data.value2number = Number(parseFloat(input_value.replace(/,/g, ''))) || null
     } else {
       // TODO: handler calculate formula here
       const { value2Number, error } = calculatorValue2number(input_value, nodes)
