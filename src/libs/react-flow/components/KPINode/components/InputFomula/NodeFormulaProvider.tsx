@@ -102,8 +102,10 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
 
-      const check = nodes.filter((e) =>
-        e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()),
+      const check = nodes.filter(
+        (e) =>
+          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '').toUpperCase()) ||
+          e.data.slug.includes(data.resultStringFull.replaceAll(' ', '')),
       ) as ReactFlowKPINode[]
 
       if (check.length !== 0) {
