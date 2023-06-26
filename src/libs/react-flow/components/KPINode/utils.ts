@@ -61,3 +61,21 @@ export function generateColors(text: string) {
 
   return colorAlphabet[text as keyof typeof colorAlphabet]
 }
+
+export function convertSlugToString(inputString: string) {
+  if (!inputString) {
+    return ''
+  }
+
+  let convertedString = ''
+
+  for (let i = 0; i < inputString.length; i++) {
+    if (isNaN(parseInt(inputString[i] as string))) {
+      convertedString += inputString[i]
+    } else {
+      break
+    }
+  }
+
+  return convertedString
+}
