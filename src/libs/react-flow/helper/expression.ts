@@ -96,8 +96,7 @@ export const convertFormula = (
   return inputValue.substring(0, startIndex) + valueReplace + inputValue.substring(endIndex)
 }
 
-const checkIncludeFormula = (slug: string, node: ReactFlowKPINode) => {
-  const inputValue = node.data.input_value as string
+export const checkIncludeFormula = (slug: string, inputValue: string) => {
   const matches = inputValue
     .replace('=', '')
     .replace(/[^a-zA-Z0-9]/g, ' ')
