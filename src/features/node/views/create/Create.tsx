@@ -111,8 +111,8 @@ export const CreateView: React.FC = () => {
         >
           <ContextMenu />
           <CommentForm />
-          <KpiControls />
         </KpiReactFlow>
+        <KpiControls />
       </Container>
     </Layout>
   )
@@ -120,4 +120,5 @@ export const CreateView: React.FC = () => {
 
 const Container = styled(Box)({
   height: `calc(100vh - ${HEADER_HEIGHT}px - ${TOOLBAR_HEIGHT}px)`,
+  position: 'relative',
 })
