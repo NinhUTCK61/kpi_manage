@@ -1,4 +1,4 @@
-import { ShapeType } from '@/features/node'
+import { ShapeType, ViewPortAction } from '@/features/node'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -18,6 +18,7 @@ type SpeechBallonFormProps = {
 const storeSelector = (state: RFStore) => ({
   removeSpeechBallon: state.removeSpeechBallon,
   nodeFocused: state.nodeFocused,
+  viewPortAction: state.viewportAction,
 })
 
 export const SpeechBallonForm: React.FC = () => {
@@ -30,7 +31,7 @@ export const SpeechBallonForm: React.FC = () => {
     isResizing,
   } = useSpeechBallonContext()
 
-  const { removeSpeechBallon, nodeFocused } = useRFStore(storeSelector, shallow)
+  const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
@@ -97,6 +98,12 @@ export const SpeechBallonForm: React.FC = () => {
     handleSetEditing(false)
   }
 
+  const handleDoubleClick = () => {
+    if (viewPortAction === ViewPortAction.SpeechBallon) {
+      handleSetEditing(true)
+    }
+  }
+
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     const length = e.target.value.length
     e.target.setSelectionRange(length, length)
@@ -148,7 +155,10 @@ export const SpeechBallonForm: React.FC = () => {
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer sx={{ ...positionShape, maxWidth: widthWhenResize }}>
+    <SpeechBallonContainer
+      sx={{ ...positionShape, maxWidth: widthWhenResize }}
+      onDoubleClick={handleDoubleClick}
+    >
       <TextSpeechBallon
         sx={{
           ...style,
