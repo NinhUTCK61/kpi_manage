@@ -94,9 +94,17 @@ export const UserWithoutPasswordSchema = UserSchema.omit({
 
 export const ChangePasswordInputSchema = z
   .object({
-    password: z.string(),
-    newPassword: z.string(),
+    'old-password': z.string().trim().min(1),
+    'new-password': passwordPolicySchema,
+    'confirm-new-password': passwordPolicySchema,
   })
-  .refine((data) => data.password !== data.newPassword, {
-    message: 'error.error_same_password',
+  .refine((data) => data['old-password'] !== data['new-password'], {
+    message: 'error.same_password',
+    path: ['new-password'],
   })
+  .refine((data) => data['new-password'] === data['confirm-new-password'], {
+    message: 'error.error_match_password',
+    path: ['confirm-new-password'],
+  })
+
+export type ChangePasswordType = z.infer<typeof ChangePasswordInputSchema>

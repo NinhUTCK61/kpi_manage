@@ -340,7 +340,7 @@ class AuthService {
     } else {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'error.error_incorrect_password',
+        message: 'error.incorrect_password',
       })
     }
   }
