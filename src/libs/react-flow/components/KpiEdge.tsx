@@ -1,6 +1,6 @@
 import { EdgeProps, getBezierPath } from 'reactflow'
 import { useRFStore } from '../hooks'
-import { generateColors } from './KPINode/utils'
+import { convertSlugToString, generateColors } from './KPINode/utils'
 
 function KpiEdge({
   id,
@@ -25,11 +25,13 @@ function KpiEdge({
 
   const getNodeById = useRFStore((state) => state.getKPINodeById)
   const nodeTarget = getNodeById(target)
-  const firstSlug = nodeTarget?.type === 'kpi' && nodeTarget.data.slug.split('')[0]
+  if (nodeTarget?.type !== 'kpi') return null
+  const slug = convertSlugToString(nodeTarget.data.slug)
+  //'A get A, AA get A, AB get B'
   const _style = {
     ...style,
     strokeWidth: 4,
-    stroke: generateColors(firstSlug as string),
+    stroke: generateColors(slug[String(slug).length - 1] as string),
   }
 
   return (
