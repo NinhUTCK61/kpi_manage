@@ -91,3 +91,28 @@ export type RFStore = {
   dialogDelete: DialogDeleteNodeProps | null
   handleToggleDialogDelete: (dialogProps?: DialogDeleteNodeProps) => void
 }
+
+type onSave = ((pastState: ReactFlowNode[], currentState: ReactFlowNode[]) => void) | undefined
+
+export type Write<T, U> = Omit<T, keyof U> & U
+
+export interface _TemporalState {
+  pastStates: Partial<RFStore>[]
+  futureStates: Partial<RFStore>[]
+
+  undo: (steps?: number) => void
+  redo: (steps?: number) => void
+  clear: () => void
+
+  setOnSave: (onSave: onSave) => void
+  _onSave: onSave
+  _handleSet: (pastState: Partial<RFStore>) => void
+}
+
+export interface TemporalOptions {
+  pastStates?: Partial<RFStore>[]
+  futureStates?: Partial<RFStore>[]
+  onSave?: onSave
+}
+
+export type TemporalState = Omit<_TemporalState, '_onSave' | '_handleSet'>

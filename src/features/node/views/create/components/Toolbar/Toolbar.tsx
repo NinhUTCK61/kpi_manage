@@ -1,9 +1,10 @@
-import { useRFStore } from '@/libs/react-flow'
+import { useRFStore, useTemporalStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import RedoIcon from 'public/assets/svgs/redo.svg'
 import UndoIcon from 'public/assets/svgs/undo_active.svg'
 import { memo } from 'react'
+import { shallow } from 'zustand/shallow'
 import { ChooseStyleAlignText } from './ChooseAlignText'
 import { ChooseFontSize } from './ChooseFontSize'
 import { ChooseShape } from './ChooseShape'
@@ -20,13 +21,15 @@ const TOOLBAR_HEIGHT = 60
 export const ToolbarInner: React.FC = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
+  const { undo, redo } = useTemporalStore((state) => state, shallow)
+
   return (
     <Container>
       <Stack direction="row" alignItems="center">
         <Stack direction="row" spacing={2} mr={3}>
-          <Image src={UndoIcon} alt="undo" style={{ cursor: 'pointer' }} />
+          <Image src={UndoIcon} onClick={() => undo()} alt="undo" style={{ cursor: 'pointer' }} />
 
-          <Image src={RedoIcon} alt="undo" />
+          <Image src={RedoIcon} onClick={() => redo()} alt="undo" />
         </Stack>
 
         <Stack direction="row" id="choose-style-area">
