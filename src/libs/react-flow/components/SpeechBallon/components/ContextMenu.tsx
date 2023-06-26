@@ -118,6 +118,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
         handleDelete()
         break
       case CtxMenuType.Copy:
+        console.log(data)
         setNodeCopy(data.id)
         break
       case CtxMenuType.Paste:
@@ -137,11 +138,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
     const isPasteDisabled =
       menuType === CtxMenuType.Paste && (!nodeCopy || nodeCopy?.type !== 'speech_ballon')
 
-    const isCopyDisable = menuType === CtxMenuType.Copy && !data.is_saved
-
-    const isDisable = isPasteDisabled || isCopyDisable
-
-    return isDisable
+    return isPasteDisabled
   }
 
   return (
