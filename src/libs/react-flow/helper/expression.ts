@@ -120,6 +120,25 @@ const checkIncludeFormulaWithSlugs = (
   return !!matches.find((slug) => slugs.includes(slug) || slug === defaultSlug)
 }
 
+export const getNodeIncludeSlug = (node: ReactFlowKPINode, nodes: ReactFlowKPINode[]) => {
+  const formulaNodes = nodes.filter((e) => e.data.is_formula)
+  const slugs: string[] = []
+  if (!formulaNodes.length) return slugs
+  const slug = node.data.slug
+
+  formulaNodes.forEach((n) => {
+    if (!n.data.input_value) return
+
+    n.data.input_value
+      .replace('=', '')
+      .replace(/[^a-zA-Z0-9]/g, ' ')
+      .split(' ')
+      .includes(slug) && slugs.push(n.data.slug)
+  })
+
+  return slugs
+}
+
 //get list node change value2number when one node in formula change
 export const getDiffValue2Number = (
   nodeFocused: ReactFlowKPINode,

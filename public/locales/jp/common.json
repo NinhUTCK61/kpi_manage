@@ -87,6 +87,8 @@
     "node_not_found_2": "は実在しない",
     "invalid_formula": "Invalid formula ",
     "invalid_node": "このボックス自体のIDは入力できません。",
+    "delete_node_has_formula_1":"このボックスは",
+    "delete_node_has_formula_2":"の数式に存在しています。ご確認ください。",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",
