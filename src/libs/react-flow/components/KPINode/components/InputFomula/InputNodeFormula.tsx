@@ -48,7 +48,7 @@ function InputNodeFormulaControl<T extends FieldValues>({
             mapToRadix: ['.'],
           },
           {
-            mask: /^=[0-9a-zA-Z+!%^o*()+\-\{}\./]{0,999}$/i,
+            mask: /^=[0-9a-zA-Z+!%^o*()+\-\./]{0,999}$/i,
           },
         ]}
         onAccept={(_value, imark) => {
