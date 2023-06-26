@@ -9,7 +9,9 @@ import {
   ReactFlowCommentNode,
   ReactFlowKPINode,
   ReactFlowNode,
+  ReactFlowNodeData,
   ReactFlowSpeechBallonNode,
+  SpeechBallonNodeType,
 } from '../types'
 
 export function isEmptyKPINodeForm(node: KPINodeType | NodeFormProps) {
@@ -26,6 +28,13 @@ export function isReactFlowKPISpeechBallon(node: RFNode): node is ReactFlowSpeec
 
 export function isReactFlowKPIComment(node: RFNode): node is ReactFlowCommentNode {
   return node.type === 'comment'
+}
+
+export function isSpeechBallonData(data: ReactFlowNodeData): data is SpeechBallonNodeType {
+  return (
+    (data as SpeechBallonNodeType).shape !== undefined &&
+    (data as SpeechBallonNodeType).layout !== undefined
+  )
 }
 
 export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {
