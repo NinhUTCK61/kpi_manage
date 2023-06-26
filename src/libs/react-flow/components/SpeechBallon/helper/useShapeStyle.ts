@@ -25,7 +25,7 @@ const sizeStyleMapping = {
   },
   [ShapeType.ROUND_SQUARE]: {
     width: 210,
-    height: 36,
+    height: 40,
   },
 }
 
