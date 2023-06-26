@@ -147,11 +147,11 @@ export const useReactFlowHandler = () => {
 
   const handleNodeClick = useCallback(
     (e: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
+      setNodeFocused(node.id)
       removeEmptyNode({
         ignoreFocusNode: nodeFocused?.type !== 'kpi',
         ignoreKpi: isReactFlowKPINode(node) && isEmptyKPINodeForm(node.data),
       })
-      setNodeFocused(node.id)
     },
     [nodeFocused?.type, removeEmptyNode, setNodeFocused],
   )
