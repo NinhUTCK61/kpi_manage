@@ -22,7 +22,7 @@ const useNodeDeleteMutation = () => {
 
   const { mutate: bulkUpdate } = api.node.bulkUpdate.useMutation()
 
-  const handleDelete = api.node.delete.useMutation({
+  const mutation = api.node.delete.useMutation({
     async onMutate(variables) {
       const { nodes, edges } = removeNode(variables.id)
       const prevData = utils.node.list.getData({ template_id: templateId })
@@ -67,7 +67,7 @@ const useNodeDeleteMutation = () => {
     },
   })
 
-  const mutateDelete = (id: string) => {
+  const handleDelete = (id: string) => {
     const node = utils.node.list
       .getData({ template_id: templateId })
       ?.nodes.find((n) => n.id === id)
@@ -84,10 +84,10 @@ const useNodeDeleteMutation = () => {
       )
       return
     }
-    return handleDelete.mutate({ id })
+    return mutation.mutate({ id })
   }
 
-  return { mutateDelete }
+  return { handleDelete, ...mutation }
 }
 
 export { useNodeDeleteMutation }

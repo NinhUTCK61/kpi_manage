@@ -51,7 +51,7 @@ export const useReactFlowHandler = () => {
     removeSpeechBallonNode,
   } = useRFStore(storeSelector, shallow)
 
-  const { mutateDelete: deleteKPINode } = useNodeDeleteMutation()
+  const { handleDelete: deleteKPINode } = useNodeDeleteMutation()
   const { mutate: deleteSpeechBallonNode } = useSpeechBallonDeleteMutation()
   const { mutate: updateCommentNode } = useCommentUpdateMutation()
   const { mutate: updateSpeechBallonNode } = useUpdateSpeechBallonMutation()

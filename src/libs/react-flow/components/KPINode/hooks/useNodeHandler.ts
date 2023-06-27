@@ -27,7 +27,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { mutate: create } = useNodeCreateMutation()
   const { update, bulkUpdate } = useNodeUpdateMutation()
-  const { mutateDelete: deleteMutate } = useNodeDeleteMutation()
+  const { handleDelete: deleteMutate } = useNodeDeleteMutation()
 
   const { data } = useKPINodeContext()
 
