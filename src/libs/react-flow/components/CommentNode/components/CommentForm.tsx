@@ -102,7 +102,7 @@ const CommentForm: React.FC = () => {
           <Image src={CommentIcon} alt="comment icon" />
         </Stack>
 
-        <Stack component="form" position="relative" width={382} onSubmit={handleSubmit}>
+        <Stack component="form" position="relative" width={320} onSubmit={handleSubmit}>
           <InputComment
             autoFocus
             name="content"
