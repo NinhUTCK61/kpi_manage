@@ -58,7 +58,9 @@ export const SpeechBallonForm: React.FC = () => {
         setFocus('text')
       }
     }, 0)
+  }, [isEditing, setFocus])
 
+  useEffect(() => {
     const subscription = watch((value) => {
       const dataNodeTextChange = {
         ...data,
@@ -68,7 +70,7 @@ export const SpeechBallonForm: React.FC = () => {
       updateSpeechBallon(dataNodeTextChange)
     })
     return () => subscription.unsubscribe()
-  }, [isEditing, setFocus, watch, updateSpeechBallon, data])
+  }, [watch, updateSpeechBallon, data])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
