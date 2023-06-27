@@ -19,6 +19,7 @@ const storeSelector = (state: RFStore) => ({
   removeSpeechBallon: state.removeSpeechBallon,
   nodeFocused: state.nodeFocused,
   viewPortAction: state.viewportAction,
+  updateSpeechBallon: state.updateSpeechBallon,
 })
 
 export const SpeechBallonForm: React.FC = () => {
@@ -31,9 +32,12 @@ export const SpeechBallonForm: React.FC = () => {
     isResizing,
   } = useSpeechBallonContext()
 
-  const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
+  const { removeSpeechBallon, nodeFocused, updateSpeechBallon, viewPortAction } = useRFStore(
+    storeSelector,
+    shallow,
+  )
 
-  const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
+  const { control, getValues, setFocus, watch } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: data.text,
     },
@@ -46,7 +50,7 @@ export const SpeechBallonForm: React.FC = () => {
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
 
-  const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
+  const isEditing = !data.is_saved || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
     setTimeout(() => {
@@ -55,6 +59,18 @@ export const SpeechBallonForm: React.FC = () => {
       }
     }, 0)
   }, [isEditing, setFocus])
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const dataNodeTextChange = {
+        ...data,
+        text: value.text as string,
+      }
+
+      updateSpeechBallon(dataNodeTextChange)
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, updateSpeechBallon, data])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
