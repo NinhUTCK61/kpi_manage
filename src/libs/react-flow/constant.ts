@@ -30,7 +30,7 @@ export const SUGGEST_ITEM_HEIGHT = 54
 const DEFAULT_NODE_STYLE = JSON.stringify({
   background: '#3E19A3',
   textAlign: TextAlign.Left,
-  color: '#FFFFFF',
+  color: '#FF2EAA',
   fontSize: '15px',
 })
 
