@@ -5,6 +5,7 @@ import {
   ReactFlowNodeData,
   isEmptyKPINodeForm,
   isReactFlowKPINode,
+  isSpeechBallonData,
   useCommentUpdateMutation,
   useNodeDeleteMutation,
   useRFStore,
@@ -166,7 +167,10 @@ export const useReactFlowHandler = () => {
 
       const nodeById = getNodeById(node.id)
 
-      if (nodeById?.data.x === data.x && nodeById?.data.y === data.y) {
+      if (
+        (nodeById?.data.x === data.x && nodeById?.data.y === data.y) ||
+        (isSpeechBallonData(node.data) && !node.data.is_saved)
+      ) {
         return
       }
 
