@@ -2,8 +2,8 @@ import { UserProfileType } from '@/libs/schema/profile'
 import { Button, Stack } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { Control } from 'react-hook-form'
-import { BackgroundProfile } from './BackgroundProfile'
 import { Input } from './Input'
+import { Language } from './Language'
 
 type FormUpdateProfileTypes = {
   handleSubmit(): void
@@ -27,8 +27,6 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
   return (
     <>
       <Stack component="form" width={460} onSubmit={handleSubmit} spacing={2}>
-        <BackgroundProfile edit={edit} />
-
         <Stack direction="row" spacing={2}>
           <Input
             control={control}
@@ -81,24 +79,25 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
           label={t('email') as string}
           fullWidth
           placeholder={t('enter_email') as string}
-          readOnly={!edit}
-          disabled={isLoading}
-          required={edit}
+          readOnly
         />
 
-        {!edit ? (
+        <Language edit={edit} />
+
+        {edit ? (
+          <Stack direction="row" spacing={2} width="100%">
+            <Button variant="contained" type="submit" fullWidth>
+              {t('save_changes', { ns: 'profile' })}
+            </Button>
+
+            <Button variant="outlined" fullWidth onClick={handleCloseEdit}>
+              {t('cancel', { ns: 'profile' })}
+            </Button>
+          </Stack>
+        ) : (
           <Button variant="contained" onClick={handleOpenEdit}>
             {t('edit_profile', { ns: 'profile' })}
           </Button>
-        ) : (
-          <Stack direction="row" spacing={2} width="100%">
-            <Button variant="contained" type="submit" fullWidth onClick={handleCloseEdit}>
-              {t('save_changes', { ns: 'profile' })}
-            </Button>
-            <Button variant="outlined" fullWidth onClick={handleCloseEdit}>
-              Cancel
-            </Button>
-          </Stack>
         )}
       </Stack>
     </>

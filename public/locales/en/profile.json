@@ -3,5 +3,14 @@
   "edit_profile": "Edit profile",
   "save_changes": "Save changes",
   "company_name": "Name of your company",
-  "language": "Language"
+  "language": "Language",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "update_profile_success": "Successfully changed profile!",
+  "modal_upload": {
+    "title_1": "Set avatar for this profile?",
+    "title_2": "Are you sure to upload this photo?",
+    "upload_success": "Set avatar is success",
+    "upload_fail": "Set avatar is fail"
+  }
 }

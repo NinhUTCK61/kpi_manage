@@ -1,4 +1,6 @@
+import { api } from '@/libs/api'
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
+import { getImageUrl } from '@/libs/utils/misc'
 import { IconButton, ListItemIcon, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
@@ -28,11 +30,13 @@ const Account = () => {
 
   const { data: sessionData } = useSession()
 
+  const { data } = api.profile.get.useQuery()
+
   const menu = [
     {
       title: t('menu.edit'),
       icon: ProfileIcon,
-      handle: handleClose,
+      handle: () => router.push('/profile'),
     },
     {
       title: t('menu.change_password'),
@@ -61,7 +65,17 @@ const Account = () => {
         style={{ margin: '18px ' }}
       />
       <StackName direction="row" spacing={1} onClick={handleClick}>
-        <Avatar>H</Avatar>
+        {data?.image ? (
+          <Image
+            src={getImageUrl(data.image)}
+            width={28}
+            height={28}
+            alt="avatar"
+            style={{ borderRadius: '100%' }}
+          />
+        ) : (
+          <Avatar>{sessionData?.user.name?.split('')[0]}</Avatar>
+        )}
 
         <Typography variant="body2">{sessionData?.user?.name}</Typography>
 

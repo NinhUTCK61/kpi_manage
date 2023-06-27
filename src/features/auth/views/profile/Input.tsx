@@ -55,10 +55,6 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
   '&.Mui-readOnly': {
     backgroundColor: theme.palette.greyScale[300],
   },
-  borderRadius: theme.spacing(0.5),
-  color: theme.palette.base.black,
-  fontWeight: 400,
-  gap: 8,
   '& .MuiOutlinedInput-input': {
     padding: theme.spacing(1, 1.5),
     fontSize: 15,
@@ -66,6 +62,10 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
     '&::placeholder': {
       color: theme.palette.greyScale[500],
     },
+    borderRadius: theme.spacing(0.5),
+    color: theme.palette.base.black,
+    fontWeight: 400,
+    gap: 8,
   },
 }))
 
