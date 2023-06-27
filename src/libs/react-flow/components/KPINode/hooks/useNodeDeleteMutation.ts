@@ -11,6 +11,7 @@ import { intersectionBy } from 'lodash'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
+import { useNodeUpdateMutation } from './useNodeUpdateMutation'
 
 const useNodeDeleteMutation = () => {
   const removeNode = useRFStore((state) => state.removeNode)
@@ -20,7 +21,7 @@ const useNodeDeleteMutation = () => {
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
-  const { mutate: bulkUpdate } = api.node.bulkUpdate.useMutation()
+  const { bulkUpdate } = useNodeUpdateMutation()
 
   const mutation = api.node.delete.useMutation({
     async onMutate(variables) {
@@ -56,9 +57,8 @@ const useNodeDeleteMutation = () => {
       if (oldNodeNeedUpdated.length) {
         // get difference nodes by position
         const diff = getDifferenceNodesByPosition(newNodes, oldNodeNeedUpdated)
-
         if (diff.length) {
-          bulkUpdate(diff.map((n) => n.data))
+          bulkUpdate.mutate(diff.map((n) => n.data))
         }
       }
     },

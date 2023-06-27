@@ -5,6 +5,7 @@ import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
+import { useNodeUpdateMutation } from './useNodeUpdateMutation'
 
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
@@ -13,8 +14,9 @@ const useNodeCreateMutation = () => {
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
   const { t } = useTranslation('common')
+  const { bulkUpdate } = useNodeUpdateMutation()
 
-  const { mutate: mulUpdate } = api.node.bulkUpdate.useMutation()
+  // const { mutate: mulUpdate } = api.node.bulkUpdate.useMutation()
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
@@ -42,7 +44,7 @@ const useNodeCreateMutation = () => {
 
       if (diff.length) {
         // TODO: handle error when update multiple nodes
-        mulUpdate(diff.map((n) => n.data))
+        bulkUpdate.mutate(diff.map((n) => n.data))
       }
       setNodeFocused(null)
     },

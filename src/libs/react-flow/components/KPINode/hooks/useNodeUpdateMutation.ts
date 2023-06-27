@@ -52,6 +52,9 @@ const useNodeUpdateMutation = () => {
         variant: 'error',
       })
     },
+    onSettled() {
+      utils.node.list.invalidate()
+    },
   })
 
   return { update, bulkUpdate }
