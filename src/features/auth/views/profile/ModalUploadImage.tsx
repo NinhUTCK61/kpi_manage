@@ -61,7 +61,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
     },
     onSuccess: () => {
       mutateProfile({
-        image: `profile/${session?.user.id}.${nameImage.split('.').pop()}`,
+        image: `template/${session?.user.id}.${nameImage.split('.').pop()}`,
       })
     },
     onError: () => {
@@ -73,7 +73,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
   })
 
   const handleUploadImage = async () => {
-    const key = `profile/${session?.user.id}.${image[0]?.name.split('.').pop()}`
+    const key = `template/${session?.user.id}.${image[0]?.name.split('.').pop()}`
 
     if (data && data?.key === key && data.expires > Date.now() + 600) {
       mutation.mutate(data.url)
@@ -161,7 +161,7 @@ const CloseButton = styled(Button)({
 
 const ImagePreview = styled(Stack)(({ theme }) => ({
   width: 268,
-  height: 206,
+  height: 268,
   justifyContent: 'center',
   borderRadius: '12px',
   background: theme.palette.base.gray,

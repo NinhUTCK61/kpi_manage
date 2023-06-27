@@ -1,8 +1,9 @@
+import { greyScale } from '@/libs/config/theme'
+import { InputStyled } from '@/libs/shared/components'
 import { FormControl, FormLabel, MenuItem, Select, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { InputStyled } from './Input'
 
 type LanguageType = {
   edit: boolean
@@ -26,7 +27,7 @@ export const Language: React.FC<LanguageType> = ({ edit }) => {
     },
   ]
 
-  const changLanguage = (locale: string) => {
+  const changeLanguage = (locale: string) => {
     const { pathname, asPath, query } = router
 
     router.push({ pathname, query }, asPath, { locale })
@@ -35,10 +36,11 @@ export const Language: React.FC<LanguageType> = ({ edit }) => {
   return (
     <FormControl fullWidth>
       <FormLabel>{t('language_title')}</FormLabel>
+
       {edit ? (
         <SelectStyled value={languages.find((e) => e.id === language)?.id}>
           {languages.map((e) => (
-            <MenuItem key={e.id} onClick={() => changLanguage(e.id)} value={e.id}>
+            <MenuItem key={e.id} onClick={() => changeLanguage(e.id)} value={e.id}>
               <Typography variant="body2" color="black">
                 {e.title}
               </Typography>
@@ -46,7 +48,7 @@ export const Language: React.FC<LanguageType> = ({ edit }) => {
           ))}
         </SelectStyled>
       ) : (
-        <InputStyled value={languages.find((e) => e.id === language)?.title} readOnly />
+        <InputProfile value={languages.find((e) => e.id === language)?.title} readOnly />
       )}
     </FormControl>
   )
@@ -55,5 +57,14 @@ export const Language: React.FC<LanguageType> = ({ edit }) => {
 const SelectStyled = styled(Select)({
   '& .MuiOutlinedInput-input': {
     padding: '8px 12px',
+  },
+})
+
+const InputProfile = styled(InputStyled)({
+  '&.Mui-readOnly': {
+    backgroundColor: greyScale[300],
+  },
+  '&.Mui-readOnly fieldset': {
+    border: 'none',
   },
 })

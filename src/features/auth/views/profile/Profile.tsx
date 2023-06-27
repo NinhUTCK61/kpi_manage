@@ -16,10 +16,10 @@ export const Profile = () => {
   const { t } = useTranslation('profile')
   const { mutate, isLoading } = api.profile.update.useMutation()
   const { data } = api.profile.get.useQuery()
-  const [edit, setEdit] = useState(false)
+  const [isEdit, setEdit] = useState(false)
   const [image, setImage] = useState<File[] | null>()
 
-  const { control, handleSubmit } = useForm<UserProfileType>({
+  const { control, handleSubmit, reset } = useForm<UserProfileType>({
     defaultValues: {
       name: '',
       first_name: '',
@@ -36,8 +36,9 @@ export const Profile = () => {
     setEdit(true)
   }
 
-  const handleCloseEdit = () => {
+  const handleCancelEdit = () => {
     setEdit(false)
+    reset(data)
   }
 
   const onSubmit: SubmitHandler<UserProfileType> = (data) => {
@@ -46,7 +47,8 @@ export const Profile = () => {
         enqueueSnackbar(t('update_profile_success'), {
           variant: 'success',
         })
-        handleCloseEdit()
+
+        setEdit(false)
       },
       onError(error) {
         enqueueSnackbar(t(error.message, { ns: 'common' }), {
@@ -70,7 +72,7 @@ export const Profile = () => {
         {t('seo_title')}
       </Typography>
 
-      <BackgroundProfile edit={edit} onDrop={onSelectImage} />
+      <BackgroundProfile onDrop={onSelectImage} />
 
       <ModalUploadImage image={image || []} isOpen={!!image} onCloseModal={onCloseModal} />
 
@@ -79,8 +81,8 @@ export const Profile = () => {
         control={control}
         handleSubmit={handleSubmit(onSubmit)}
         handleOpenEdit={handleOpenEdit}
-        handleCloseEdit={handleCloseEdit}
-        edit={edit}
+        handleCancelEdit={handleCancelEdit}
+        isEdit={isEdit}
       />
     </Layout>
   )
