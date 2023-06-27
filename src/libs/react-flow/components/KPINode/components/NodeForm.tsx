@@ -1,5 +1,6 @@
 import { blue, red } from '@/libs/config/theme'
 import { isPaneClick } from '@/libs/react-flow/helper'
+import { checkIncludeFormula } from '@/libs/react-flow/helper/expression'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
@@ -18,12 +19,20 @@ type NodeFormMemoTypes = {
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
-  const { control, getValues, setFocus, error } = method
+  const { control, getValues, setFocus, error, setError } = method
   const { saveHandler } = useNodeHandler(method)
 
   const saveValue = () => {
     if (error) return
     const nodeData = { ...data, ...getValues() }
+
+    if (checkIncludeFormula(data.slug, data.input_value as string)) {
+      setError('input_value', {
+        message: 'invalid_node',
+      })
+      return
+    }
+
     saveHandler(nodeData)
     changeFormFocusState(false)
   }
