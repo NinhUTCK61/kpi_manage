@@ -71,8 +71,9 @@ const useNodeDeleteMutation = () => {
     const node = utils.node.list
       .getData({ template_id: templateId })
       ?.nodes.find((n) => n.id === id)
+    if (!node || node.type !== 'kpi') return
     const nodes = getKpiNodes()
-    const slugs = getNodeIncludeSlug(node as ReactFlowKPINode, nodes)
+    const slugs = getNodeIncludeSlug(node, nodes)
     if (slugs.length) {
       enqueueSnackbar(
         t('error.delete_node_has_formula_1') +
@@ -84,7 +85,7 @@ const useNodeDeleteMutation = () => {
       )
       return
     }
-    return mutation.mutate({ id })
+    mutation.mutate({ id })
   }
 
   return { handleDelete, ...mutation }
