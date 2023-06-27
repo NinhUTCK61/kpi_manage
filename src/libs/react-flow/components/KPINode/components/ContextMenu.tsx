@@ -45,7 +45,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
 }) => {
   const { t } = useTranslation(['file'])
   const { data } = useKPINodeContext()
-  const { mutate: deleteMutate } = useNodeDeleteMutation()
+  const { handleDelete: deleteMutate } = useNodeDeleteMutation()
   const { handlePaste } = useNodeHandler()
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
 
@@ -58,7 +58,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
         handlePaste()
         break
       case CtxMenuType.Delete:
-        deleteMutate({ id: data.id })
+        deleteMutate(data.id)
         break
       default:
         break

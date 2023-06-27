@@ -27,7 +27,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { mutate: create } = useNodeCreateMutation()
   const { update, bulkUpdate } = useNodeUpdateMutation()
-  const { mutate: deleteMutate } = useNodeDeleteMutation()
+  const { handleDelete: deleteMutate } = useNodeDeleteMutation()
 
   const { data } = useKPINodeContext()
 
@@ -85,7 +85,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
         setNodeFocused(null)
         break
       case 'DELETE':
-        deleteMutate({ id: newData.id })
+        deleteMutate(newData.id)
         break
       case 'CANCEL':
         break
