@@ -1,5 +1,5 @@
-import { difference } from 'lodash'
 import { Mutate, StateCreator, StoreApi, StoreMutatorIdentifier, createStore } from 'zustand'
+import { getDifferenceNodesByData } from '../components/SpeechBallon/helper/utils'
 import { stratifier } from '../helper'
 import {
   RFStore,
@@ -39,7 +39,6 @@ const _d3RootMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
 
     const wrappedSet: typeof set = (...args) => {
       const [newState] = args
-      console.log('new State', newState)
 
       if ('nodes' in newState) {
         // Nếu 'nodes' có trong newState, tức là nodes đã thay đổi
@@ -55,19 +54,24 @@ const _d3RootMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         set({ d3Root: updatedD3Root })
       }
 
+      const pastState = get()
       const pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
+      console.log(1211212, pastState.nodes.length, pastNodes, newState)
       // Gọi hàm set gốc
       set(...args)
-
       if ('nodes' in newState) {
-        console.log('diff', difference(pastNodes, newState.nodes))
-        handleSetTemporal({
-          nodes: pastNodes,
-          edges: pastEdges,
-          nodeFocused: pastNodeFocused,
-        })
+        console.log('state', pastNodes, newState.nodes)
+        const diff = getDifferenceNodesByData(pastNodes, newState.nodes as ReactFlowNode[])
+        console.log('diff', diff)
+        if (diff.length > 0) {
+          handleSetTemporal({
+            nodes: pastNodes,
+            edges: pastEdges,
+            nodeFocused: pastNodeFocused,
+          })
+        }
       }
     }
 

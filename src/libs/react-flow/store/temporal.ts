@@ -54,6 +54,7 @@ export const temporalStateCreator = (
         // if (!isEqual(pastState, currentState)) {
         //   console.log('pastState', pastState.nodes)
         //   console.log('currentState', currentState.nodes)
+        console.log('run handle set', pastState.nodes)
         get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
         set({
           pastStates: get().pastStates.concat(pastState),
