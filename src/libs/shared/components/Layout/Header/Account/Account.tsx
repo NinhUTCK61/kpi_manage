@@ -1,4 +1,3 @@
-import { api } from '@/libs/api'
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { getImageUrl } from '@/libs/utils/misc'
 import { IconButton, ListItemIcon, Typography } from '@mui/material'
@@ -29,8 +28,6 @@ const Account = () => {
   const router = useRouter()
 
   const { data: sessionData } = useSession()
-
-  const { data } = api.profile.get.useQuery()
 
   const menu = [
     {
@@ -65,9 +62,9 @@ const Account = () => {
         style={{ margin: '18px ' }}
       />
       <StackName direction="row" spacing={1} onClick={handleClick}>
-        {data?.image ? (
+        {sessionData?.user.image ? (
           <Image
-            src={getImageUrl(data.image)}
+            src={getImageUrl(sessionData.user.image)}
             width={28}
             height={28}
             alt="avatar"

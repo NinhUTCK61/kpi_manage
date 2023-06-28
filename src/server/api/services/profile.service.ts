@@ -3,10 +3,10 @@ import { prisma } from '@/server/db'
 import { TRPCError } from '@trpc/server'
 
 export class ProfileService {
-  async update(profile: UserProfileType, user_id: string) {
+  async update(profile: UserProfileType, userId: string) {
     const user = await prisma.user.findFirst({
       where: {
-        id: user_id,
+        id: userId,
       },
     })
 
@@ -19,7 +19,7 @@ export class ProfileService {
 
     const userUpdate = await prisma.user.update({
       where: {
-        id: user_id,
+        id: userId,
       },
       data: profile,
     })
@@ -27,10 +27,10 @@ export class ProfileService {
     return userUpdate
   }
 
-  async byId(user_id: string) {
+  async byId(userId: string) {
     const profileUser = await prisma.user.findFirst({
       where: {
-        id: user_id,
+        id: userId,
       },
     })
 

@@ -1,4 +1,3 @@
-import { CustomImage } from '@/features/auth/components'
 import { api } from '@/libs/api'
 import { Box, Button, CircularProgress, Modal, Stack, Typography, styled } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
@@ -6,7 +5,9 @@ import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import closeIcon from '/public/assets/svgs/close.svg'
+import { CustomImage } from '../../components'
+import { useUpdateImageProfile } from './hooks'
+import CloseIcon from '/public/assets/svgs/close.svg'
 
 type ModalUploadImageTypes = {
   image: File[]
@@ -17,8 +18,9 @@ type ModalUploadImageTypes = {
 const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCloseModal }) => {
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
-  const utils = api.useContext()
-
+  const { data: session, update } = useSession()
+  const { mutate: mutateProfile } = useUpdateImageProfile()
+  const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
   const { t } = useTranslation('profile')
 
   useEffect(() => {
@@ -29,29 +31,6 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
     }
   }, [image])
 
-  const { data: session } = useSession()
-
-  const { mutate: mutateProfile } = api.profile.update.useMutation({
-    onSuccess() {
-      enqueueSnackbar({
-        variant: 'success',
-        message: t('modal_upload.upload_success'),
-      })
-      onCloseModal()
-      setPreviewURL('')
-    },
-    onError() {
-      enqueueSnackbar({
-        variant: 'error',
-        message: t('modal_upload.upload_fail'),
-      })
-    },
-    onSettled() {
-      utils.profile.get.invalidate()
-    },
-  })
-  const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
-
   const mutation = useMutation({
     mutationFn: (url: string) => {
       return fetch(url, {
@@ -60,9 +39,18 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
       })
     },
     onSuccess: () => {
-      mutateProfile({
-        image: `template/${session?.user.id}.${nameImage.split('.').pop()}`,
-      })
+      mutateProfile(
+        {
+          image: `template/${session?.user.id}.${nameImage.split('.').pop()}`,
+        },
+        {
+          onSuccess(data) {
+            setPreviewURL('')
+            onCloseModal()
+            update({ image: data.image })
+          },
+        },
+      )
     },
     onError: () => {
       enqueueSnackbar({
@@ -99,7 +87,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
           </Typography>
 
           <CloseButton onClick={handelCloseModalUploadImage}>
-            <CustomImage alt="icon" src={closeIcon} sx={{ mb: 0 }} />
+            <CustomImage alt="icon" src={CloseIcon} sx={{ mb: 0 }} />
           </CloseButton>
         </Stack>
 
@@ -163,7 +151,7 @@ const ImagePreview = styled(Stack)(({ theme }) => ({
   width: 268,
   height: 268,
   justifyContent: 'center',
-  borderRadius: '12px',
+  borderRadius: 12,
   background: theme.palette.base.gray,
   overflow: 'hidden',
 }))

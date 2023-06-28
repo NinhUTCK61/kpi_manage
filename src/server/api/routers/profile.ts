@@ -14,7 +14,7 @@ export const profileRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return profileService.update(input, ctx.session.user.id)
     }),
-  get: protectedProcedure
+  me: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/profile' } })
     .input(z.void())
     .output(UserProfile)

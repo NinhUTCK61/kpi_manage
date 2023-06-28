@@ -19,7 +19,7 @@ export const BackgroundProfile: React.FC<BackgroundProfileType> = ({ onDrop }) =
     multiple: false,
   })
 
-  const { data } = api.profile.get.useQuery()
+  const { data } = api.profile.me.useQuery()
 
   return (
     <Box {...getRootProps({ className: 'dropzone' })} mb={2} width={100}>

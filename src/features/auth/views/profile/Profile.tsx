@@ -15,7 +15,7 @@ import { ModalUploadImage } from './ModalUploadImage'
 export const Profile = () => {
   const { t } = useTranslation('profile')
   const { mutate, isLoading } = api.profile.update.useMutation()
-  const { data } = api.profile.get.useQuery()
+  const { data } = api.profile.me.useQuery()
   const [isEdit, setEdit] = useState(false)
   const [image, setImage] = useState<File[] | null>()
 
@@ -24,7 +24,6 @@ export const Profile = () => {
       name: '',
       first_name: '',
       email: '',
-      image: '',
       company_name: '',
       role_in_company: '',
     },
