@@ -28,8 +28,8 @@ export const SpeechBallonNodeProvider: React.FC<
 
   // disable draggable when editing
   useLayoutEffect(() => {
-    toggleDraggable(data.id, !isEditing)
-  }, [data.id, isEditing, toggleDraggable])
+    toggleDraggable(data.id, !isEditing && data.is_saved)
+  }, [data.id, data.is_saved, isEditing, toggleDraggable])
 
   const contextValue = useMemo(
     () => ({

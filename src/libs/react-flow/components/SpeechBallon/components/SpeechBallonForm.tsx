@@ -3,7 +3,7 @@ import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
-import { FocusEvent, FormEvent, useEffect } from 'react'
+import { FocusEvent, FormEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
@@ -32,12 +32,9 @@ export const SpeechBallonForm: React.FC = () => {
     isResizing,
   } = useSpeechBallonContext()
 
-  const { removeSpeechBallon, nodeFocused, updateSpeechBallon, viewPortAction } = useRFStore(
-    storeSelector,
-    shallow,
-  )
+  const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
 
-  const { control, getValues, setFocus, watch } = useForm<SpeechBallonFormProps>({
+  const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
       text: data.text,
     },
@@ -50,7 +47,7 @@ export const SpeechBallonForm: React.FC = () => {
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
 
-  const isEditing = !data.is_saved || (editable && nodeFocused?.id === data.id)
+  const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
     setTimeout(() => {
@@ -59,18 +56,6 @@ export const SpeechBallonForm: React.FC = () => {
       }
     }, 0)
   }, [isEditing, setFocus])
-
-  useEffect(() => {
-    const subscription = watch((value) => {
-      const dataNodeTextChange = {
-        ...data,
-        text: value.text as string,
-      }
-
-      updateSpeechBallon(dataNodeTextChange)
-    })
-    return () => subscription.unsubscribe()
-  }, [watch, updateSpeechBallon, data])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
@@ -92,6 +77,7 @@ export const SpeechBallonForm: React.FC = () => {
     }
 
     create(mutateData)
+    handleSetEditing(false)
   }
 
   const handleUpdate = (data: SpeechBallonNodeType) => {
@@ -114,7 +100,20 @@ export const SpeechBallonForm: React.FC = () => {
     handleSetEditing(false)
   }
 
+  const [isDoubleClick, setIsDoubleClick] = useState(false)
+
+  const handleSingleClick = () => {
+    setIsDoubleClick(false)
+    setTimeout(() => {
+      if (!isDoubleClick) {
+        return false
+      }
+    }, 200)
+  }
+
   const handleDoubleClick = () => {
+    setIsDoubleClick(true)
+
     if (viewPortAction === ViewPortAction.SpeechBallon) {
       handleSetEditing(true)
     }
@@ -173,6 +172,7 @@ export const SpeechBallonForm: React.FC = () => {
   ) : (
     <SpeechBallonContainer
       sx={{ ...positionShape, maxWidth: widthWhenResize }}
+      onClick={handleSingleClick}
       onDoubleClick={handleDoubleClick}
     >
       <TextSpeechBallon
