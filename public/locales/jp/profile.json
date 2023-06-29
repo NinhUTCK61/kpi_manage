@@ -1,16 +1,15 @@
 {
-  "seo_title": "Profile",
-  "edit_profile": "Edit profile",
+  "seo_title": "プロフィール",
+  "edit_profile": "プロフィールを編集する",
   "save_changes": "保存",
-  "company_name": "Name of your company",
-  "language": "Language",
-  "ok": "OK",
-  "cancel": "キャンセル",
+  "company_name": "会社名",
+  "language": "言語",
   "update_profile_success": "プロフィールを編集しました。",
+  "cancel": "キャンセル",
   "modal_upload": {
-    "title_1": "Set avatar for this profile?",
-    "title_2": "Are you sure to upload this photo?",
-    "upload_success": "Set avatar is success",
-    "upload_fail": "Set avatar is fail"
+    "title_1": "このファイルにアバターを設定しますか？",
+    "title_2": "この画像をアップロードしますか？",
+    "upload_success": "アバターの設定に成功しました。",
+    "upload_fail": "アバターの設定に失敗しました。"
   }
 }

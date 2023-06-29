@@ -1,13 +1,11 @@
 import { api } from '@/libs/api'
-import { Box, Button, CircularProgress, Modal, Stack, Typography, styled } from '@mui/material'
+import { ModalUpload } from '@/libs/shared/components'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import { CustomImage } from '../../components'
 import { useUpdateImageProfile } from './hooks'
-import CloseIcon from '/public/assets/svgs/close.svg'
 
 type ModalUploadImageTypes = {
   image: File[]
@@ -41,7 +39,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
     onSuccess: () => {
       mutateProfile(
         {
-          image: `template/${session?.user.id}.${nameImage.split('.').pop()}`,
+          image: `profile/${session?.user.id}.${nameImage.split('.').pop()}`,
         },
         {
           onSuccess(data) {
@@ -61,7 +59,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
   })
 
   const handleUploadImage = async () => {
-    const key = `template/${session?.user.id}.${image[0]?.name.split('.').pop()}`
+    const key = `profile/${session?.user.id}.${image[0]?.name.split('.').pop()}`
 
     if (data && data?.key === key && data.expires > Date.now() + 600) {
       mutation.mutate(data.url)
@@ -73,87 +71,22 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCl
     }
   }
 
-  const handelCloseModalUploadImage = () => {
+  const handleCloseUpload = () => {
     onCloseModal()
     setPreviewURL('')
   }
 
   return (
-    <Modal open={isOpen} onClose={handelCloseModalUploadImage}>
-      <BoxContainer>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography fontWeight={600} fontSize="18px" lineHeight="28px">
-            {t('modal_upload.title_1')}
-          </Typography>
-
-          <CloseButton onClick={handelCloseModalUploadImage}>
-            <CustomImage alt="icon" src={CloseIcon} sx={{ mb: 0 }} />
-          </CloseButton>
-        </Stack>
-
-        <Typography mt={1} fontSize="14px" fontWeight="20px">
-          {t('modal_upload.title_2')}
-        </Typography>
-
-        <Stack direction="row" justifyContent="center" my={3}>
-          <ImagePreview>
-            {previewURL && (
-              <CustomImage
-                key={nameImage}
-                src={previewURL}
-                alt={nameImage}
-                width={286}
-                height={206}
-                style={{ marginBottom: 0, objectFit: 'cover' }}
-                onLoad={() => {
-                  URL.revokeObjectURL(previewURL)
-                }}
-              />
-            )}
-          </ImagePreview>
-        </Stack>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="text" fullWidth onClick={handelCloseModalUploadImage}>
-            {t('cancel')}
-          </Button>
-
-          <Button variant="contained" fullWidth onClick={handleUploadImage}>
-            {mutation.isLoading ? <CircularProgress size="1.2rem" /> : t('ok')}
-          </Button>
-        </Stack>
-      </BoxContainer>
-    </Modal>
+    <ModalUpload
+      title={t('modal_upload.title_1')}
+      description={t('modal_upload.title_2')}
+      isLoading={mutation.isLoading}
+      handleUploadImage={handleUploadImage}
+      handleCloseUpload={handleCloseUpload}
+      previewURL={previewURL}
+      nameImage={nameImage}
+    />
   )
 }
-
-const BoxContainer = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  boxShadow: theme.shadows[1],
-  padding: 24,
-  borderRadius: '12px',
-  background: theme.palette.base.white,
-}))
-
-const CloseButton = styled(Button)({
-  ':hover': {
-    color: 'inherit',
-  },
-  padding: 0,
-  minWidth: 0,
-})
-
-const ImagePreview = styled(Stack)(({ theme }) => ({
-  width: 268,
-  height: 268,
-  justifyContent: 'center',
-  borderRadius: 12,
-  background: theme.palette.base.gray,
-  overflow: 'hidden',
-}))
 
 export { ModalUploadImage }

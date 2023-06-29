@@ -1,12 +1,9 @@
+import { greyScale } from '@/libs/config/theme'
 import { UserProfileType } from '@/libs/schema/profile'
+import { Input } from '@/libs/shared/components'
 import { Button, Stack, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { Control } from 'react-hook-form'
-
-import { greyScale } from '@/libs/config/theme'
-
-import { Input } from '@/libs/shared/components'
-import { Language } from './Language'
 
 type FormUpdateProfileTypes = {
   handleSubmit(): void
@@ -83,8 +80,6 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
         placeholder={t('enter_email') as string}
         readOnly
       />
-
-      <Language edit={isEdit} />
 
       {isEdit ? (
         <Stack direction="row" spacing={2} width="100%">

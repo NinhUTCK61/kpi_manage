@@ -7,7 +7,6 @@ import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
 import { BackgroundProfile } from './BackgroundProfile'
 import { FormProfile } from './FormProfile'
 import { ModalUploadImage } from './ModalUploadImage'
