@@ -103,7 +103,7 @@ export const ChangePasswordInputSchema = z
     path: ['new-password'],
   })
   .refine((data) => data['new-password'] === data['confirm-new-password'], {
-    message: 'error.error_match_password',
+    message: 'error.match_new_password',
     path: ['confirm-new-password'],
   })
 

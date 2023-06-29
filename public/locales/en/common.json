@@ -69,6 +69,7 @@
     "invalid_token": "Token not found or expired!",
     "email_conflict": "Email already exists.",
     "error_match_password": "Password and Confirm Password does not match.",
+    "match_new_password": "New password and Confirm new password does not match.",
     "kpi_issue_required": "Please choose the KPI Issue.",
     "kpi_reason_required": "Please choose How I learned about KPI Master.",
     "unauthorized": "Unauthorized!",
@@ -87,8 +88,8 @@
     "node_not_found_2": " does not exist",
     "invalid_formula": "Invalid formula ",
     "invalid_node": "Cannot enter the ID of this box itself.",
-    "delete_node_has_formula_1":"This box exists in the formula of ",
-    "delete_node_has_formula_2":". Please check it.",
+    "delete_node_has_formula_1": "This box exists in the formula of ",
+    "delete_node_has_formula_2": ". Please check it.",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",
