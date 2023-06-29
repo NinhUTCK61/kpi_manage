@@ -63,7 +63,7 @@ function InputNodeFormulaControl<T extends FieldValues>({
         {...inputProps}
       />
       {suggestState.textSelected && (
-        <Popper open={!!suggestState.anchorEl} anchorEl={suggestState.anchorEl}>
+        <Popper open={!!suggestState.anchorEl} anchorEl={suggestState.anchorEl} disablePortal>
           <SelectNodeSlug />
         </Popper>
       )}
