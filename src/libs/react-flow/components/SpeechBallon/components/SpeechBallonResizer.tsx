@@ -7,7 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { useSpeechBallonContext } from '../context'
 import { useUpdateSpeechBallonMutation } from '../hooks'
 
-const minSizeResize = {
+export const minSizeResize = {
   [ShapeType.SQUARE]: {
     minWidth: 190,
     minHeight: 190,

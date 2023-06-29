@@ -1,30 +1,27 @@
 import { styled } from '@mui/material'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useShapeStyle } from '../helper'
+import { ArrowSpeechBallon } from './ArrowSpeechBallon'
 import { SpeechBallonForm } from './SpeechBallonForm'
 
-const ARROW_TO_SHAPE_DISTANCE = 4
+export const classArrow = 'dragArrow'
+export const classSpeechBallon = 'speechBallonNode'
 
 export const OptionShape: React.FC = () => {
-  const { getShapeStyles, getArrowStyles } = useShapeStyle()
+  const { getShapeStyles } = useShapeStyle()
+  const refSpeechBallon = useRef<HTMLDivElement>(null)
+
   return (
-    <MuiOptionShapeType sx={getShapeStyles}>
-      <SpeechBallonForm />
-      <Arrow sx={getArrowStyles} />
-    </MuiOptionShapeType>
+    <>
+      <MuiOptionShapeType sx={getShapeStyles} className={classSpeechBallon} ref={refSpeechBallon}>
+        <SpeechBallonForm />
+      </MuiOptionShapeType>
+      <ArrowSpeechBallon refSpeechBallon={refSpeechBallon} />
+    </>
   )
 }
 
 const MuiOptionShapeType = styled('div')({
   position: 'relative',
   padding: '6px 12px 8px 12px',
-})
-
-export const Arrow = styled('div')({
-  position: 'absolute',
-  content: '""',
-  top: `calc(100% - ${ARROW_TO_SHAPE_DISTANCE}px)`,
-  left: 30,
-  borderLeft: '12px solid transparent',
-  borderRight: '12px solid transparent',
 })
