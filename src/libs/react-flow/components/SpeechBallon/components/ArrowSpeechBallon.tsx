@@ -2,6 +2,7 @@ import { styled } from '@mui/material'
 import React, { MouseEvent, useRef } from 'react'
 import { useShapeStyle } from '../helper'
 
+const ARROW_TO_SHAPE_DISTANCE = 4
 const HEIGHT_ARROW = 60
 const WIDTH_ARROW_DEFAULT = 20
 
@@ -11,26 +12,27 @@ export const classSpeechBallon = 'speechBallonNode'
 export const ArrowSpeechBallon: React.FC<{ refSpeechBallon: React.RefObject<HTMLDivElement> }> = ({
   refSpeechBallon,
 }) => {
-  const { getArrowStyles, handleMouseDown, handleMouseMove, handleMouseLeave } = useShapeStyle()
+  const { getArrowStyles, handleMouseDown, handleMouseMove } = useShapeStyle()
+
   const onMouseMove = (event: MouseEvent<HTMLElement>) => {
     if (refSpeechBallon?.current) {
       const maxWidth = (refSpeechBallon.current as HTMLElement).clientWidth
-      const clientX = (refSpeechBallon.current as HTMLElement).getBoundingClientRect().left
-      handleMouseMove(event, maxWidth, clientX)
+      handleMouseMove(event, maxWidth)
     }
   }
 
   const refArrow = useRef<HTMLDivElement>(null)
 
   return (
-    <Arrow
-      onMouseDown={handleMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className={classArrow}
-      sx={getArrowStyles}
-      ref={refArrow}
-    />
+    <div>
+      <Arrow
+        onMouseDown={handleMouseDown}
+        onMouseMove={onMouseMove}
+        className={classArrow}
+        sx={getArrowStyles}
+        ref={refArrow}
+      />
+    </div>
   )
 }
 
@@ -47,7 +49,8 @@ export const Arrow = styled('div')({
     position: 'absolute',
     content: '""',
     width: WIDTH_ARROW_DEFAULT * 10,
-    top: `-30px`,
+    // zIndex: 99,
+    top: '-1px',
     transform: 'translateX(-50%)',
     height: HEIGHT_ARROW,
   },
