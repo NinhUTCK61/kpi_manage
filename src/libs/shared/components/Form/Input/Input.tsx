@@ -62,6 +62,15 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
       color: theme.palette.greyScale[500],
     },
   },
+
+  '&.Mui-error': {
+    '&:hover fieldset': {
+      borderColor: '#d32f2f !important',
+    },
+    '&.Mui-focused fieldset': {
+      border: '1px solid #d32f2f !important',
+    },
+  },
 }))
 
 export { Input, InputStyled }

@@ -20,7 +20,11 @@ const Login: FC = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
 
-  const { control, handleSubmit } = useForm<SignInType>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInType>({
     defaultValues: {
       email: '',
       password: '',
@@ -41,7 +45,7 @@ const Login: FC = () => {
     router.push('/sign-up')
   }
 
-  const onSubmit: SubmitHandler<SignInType> = async (data) => {
+  const onSubmit: SubmitHandler<SignInType> = async (data, event) => {
     const { email, password } = data
     const res = await signIn('credentials', {
       email,
@@ -54,6 +58,7 @@ const Login: FC = () => {
       router.push(callbackUrl as string)
     } else {
       const error = res?.error as string
+      event?.preventDefault()
       const description = t(error)
       error === 'verify'
         ? enqueueSnackbar(t('title_verify'), {
@@ -122,15 +127,16 @@ const Login: FC = () => {
                 placeholder={t('enter_password') as string}
               />
 
+              <Button fullWidth variant="contained" type="submit">
+                {t('login')}
+              </Button>
+            </Stack>
+            <Stack width={450} mt={1} spacing={1}>
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
                 <TextColor onClick={redirectForgot} mr={1.75}>
                   {t('forgot')}
                 </TextColor>
               </Stack>
-
-              <Button fullWidth variant="contained" type="submit">
-                {t('login')}
-              </Button>
 
               <Stack
                 py={1.5}
