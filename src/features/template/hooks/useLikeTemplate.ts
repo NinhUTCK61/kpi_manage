@@ -26,6 +26,7 @@ const useLikeTemplate = () => {
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 

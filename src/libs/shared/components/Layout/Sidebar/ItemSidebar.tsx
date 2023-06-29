@@ -26,8 +26,12 @@ const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
     return router.asPath === href ? 1 : 0
   }
 
+  const handleDirection = () => {
+    router.push(menu.href)
+  }
+
   return (
-    <StyleListItemButton active={checkHref(menu.href)}>
+    <StyleListItemButton active={checkHref(menu.href)} onClick={handleDirection}>
       <ListItemIcon>
         <Image src={menu.icon} alt={menu.title} />
       </ListItemIcon>

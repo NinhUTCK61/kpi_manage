@@ -32,6 +32,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
   const { t } = useTranslation('home')
 
   const { mutation: mutationLike } = useLikeTemplate()
+
   const handleLike = () => {
     mutationLike.mutate(
       { id: template.template_id, is_favorite: !template.is_favorite },
@@ -41,6 +42,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
             enqueueSnackbar(t('favorite_template'), { variant: 'success' })
             return
           }
+
           enqueueSnackbar(t('remove_favorite_template'), { variant: 'success' })
         },
       },
