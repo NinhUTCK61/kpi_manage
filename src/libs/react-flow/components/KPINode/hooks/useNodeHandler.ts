@@ -55,6 +55,8 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
       data.value2number = value2Number
     }
     data.is_formula = is_formula
+    data.input_title = data.input_title.trim()
+    data.unit = data.unit?.trim() as string
 
     return data
   }
