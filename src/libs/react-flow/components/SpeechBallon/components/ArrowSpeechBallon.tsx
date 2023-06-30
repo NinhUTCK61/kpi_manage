@@ -24,15 +24,13 @@ export const ArrowSpeechBallon: React.FC<{ refSpeechBallon: React.RefObject<HTML
   const refArrow = useRef<HTMLDivElement>(null)
 
   return (
-    <div>
-      <Arrow
-        onMouseDown={handleMouseDown}
-        onMouseMove={onMouseMove}
-        className={classArrow}
-        sx={getArrowStyles}
-        ref={refArrow}
-      />
-    </div>
+    <Arrow
+      onMouseDown={handleMouseDown}
+      onMouseMove={onMouseMove}
+      className={classArrow}
+      sx={getArrowStyles}
+      ref={refArrow}
+    />
   )
 }
 
