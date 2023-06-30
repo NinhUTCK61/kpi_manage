@@ -1,7 +1,9 @@
 import { ShapeType } from '@/features/node/constant'
+import { api } from '@/libs/api'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
-import { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useCallback, useState } from 'react'
+import { useEventListener } from 'usehooks-ts'
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -37,7 +39,7 @@ const LEFTCLICK = 0
 const RIGHTCLICK = 2
 
 export const useShapeStyle = () => {
-  const { data, isResizing } = useSpeechBallonContext()
+  const { data, isResizing, isEditing } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'
@@ -49,6 +51,7 @@ export const useShapeStyle = () => {
   const sizeStyle = sizeStyleMapping[shapeType]
   const [dragging, setDragging] = useState<boolean>(false)
 
+  const { isLoading, mutate } = api.speechBallon.update.useMutation()
   const handleMouseMove = (event: MouseEvent<HTMLElement>, maxWidth: number) => {
     if (dragging) {
       //dx la khoang cach giua vi tri chuot va vi tri ban dau
@@ -62,23 +65,50 @@ export const useShapeStyle = () => {
         element.style.left = `${changeLeftPx}px`
       }
     }
+    event.stopPropagation()
   }
 
+  const [classArrow, setClassArrow] = useState<string>('')
   const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    console.log(event.button)
+    console.log('moseDown')
     if (event.button === RIGHTCLICK) return
     if (shapeType === ShapeType.CIRCULAR) return
-    setDragging(true)
+    const className = (event.target as HTMLElement).className.split(' ')
+    if (!isEditing) return
+    if (className.includes('dragArrow')) {
+      setClassArrow(className.includes('dragArrow') ? 'dragArrow' : '')
+      setDragging(true)
+    }
   }
 
-  useEffect(() => {
-    const handleMouseUp = () => {
+  console.log('dragging:', dragging)
+  console.log('isEditing:', isEditing)
+  console.log('classArrow:', classArrow)
+  const handleMouseUp = useCallback(
+    (buttonMouse: number) => {
+      if (!dragging) return
+      if (buttonMouse === RIGHTCLICK) return
+      if (isLoading) return
+      if (!isEditing) return
+
       setDragging(false)
-    }
-    document.addEventListener('mouseup', handleMouseUp)
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [])
+      console.log('mouseUp-dragging:', dragging)
+      console.log('mouseUp-isEditing:', isEditing)
+      console.log('mouseUp-classArrow:', classArrow)
+
+      if (classArrow) {
+        console.log('callApi:', classArrow)
+        mutate({ ...data })
+      }
+      setClassArrow('')
+      console.log('setClassArrow')
+    },
+    [classArrow, data, dragging, isEditing, isLoading, mutate],
+  )
+
+  useEventListener('mouseup', (e) => handleMouseUp(e.button))
 
   const arrowCircular = {
     ...(shapeType === ShapeType.CIRCULAR && {
