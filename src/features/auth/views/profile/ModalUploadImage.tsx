@@ -1,33 +1,25 @@
 import { api } from '@/libs/api'
 import { ModalUpload } from '@/libs/shared/components'
 import { useMutation } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import { useUpdateImageTemplate } from '../hooks'
+import { useUpdateImageProfile } from './hooks'
 
 type ModalUploadImageTypes = {
   image: File[]
   isOpen: boolean
-  onCloseModalUploadImage: () => void
-  onCloseDialogThumbnail: () => void
-  onOpenDialogThumbnail: () => void
-  idTemplate: string
+  onCloseModal: () => void
 }
 
-const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
-  image,
-  isOpen,
-  onCloseModalUploadImage,
-  onCloseDialogThumbnail,
-  onOpenDialogThumbnail,
-  idTemplate,
-}) => {
+const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCloseModal }) => {
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
+  const { data: session, update } = useSession()
+  const { mutate: mutateProfile } = useUpdateImageProfile()
   const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
-  const { mutate: mutateTemplate } = useUpdateImageTemplate()
-  const { t } = useTranslation(['home'])
+  const { t } = useTranslation('profile')
 
   useEffect(() => {
     if (image && image.length > 0 && image[0]) {
@@ -45,15 +37,15 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
       })
     },
     onSuccess: () => {
-      mutateTemplate(
+      mutateProfile(
         {
-          id: idTemplate,
-          image_url: `template/${idTemplate}.${nameImage.split('.').pop()}`,
+          image: `profile/${session?.user.id}.${nameImage.split('.').pop()}`,
         },
         {
-          onSuccess() {
-            onCloseModalUploadImage()
+          onSuccess(data) {
             setPreviewURL('')
+            onCloseModal()
+            update({ image: data.image })
           },
         },
       )
@@ -61,13 +53,13 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     onError: () => {
       enqueueSnackbar({
         variant: 'error',
-        message: t('upload_fail'),
+        message: t('modal_upload.upload_fail'),
       })
     },
   })
 
   const handleUploadImage = async () => {
-    const key = `template/${idTemplate}.${image[0]?.name.split('.').pop()}`
+    const key = `profile/${session?.user.id}.${image[0]?.name.split('.').pop()}`
 
     if (data && data?.key === key && data.expires > Date.now() + 600) {
       mutation.mutate(data.url)
@@ -79,27 +71,20 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
     }
   }
 
-  const handelCloseModalUploadImage = () => {
-    onCloseDialogThumbnail()
-    onCloseModalUploadImage()
+  const handleCloseUpload = () => {
+    onCloseModal()
     setPreviewURL('')
-  }
-
-  const onReturnUpload = () => {
-    handelCloseModalUploadImage()
-    onOpenDialogThumbnail()
   }
 
   return (
     <ModalUpload
-      title={t('upload_title')}
-      description={t('upload_question')}
-      previewURL={previewURL}
-      handleUploadImage={handleUploadImage}
-      handleCloseUpload={handelCloseModalUploadImage}
-      nameImage={nameImage}
-      onReturnUpload={onReturnUpload}
+      title={t('modal_upload.title_1')}
+      description={t('modal_upload.title_2')}
       isLoading={mutation.isLoading}
+      handleUploadImage={handleUploadImage}
+      handleCloseUpload={handleCloseUpload}
+      previewURL={previewURL}
+      nameImage={nameImage}
     />
   )
 }

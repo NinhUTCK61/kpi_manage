@@ -37,16 +37,26 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
       }
+      if (trigger === 'update' && session?.image) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.picture = session.image
+      }
       return token
     },
-    session({ session, token }) {
+    session({ session, token, trigger }) {
       if (session.user) {
         session.user.id = token.id as string
         // session.user.role = user.role; <-- put other properties on the session here
+      }
+      if (trigger === 'update') {
+        // You can update the session in the database if it's not already updated.
+
+        // Make sure the updated value is reflected on the client
+        session.user.image = token.picture
       }
       return session
     },

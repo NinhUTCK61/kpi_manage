@@ -119,6 +119,10 @@
     },
     "submit": "Submit"
   },
+  "modal": {
+    "ok": "OK",
+    "cancel": "Cancel"
+  },
   "email_verified": "Email is verified!",
   "verify_title": "Verify",
   "verify_success": "Verified!",

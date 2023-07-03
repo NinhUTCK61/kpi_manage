@@ -1,0 +1,15 @@
+{
+  "seo_title": "Profile",
+  "edit_profile": "Edit profile",
+  "save_changes": "Save changes",
+  "company_name": "Name of your company",
+  "language": "Language",
+  "update_profile_success": "Successfully changed profile!",
+  "cancel": "Cancel",
+  "modal_upload": {
+    "title_1": "Set avatar for this profile?",
+    "title_2": "Are you sure to upload this photo?",
+    "upload_success": "Successfully set avatar！",
+    "upload_fail": "Failed to set avatar. "
+  }
+}
