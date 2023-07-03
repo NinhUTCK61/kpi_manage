@@ -49,7 +49,7 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
 
   return (
     <KPINodeProvider value={contextValue}>
-      <Stack onContextMenu={handleContextMenu}>
+      <Stack onContextMenu={handleContextMenu} className="node-inactive">
         {isActive ? <Active /> : <InActive />}
         <ContextMenu
           open={!!contextMenu}

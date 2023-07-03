@@ -3,7 +3,7 @@ import { ReactFlowNodeOutputType } from '@/libs/schema/node'
 import { differenceWith } from 'lodash'
 import { Node as RFNode } from 'reactflow'
 import { NodeFormProps } from '../components'
-import { PANE_CLASS_NAME } from '../constant'
+import { NODE_CLASS_NAME, PANE_CLASS_NAME } from '../constant'
 import {
   KPINodeType,
   ReactFlowCommentNode,
@@ -87,5 +87,5 @@ export function isStyleAreaClick(e: MouseEvent | TouchEvent) {
 
 export function isPaneClick(e: MouseEvent | TouchEvent) {
   const targetClass = (e.target as HTMLDivElement).className
-  return targetClass === PANE_CLASS_NAME
+  return targetClass === PANE_CLASS_NAME || targetClass.split(' ').includes(NODE_CLASS_NAME)
 }
