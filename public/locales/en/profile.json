@@ -6,6 +6,8 @@
   "language": "Language",
   "update_profile_success": "Successfully changed profile!",
   "cancel": "Cancel",
+  "enter_first_name": "Enter your first name",
+  "enter_last_name": "Enter your last name",
   "modal_upload": {
     "title_1": "Set avatar for this profile?",
     "title_2": "Are you sure to upload this photo?",

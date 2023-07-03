@@ -17,7 +17,6 @@ type ModalUploadImageTypes = {
 
 const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({
   image,
-  isOpen,
   onCloseModalUploadImage,
   onCloseDialogThumbnail,
   onOpenDialogThumbnail,
