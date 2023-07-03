@@ -3,7 +3,7 @@ import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { api } from '@/libs/api'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
-import { MouseEvent, useCallback, useEffect, useState } from 'react'
+import { MouseEvent, startTransition, useCallback, useEffect, useState } from 'react'
 import { useDebounce, useEventListener } from 'usehooks-ts'
 
 const borderStyleMapping = {
@@ -53,22 +53,33 @@ export const useShapeStyle = () => {
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const [dragging, setDragging] = useState<boolean>(false)
-  const [distanceLeft, setDistanceLeft] = useState<number>(LEFT_DEFAULT)
-  const debouncedValue = useDebounce<number>(distanceLeft, 500)
-
+  const [dragging, setDragging] = useState(false)
+  const [distanceLeft, setDistanceLeft] = useState(LEFT_DEFAULT)
+  const debouncedValue = useDebounce<number>(distanceLeft, 100)
+  const [oldClientX, setOldClienX] = useState(0)
   const { isLoading } = api.speechBallon.update.useMutation()
   const handleMouseMove = (event: MouseEvent<HTMLElement>, maxWidth: number) => {
     if (dragging) {
       const element = event.target as HTMLElement
-      const changeLeftPx = event.movementX + element.offsetLeft // Độ dài thay đổi + Vị trí left cũ
+      console.log('clientLeft', element.clientLeft)
+      // console.log('clientLeft', element.closest('.react-flow__node')?.clientLeft)
+      // console.log('changeLeftPx:', event.clientX - oldClientX)
       const widthArrow = (element.offsetWidth + 20) / 2 // độ dài mũi tên
       const maxWidthCheck = maxWidth - widthArrow
-      const test = (changeLeftPx / maxWidthCheck) * 100
-      console.log('LEFT', changeLeftPx, maxWidthCheck)
+      const changeLeftPx = event.clientX - oldClientX + (maxWidthCheck * distanceLeft) / 100 // Độ dài thay đổi + Vị trí left cũ
+
+      const test = (changeLeftPx / 2 / maxWidthCheck) * 100
+      console.log('changeLeftPx', changeLeftPx)
+      console.log('maxWidthCheck', maxWidthCheck)
+
+      // console.log('LEFT', changeLeftPx, maxWidthCheck)
       if (test > 10 && test < 95) {
-        setDistanceLeft(test)
+        startTransition(() => {
+          setDistanceLeft(test)
+        })
       }
+      // elemet.style.left = `${test}%`
+      console.log('test:', test, '%')
     }
     event.stopPropagation()
   }
@@ -83,6 +94,7 @@ export const useShapeStyle = () => {
     if (className.includes('dragArrow')) {
       setClassArrow(className.includes('dragArrow') ? 'dragArrow' : '')
       setDragging(true)
+      setOldClienX(event.clientX)
     }
   }
 
@@ -173,7 +185,7 @@ export const useShapeStyle = () => {
     ...arrowCircular,
     ...strokeStyle,
     borderTop: `30px solid ${conventionBg}`,
-    left: `${debouncedValue}%`,
+    left: `${distanceLeft}%`,
   }
   return { getShapeStyles, getArrowStyles, handleMouseMove, handleMouseDown }
 }
