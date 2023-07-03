@@ -47,8 +47,8 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
       borderColor: theme.palette.blue[300],
     },
   },
-  '&:hover fieldset': {
-    borderColor: `${theme.palette.blue[400]} !important`,
+  '&&:hover fieldset': {
+    borderColor: `${theme.palette.blue[400]}`,
   },
   borderRadius: theme.spacing(0.5),
   color: theme.palette.common.black,
@@ -64,11 +64,11 @@ const InputStyled = styled(OutlinedInput)(({ theme }) => ({
   },
 
   '&.Mui-error': {
-    '&:hover fieldset': {
-      borderColor: '#d32f2f !important',
+    '&&:hover fieldset': {
+      borderColor: theme.palette.status['error'],
     },
-    '&.Mui-focused fieldset': {
-      border: '1px solid #d32f2f !important',
+    '&&.Mui-focused fieldset': {
+      border: `1px solid ${theme.palette.status['error']}`,
     },
   },
 }))

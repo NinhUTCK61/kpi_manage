@@ -194,6 +194,10 @@ const second = {
   0: '#FFE5F4',
 }
 
+const status = {
+  error: '#d32f2f',
+}
+
 export {
   base,
   black,
@@ -209,6 +213,7 @@ export {
   orange,
   red,
   second,
+  status,
   trueGrey,
   yellow,
 }
