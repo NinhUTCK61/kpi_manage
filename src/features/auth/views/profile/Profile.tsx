@@ -72,7 +72,7 @@ export const Profile = () => {
 
       <BackgroundProfile onDrop={onSelectImage} />
 
-      <ModalUploadImage image={image || []} isOpen={!!image} onCloseModal={onCloseModal} />
+      <ModalUploadImage image={image || []} onCloseModal={onCloseModal} />
 
       <FormProfile
         isLoading={isLoading}

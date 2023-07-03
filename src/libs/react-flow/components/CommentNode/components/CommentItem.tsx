@@ -1,6 +1,7 @@
 import { base, greyScale } from '@/libs/config/theme'
 import { isCommentNode } from '@/libs/react-flow/helper'
 import { CommentOutputType, CommentReplyOutputType } from '@/libs/schema/comment'
+import { getImageUrl } from '@/libs/utils/misc'
 import { ClickAwayListener, Popper, Stack, Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
@@ -90,7 +91,13 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
         <Stack direction="row" spacing={1}>
           <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
             {data?.author.image ? (
-              <Image src={data?.author.image} alt="file" width={32} height={32} />
+              <Image
+                src={getImageUrl(data?.author.image)}
+                alt="file"
+                width={24}
+                height={24}
+                style={{ borderRadius: '100%' }}
+              />
             ) : (
               <BackgroundDefault width={24} height={24} justifyContent="center" alignItems="center">
                 <Typography variant="body2">{data?.author.name?.split('')[0]}</Typography>

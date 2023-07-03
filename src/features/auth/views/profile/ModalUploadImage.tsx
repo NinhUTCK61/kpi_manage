@@ -9,11 +9,10 @@ import { useUpdateImageProfile } from './hooks'
 
 type ModalUploadImageTypes = {
   image: File[]
-  isOpen: boolean
   onCloseModal: () => void
 }
 
-const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, isOpen, onCloseModal }) => {
+const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, onCloseModal }) => {
   const [previewURL, setPreviewURL] = useState('')
   const [nameImage, setNameImage] = useState('')
   const { data: session, update } = useSession()
