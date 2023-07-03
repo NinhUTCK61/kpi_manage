@@ -1,9 +1,10 @@
 import { ShapeType } from '@/features/node/constant'
+import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { api } from '@/libs/api'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
-import { MouseEvent, useCallback, useState } from 'react'
-import { useEventListener } from 'usehooks-ts'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
+import { useDebounce, useEventListener } from 'usehooks-ts'
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -35,11 +36,11 @@ const sizeStyleMapping = {
 const DEFAULT_SIZE_ARROW = 20
 const BORDER_SIZE_ARROW = 30
 const TOP_DEFAULT = 30
-const LEFTCLICK = 0
+const LEFT_DEFAULT = 50
 const RIGHTCLICK = 2
 
 export const useShapeStyle = () => {
-  const { data, isResizing, isEditing } = useSpeechBallonContext()
+  const { data, isResizing, isResizeEnabled } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'
@@ -49,20 +50,24 @@ export const useShapeStyle = () => {
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
   const borderStyle = borderStyleMapping[shapeType]
   const sizeStyle = sizeStyleMapping[shapeType]
-  const [dragging, setDragging] = useState<boolean>(false)
 
-  const { isLoading, mutate } = api.speechBallon.update.useMutation()
+  const { updateReactFlowNode } = useNodeUpdateHandler()
+
+  const [dragging, setDragging] = useState<boolean>(false)
+  const [distanceLeft, setDistanceLeft] = useState<number>(LEFT_DEFAULT)
+  const debouncedValue = useDebounce<number>(distanceLeft, 500)
+
+  const { isLoading } = api.speechBallon.update.useMutation()
   const handleMouseMove = (event: MouseEvent<HTMLElement>, maxWidth: number) => {
     if (dragging) {
-      //dx la khoang cach giua vi tri chuot va vi tri ban dau
       const element = event.target as HTMLElement
       const changeLeftPx = event.movementX + element.offsetLeft // Độ dài thay đổi + Vị trí left cũ
-
       const widthArrow = (element.offsetWidth + 20) / 2 // độ dài mũi tên
       const maxWidthCheck = maxWidth - widthArrow
-      const minWidthCheck = widthArrow
-      if (changeLeftPx < maxWidthCheck && changeLeftPx > minWidthCheck + 1) {
-        element.style.left = `${changeLeftPx}px`
+      const test = (changeLeftPx / maxWidthCheck) * 100
+      console.log('LEFT', changeLeftPx, maxWidthCheck)
+      if (test > 10 && test < 95) {
+        setDistanceLeft(test)
       }
     }
     event.stopPropagation()
@@ -71,44 +76,64 @@ export const useShapeStyle = () => {
   const [classArrow, setClassArrow] = useState<string>('')
   const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    console.log(event.button)
-    console.log('moseDown')
     if (event.button === RIGHTCLICK) return
     if (shapeType === ShapeType.CIRCULAR) return
     const className = (event.target as HTMLElement).className.split(' ')
-    if (!isEditing) return
+    if (!isResizeEnabled) return
     if (className.includes('dragArrow')) {
       setClassArrow(className.includes('dragArrow') ? 'dragArrow' : '')
       setDragging(true)
     }
   }
 
-  console.log('dragging:', dragging)
-  console.log('isEditing:', isEditing)
-  console.log('classArrow:', classArrow)
   const handleMouseUp = useCallback(
     (buttonMouse: number) => {
       if (!dragging) return
       if (buttonMouse === RIGHTCLICK) return
       if (isLoading) return
-      if (!isEditing) return
+      if (!isResizeEnabled) return
 
       setDragging(false)
-      console.log('mouseUp-dragging:', dragging)
-      console.log('mouseUp-isEditing:', isEditing)
-      console.log('mouseUp-classArrow:', classArrow)
 
       if (classArrow) {
-        console.log('callApi:', classArrow)
-        mutate({ ...data })
+        const dataUpdate = {
+          id: data.id,
+          is_saved: data.is_saved,
+        }
+
+        if (style.leftArrow === distanceLeft) return
+
+        const newNodeStyle = JSON.stringify({ ...style, leftArrow: distanceLeft })
+
+        updateReactFlowNode(
+          {
+            ...dataUpdate,
+            node_style: newNodeStyle,
+          },
+          'speech_ballon',
+        )
       }
       setClassArrow('')
-      console.log('setClassArrow')
     },
-    [classArrow, data, dragging, isEditing, isLoading, mutate],
+    [
+      classArrow,
+      data,
+      dragging,
+      isLoading,
+      isResizeEnabled,
+      distanceLeft,
+      style,
+      updateReactFlowNode,
+    ],
   )
 
   useEventListener('mouseup', (e) => handleMouseUp(e.button))
+
+  useEffect(() => {
+    const nodeStyle = JSON.parse(data.node_style || '{}')
+    if (!nodeStyle) return
+    setDistanceLeft(nodeStyle.leftArrow || LEFT_DEFAULT)
+  }, [data, style.width])
 
   const arrowCircular = {
     ...(shapeType === ShapeType.CIRCULAR && {
@@ -148,6 +173,7 @@ export const useShapeStyle = () => {
     ...arrowCircular,
     ...strokeStyle,
     borderTop: `30px solid ${conventionBg}`,
+    left: `${debouncedValue}%`,
   }
   return { getShapeStyles, getArrowStyles, handleMouseMove, handleMouseDown }
 }
