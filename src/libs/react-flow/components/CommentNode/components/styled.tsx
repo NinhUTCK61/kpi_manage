@@ -13,6 +13,8 @@ const CommentContainer = styled(Box)({
   width: 320,
   background: trueGrey[50],
   position: 'relative',
+  margin: 8,
+  marginTop: 80,
 })
 
 const HeaderComment = styled(Stack)({
@@ -61,14 +63,6 @@ const ButtonSendContainer = styled(Stack)({
   bottom: 0,
 })
 
-const CommentActive = styled(CommentFormContainer)({
-  '& .MuiPaper-root': {
-    backgroundColor: greyScale[100],
-  },
-  marginLeft: 8,
-  marginTop: 36,
-})
-
 const ButtonMenu = styled(ButtonBase)(({ theme }) => ({
   ...theme.typography.body2,
   color: theme.palette.base.white,
@@ -106,7 +100,6 @@ export {
   ButtonAction,
   ButtonMenu,
   ButtonSendContainer,
-  CommentActive,
   CommentContainer,
   CommentFormContainer,
   CommentReplyContainer,
