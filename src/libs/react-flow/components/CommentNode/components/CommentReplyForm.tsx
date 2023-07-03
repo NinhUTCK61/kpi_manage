@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/libs/utils/misc'
 import { Stack, Typography } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useSession } from 'next-auth/react'
@@ -71,7 +72,13 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
     >
       <Stack width={32} height={48} borderRadius="100%" direction="row" alignItems="center">
         {data?.user.image ? (
-          <Image src={data?.user.image} alt="file" width={32} height={32} />
+          <Image
+            src={getImageUrl(data?.user.image)}
+            alt="file"
+            width={32}
+            height={32}
+            style={{ borderRadius: '100%' }}
+          />
         ) : (
           <BackgroundDefault width={32} height={32} justifyContent="center" alignItems="center">
             <Typography variant="body1">{data?.user.name?.split('')[0]}</Typography>
