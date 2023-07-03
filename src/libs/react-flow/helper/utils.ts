@@ -1,6 +1,6 @@
 import { CommentReplyOutputType, CreateCommentOutputType } from '@/libs/schema/comment'
 import { ReactFlowNodeOutputType } from '@/libs/schema/node'
-import { differenceWith } from 'lodash'
+import { differenceWith, isString } from 'lodash'
 import { Node as RFNode } from 'reactflow'
 import { NodeFormProps } from '../components'
 import { NODE_CLASS_NAME, PANE_CLASS_NAME } from '../constant'
@@ -87,5 +87,6 @@ export function isStyleAreaClick(e: MouseEvent | TouchEvent) {
 
 export function isPaneClick(e: MouseEvent | TouchEvent) {
   const targetClass = (e.target as HTMLDivElement).className
+  if (!isString(targetClass)) return
   return targetClass === PANE_CLASS_NAME || targetClass.split(' ').includes(NODE_CLASS_NAME)
 }
