@@ -19,5 +19,4 @@ docker run --rm --name $APP_NAME -d -p $PORT:3000 $CI_REGISTRY_IMAGE:latest
 docker run --rm $CI_REGISTRY_IMAGE yarn prisma migrate deploy
 
 # Remove old images
-docker images "$CI_REGISTRY_IMAGE" --format '{{.Repository}}:{{.Tag}} {{.ID}}' \
-| grep -v ':latest' | awk '{print $2}' | xargs -r docker rmi || true
+docker image prune -f
