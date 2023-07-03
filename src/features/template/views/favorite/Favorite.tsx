@@ -1,0 +1,114 @@
+import { DialogAction, Layout } from '@/libs/shared/components'
+import { Grid } from '@mui/material'
+
+import { api } from '@/libs/api'
+import { useModalState } from '@/libs/hooks'
+import { DialogActionType } from '@/libs/shared/types/utils'
+import { useTranslation } from 'next-i18next'
+import { useState } from 'react'
+import { ThumbnailAction } from '../../components'
+import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
+import { FileAction } from '../../types/template'
+import { TemplateItem } from '../home/components'
+
+export const Favorite = () => {
+  const { t } = useTranslation(['home', 'favorite'])
+  const [nodeId, setNodeId] = useState<string>()
+  const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
+
+  const {
+    isOpen: isOpenThumbnail,
+    onOpen: openDialogThumbnail,
+    onClose: closeDialogThumbnail,
+  } = useModalState()
+
+  const mutationRestore = useRestoreTemplate()
+  const mutationDelete = useDeleteTemplate()
+
+  const handleFileAction = (id: string, type: FileAction) => {
+    setNodeId(id)
+    if (type === FileAction.UpdateThumbnail) {
+      openDialogThumbnail()
+    } else {
+      setAction(type)
+    }
+  }
+
+  const handleConfirmAction = () => {
+    if (!action) return
+    OPTION_ACTIONS[action].action()
+    setAction(null)
+  }
+
+  const OPTION_ACTIONS = {
+    [FileAction.Delete]: {
+      title: t('delete_file'),
+      description: t('detail_dialog_delete'),
+      handleConfirm: handleConfirmAction,
+      type: 'delete',
+      textSubmit: t('delete'),
+      action: () =>
+        mutationDelete.mutate({
+          id: String(nodeId),
+        }),
+    },
+    [FileAction.Restore]: {
+      title: t('restore_title'),
+      description: t('detail_dialog_restore'),
+      handleConfirm: handleConfirmAction,
+      type: 'warning',
+      textSubmit: t('restore_confirm'),
+      action: () =>
+        mutationRestore.mutate({
+          id: String(nodeId),
+        }),
+    },
+    [FileAction.DeletePermanently]: {
+      title: t('permanently_delete'),
+      description: t('detail_dialog_delete_per'),
+      handleConfirm: handleConfirmAction,
+      type: 'delete',
+      textSubmit: t('delete'),
+      action: () =>
+        mutationDelete.mutate({
+          id: String(nodeId),
+          is_permanently: true,
+        }),
+    },
+  }
+  const { data: favoriteData = [], refetch } = api.template.favorite.useQuery()
+  return (
+    <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
+      <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
+        {favoriteData.map((template, index) => (
+          <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
+            <TemplateItem
+              template={template}
+              handleFileAction={handleFileAction}
+              refetch={refetch}
+            />
+          </Grid>
+        ))}
+      </Grid>
+
+      {action && (
+        <DialogAction
+          open={!!action}
+          handleClose={() => setAction(null)}
+          handleConfirm={OPTION_ACTIONS[action].handleConfirm}
+          title={OPTION_ACTIONS[action].title}
+          description={OPTION_ACTIONS[action].description}
+          type={OPTION_ACTIONS[action].type as DialogActionType}
+          textSubmit={OPTION_ACTIONS[action].textSubmit}
+        />
+      )}
+
+      <ThumbnailAction
+        isOpen={isOpenThumbnail}
+        onClose={closeDialogThumbnail}
+        onOpen={openDialogThumbnail}
+        idTemplate={String(nodeId)}
+      />
+    </Layout>
+  )
+}
