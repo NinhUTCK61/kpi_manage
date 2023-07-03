@@ -156,7 +156,6 @@ const defaultTheme: Theme = createTheme({
         body: {
           backgroundColor: base.white,
           color: black[900],
-          overflow: 'hidden',
         },
       },
     },
