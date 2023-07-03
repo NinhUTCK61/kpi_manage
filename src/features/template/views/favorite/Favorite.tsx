@@ -1,15 +1,16 @@
-import { DialogAction, Layout } from '@/libs/shared/components'
-import { Grid } from '@mui/material'
-
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
+import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
+import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
 import { TemplateItem } from '../home/components'
+import EmptyFavorite from '/public/assets/svgs/favorite.svg'
 
 export const Favorite = () => {
   const { t } = useTranslation(['home', 'favorite'])
@@ -76,20 +77,40 @@ export const Favorite = () => {
         }),
     },
   }
-  const { data: favoriteData = [], refetch } = api.template.favorite.useQuery()
+  const { data: favoriteData = [], refetch, isLoading } = api.template.favorite.useQuery()
+
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
-      <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
-        {favoriteData.map((template, index) => (
-          <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
-            <TemplateItem
-              template={template}
-              handleFileAction={handleFileAction}
-              refetch={refetch}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {isLoading ? (
+        <Stack direction="row" justifyContent="center" alignItems="center" height="100%">
+          <CircularProgress size="2rem" />
+        </Stack>
+      ) : favoriteData.length > 0 ? (
+        <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
+          {favoriteData.map((template, index) => (
+            <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
+              <TemplateItem
+                template={template}
+                handleFileAction={handleFileAction}
+                refetch={refetch}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Stack direction="column" alignItems="center" height="100%" mt={5}>
+          <Image
+            src={EmptyFavorite}
+            width={200}
+            height={200}
+            alt={t('favorite_not_yet', { ns: 'favorite' })}
+          />
+
+          <Typography variant="body2" mt={2}>
+            {t('favorite_not_yet', { ns: 'favorite' })}
+          </Typography>
+        </Stack>
+      )}
 
       {action && (
         <DialogAction

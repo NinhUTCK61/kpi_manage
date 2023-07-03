@@ -17,8 +17,13 @@ const Sidebar = () => {
   const menus = [
     { title: t('sidebar.home'), icon: HomeIcon, href: '/' },
     { title: t('sidebar.favorite'), icon: FavoriteIcon, href: '/favorite' },
-    { title: t('sidebar.consultation'), icon: ConsultationIcon, href: '/consultation' },
-    { title: t('sidebar.knowledge_blog'), icon: KnowledgeIcon, href: '/knowledge' },
+    {
+      title: t('sidebar.consultation'),
+      icon: ConsultationIcon,
+      href: '/consultation',
+      disable: true,
+    },
+    { title: t('sidebar.knowledge_blog'), icon: KnowledgeIcon, href: '/knowledge', disable: true },
     // { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
     // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
   ]

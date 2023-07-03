@@ -16,6 +16,7 @@ type ListItemButtonType = {
     title: string
     icon: StaticImageData
     href: string
+    disable?: boolean
   }
 }
 
@@ -31,7 +32,11 @@ const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   }
 
   return (
-    <StyleListItemButton active={checkHref(menu.href)} onClick={handleDirection}>
+    <StyleListItemButton
+      active={checkHref(menu.href)}
+      onClick={handleDirection}
+      disabled={menu.disable}
+    >
       <ListItemIcon>
         <Image src={menu.icon} alt={menu.title} />
       </ListItemIcon>
