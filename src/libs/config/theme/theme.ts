@@ -13,6 +13,7 @@ import {
   grey,
   greyScale,
   red,
+  status,
   trueGrey,
   yellow,
 } from './colors'
@@ -40,6 +41,7 @@ declare module '@mui/material' {
     customPrimary: typeof customPrimary
     blue: typeof blue
     green: typeof green
+    status: typeof status
   }
 
   interface PaletteOptions {
@@ -54,6 +56,7 @@ declare module '@mui/material' {
     customPrimary: typeof customPrimary
     blue: typeof blue
     green: typeof green
+    status: typeof status
   }
 }
 
@@ -102,6 +105,7 @@ const defaultTheme: Theme = createTheme({
     customPrimary,
     blue,
     green,
+    status,
   },
   typography: {
     h1: {
