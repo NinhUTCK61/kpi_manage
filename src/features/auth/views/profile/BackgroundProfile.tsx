@@ -1,7 +1,6 @@
 import { api } from '@/libs/api'
-import { greyScale } from '@/libs/config/theme'
 import { getImageUrl } from '@/libs/utils/misc'
-import { Box, styled } from '@mui/material'
+import { Box, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
 import CameraEdit from '/public/assets/svgs/camera.svg'
@@ -25,17 +24,21 @@ export const BackgroundProfile: React.FC<BackgroundProfileType> = ({ onDrop }) =
     <Box {...getRootProps({ className: 'dropzone' })} mb={2} width={100}>
       <input {...getInputProps()} />
 
-      {data?.image ? (
-        <AvatarWhenEit>
+      <AvatarWhenEit>
+        {data?.image ? (
           <CustomImage src={getImageUrl(data.image)} alt="avatar" width={100} height={100} />
+        ) : (
+          <Stack width={100} height={100} justifyContent="center" alignItems="center">
+            <Typography variant="h1" fontSize={64}>
+              {data?.name?.split('')[0]}
+            </Typography>
+          </Stack>
+        )}
 
-          <Camera>
-            <Image src={CameraEdit} width={20} height={20} alt="choose avatar" />
-          </Camera>
-        </AvatarWhenEit>
-      ) : (
-        <Box width={100} height={100} bgcolor={greyScale[300]} borderRadius="100%"></Box>
-      )}
+        <Camera>
+          <Image src={CameraEdit} width={20} height={20} alt="choose avatar" />
+        </Camera>
+      </AvatarWhenEit>
     </Box>
   )
 }

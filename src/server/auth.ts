@@ -41,9 +41,10 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
       }
-      if (trigger === 'update' && session?.image) {
+      if (trigger === 'update') {
         // Note, that `session` can be any arbitrary object, remember to validate it!
-        token.picture = session.image
+        token.picture = session?.image || token.picture
+        token.name = session?.name || token.name
       }
       return token
     },
@@ -57,6 +58,7 @@ export const authOptions: NextAuthOptions = {
 
         // Make sure the updated value is reflected on the client
         session.user.image = token.picture
+        session.user.name = token.name
       }
       return session
     },

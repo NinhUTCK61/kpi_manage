@@ -3,6 +3,7 @@ import { UserProfile, UserProfileType } from '@/libs/schema/profile'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Typography } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -15,6 +16,8 @@ export const Profile = () => {
   const { t } = useTranslation('profile')
   const { mutate, isLoading } = api.profile.update.useMutation()
   const { data } = api.profile.me.useQuery()
+  const utils = api.useContext()
+  const { update } = useSession()
   const [isEdit, setEdit] = useState(false)
   const [image, setImage] = useState<File[] | null>()
 
@@ -41,17 +44,21 @@ export const Profile = () => {
 
   const onSubmit: SubmitHandler<UserProfileType> = (data) => {
     mutate(data, {
-      onSuccess() {
+      onSuccess(data) {
         enqueueSnackbar(t('update_profile_success'), {
           variant: 'success',
         })
 
+        update({ name: data.name })
         setEdit(false)
       },
       onError(error) {
         enqueueSnackbar(t(error.message, { ns: 'common' }), {
           variant: 'error',
         })
+      },
+      onSettled() {
+        utils.profile.me.invalidate()
       },
     })
   }
