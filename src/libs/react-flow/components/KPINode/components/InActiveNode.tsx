@@ -1,5 +1,4 @@
 import { ViewPortAction } from '@/features/node/constant'
-import { NODE_CLASS_NAME } from '@/libs/react-flow/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { formatNumber } from '@/libs/utils/format'
 import { Position } from 'reactflow'
@@ -34,16 +33,15 @@ const InActive: React.FC = () => {
           pointerEvents: 'none',
         }),
       }}
-      className={NODE_CLASS_NAME}
     >
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <TextOverflow variant="body2" mb={0.5} style={style} className={NODE_CLASS_NAME}>
+      <TextOverflow variant="body2" mb={0.5} style={style}>
         {`${data.input_title}`}
       </TextOverflow>
 
       {data.input_value !== '' && (
-        <TextOverflow variant="body2" style={style} className={NODE_CLASS_NAME}>
+        <TextOverflow variant="body2" style={style}>
           {`${formatNumber(data.value2number || 0)} ${data.unit && `(${data.unit})`} `}
         </TextOverflow>
       )}
@@ -63,9 +61,7 @@ const InActive: React.FC = () => {
         )}
       </RightHandler>
 
-      <TextId variant="caption" className={NODE_CLASS_NAME}>
-        {data.slug}
-      </TextId>
+      <TextId variant="caption">{data.slug}</TextId>
     </NodeInActiveContainer>
   )
 }

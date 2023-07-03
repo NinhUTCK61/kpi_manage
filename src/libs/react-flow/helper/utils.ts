@@ -87,6 +87,7 @@ export function isStyleAreaClick(e: MouseEvent | TouchEvent) {
 
 export function isPaneClick(e: MouseEvent | TouchEvent) {
   const targetClass = (e.target as HTMLDivElement).className
+  const targetClassKpiNode = (e.target as HTMLDivElement)?.closest(NODE_CLASS_NAME)?.className
   if (!isString(targetClass)) return
-  return targetClass === PANE_CLASS_NAME || targetClass.split(' ').includes(NODE_CLASS_NAME)
+  return targetClass === PANE_CLASS_NAME || targetClassKpiNode
 }
