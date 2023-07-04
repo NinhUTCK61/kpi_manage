@@ -11,11 +11,12 @@ export const classSpeechBallon = 'speechBallonNode'
 export const ArrowSpeechBallon: React.FC<{ refSpeechBallon: React.RefObject<HTMLDivElement> }> = ({
   refSpeechBallon,
 }) => {
-  const { getArrowStyles, handleMouseDown, handleMouseMove } = useShapeStyle()
+  const { getArrowStyles, handleMouseDown, handleMouseMove, handleMouseLeave } = useShapeStyle()
   const onMouseMove = (event: MouseEvent<HTMLElement>) => {
     if (refSpeechBallon?.current) {
       const maxWidth = (refSpeechBallon.current as HTMLElement).clientWidth
-      handleMouseMove(event, maxWidth)
+      const clientX = (refSpeechBallon.current as HTMLElement).getBoundingClientRect().left
+      handleMouseMove(event, maxWidth, clientX)
     }
   }
 
@@ -25,6 +26,7 @@ export const ArrowSpeechBallon: React.FC<{ refSpeechBallon: React.RefObject<HTML
     <Arrow
       onMouseDown={handleMouseDown}
       onMouseMove={onMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={classArrow}
       sx={getArrowStyles}
       ref={refArrow}
