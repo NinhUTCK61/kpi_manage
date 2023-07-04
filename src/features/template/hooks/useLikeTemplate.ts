@@ -18,11 +18,28 @@ const useLikeTemplate = () => {
         ),
       )
 
-      return { prevData }
+      const prevFavData = utils.template.favorite.getData()
+      const templateData = prevData?.find((el) => el.template_id === template.id)
+
+      if (templateData) {
+        if (template.is_favorite) {
+          utils.template.favorite.setData(undefined, (old = []) => [
+            ...old,
+            { ...templateData, is_favorite: true },
+          ])
+          return
+        }
+        utils.template.favorite.setData(undefined, (old = []) =>
+          old.filter((el) => el.template_id !== template.id),
+        )
+      }
+
+      return { prevData, prevFavData }
     },
     onError: (err, _, ctx) => {
       showError(err, t('like_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
+      utils.template.favorite.setData(undefined, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
@@ -49,6 +66,7 @@ const useLikeTemplate = () => {
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 

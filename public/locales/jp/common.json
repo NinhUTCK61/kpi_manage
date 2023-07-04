@@ -135,5 +135,6 @@
   "select_year": "（年）",
   "select_month": "（月）",
   "select_day": "（日）",
-  "verify_resend": "再送信"
+  "verify_resend": "再送信",
+  "no_files": "ファイルがありません。"
 }

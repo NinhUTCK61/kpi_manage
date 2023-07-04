@@ -135,5 +135,6 @@
   "select_year": "Year",
   "select_month": "Month",
   "select_day": "Day",
-  "verify_resend": "Resend email"
+  "verify_resend": "Resend email",
+  "no_files": "You don't have any files"
 }
