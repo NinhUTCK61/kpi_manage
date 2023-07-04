@@ -32,7 +32,7 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
           name="first_name"
           label={t('first_name') as string}
           fullWidth
-          placeholder={t('enter_first_name') as string}
+          placeholder={t('enter_first_name', { ns: 'profile' }) as string}
           readOnly={!isEdit}
           disabled={isLoading}
           required={isEdit}
@@ -43,7 +43,7 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
           name="name"
           label={t('last_name') as string}
           fullWidth
-          placeholder={t('enter_last_name') as string}
+          placeholder={t('enter_last_name', { ns: 'profile' }) as string}
           readOnly={!isEdit}
           disabled={isLoading}
           required={isEdit}
@@ -55,7 +55,7 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
         name="company_name"
         label={t('company_name', { ns: 'profile' }) as string}
         fullWidth
-        placeholder={t('enter_email') as string}
+        placeholder={t('enter_company_name') as string}
         readOnly={!isEdit}
         disabled={isLoading}
         required={isEdit}
