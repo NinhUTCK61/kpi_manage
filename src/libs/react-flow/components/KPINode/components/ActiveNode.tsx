@@ -33,25 +33,23 @@ const Active: React.FC = () => {
 
       <NodeForm changeFormFocusState={changeFormFocusState} />
 
-      {isShowBottomHandler && (
-        <BottomHandler
-          type="target"
-          position={Position.Bottom}
-          onClick={(e) => handleAddNode(e, data.parent_node_id as string)}
-        >
-          <IconImage src={AddIcon} alt="add" />
-        </BottomHandler>
-      )}
+      <BottomHandler
+        type="target"
+        position={Position.Bottom}
+        onClick={(e) => handleAddNode(e, data.parent_node_id as string)}
+        hidden={!isShowBottomHandler}
+      >
+        <IconImage src={AddIcon} alt="add" />
+      </BottomHandler>
 
-      {isShowRightHandler && (
-        <RightHandler
-          type="source"
-          position={Position.Right}
-          onClick={(e) => handleAddNode(e, data.id)}
-        >
-          <IconImage src={AddIcon} alt="add" />
-        </RightHandler>
-      )}
+      <RightHandler
+        type="source"
+        position={Position.Right}
+        onClick={(e) => handleAddNode(e, data.id)}
+        hidden={!isShowRightHandler}
+      >
+        <IconImage src={AddIcon} alt="add" />
+      </RightHandler>
     </NodeActiveContainer>
   )
 }

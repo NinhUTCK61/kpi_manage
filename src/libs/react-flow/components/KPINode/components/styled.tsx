@@ -29,7 +29,9 @@ const LeftHandler = styled(Handle)({
   },
 })
 
-const BottomHandler = styled(Handle)({
+const BottomHandler = styled(Handle, {
+  shouldForwardProp: (prop) => prop !== 'hidden',
+})<{ hidden?: boolean }>(({ hidden }) => ({
   '&.react-flow__handle-bottom': {
     bottom: -20,
     cursor: 'pointer',
@@ -37,12 +39,16 @@ const BottomHandler = styled(Handle)({
     width: 0,
     minWidth: 0,
     minHeight: 0,
+    ...(hidden && {
+      pointerEvents: 'none',
+      opacity: 0,
+    }),
   },
-})
+}))
 
 const RightHandler = styled(Handle, {
   shouldForwardProp: (prop) => prop !== 'disabled',
-})<{ disabled?: boolean }>(({ disabled }) => ({
+})<{ disabled?: boolean; hidden?: boolean }>(({ disabled, hidden }) => ({
   '&.react-flow__handle-right': {
     top: '50%',
     right: -20,
@@ -53,6 +59,10 @@ const RightHandler = styled(Handle, {
     cursor: 'unset',
     ...(disabled && {
       pointerEvents: 'none',
+    }),
+    ...(hidden && {
+      pointerEvents: 'none',
+      opacity: 0,
     }),
   },
 }))
