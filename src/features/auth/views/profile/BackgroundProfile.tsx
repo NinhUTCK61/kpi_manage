@@ -1,8 +1,9 @@
 import { api } from '@/libs/api'
 import { getImageUrl } from '@/libs/utils/misc'
-import { Box, Stack, Typography, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
+import ProfileImage from '/public/assets/imgs/profile.png'
 import CameraEdit from '/public/assets/svgs/camera.svg'
 
 type BackgroundProfileType = {
@@ -25,15 +26,12 @@ export const BackgroundProfile: React.FC<BackgroundProfileType> = ({ onDrop }) =
       <input {...getInputProps()} />
 
       <AvatarWhenEit>
-        {data?.image ? (
-          <CustomImage src={getImageUrl(data.image)} alt="avatar" width={100} height={100} />
-        ) : (
-          <Stack width={100} height={100} justifyContent="center" alignItems="center">
-            <Typography variant="h1" fontSize={64}>
-              {data?.name?.split('')[0]}
-            </Typography>
-          </Stack>
-        )}
+        <CustomImage
+          src={data?.image ? getImageUrl(data.image) : ProfileImage}
+          alt="avatar"
+          width={100}
+          height={100}
+        />
 
         <Camera>
           <Image src={CameraEdit} width={20} height={20} alt="choose avatar" />
