@@ -4,7 +4,7 @@ import { api } from '@/libs/api'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
 import { MouseEvent, startTransition, useCallback, useEffect, useState } from 'react'
-import { useDebounce, useEventListener } from 'usehooks-ts'
+import { useEventListener } from 'usehooks-ts'
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -55,31 +55,21 @@ export const useShapeStyle = () => {
 
   const [dragging, setDragging] = useState(false)
   const [distanceLeft, setDistanceLeft] = useState(LEFT_DEFAULT)
-  const debouncedValue = useDebounce<number>(distanceLeft, 100)
-  const [oldClientX, setOldClienX] = useState(0)
   const { isLoading } = api.speechBallon.update.useMutation()
-  const handleMouseMove = (event: MouseEvent<HTMLElement>, maxWidth: number) => {
+
+  const handleMouseMove = (event: MouseEvent<HTMLElement>, maxWidth: number, clientX: number) => {
     if (dragging) {
       const element = event.target as HTMLElement
-      console.log('clientLeft', element.clientLeft)
-      // console.log('clientLeft', element.closest('.react-flow__node')?.clientLeft)
-      // console.log('changeLeftPx:', event.clientX - oldClientX)
       const widthArrow = (element.offsetWidth + 20) / 2 // độ dài mũi tên
       const maxWidthCheck = maxWidth - widthArrow
-      const changeLeftPx = event.clientX - oldClientX + (maxWidthCheck * distanceLeft) / 100 // Độ dài thay đổi + Vị trí left cũ
+      const changeLeftPx = event.clientX - clientX // delta x
 
-      const test = (changeLeftPx / 2 / maxWidthCheck) * 100
-      console.log('changeLeftPx', changeLeftPx)
-      console.log('maxWidthCheck', maxWidthCheck)
-
-      // console.log('LEFT', changeLeftPx, maxWidthCheck)
-      if (test > 10 && test < 95) {
+      const test = (changeLeftPx / maxWidthCheck) * 100
+      if (test > 20 && test < 80) {
         startTransition(() => {
           setDistanceLeft(test)
         })
       }
-      // elemet.style.left = `${test}%`
-      console.log('test:', test, '%')
     }
     event.stopPropagation()
   }
@@ -94,9 +84,27 @@ export const useShapeStyle = () => {
     if (className.includes('dragArrow')) {
       setClassArrow(className.includes('dragArrow') ? 'dragArrow' : '')
       setDragging(true)
-      setOldClienX(event.clientX)
     }
   }
+
+  const handleUpdate = useCallback(() => {
+    const dataUpdate = {
+      id: data.id,
+      is_saved: data.is_saved,
+    }
+
+    if (style.leftArrow === distanceLeft) return
+
+    const newNodeStyle = JSON.stringify({ ...style, leftArrow: distanceLeft })
+
+    updateReactFlowNode(
+      {
+        ...dataUpdate,
+        node_style: newNodeStyle,
+      },
+      'speech_ballon',
+    )
+  }, [data.id, data.is_saved, distanceLeft, style, updateReactFlowNode])
 
   const handleMouseUp = useCallback(
     (buttonMouse: number) => {
@@ -108,36 +116,16 @@ export const useShapeStyle = () => {
       setDragging(false)
 
       if (classArrow) {
-        const dataUpdate = {
-          id: data.id,
-          is_saved: data.is_saved,
-        }
-
-        if (style.leftArrow === distanceLeft) return
-
-        const newNodeStyle = JSON.stringify({ ...style, leftArrow: distanceLeft })
-
-        updateReactFlowNode(
-          {
-            ...dataUpdate,
-            node_style: newNodeStyle,
-          },
-          'speech_ballon',
-        )
+        handleUpdate()
       }
       setClassArrow('')
     },
-    [
-      classArrow,
-      data,
-      dragging,
-      isLoading,
-      isResizeEnabled,
-      distanceLeft,
-      style,
-      updateReactFlowNode,
-    ],
+    [classArrow, dragging, handleUpdate, isLoading, isResizeEnabled],
   )
+
+  const handleMouseLeave = (e: MouseEvent<HTMLElement>) => {
+    handleMouseUp(e.button)
+  }
 
   useEventListener('mouseup', (e) => handleMouseUp(e.button))
 
@@ -187,5 +175,5 @@ export const useShapeStyle = () => {
     borderTop: `30px solid ${conventionBg}`,
     left: `${distanceLeft}%`,
   }
-  return { getShapeStyles, getArrowStyles, handleMouseMove, handleMouseDown }
+  return { getShapeStyles, getArrowStyles, handleMouseMove, handleMouseDown, handleMouseLeave }
 }
