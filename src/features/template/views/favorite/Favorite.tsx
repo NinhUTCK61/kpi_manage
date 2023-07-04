@@ -10,10 +10,10 @@ import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
 import { TemplateItem } from '../home/components'
-import EmptyFavorite from '/public/assets/svgs/favorite.svg'
+import EmptyFile from '/public/assets/svgs/no_file.svg'
 
 export const Favorite = () => {
-  const { t } = useTranslation(['home', 'favorite'])
+  const { t } = useTranslation(['home', 'favorite', 'common'])
   const [nodeId, setNodeId] = useState<string>()
   const [action, setAction] = useState<Exclude<FileAction, FileAction.UpdateThumbnail> | null>(null)
 
@@ -99,15 +99,10 @@ export const Favorite = () => {
         </Grid>
       ) : (
         <Stack direction="column" alignItems="center" height="100%" mt={5}>
-          <Image
-            src={EmptyFavorite}
-            width={200}
-            height={200}
-            alt={t('favorite_not_yet', { ns: 'favorite' })}
-          />
+          <Image src={EmptyFile} width={200} height={200} alt={t('no_files', { ns: 'common' })} />
 
           <Typography variant="body2" mt={2}>
-            {t('favorite_not_yet', { ns: 'favorite' })}
+            {t('no_files', { ns: 'common' })}
           </Typography>
         </Stack>
       )}
