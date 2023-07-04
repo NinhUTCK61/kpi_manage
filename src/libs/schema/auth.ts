@@ -2,7 +2,12 @@ import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NonEmptyPassword } from './utils'
 
-export const emailPolicySchema = z.string().min(1, { message: 'error.message_email' }).email()
+const regExpEmail = /^([\w\.\+]{1,})([^\W])(@)([\w]{1,})(\.[\w]{1,})+$/
+
+export const emailPolicySchema = z
+  .string()
+  .min(1, { message: 'error.message_email' })
+  .regex(regExpEmail, { message: 'error.invalid_string_email' })
 
 export const LoginSchema = z.object({
   email: emailPolicySchema,
