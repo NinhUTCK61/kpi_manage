@@ -80,14 +80,9 @@ const Home = () => {
     },
   }
 
-  const { data, refetch, isLoading } = api.template.list.useQuery(
-    {
-      isTrash: isTrash,
-    },
-    {
-      initialData: [],
-    },
-  )
+  const { data, refetch, isLoading } = api.template.list.useQuery({
+    isTrash: isTrash,
+  })
 
   return (
     <Layout title={t('seo_title')}>
@@ -105,7 +100,7 @@ const Home = () => {
         <Stack direction="row" justifyContent="center" alignItems="center" height="100%">
           <CircularProgress size="2rem" />
         </Stack>
-      ) : data.length > 0 ? (
+      ) : data && data.length > 0 ? (
         <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
           {data.map((template, index) => (
             <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
