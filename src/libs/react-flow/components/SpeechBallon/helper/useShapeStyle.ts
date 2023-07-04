@@ -36,7 +36,7 @@ const sizeStyleMapping = {
 const DEFAULT_SIZE_ARROW = 20
 const BORDER_SIZE_ARROW = 30
 const TOP_DEFAULT = 30
-const LEFT_DEFAULT = 50
+const LEFT_DEFAULT = 25
 const RIGHTCLICK = 2
 
 export const useShapeStyle = () => {
