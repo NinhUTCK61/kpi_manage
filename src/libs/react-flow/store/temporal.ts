@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash'
 import type { StateCreator, StoreApi } from 'zustand'
 import { RFStore, ReactFlowNode, TemporalOptions, _TemporalState } from '../types'
 
@@ -51,16 +52,14 @@ export const temporalStateCreator = (
           nodeFocused: userGet().nodeFocused,
         }
 
-        // if (!isEqual(pastState, currentState)) {
-        //   console.log('pastState', pastState.nodes)
-        //   console.log('currentState', currentState.nodes)
-        console.log('run handle set', pastState.nodes)
-        get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
-        set({
-          pastStates: get().pastStates.concat(pastState),
-          futureStates: [],
-        })
-        // }
+        if (!isEqual(pastState, currentState)) {
+          console.log('run handle set', pastState.nodes)
+          get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
+          set({
+            pastStates: get().pastStates.concat(pastState),
+            futureStates: [],
+          })
+        }
       },
     }
   }

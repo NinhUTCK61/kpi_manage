@@ -57,7 +57,7 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       const pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
-      console.log(1211212, pastNodes, newState)
+
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
