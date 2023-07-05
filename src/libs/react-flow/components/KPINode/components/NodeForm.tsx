@@ -32,6 +32,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     const nodeData = { ...data, ...getValues() }
     const inputValue = nodeData.input_value
     if (inputValue && inputValue.startsWith('=')) {
+      //TODO: thi thoảng khi nhập xong node nó sẽ set error về rỗng nên cần check để đề phòng spam submit
       const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
       if (errorMessage) {
         setError('input_value', { message: errorMessage })

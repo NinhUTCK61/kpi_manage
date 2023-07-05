@@ -258,9 +258,7 @@ export function findParentNodes(
   const node = nodes.find((e) => e.data.slug === child && e.data.is_formula && e.data.input_value)
 
   if (!node) return [...parentNodes]
-
   const slug = getSlugFromInputValue(node.data.input_value as string)
-  console.log(`slugs of ${child}`, slug)
   for (let i = 0; i < slug.length; i++) {
     const _slug = slug[i] as string
     const _node = nodes.find((e) => e.data.slug === _slug)
