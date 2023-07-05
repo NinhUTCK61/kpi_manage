@@ -33,7 +33,10 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     const inputValue = nodeData.input_value
     if (inputValue && inputValue.startsWith('=')) {
       const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
-      if (errorMessage) setError('input_value', { message: errorMessage })
+      if (errorMessage) {
+        setError('input_value', { message: errorMessage })
+        return
+      }
     }
 
     saveHandler(nodeData)
