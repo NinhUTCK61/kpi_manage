@@ -71,7 +71,7 @@ const useFormularHanlder = () => {
     if (list.length === 0) return errorMessage
 
     if (list.includes(nodeFocused.data.slug)) {
-      errorMessage = t('error.invalid_node')
+      errorMessage = t('error.formula_repetition')
       list = [nodeFocused.data.slug]
     } else {
       errorMessage = t('error.node_not_found_1') + list.join(',') + t('error.node_not_found_2')
