@@ -97,7 +97,7 @@ const Home = () => {
       <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
 
       {isLoading ? (
-        <Stack direction="row" justifyContent="center" alignItems="center" height="100%">
+        <Stack direction="row" justifyContent="center" alignItems="center" height="70%">
           <CircularProgress size="2rem" />
         </Stack>
       ) : data && data.length > 0 ? (
@@ -113,11 +113,18 @@ const Home = () => {
           ))}
         </Grid>
       ) : (
-        <Stack direction="column" alignItems="center" height="100%" mt={5}>
-          <Image src={EmptyFile} width={200} height={200} alt={t('no_files', { ns: 'common' })} />
+        <Stack direction="column" alignItems="center" height="70%" justifyContent="center">
+          <Image
+            src={EmptyFile}
+            width={200}
+            height={200}
+            alt={
+              isTrash ? t('no_deleted_files', { ns: 'common' }) : t('no_files', { ns: 'common' })
+            }
+          />
 
           <Typography variant="body2" mt={2}>
-            {t('no_files', { ns: 'common' })}
+            {isTrash ? t('no_deleted_files', { ns: 'common' }) : t('no_files', { ns: 'common' })}
           </Typography>
         </Stack>
       )}

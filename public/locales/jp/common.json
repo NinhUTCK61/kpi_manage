@@ -137,5 +137,6 @@
   "select_month": "（月）",
   "select_day": "（日）",
   "verify_resend": "再送信",
-  "no_files": "ファイルがありません。"
+  "no_files": "ファイルがありません。",
+  "no_deleted_files": "削除されたファイルがありません。"
 }

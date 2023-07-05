@@ -81,8 +81,14 @@ export const Favorite = () => {
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
+      <Stack mb={3}>
+        <Typography variant="h3" fontWeight={700} textTransform="uppercase">
+          {t('favorite_files', { ns: 'favorite' })}
+        </Typography>
+      </Stack>
+
       {isLoading ? (
-        <Stack direction="row" justifyContent="center" alignItems="center" height="100%">
+        <Stack direction="row" justifyContent="center" alignItems="center" height="70%">
           <CircularProgress size="2rem" />
         </Stack>
       ) : favoriteData && favoriteData.length > 0 ? (
@@ -98,11 +104,16 @@ export const Favorite = () => {
           ))}
         </Grid>
       ) : (
-        <Stack direction="column" alignItems="center" height="100%" mt={5}>
-          <Image src={EmptyFile} width={200} height={200} alt={t('no_files', { ns: 'common' })} />
+        <Stack direction="column" alignItems="center" height="70%" justifyContent="center">
+          <Image
+            src={EmptyFile}
+            width={200}
+            height={200}
+            alt={t('no_favorite_files', { ns: 'favorite' })}
+          />
 
           <Typography variant="body2" mt={2}>
-            {t('no_files', { ns: 'common' })}
+            {t('no_favorite_files', { ns: 'favorite' })}
           </Typography>
         </Stack>
       )}
