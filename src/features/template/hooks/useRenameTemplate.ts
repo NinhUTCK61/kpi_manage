@@ -12,12 +12,17 @@ const useRenameTemplate = () => {
     onMutate: async (template) => {
       await utils.template.list.cancel()
       const prevData = utils.template.list.getData({ isTrash: false })
+      const prevFavData = utils.template.favorite.getData()
 
       utils.template.list.setData({ isTrash: false }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
-      return { prevData }
+      utils.template.favorite.setData(undefined, (old = []) =>
+        old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
+      )
+
+      return { prevData, prevFavData }
     },
     onSuccess: () => {
       enqueueSnackbar(t('description_rename_success'), {
@@ -36,6 +41,7 @@ const useRenameTemplate = () => {
 
       showError(err, t('rename_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
+      utils.template.favorite.setData(undefined, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
