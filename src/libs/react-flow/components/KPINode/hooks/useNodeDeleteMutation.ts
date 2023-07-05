@@ -1,4 +1,5 @@
 import { api } from '@/libs/api'
+import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { getNodeIncludeSlug } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
@@ -10,8 +11,7 @@ import {
 import { intersectionBy } from 'lodash'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
-import { useNodeUpdateMutation } from './useNodeUpdateMutation'
+import { filterKpiNodes } from '../utils'
 
 const useNodeDeleteMutation = () => {
   const removeNode = useRFStore((state) => state.removeNode)

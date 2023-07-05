@@ -23,6 +23,22 @@ const UndoRedo: FC = () => {
         style={{ cursor: canUndo ? 'pointer' : 'auto' }}
       />
 
+      <button
+        onClick={() => {
+          console.log(pastStates)
+        }}
+      >
+        past state
+      </button>
+
+      <button
+        onClick={() => {
+          console.log(futureStates)
+        }}
+      >
+        future state
+      </button>
+
       <Image
         src={canRedo ? RedoActive : RedoInactive}
         onClick={() => redo()}

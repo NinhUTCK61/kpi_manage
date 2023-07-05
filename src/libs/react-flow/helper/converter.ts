@@ -7,6 +7,7 @@ import {
 } from '@/libs/schema/node'
 import { SpeechBallon } from '@prisma/client'
 import { HierarchyNode, stratify } from 'd3-hierarchy'
+import { cloneDeep } from 'lodash'
 import { Edge as ReactFlowEdge } from 'reactflow'
 import {
   HierarchyFlowNode,
@@ -79,7 +80,7 @@ export function stratifier(nodes: ReactFlowNode[]): HierarchyFlowNode {
     .id((d) => d.data.id)
     .parentId((d) => d.data.parent_node_id)
 
-  const d3Root = fn(kpiNodes)
+  const d3Root = fn(cloneDeep(kpiNodes))
   return d3Root
 }
 

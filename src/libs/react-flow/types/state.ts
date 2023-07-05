@@ -100,6 +100,7 @@ export type Write<T, U> = Omit<T, keyof U> & U
 export interface _TemporalState {
   pastStates: Partial<RFStore>[]
   futureStates: Partial<RFStore>[]
+  getCurrentState: () => Partial<RFStore>
 
   undo: (steps?: number) => void
   redo: (steps?: number) => void

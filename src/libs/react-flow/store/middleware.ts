@@ -9,7 +9,7 @@ import {
   Write,
   _TemporalState,
 } from '../types'
-import { temporalStateCreator } from './temporal'
+import { temporalStateCreator, validateDiffNodeState } from './temporal'
 
 declare module 'zustand/vanilla' {
   interface StoreMutators<S, A> {
@@ -57,14 +57,15 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       const pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
-
+      console.log('newState', newState)
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
         console.log('state', pastNodes, newState.nodes)
         const diff = getDifferenceNodesByData(pastNodes, newState.nodes as ReactFlowNode[])
-        console.log('diff', diff)
-        if (diff.length > 0) {
+        const isValidDiff = validateDiffNodeState(diff)
+        console.log('diff', diff, isValidDiff)
+        if (isValidDiff) {
           handleSetTemporal({
             nodes: pastNodes,
             edges: pastEdges,

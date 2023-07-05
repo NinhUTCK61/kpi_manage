@@ -1,11 +1,11 @@
 import { api } from '@/libs/api'
+import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
-import { useNodeUpdateMutation } from './useNodeUpdateMutation'
+import { filterKpiNodes } from '../utils'
 
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)

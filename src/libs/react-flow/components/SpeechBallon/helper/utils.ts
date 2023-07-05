@@ -9,9 +9,12 @@ export function isDataKPISpeechBallon(node: TypeDataPropContext): node is Speech
 }
 
 export function getDifferenceNodesByData<T extends ReactFlowNode>(nodes: T[], compareNodes: T[]) {
-  const diff = differenceWith(nodes, compareNodes, (a, b) => {
+  const comparator = (a: ReactFlowNode, b: ReactFlowNode) => {
     return a.id === b.id && isEqual(a.data, b.data)
-  })
+  }
 
-  return diff
+  if (nodes.length > compareNodes.length) {
+    return differenceWith(nodes, compareNodes, comparator)
+  }
+  return differenceWith(compareNodes, nodes, comparator)
 }

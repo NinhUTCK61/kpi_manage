@@ -11,10 +11,17 @@ export const temporalStateCreator = (
     return {
       pastStates: options?.pastStates || [],
       futureStates: options?.futureStates || [],
+      getCurrentState: () => {
+        return {
+          nodes: userGet().nodes,
+          edges: userGet().edges,
+          nodeFocused: userGet().nodeFocused,
+        }
+      },
       undo: (steps = 1) => {
         if (get().pastStates.length) {
           // userGet must be called before userSet
-          const currentState = userGet()
+          const currentState = get().getCurrentState()
 
           const statesToApply = get().pastStates.splice(-steps, steps)
 
@@ -29,7 +36,7 @@ export const temporalStateCreator = (
       redo: (steps = 1) => {
         if (get().futureStates.length) {
           // userGet must be called before userSet
-          const currentState = userGet()
+          const currentState = get().getCurrentState()
 
           const statesToApply = get().futureStates.splice(-steps, steps)
 
@@ -46,11 +53,7 @@ export const temporalStateCreator = (
       // Internal properties
       _onSave: options?.onSave,
       _handleSet: (pastState) => {
-        const currentState = {
-          nodes: userGet().nodes,
-          edges: userGet().edges,
-          nodeFocused: userGet().nodeFocused,
-        }
+        const currentState = get().getCurrentState()
 
         if (!isEqual(pastState, currentState)) {
           console.log('run handle set', pastState.nodes)
@@ -66,4 +69,21 @@ export const temporalStateCreator = (
 
   // Cast to a version of the store that does not include "temporal" addition
   return stateCreator as StateCreator<_TemporalState, [], []>
+}
+
+export const validateDiffNodeState = (diff: ReactFlowNode[]): boolean => {
+  if (diff.length === 0) return false
+
+  if (diff.length === 1) {
+    // case update one node like: position, data, style
+    const node = diff[0] as ReactFlowNode
+    // case update position => false
+    if (node.position.x !== node.data.x && node.position.y) return false
+    // case adds new empty node => false
+    if (node.type === 'kpi' && !node.data.is_saved) return false
+  }
+
+  if (diff.some((el) => el.type === 'comment')) return false
+
+  return true
 }
