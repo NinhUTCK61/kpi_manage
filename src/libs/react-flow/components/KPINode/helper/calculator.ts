@@ -1,4 +1,4 @@
-import { getSlugFromInputValue } from '@/libs/react-flow/helper/expression'
+import { checkIncludeFormula, getSlugFromInputValue } from '@/libs/react-flow/helper/expression'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 
 export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
@@ -71,11 +71,7 @@ export function generateCalculatorStackV2(input: ReactFlowKPINode[]) {
           element.data.is_formula &&
           getSlugFromInputValue(element.data.input_value as string).length) ||
         input.find(
-          (e) =>
-            String(e.data.input_value)
-              .replace(/[^a-zA-Z0-9]/g, ' ')
-              .split(' ')
-              .includes(slug) && !e.data.is_formula,
+          (e) => checkIncludeFormula(slug, e.data.input_value as string) && !e.data.is_formula,
         ),
     )
 
