@@ -36,7 +36,13 @@ const SpeechBallonResizer = () => {
 
   const handleCloseResize = (event: MouseEvent) => {
     const styleArea = document.getElementById(`menu-speech-ballon-${data.id}`)
-    if (!styleArea?.contains(event.target as HTMLElement)) handleResize(false)
+    const styleArrow = document.getElementById(`arrow-${data.id}`)
+    if (
+      !styleArea?.contains(event.target as HTMLElement) &&
+      !styleArrow?.contains(event.target as HTMLElement)
+    ) {
+      handleResize(false)
+    }
   }
 
   useOnClickOutside(resizeRef, handleCloseResize)
