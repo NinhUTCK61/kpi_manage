@@ -90,6 +90,7 @@
     "invalid_node": "このボックス自体のIDは入力できません。",
     "delete_node_has_formula_1": "このボックスは",
     "delete_node_has_formula_2": "の数式に存在しています。ご確認ください。",
+    "formula_repetition" : "計算式は回転現象があります。",
 
     "create_comment": "Create comment fail",
     "create_comment_reply": "Create comment reply fail",

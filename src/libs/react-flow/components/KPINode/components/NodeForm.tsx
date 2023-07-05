@@ -1,13 +1,13 @@
 import { blue, red } from '@/libs/config/theme'
 import { isPaneClick } from '@/libs/react-flow/helper'
-import { checkIncludeFormula } from '@/libs/react-flow/helper/expression'
+import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
 import React, { FormEvent, KeyboardEvent, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useKPINodeContext } from '../context'
-import { NodeFormProps, useNodeForm, useNodeHandler } from '../hooks'
+import { NodeFormProps, useFormularHanlder, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNodeFormula } from './InputFomula'
 import { InputNode } from './InputNode'
 import { StackError } from './styled'
@@ -21,16 +21,19 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   const method = useNodeForm(data)
   const { control, getValues, setFocus, error, setError } = method
   const { saveHandler } = useNodeHandler(method)
+  const getKpiNodes = useRFStore((state) => state.getKpiNodes)
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const { nodeInputValidate } = useFormularHanlder()
 
   const saveValue = () => {
     if (error) return
+    const nodes = getKpiNodes()
+    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
     const nodeData = { ...data, ...getValues() }
-
-    if (checkIncludeFormula(data.slug, data.input_value as string)) {
-      setError('input_value', {
-        message: 'invalid_node',
-      })
-      return
+    const inputValue = nodeData.input_value
+    if (inputValue && inputValue.startsWith('=')) {
+      const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
+      if (errorMessage) setError('input_value', { message: errorMessage })
     }
 
     saveHandler(nodeData)
