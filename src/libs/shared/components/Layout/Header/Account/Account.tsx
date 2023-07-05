@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
+import TermsOfUseIcon from 'public/assets/svgs/blog.svg'
 import ChangeIcon from 'public/assets/svgs/change_pass.svg'
 import LogOutIcon from 'public/assets/svgs/log_out.svg'
 import NotificationIcon from 'public/assets/svgs/noti.svg'
@@ -43,6 +44,11 @@ const Account = () => {
     {
       title: t('menu.privacy_policy'),
       icon: PrivacyIcon,
+      handle: handleClose,
+    },
+    {
+      title: t('menu.terms_of_use'),
+      icon: TermsOfUseIcon,
       handle: handleClose,
     },
     {
