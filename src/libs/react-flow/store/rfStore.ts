@@ -22,7 +22,7 @@ import {
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
 import { RFStore, ReactFlowCommentNode, ReactFlowKPINode } from '../types'
-import { d3RootMiddleware } from './middleware'
+import { kpiMiddleware } from './middleware'
 
 setAutoFreeze(false)
 
@@ -62,7 +62,7 @@ const DEFAULT_STATE: Partial<RFStore> = {
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
   createStore<RFStore>(
-    d3RootMiddleware((set, get) => ({
+    kpiMiddleware((set, get) => ({
       ...(DEFAULT_STATE as RFStore),
       ...initialState,
       handleNodesChange(changes: NodeChange[]) {

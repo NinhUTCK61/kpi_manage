@@ -17,7 +17,7 @@ declare module 'zustand/vanilla' {
   }
 }
 
-type D3Middleware = <
+type KPIMiddleware = <
   RFStore,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
@@ -27,7 +27,7 @@ type D3Middleware = <
 
 // type D3MiddlewareImpl = (f: StateCreator<RFStore, [], []>) => StateCreator<RFStore, [], []>
 
-const _d3RootMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
+const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
   const configWithTemporal = (
     set: StoreApi<RFStore>['setState'],
     get: StoreApi<RFStore>['getState'],
@@ -54,11 +54,10 @@ const _d3RootMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         set({ d3Root: updatedD3Root })
       }
 
-      const pastState = get()
       const pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
-      console.log(1211212, pastState.nodes.length, pastNodes, newState)
+      console.log(1211212, pastNodes, newState)
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
@@ -81,4 +80,4 @@ const _d3RootMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
   return configWithTemporal as StateCreator<RFStore, [], []>
 }
 
-export const d3RootMiddleware = _d3RootMiddleware as unknown as D3Middleware
+export const kpiMiddleware = _KPIMiddleware as unknown as KPIMiddleware

@@ -8,6 +8,7 @@ import {
 import { UpdateNodeInputType } from '@/libs/schema/node'
 import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { DialogDeleteNodeProps } from '@/libs/shared/types/utils'
+import React from 'react'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import {
   HierarchyFlowNode,
