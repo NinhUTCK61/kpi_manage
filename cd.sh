@@ -13,6 +13,7 @@ docker pull $CI_REGISTRY_IMAGE:latest
 
 # Stop old container and start new one
 docker stop $APP_NAME || true
+docker rm $APP_NAME || true
 docker run --rm --name $APP_NAME -d -p $PORT:3000 $CI_REGISTRY_IMAGE:latest
 
 # Deploy prisma
