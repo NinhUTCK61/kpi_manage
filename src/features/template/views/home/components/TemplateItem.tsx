@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import ImageFile from 'public/assets/imgs/file.png'
+import ImageFile from 'public/assets/imgs/image_template_default.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
