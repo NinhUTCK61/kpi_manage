@@ -1,7 +1,7 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { Slider, styled } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSpeechBallonContext } from '../context'
 import { useShapeStyle } from '../helper'
 import { SpeechBallonForm } from './SpeechBallonForm'
@@ -14,22 +14,28 @@ export const OptionShape: React.FC = () => {
   const speechBallonRef = useRef<HTMLDivElement>(null)
   const { data } = useSpeechBallonContext()
   const shapeType = data.shape as ShapeType
-  const style = JSON.parse(data.node_style || '{}')
+
+  const style = useMemo(() => JSON.parse(data.node_style || '{}'), [data.node_style])
   const leftArrow = shapeType !== ShapeType.CIRCULAR ? style.leftArrow || 0 : 50
-
+  const [positionLeft, setPositionLeft] = useState<number>(leftArrow)
+  const [isUpdate, setIsUpdate] = useState<boolean>(false)
   const { updateReactFlowNode } = useNodeUpdateHandler()
-  const [positionLeft, setPositionLeft] = useState<number>(0)
-  const [isMove, setIsMove] = useState<boolean>(false)
 
-  const handleChangeValue = (_: Event, newValue: number | number[]) => {
-    if (shapeType !== ShapeType.CIRCULAR) {
-      setPositionLeft(newValue as number)
-      setIsMove(true)
+  const handleChangeValue = (
+    _: Event | SyntheticEvent<Element, Event>,
+    value: number | number[],
+  ) => {
+    if (shapeType !== ShapeType.CIRCULAR && positionLeft !== value) {
+      setPositionLeft(value as number)
+      setIsUpdate(true)
+      return
     }
+
+    setIsUpdate(false)
   }
 
-  const handleMouseUp = () => {
-    if (isMove) {
+  const handleUpdate = (_: Event | SyntheticEvent<Element, Event>) => {
+    if (isUpdate) {
       const nodeStyle = JSON.stringify({ ...style, leftArrow: positionLeft })
 
       const dataConfig = {
@@ -39,14 +45,11 @@ export const OptionShape: React.FC = () => {
       }
 
       updateReactFlowNode(dataConfig, 'speech_ballon')
+      setIsUpdate(false)
     }
   }
 
-  const handleMouseLeave = () => {
-    handleMouseUp()
-  }
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     setPositionLeft(leftArrow)
   }, [leftArrow])
 
@@ -61,9 +64,8 @@ export const OptionShape: React.FC = () => {
         sx={getArrowStyles}
         id={`arrow-${data.id}`}
         onChange={handleChangeValue}
+        onChangeCommitted={handleUpdate}
         value={positionLeft}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
       />
     </>
   )

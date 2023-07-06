@@ -80,7 +80,7 @@ const SpeechBallonResizer = () => {
         minWidth={minSizeStyle.minWidth}
         minHeight={minSizeStyle.minHeight}
         handleStyle={{ width: 12, height: 12, zIndex: 100 }}
-        lineStyle={{ padding: 2, zIndex: 100 }}
+        lineStyle={{ padding: 2, zIndex: -1 }}
         isVisible={isResizeEnabled}
         onResizeEnd={onUpdateResize}
         onResize={onResizing}

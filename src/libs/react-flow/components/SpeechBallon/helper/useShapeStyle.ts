@@ -1,6 +1,11 @@
 import { ShapeType } from '@/features/node/constant'
-import { base, customPrimary } from '@/libs/config/theme'
+import { base, blue, customPrimary, yellow } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
+
+const DEFAULT_SIZE_ARROW = 17
+const BORDER_SIZE_ARROW = 31
+const TOP_DEFAULT = 31
+const WIDTH_ARROW_DEFAULT = 14
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -29,13 +34,23 @@ const sizeStyleMapping = {
   },
 }
 
-const DEFAULT_SIZE_ARROW = 17
-const BORDER_SIZE_ARROW = 31
-const TOP_DEFAULT = 31
-const WIDTH_ARROW_DEFAULT = 14
+const arrowTrackMapping = {
+  [ShapeType.SQUARE]: {
+    width: `calc(100% - 28px)`,
+  },
+  [ShapeType.CIRCULAR]: {
+    width: `calc(100%)`,
+  },
+  [ShapeType.MEDIUM_ROUND_SQUARE]: {
+    width: `calc(100% - 42px)`,
+  },
+  [ShapeType.ROUND_SQUARE]: {
+    width: `calc(100% - 46px)`,
+  },
+}
 
 export const useShapeStyle = () => {
-  const { data, isResizing } = useSpeechBallonContext()
+  const { data, isResizing, isResizeEnabled } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
   const stroke = style.stroke || 1
   const isFill = data.layout === 'FILL'
@@ -75,12 +90,12 @@ export const useShapeStyle = () => {
   }
 
   const getArrowStyles = {
+    ...arrowTrackMapping[shapeType],
     position: 'absolute',
     cursor: 'grab',
     padding: 0,
     bottom: -13,
     color: base.white,
-    width: `calc(100% - ${WIDTH_ARROW_DEFAULT * 4}px)`,
     '&& .MuiSlider-rail': {
       display: 'none',
     },
@@ -89,6 +104,7 @@ export const useShapeStyle = () => {
       borderTop: `25px solid ${conventionBg}`,
       borderLeft: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
       borderRight: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
+      transition: 'none',
       ...strokeStyle,
       '&.Mui-active': {
         boxShadow: 'none',
@@ -96,9 +112,20 @@ export const useShapeStyle = () => {
       '&:hover': {
         boxShadow: 'none',
       },
-      '&:after': {
-        display: 'none',
-      },
+      '&:after': isResizeEnabled
+        ? {
+            content: "''",
+            position: 'absolute',
+            bottom: '5px',
+            left: '50%',
+            width: 10,
+            height: 10,
+            backgroundColor: yellow[400],
+            transform: 'rotate(45deg) translateX(-65%)',
+            border: `1px solid ${blue[400]}`,
+            borderRadius: 0,
+          }
+        : { display: 'none' },
     },
   }
   return {
