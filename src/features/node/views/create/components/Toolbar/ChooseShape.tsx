@@ -110,7 +110,7 @@ const ChooseShape: React.FC = () => {
             <MenuItem
               key={index}
               value={item.type}
-              sx={{ width: 72 }}
+              sx={{ width: '100%', padding: '0 16px 0 12px' }}
               autoFocus={item.type === ShapeType.ROUND_SQUARE}
             >
               <SvgEl
