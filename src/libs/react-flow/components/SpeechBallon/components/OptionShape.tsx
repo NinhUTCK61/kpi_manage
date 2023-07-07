@@ -1,7 +1,7 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { Slider, styled } from '@mui/material'
-import React, { SyntheticEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react'
 import { useSpeechBallonContext } from '../context'
 import { useShapeStyle } from '../helper'
 import { SpeechBallonForm } from './SpeechBallonForm'
@@ -15,9 +15,9 @@ export const OptionShape: React.FC = () => {
   const { data } = useSpeechBallonContext()
   const shapeType = data.shape as ShapeType
 
-  const style = useMemo(() => JSON.parse(data.node_style || '{}'), [data.node_style])
+  const style = JSON.parse(data.node_style || '{}')
   const leftArrow = shapeType !== ShapeType.CIRCULAR ? style.leftArrow || 0 : 50
-  const [positionLeft, setPositionLeft] = useState<number>(leftArrow)
+  const [positionLeft, setPositionLeft] = useState<number>(0)
   const [isUpdate, setIsUpdate] = useState<boolean>(false)
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
@@ -34,7 +34,7 @@ export const OptionShape: React.FC = () => {
     setIsUpdate(false)
   }
 
-  const handleUpdate = (_: Event | SyntheticEvent<Element, Event>) => {
+  const handleUpdate = () => {
     if (isUpdate) {
       const nodeStyle = JSON.stringify({ ...style, leftArrow: positionLeft })
 
@@ -49,7 +49,7 @@ export const OptionShape: React.FC = () => {
     }
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setPositionLeft(leftArrow)
   }, [leftArrow])
 
