@@ -1,4 +1,4 @@
-import { getSlugFromInputValue } from '@/libs/react-flow/helper/expression'
+import { checkIncludeFormula, getSlugFromInputValue } from '@/libs/react-flow/helper/expression'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 
 export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
@@ -58,4 +58,45 @@ export const generateCalculatorStack = (nodes: ReactFlowKPINode[]) => {
   }
 
   return stack
+}
+
+export function generateCalculatorStackV2(input: ReactFlowKPINode[]) {
+  const visited = new Set()
+  const output: string[] = []
+
+  function dfs(slug: string) {
+    const item = input.find(
+      (element) =>
+        (element.data.slug === slug &&
+          element.data.is_formula &&
+          getSlugFromInputValue(element.data.input_value as string).length) ||
+        input.find(
+          (e) => checkIncludeFormula(slug, e.data.input_value as string) && !e.data.is_formula,
+        ),
+    )
+
+    if (!item || visited.has(slug)) {
+      return
+    }
+
+    visited.add(slug)
+
+    const formula = item.data.input_value as string
+    const matches = formula.match(/=([A-Z0-9]+)/g)
+
+    if (matches) {
+      for (let i = 0; i < matches.length; i++) {
+        const dependency = matches[i]?.substring(1) as string
+        dfs(dependency)
+      }
+    }
+
+    output.push(slug)
+  }
+
+  for (let i = 0; i < input.length; i++) {
+    dfs(input[i]?.data.slug as string)
+  }
+
+  return output
 }

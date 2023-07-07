@@ -1,7 +1,7 @@
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { produce } from 'immer'
 import * as math from 'mathjs'
-import { generateCalculatorStack } from '../components/KPINode/helper'
+import { generateCalculatorStackV2 } from '../components/KPINode/helper'
 
 const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   const spaceBeforeIndex = inputString.lastIndexOf(' ', cursorPosition - 1)
@@ -119,6 +119,7 @@ const checkIncludeFormulaWithSlugs = (
   return !!matches.find((slug) => slugs.includes(slug) || slug === defaultSlug)
 }
 
+// input_value = "A1 + A2" => ["A1", "A2"]
 export const getNodeIncludeSlug = (node: ReactFlowKPINode, nodes: ReactFlowKPINode[]) => {
   const formulaNodes = nodes.filter((e) => e.data.is_formula)
   const slugs: string[] = []
@@ -144,10 +145,9 @@ export const getDiffValue2Number = (
   listNodeChange: ReactFlowKPINode[],
 ) => {
   const nodes: ReactFlowKPINode[] = []
-  const slugs = generateCalculatorStack(listNodeChange)
+  const slugs = generateCalculatorStackV2(listNodeChange)
   let _listNOdeChange = listNodeChange
   const listSlugWithNodeFocused: string[] = []
-
   slugs.forEach((slug) => {
     const node = _listNOdeChange.find((e) => e.data.slug === slug && e.data.is_formula)
     if (!node) return
@@ -182,52 +182,92 @@ export const getDiffValue2Number = (
   return nodes
 }
 
-export const getListNodeInvalid = (
-  inputValue: string,
-  listNode: ReactFlowKPINode[],
-  nodeFocused: ReactFlowKPINode,
-) => {
-  let list: string[] = []
-  let error: string | null = null
-
-  try {
-    generateCalculatorStack(
-      produce(listNode, (draft) => {
-        const node = draft.find((e) => e.id === nodeFocused.id)
-        if (node) {
-          node.data.input_value = inputValue
-          node.data.is_formula = true
-        }
-      }),
-    )
-  } catch (error) {
-    list = (error as { message: string })?.message.split(':')
-    error = 'invalid_formula'
-    return { list, error }
+// const input1 = [
+//   {
+//     slug: 'A',
+//     formula: '=C',
+//   },
+//   {
+//     slug: 'A1',
+//     formula: '=A11+1',
+//   },
+//   {
+//     slug: 'A11',
+//     formula: '=A111/B1',
+//   },
+//   {
+//     slug: 'A111',
+//     formula: '=A',
+//   },
+//   {
+//     slug: 'B',
+//     formula: '=A111',
+//   },
+//   {
+//     slug: 'B1',
+//     formula: '=A111*C',
+//   },
+//   {
+//     slug: 'C',
+//     formula: '123',
+//   },
+//   {
+//     slug: 'C1',
+//     formula: '=C-A111',
+//   },
+//   {
+//     slug: 'D',
+//     formula: '11',
+//   },
+//   {
+//     slug: 'E',
+//     formula: '10',
+//   },
+// ]
+// findChildNodes(input1, 'A') => ['A111', 'A11', 'A1']
+export function findChildNodes(
+  nodes: ReactFlowKPINode[],
+  parent: string,
+  checkedNodes: string[] = [],
+  childNodes: string[] = [],
+) {
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i] as ReactFlowKPINode
+    if (
+      node.data.is_formula &&
+      node.data.input_value &&
+      !checkedNodes.includes(node.data.slug) &&
+      getSlugFromInputValue(node.data.input_value).includes(parent)
+    ) {
+      checkedNodes.push(node.data.slug)
+      childNodes.push(node.data.slug)
+      findChildNodes(nodes, node.data.slug, checkedNodes, childNodes)
+    }
   }
 
-  const _inputValue = inputValue.trim().replace('=', '')
-  if (!_inputValue) return { list, error }
-  //Convert "A1+B1" to [A1,B1]
-  _inputValue
-    .replace(/[^a-zA-Z0-9]/g, ' ')
-    .split(' ')
-    .forEach((slug) => {
-      if (slug === '' || isNumeric(slug)) return
-      if (slug === nodeFocused.data.slug) {
-        list.push(slug)
-        return
-      }
-      if (!listNode.find((e) => e.data.slug === slug)) list.push(slug)
-    })
-  if (list.length === 0) return { list, error }
+  return childNodes
+}
 
-  if (list.includes(nodeFocused.data.slug)) {
-    error = 'invalid_node'
-    list = [nodeFocused.data.slug]
-  } else {
-    error = 'node_not_found'
+//findParentNodes(input1, 'A111') => ['A', 'C']
+export function findParentNodes(
+  nodes: ReactFlowKPINode[],
+  child: string,
+  checkedNodes: string[] = [],
+  parentNodes: string[] = [],
+) {
+  const node = nodes.find((e) => e.data.slug === child && e.data.is_formula && e.data.input_value)
+
+  if (!node) return [...parentNodes]
+  const slug = getSlugFromInputValue(node.data.input_value as string)
+  for (let i = 0; i < slug.length; i++) {
+    const _slug = slug[i] as string
+    const _node = nodes.find((e) => e.data.slug === _slug)
+    if (_node && !checkedNodes.includes(_slug)) {
+      checkedNodes.push(_slug)
+      parentNodes.push(_slug)
+      findParentNodes(nodes, _slug, checkedNodes, parentNodes)
+    }
   }
 
-  return { list, error }
+  return parentNodes
 }
