@@ -12,14 +12,22 @@ export enum SaveAction {
 }
 
 // New node create in client has no template_id
-export const getSaveAction = (newData: KPINodeType, oldData: KPINodeType): SaveAction => {
-  if (isEqual(newData, oldData)) {
-    return SaveAction.CANCEL
-  }
-
+export const getSaveAction = (
+  newData: KPINodeType,
+  oldData: KPINodeType,
+  isNodePaste?: boolean,
+): SaveAction => {
   const { template_id, input_title } = newData
   if (!template_id && input_title) {
     return SaveAction.CREATE
+  }
+
+  if (isNodePaste) {
+    return SaveAction.UPDATE
+  }
+
+  if (isEqual(newData, oldData)) {
+    return SaveAction.CANCEL
   }
 
   if (!template_id || !input_title) {

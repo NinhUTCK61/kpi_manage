@@ -8,6 +8,7 @@ const useNodeUpdateMutation = () => {
   const templateId = useRFStore((state) => state.templateId)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const bulkUpdateKpiNode = useRFStore((state) => state.bulkUpdateKpiNode)
+  const updateNodesPaste = useRFStore((state) => state.updateNodesPaste)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
@@ -30,6 +31,9 @@ const useNodeUpdateMutation = () => {
 
       return { prevData, templateId, prevDataNode }
     },
+    onSuccess() {
+      removeNodesPaste()
+    },
     onError(err, _, ctx) {
       enqueueSnackbar(t('error.internal_server_error'), {
         variant: 'error',
@@ -46,6 +50,7 @@ const useNodeUpdateMutation = () => {
   const bulkUpdate = api.node.bulkUpdate.useMutation({
     onSuccess(data) {
       bulkUpdateKpiNode(data)
+      removeNodesPaste()
     },
     onError() {
       enqueueSnackbar(t('error.internal_server_error'), {
@@ -56,6 +61,11 @@ const useNodeUpdateMutation = () => {
       utils.node.list.invalidate()
     },
   })
+
+  const removeNodesPaste = () => {
+    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+    updateNodesPaste(nodeFocused)
+  }
 
   return { update, bulkUpdate }
 }
