@@ -31,7 +31,7 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
 
   return (
     <SpeechBallonNodeProvider data={data} xPos={xPos} yPos={yPos}>
-      <Stack onContextMenu={handleContextMenu} height="100%">
+      <Stack onContextMenu={handleContextMenu} height="100%" direction="column" alignItems="center">
         <SpeechBallonResizer />
 
         <OptionShape />

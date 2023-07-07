@@ -16,20 +16,20 @@ export const SpeechBallonNodeProvider: React.FC<
     setEditing(value)
   }, [])
 
+  const [isResizing, setResizing] = useState(false)
   const [isResizeEnabled, setResizeEnabled] = useState(false)
   const handleResize = useCallback((value: boolean) => {
     setResizeEnabled(value)
   }, [])
 
-  const [isResizing, setResizing] = useState(false)
   const handleResizing = useCallback((value: boolean) => {
     setResizing(value)
   }, [])
 
   // disable draggable when editing
   useLayoutEffect(() => {
-    toggleDraggable(data.id, !isEditing && data.is_saved)
-  }, [data.id, data.is_saved, isEditing, toggleDraggable])
+    toggleDraggable(data.id, !isEditing && !isResizeEnabled)
+  }, [data.id, isEditing, toggleDraggable, isResizeEnabled])
 
   const contextValue = useMemo(
     () => ({
