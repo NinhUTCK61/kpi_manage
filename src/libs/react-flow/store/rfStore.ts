@@ -96,18 +96,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = get().nodes
         const edges = get().edges
         const { node, edge } = generateNextReactFlowNode(parentNodeId, _d3)
-        nodes.push(node)
-        edges.push(edge)
+        const _nodes = reLayout([...nodes, node])
 
-        const _nodes = reLayout(nodes)
-        // TODO: update node position after re-layout
         const _newNode = _nodes.find((n) => n.id === node.id) as ReactFlowKPINode
 
         get().setNodeFocused(node)
 
         set({
           nodes: _nodes,
-          edges: [...edges],
+          edges: [...edges, edge],
         })
 
         return _newNode
@@ -121,11 +118,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       // TODO: update kpi node
       updateKPINode(kpiNodeData, shouldFocus = false) {
         const _nodes = get().nodes
+        const nodeIndex = _nodes.findIndex((n) => n.type === 'kpi' && n.data.id === kpiNodeData.id)
+        if (nodeIndex !== -1) {
+          const node = _nodes[nodeIndex] as ReactFlowNode
 
-        const node = _nodes.find((n) => n.type === 'kpi' && n.data.id === kpiNodeData.id)
-        if (node) {
-          node.data = { ...node.data, ...kpiNodeData }
-          const nodes = reLayout(_nodes)
+          const nodeUpdate = produce(node, (draft) => {
+            draft.data = { ...draft.data, ...kpiNodeData }
+          })
+          const nodesUpdated = produce(_nodes, (draft) => {
+            draft[nodeIndex] = nodeUpdate
+          })
+
+          const nodes = reLayout(nodesUpdated)
 
           if (shouldFocus) {
             set({ nodes, nodeFocused: node })
@@ -350,15 +354,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       addSpeechBallon(speechBallonNode, shouldFocus) {
         get().removeEmptySpeechBallon()
         const nodes = get().nodes
-        nodes.push(speechBallonNode)
 
         if (shouldFocus) {
-          set({ nodes: [...nodes], nodeFocused: speechBallonNode })
+          set({ nodes: [...nodes, speechBallonNode], nodeFocused: speechBallonNode })
 
           return
         }
 
-        set({ nodes: [...nodes] })
+        set({ nodes: [...nodes, speechBallonNode] })
       },
       removeEmptySpeechBallon() {
         const _nodes = get().nodes
@@ -375,30 +378,35 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       updateSpeechBallon(speechBallonData, shouldFocus) {
         const _nodes = get().nodes
 
-        const node = _nodes.find(
+        const nodeIndex = _nodes.findIndex(
           (n) => n.type === 'speech_ballon' && n.data.id === speechBallonData.id,
         )
-        if (node) {
+
+        if (nodeIndex !== -1) {
           const style = JSON.parse(speechBallonData.node_style || '{}')
+          const height = pxToNumber(style.height)
+          const width = pxToNumber(style.width)
 
-          if (style.width && style.height) {
-            const height = pxToNumber(style.height)
-            const width = pxToNumber(style.width)
+          const updatedNode = produce(_nodes[nodeIndex] as ReactFlowNode, (draftNode) => {
+            if (draftNode) {
+              if (height && width) {
+                draftNode.style = { ...draftNode.style, height, width }
+              }
+              draftNode.data = { ...draftNode.data, ...speechBallonData }
+            }
+          })
 
-            node.style = { width, height }
-          }
-
-          node.data = { ...node.data, ...speechBallonData }
-
-          const nodes = _nodes.map((el) => {
-            return el.id === node.id ? node : el
+          const updatedNodes = produce(_nodes, (draftNodes) => {
+            if (draftNodes[nodeIndex]) {
+              draftNodes[nodeIndex] = updatedNode as ReactFlowNode
+            }
           })
 
           if (shouldFocus) {
-            set({ nodes, nodeFocused: { ...node } })
-            return
+            set({ nodes: updatedNodes, nodeFocused: { ...updatedNode } })
+          } else {
+            set({ nodes: updatedNodes })
           }
-          set({ nodes })
         }
       },
       //function zoom
