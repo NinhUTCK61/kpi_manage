@@ -9,7 +9,7 @@
   "enter_first_name": "名前（名）を入力",
   "enter_last_name": "名前（姓）を入力",
   "modal_upload": {
-    "title_1": "このファイルにアバターを設定しますか？",
+    "title_1": "このプロフィールにアバターを設定しますか？",
     "title_2": "この画像をアップロードしますか？",
     "upload_success": "アバターの設定に成功しました。",
     "upload_fail": "アバターの設定に失敗しました。"
