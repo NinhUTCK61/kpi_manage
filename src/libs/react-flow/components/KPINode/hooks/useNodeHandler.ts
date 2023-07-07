@@ -69,6 +69,9 @@ const useNodeHandler = () => {
         create({ ...newData, template_id: templateId })
         break
       case 'UPDATE':
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur()
+        }
         if (isBulkUpdate(newData)) {
           const bulkUpdateData = getBulkUpdateData(newData)
           if (!bulkUpdateData) return

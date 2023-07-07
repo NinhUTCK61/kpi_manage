@@ -4,8 +4,9 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import React, { FormEvent, KeyboardEvent, memo } from 'react'
+import React, { FormEvent, KeyboardEvent as KeyboardEventReact, memo, useRef } from 'react'
 import { FormProvider } from 'react-hook-form'
+import { useEventListener } from 'usehooks-ts'
 import { useKPINodeContext } from '../context'
 import { NodeFormProps, useFormularHanlder, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNodeFormula } from './InputFomula'
@@ -14,15 +15,17 @@ import { StackError } from './styled'
 
 type NodeFormMemoTypes = {
   changeFormFocusState(state: boolean): void
+  formFocus: boolean
 }
 
-const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) => {
+const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, formFocus }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
   const { control, getValues, setFocus, error, setError } = method
   const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { nodeInputValidate } = useFormularHanlder()
 
   const saveValue = () => {
@@ -41,6 +44,11 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     }
 
     saveHandler(nodeData)
+    if (document.activeElement instanceof HTMLElement) {
+      console.log('s')
+      document.activeElement.blur()
+    }
+    method.reset()
     changeFormFocusState(false)
   }
 
@@ -55,14 +63,19 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
 
   const style = JSON.parse(data.node_style || '{}')
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+  const handleKeyDown = (e: KeyboardEventReact<HTMLFormElement>) => {
     if (e.shiftKey && e.key === 'Enter') {
       e.preventDefault()
+      console.log('change focus')
       const name = (e.target as HTMLInputElement).name
       const inputArr = Object.keys(getValues())
+      console.log('inputArr', inputArr)
       const currentIndex = inputArr.indexOf(name)
       const nextIndex = currentIndex === inputArr.length - 1 ? 0 : currentIndex + 1
-      setFocus(inputArr[nextIndex] as keyof NodeFormProps)
+      console.log('shift enter:', inputArr[nextIndex])
+      setFocus(inputArr[nextIndex] as keyof NodeFormProps, {
+        shouldSelect: false,
+      })
     }
   }
 
@@ -72,6 +85,27 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
     }
   }
 
+  const handleKeyDownListen = (e: KeyboardEvent) => {
+    if (formFocus) return
+    if (e.key == 'Enter') {
+      setNodeFocused(null)
+    }
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLFormElement>) => {
+    const name = (e.target as HTMLInputElement).name
+
+    if (Object.keys(getValues()).includes(name)) {
+      setFocus(name as keyof NodeFormProps, {
+        shouldSelect: false,
+      })
+    }
+  }
+
+  useEventListener('keydown', (e) => handleKeyDownListen(e))
+
+  const refForm = useRef<HTMLFormElement>(null)
+
   return (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <Stack
@@ -79,6 +113,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
         onSubmit={saveForm}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
+        onClick={handleClick}
+        ref={refForm}
         sx={{
           padding: (theme) => theme.spacing(2, 2.25),
           border: `2px solid`,
