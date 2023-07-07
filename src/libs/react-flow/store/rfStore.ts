@@ -74,6 +74,8 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
         })
+
+        console.log(`==========apply node change by ${changes[0]?.type}==========`)
       },
       handleEdgesChange(changes: EdgeChange[]) {
         if (changes[0]?.type === 'remove') {

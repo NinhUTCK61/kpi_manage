@@ -1,5 +1,6 @@
+import { consola } from 'consola'
+import { produce } from 'immer'
 import { Mutate, StateCreator, StoreApi, StoreMutatorIdentifier, createStore } from 'zustand'
-import { getDifferenceNodesByData } from '../components/SpeechBallon/helper/utils'
 import { stratifier } from '../helper'
 import {
   RFStore,
@@ -9,7 +10,7 @@ import {
   Write,
   _TemporalState,
 } from '../types'
-import { temporalStateCreator, validateDiffNodeState } from './temporal'
+import { DiffReason, temporalStateCreator, validateDiffNodeState } from './temporal'
 
 declare module 'zustand/vanilla' {
   interface StoreMutators<S, A> {
@@ -54,23 +55,56 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         set({ d3Root: updatedD3Root })
       }
 
-      const pastNodes = get().nodes
+      let pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
+      console.log('------------------------------------------------------------')
       console.log('newState', newState)
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
         console.log('state', pastNodes, newState.nodes)
-        const diff = getDifferenceNodesByData(pastNodes, newState.nodes as ReactFlowNode[])
-        const isValidDiff = validateDiffNodeState(diff)
-        console.log('diff', diff, isValidDiff)
-        if (isValidDiff) {
-          handleSetTemporal({
+        const { isValid, reason, oldDiff, newDiff } = validateDiffNodeState(
+          pastNodes,
+          newState.nodes as ReactFlowNode[],
+        )
+
+        if (isValid) {
+          consola.withTag('VALID').info('diff', oldDiff, newDiff, reason)
+        } else {
+          consola.log('diff', oldDiff, isValid, reason)
+        }
+        if (isValid) {
+          switch (reason) {
+            case DiffReason.UpdatePosition:
+              pastNodes = produce(pastNodes, (draft) => {
+                oldDiff.forEach((node) => {
+                  const nodeIdx = draft.findIndex((n) => n.id === node.id)
+                  const rightPos = {
+                    x: node.data.x,
+                    y: node.data.y,
+                  }
+
+                  if (nodeIdx !== -1) {
+                    ;(draft[nodeIdx] as ReactFlowNode).position = rightPos
+                    ;(draft[nodeIdx] as ReactFlowNode).positionAbsolute = rightPos
+                  }
+                })
+              })
+              break
+            default:
+              break
+          }
+          const pastState: Partial<RFStore> = {
             nodes: pastNodes,
             edges: pastEdges,
-            nodeFocused: pastNodeFocused,
-          })
+          }
+
+          if (pastNodeFocused?.type !== 'kpi') {
+            pastState.nodeFocused = pastNodeFocused
+          }
+
+          handleSetTemporal(pastState)
         }
       }
     }
