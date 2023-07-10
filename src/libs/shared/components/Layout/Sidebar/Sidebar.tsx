@@ -34,6 +34,8 @@ const Sidebar = () => {
         marginTop: `${HEADER_HEIGHT}px`,
         borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
         width: SIDE_BAR_WIDTH,
+        position: 'fixed',
+        height: '100%',
       }}
     >
       <List
@@ -48,4 +50,4 @@ const Sidebar = () => {
   )
 }
 
-export { Sidebar }
+export { SIDE_BAR_WIDTH, Sidebar }
