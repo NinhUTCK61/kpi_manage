@@ -45,7 +45,7 @@
   "ok": "OK",
   "cancel": "Cancel",
   "incorrect_upload_image": "Incorrect image format.",
-  "error_size_image_upload": "The size of the image is larger than 3Mb, please change another image.",
+  "error_size_image_upload": "This image is over 3MB. Please change to an image with a capacity of less than 3MB.",
   "favorite_template": "Successfully added to favorites.",
   "remove_favorite_template": "Removed favorites."
 }

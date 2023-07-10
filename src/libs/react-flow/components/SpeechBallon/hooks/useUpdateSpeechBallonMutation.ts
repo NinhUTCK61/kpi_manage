@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
 const useUpdateSpeechBallonMutation = () => {
-  const { t } = useTranslation(['file'])
+  const { t } = useTranslation('file')
   const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
   const getNodeById = useRFStore((state) => state.getNodeById)
   const utils = api.useContext()
@@ -19,7 +19,7 @@ const useUpdateSpeechBallonMutation = () => {
       return { prevData }
     },
     onError(err, _, ctx) {
-      enqueueSnackbar(t('error.update_speech'), {
+      enqueueSnackbar(t('err.update_speech_ballon'), {
         variant: 'error',
       })
       if (ctx?.prevData) {
