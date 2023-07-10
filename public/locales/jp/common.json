@@ -85,12 +85,11 @@
 
     "invalid_string_label": "タイトルの入力は必須です。",
     "invalid_empty_node_form": "内容を入力してください。",
-    "node_not_found_1": "ノード",
-    "node_not_found_2": "は実在しない",
-    "invalid_formula": "Invalid formula ",
+    "node_not_found": " は存在しません。",
+    "invalid_formula": "無効な計算式です ",
     "invalid_node": "このボックス自体のIDは入力できません。",
-    "delete_node_has_formula_1": "このボックスは",
-    "delete_node_has_formula_2": "の数式に存在しています。ご確認ください。",
+    "delete_node_has_formula_1": "このボックスは「",
+    "delete_node_has_formula_2": "」の数式に存在しています。本当に削除しますか？",
     "formula_repetition" : "循環依存が検出されました。",
 
     "create_comment": "Create comment fail",
@@ -104,9 +103,8 @@
     "move_to_trash": "ゴミ箱に移動しました。",
     "delete_template": "このファイルを削除しました。",
     "template_deleted": "このファイルを削除しました。",
-    "template_not_found": "ファイルが見つかりませんでした。",
-    "template_not_deleted": "ファイルを削除できませんでした。",
-    "template_restore_success": "ノードの復元に成功しました。"
+    "template_not_found": "ファイルが見つかりま                                                                                                                                                                                                                                     きませんでした。",
+    "template_restore_success": "ノードの復元に成功しました。" 
   },
   "node": {
     "delete_success": "ノードを削除しました。"
@@ -119,7 +117,8 @@
       "detail_set_thumbnail_1": "ドラッグ＆ドロップ",
       "detail_set_thumbnail_2": "PNG、JPG (最大 800x400px)"
     },
-    "submit": "登録"
+    "submit": "登録",
+    "delete_node":"の削除"
   },
   "modal": {
     "ok": "OK",

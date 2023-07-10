@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { generateCalculatorStack } from '../helper'
 
 const useFormularHanlder = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('common')
 
   const nodeInputValidate = (
     inputValue: string,
@@ -74,7 +74,7 @@ const useFormularHanlder = () => {
       errorMessage = t('error.formula_repetition')
       list = [nodeFocused.data.slug]
     } else {
-      errorMessage = t('error.node_not_found_1') + list.join(',') + t('error.node_not_found_2')
+      errorMessage = list.join(',') + t('error.node_not_found')
     }
 
     return errorMessage
