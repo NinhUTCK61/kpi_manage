@@ -1,8 +1,14 @@
-import { LikeTemplateInputType, TemplateType, UpdateTemplateInputType } from '@/libs/schema'
+import {
+  LikeTemplateInputType,
+  SearchTemplateInputType,
+  TemplateType,
+  UpdateTemplateInputType,
+} from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
 import { TRPCError } from '@trpc/server'
+
 import { nanoid } from 'nanoid'
 import { User } from 'next-auth'
 import { TemplateHelper } from './helper/template.helper'
@@ -214,6 +220,31 @@ export class TemplateService extends TemplateHelper {
     })
 
     const templateData = this.transformTemplateOutput(userTemplate)
+
+    return templateData
+  }
+
+  async search({ name }: SearchTemplateInputType, userId: string) {
+    const result = await prisma.userTemplate.findMany({
+      where: {
+        user_id: userId,
+        template: {
+          name: {
+            contains: name,
+          },
+        },
+      },
+      orderBy: {
+        template: {
+          created_at: 'desc',
+        },
+      },
+      include: {
+        template: true,
+      },
+    })
+
+    const templateData = this.transformTemplateOutput(result)
 
     return templateData
   }
