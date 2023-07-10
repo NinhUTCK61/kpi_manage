@@ -116,6 +116,7 @@ const useNodeHandler = () => {
       node_style: nodeCopy.data.node_style,
     })
   }
+
   const isBulkUpdate = (newData: KPINodeType) => {
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return false
     return nodeFocused.data.value2number !== newData.value2number

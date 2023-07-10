@@ -54,7 +54,8 @@ const KPINodeProvider: React.FC<
       data,
       isConnectable,
     }),
-    [contextMenu, data, form, isConnectable],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [contextMenu, data, form.formState, isConnectable],
   )
 
   return (
