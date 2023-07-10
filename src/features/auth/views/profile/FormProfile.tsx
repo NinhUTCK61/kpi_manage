@@ -103,6 +103,7 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
 const InputProfile = styled(Input)({
   '&.Mui-readOnly': {
     backgroundColor: greyScale[300],
+    pointerEvents: 'none',
   },
   '&.Mui-readOnly fieldset': {
     border: 'none',
