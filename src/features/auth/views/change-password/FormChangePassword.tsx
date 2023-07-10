@@ -28,6 +28,7 @@ const FormChangePassword: React.FC<FormChangePasswordType> = ({
         readOnly={isLoading}
         type="password"
         fullWidth
+        required
       />
 
       <Input
@@ -39,6 +40,7 @@ const FormChangePassword: React.FC<FormChangePasswordType> = ({
         readOnly={isLoading}
         type="password"
         fullWidth
+        required
       />
 
       <Input
@@ -50,6 +52,7 @@ const FormChangePassword: React.FC<FormChangePasswordType> = ({
         readOnly={isLoading}
         type="password"
         fullWidth
+        required
       />
 
       <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
