@@ -58,7 +58,6 @@ const DEFAULT_STATE: Partial<RFStore> = {
   nodeFocused: null,
   activePosition: null,
   container: null,
-  nodesPaste: [],
 }
 
 const createRFStore = (initialState?: Partial<RFStore>) =>
@@ -350,16 +349,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const _nodesReLayout = reLayout(nodes)
 
         set({ nodes: _nodesReLayout })
-      },
-      updateNodesPaste(node, add) {
-        let nodesPaste = get().nodesPaste
-        if (add) {
-          if (nodesPaste.find((n) => n.id === node.id)) return
-          nodesPaste.push(node)
-        } else {
-          nodesPaste = nodesPaste.filter((n) => n.id !== node.id)
-        }
-        set({ nodesPaste })
       },
       // speech ballon node
       addSpeechBallon(speechBallonNode, shouldFocus) {

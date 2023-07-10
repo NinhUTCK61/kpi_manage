@@ -24,8 +24,6 @@ const useNodeHandler = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const updateKPINode = useRFStore((state) => state.updateKPINode)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
-  const updateNodesPaste = useRFStore((state) => state.updateNodesPaste)
-  const nodesPaste = useRFStore((state) => state.nodesPaste)
   const { mutate: create } = useNodeCreateMutation()
   const { update, bulkUpdate } = useNodeUpdateMutation()
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
@@ -62,8 +60,7 @@ const useNodeHandler = () => {
   }
 
   const saveHandler = (_newData: KPINodeType) => {
-    const nodePasteSelected = nodesPaste && nodesPaste?.find((e) => e.id === _newData.id)
-    const action = getSaveAction(_newData, data, !!nodePasteSelected)
+    const action = getSaveAction(_newData, data)
     const newData = handleData(_newData)
     if (!newData) return
     consola.info('[MUTATE ACTION]', action) // keep it to debug
@@ -109,8 +106,6 @@ const useNodeHandler = () => {
         return
       }
     }
-
-    updateNodesPaste(nodeFocused, true)
 
     form.setValue('input_title', nodeCopy.data.input_title)
     form.setValue('input_value', nodeCopy.data.input_value)

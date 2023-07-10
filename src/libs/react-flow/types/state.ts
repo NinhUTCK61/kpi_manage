@@ -43,8 +43,6 @@ export type RFStore = {
     ignoreComment?: boolean
     ignoreKpi?: boolean
   }): void
-  nodesPaste: ReactFlowKPINode[]
-  updateNodesPaste: (node: ReactFlowKPINode, add?: boolean) => void
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode, shouldFocus?: boolean) => void
   removeSpeechBallon: (speechBallonId: string) => void
