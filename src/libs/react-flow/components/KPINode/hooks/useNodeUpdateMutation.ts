@@ -30,7 +30,6 @@ const useNodeUpdateMutation = () => {
 
       return { prevData, templateId, prevDataNode }
     },
-
     onError(err, _, ctx) {
       enqueueSnackbar(t('error.internal_server_error'), {
         variant: 'error',

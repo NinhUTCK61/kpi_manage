@@ -11,8 +11,6 @@ const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const removeNode = useRFStore((state) => state.removeNode)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
-  const nodeFocused = useRFStore((state) => state.nodeFocused)
-
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
   const { t } = useTranslation('common')
@@ -48,7 +46,6 @@ const useNodeCreateMutation = () => {
         // TODO: handle error when update multiple nodes
         bulkUpdate.mutate(diff.map((n) => n.data))
       }
-
       setNodeFocused(null)
     },
     onSettled() {
