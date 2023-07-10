@@ -3,8 +3,13 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
-import { useCallback } from 'react'
-import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
+import { enqueueSnackbar } from 'notistack'
+import {
+  useFormularHanlder,
+  useNodeCreateMutation,
+  useNodeDeleteMutation,
+  useNodeUpdateMutation,
+} from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
@@ -22,9 +27,8 @@ const useNodeHandler = () => {
   const { mutate: create } = useNodeCreateMutation()
   const { update, bulkUpdate } = useNodeUpdateMutation()
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
-
+  const { nodeInputValidate } = useFormularHanlder()
   const { data, form } = useKPINodeContext()
-
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
     const input_value = data.input_value || ''
@@ -88,9 +92,20 @@ const useNodeHandler = () => {
     }
   }
 
-  const handlePaste = useCallback(() => {
-    if (!nodeCopy) return
-    if (nodeCopy.type !== 'kpi') return
+  const handlePaste = () => {
+    if (!nodeCopy || (nodeCopy && nodeCopy.type !== 'kpi')) return
+    if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
+    const nodes = getKpiNodes()
+    const inputValue = nodeCopy.data.input_value || ''
+    if (inputValue.startsWith('=')) {
+      const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
+      if (errorMessage) {
+        enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        })
+        return
+      }
+    }
 
     form.setValue('input_title', nodeCopy.data.input_title)
     form.setValue('input_value', nodeCopy.data.input_value)
@@ -100,8 +115,7 @@ const useNodeHandler = () => {
       id: data.id,
       node_style: nodeCopy.data.node_style,
     })
-  }, [nodeCopy, form, updateKPINode, data.id])
-
+  }
   const isBulkUpdate = (newData: KPINodeType) => {
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return false
     return nodeFocused.data.value2number !== newData.value2number

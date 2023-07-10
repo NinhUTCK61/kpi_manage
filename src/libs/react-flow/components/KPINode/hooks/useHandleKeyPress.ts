@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { useKeyPress } from 'reactflow'
+import { useEventListener } from 'usehooks-ts'
 import { useNodeHandler } from '.'
 import { useRFStore } from '../../../hooks'
 import { useKPINodeContext } from '../context'
@@ -9,29 +8,17 @@ const useHandleKeyPress = () => {
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
   const { handlePaste } = useNodeHandler()
 
-  const copy = useKeyPress([
-    'ControlLeft+KeyC',
-    'ControlRight+KeyC',
-    'MetaLeft+KeyC',
-    'MetaRight+KeyC',
-  ])
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
+      setNodeCopy(data.id)
+    }
 
-  const paste = useKeyPress([
-    'ControlLeft+KeyV',
-    'ControlRight+KeyV',
-    'MetaLeft+KeyV',
-    'MetaRight+KeyV',
-  ])
+    if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+      handlePaste()
+    }
+  }
 
-  useEffect(() => {
-    if (!copy) return
-    setNodeCopy(data.id)
-  }, [copy, data.id, setNodeCopy])
-
-  useEffect(() => {
-    if (!paste) return
-    handlePaste()
-  }, [handlePaste, paste])
+  useEventListener('keydown', (e) => handleKeydown(e))
 }
 
 export { useHandleKeyPress }
