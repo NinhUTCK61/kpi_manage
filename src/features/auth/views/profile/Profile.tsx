@@ -64,11 +64,27 @@ export const Profile = () => {
   }
 
   const onSelectImage = (_acceptedFiles: File[]) => {
-    setImage(_acceptedFiles)
+    if (handleValidateFormatImage(_acceptedFiles)) setImage(_acceptedFiles)
   }
 
   const onCloseModal = () => {
     setImage(null)
+  }
+
+  function handleValidateFormatImage(_acceptedFiles: File[]) {
+    if (!_acceptedFiles.length) {
+      enqueueSnackbar(t('incorrect_upload_image'), {
+        variant: 'error',
+      })
+      return false
+    }
+    if (_acceptedFiles[0]?.size && Math.floor(_acceptedFiles[0]?.size / (1024 * 1024)) > 3) {
+      enqueueSnackbar(t('error_size_image_upload'), {
+        variant: 'error',
+      })
+      return false
+    }
+    return true
   }
 
   return (

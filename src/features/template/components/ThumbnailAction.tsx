@@ -41,6 +41,7 @@ const ThumbnailAction: React.FC<ThumbnailActionTypes> = ({
     }
     return true
   }
+
   const onCloseModal = () => {
     setImage(null)
   }
