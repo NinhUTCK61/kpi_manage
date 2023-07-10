@@ -21,6 +21,7 @@ const useUpdateImageTemplate = () => {
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 

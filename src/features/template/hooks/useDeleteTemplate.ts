@@ -12,6 +12,7 @@ const useDeleteTemplate = () => {
     onMutate: async (template) => {
       await utils.template.list.cancel()
       const prevData = utils.template.list.getData({ isTrash: template.is_permanently })
+      const prevFavData = utils.template.favorite.getData()
 
       utils.template.list.setData({ isTrash: template.is_permanently }, (old = []) => {
         return template.is_permanently
@@ -19,7 +20,13 @@ const useDeleteTemplate = () => {
           : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
       })
 
-      return { prevData, isTrash: template.is_permanently }
+      utils.template.favorite.setData(undefined, (old = []) => {
+        return template.is_permanently
+          ? old.filter((e) => e.template_id !== template.id)
+          : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
+      })
+
+      return { prevData, isTrash: template.is_permanently, prevFavData }
     },
     onSuccess: (data, _, ctx) => {
       enqueueSnackbar(
@@ -32,9 +39,11 @@ const useDeleteTemplate = () => {
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))
       utils.template.list.setData({ isTrash: ctx?.isTrash }, ctx?.prevData)
+      utils.template.favorite.setData(undefined, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 
