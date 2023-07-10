@@ -32,22 +32,34 @@ const Sidebar = () => {
     <Box
       sx={{
         marginTop: `${HEADER_HEIGHT}px`,
-        borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
         width: SIDE_BAR_WIDTH,
-        position: 'fixed',
-        height: '100%',
       }}
     >
-      <List
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', px: 2, py: 3.25 }}
-        component="nav"
+      <Box
+        sx={{
+          position: 'fixed',
+          width: SIDE_BAR_WIDTH,
+          height: '100%',
+          borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
+        }}
       >
-        {menus.map((menu) => (
-          <ListItemButton key={menu.title} menu={menu} />
-        ))}
-      </List>
+        <List
+          sx={{
+            width: '100%',
+            maxWidth: 360,
+            bgcolor: 'background.paper',
+            px: 2,
+            py: 3.25,
+          }}
+          component="nav"
+        >
+          {menus.map((menu) => (
+            <ListItemButton key={menu.title} menu={menu} />
+          ))}
+        </List>
+      </Box>
     </Box>
   )
 }
 
-export { SIDE_BAR_WIDTH, Sidebar }
+export { Sidebar }
