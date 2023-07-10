@@ -4,7 +4,7 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import React, { FormEvent, KeyboardEvent as KeyboardEventReact, memo, useRef } from 'react'
+import React, { FormEvent, KeyboardEvent as KeyboardEventReact, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useEventListener } from 'usehooks-ts'
 import { useKPINodeContext } from '../context'
@@ -89,8 +89,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
 
   useEventListener('keydown', (e) => handleKeyDownListen(e))
 
-  const refForm = useRef<HTMLFormElement>(null)
-
   return (
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <Stack
@@ -98,7 +96,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
         onSubmit={saveForm}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
-        ref={refForm}
         sx={{
           padding: (theme) => theme.spacing(2, 2.25),
           border: `2px solid`,
