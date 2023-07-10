@@ -47,7 +47,7 @@ const BottomHandler = styled(Handle, {
 }))
 
 const RightHandler = styled(Handle, {
-  shouldForwardProp: (prop) => prop !== 'disabled',
+  shouldForwardProp: (prop) => prop !== 'disabled' && prop !== 'hidden',
 })<{ disabled?: boolean; hidden?: boolean }>(({ disabled, hidden }) => ({
   '&.react-flow__handle-right': {
     top: '50%',
