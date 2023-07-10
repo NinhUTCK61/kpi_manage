@@ -1,5 +1,5 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { MenuProps } from '@mui/material'
+
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import { useKPINodeContext } from '../context'
@@ -18,7 +18,7 @@ type ContextMenuItem = {
   type: CtxMenuType
 }
 
-export type CtxMenuProps = MenuProps & {
+export type CtxMenuProps = {
   disabledMenu?: CtxMenuType[]
 }
 
@@ -37,17 +37,16 @@ const contextMenuItem: ContextMenuItem[] = [
   },
 ]
 
-const ContextMenu: React.FC<CtxMenuProps> = ({
-  open,
-  onClose,
-  anchorPosition,
-  disabledMenu = [],
-}) => {
+const ContextMenu: React.FC<CtxMenuProps> = ({ disabledMenu = [] }) => {
   const { t } = useTranslation(['file'])
-  const { data } = useKPINodeContext()
+  const { data, contextMenu, setContextMenu } = useKPINodeContext()
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
   const { handlePaste } = useNodeHandler()
   const setNodeCopy = useRFStore((state) => state.setNodeCopy)
+
+  const handleClose = () => {
+    setContextMenu(null)
+  }
 
   const handleAction = (key: CtxMenuType) => {
     switch (key) {
@@ -63,15 +62,17 @@ const ContextMenu: React.FC<CtxMenuProps> = ({
       default:
         break
     }
-    onClose?.({}, 'backdropClick')
+    handleClose()
   }
 
   return (
     <Menu
-      open={open}
-      onClose={onClose}
+      open={!!contextMenu}
+      onClose={handleClose}
       anchorReference="anchorPosition"
-      anchorPosition={anchorPosition}
+      anchorPosition={
+        !!contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined
+      }
     >
       {contextMenuItem.map((menu) => (
         <MenuItem

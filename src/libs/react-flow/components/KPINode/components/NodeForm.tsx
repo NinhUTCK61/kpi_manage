@@ -20,7 +20,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState }) =>
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
   const { control, getValues, setFocus, error, setError } = method
-  const { saveHandler } = useNodeHandler(method)
+  const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { nodeInputValidate } = useFormularHanlder()

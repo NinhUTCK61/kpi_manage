@@ -4,13 +4,7 @@ import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
 import { useCallback } from 'react'
-import { UseFormReturn } from 'react-hook-form'
-import {
-  NodeFormProps,
-  useNodeCreateMutation,
-  useNodeDeleteMutation,
-  useNodeUpdateMutation,
-} from '.'
+import { useNodeCreateMutation, useNodeDeleteMutation, useNodeUpdateMutation } from '.'
 import { useKPINodeContext } from '../context'
 import { getSaveAction } from '../utils'
 
@@ -18,7 +12,7 @@ export enum SaveReason {
   SubmitForm,
 }
 
-const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
+const useNodeHandler = () => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
@@ -29,7 +23,7 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
   const { update, bulkUpdate } = useNodeUpdateMutation()
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
 
-  const { data } = useKPINodeContext()
+  const { data, form } = useKPINodeContext()
 
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
@@ -98,14 +92,15 @@ const useNodeHandler = (form?: UseFormReturn<NodeFormProps>) => {
     if (!nodeCopy) return
     if (nodeCopy.type !== 'kpi') return
 
+    form.setValue('input_title', nodeCopy.data.input_title)
+    form.setValue('input_value', nodeCopy.data.input_value)
+    form.setValue('unit', nodeCopy.data.unit)
+
     updateKPINode({
       id: data.id,
-      input_title: nodeCopy.data.input_title,
-      input_value: nodeCopy.data.input_value,
-      unit: nodeCopy.data.unit,
       node_style: nodeCopy.data.node_style,
     })
-  }, [data.id, nodeCopy, updateKPINode])
+  }, [nodeCopy, form, updateKPINode, data.id])
 
   const isBulkUpdate = (newData: KPINodeType) => {
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return false
