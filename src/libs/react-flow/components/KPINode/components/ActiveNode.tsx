@@ -31,7 +31,7 @@ const Active: React.FC = () => {
     <NodeActiveContainer>
       <LeftHandler type="target" position={Position.Left} isConnectable={isConnectable} />
 
-      <NodeForm changeFormFocusState={changeFormFocusState} />
+      <NodeForm changeFormFocusState={changeFormFocusState} formFocus={formFocus} />
 
       <BottomHandler
         type="target"
