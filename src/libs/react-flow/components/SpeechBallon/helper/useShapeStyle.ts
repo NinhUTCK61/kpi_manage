@@ -3,9 +3,9 @@ import { base, blue, customPrimary, yellow } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
 
 const DEFAULT_SIZE_ARROW = 17
-const BORDER_SIZE_ARROW = 31
-const TOP_DEFAULT = 31
-const WIDTH_ARROW_DEFAULT = 14
+const BORDER_SIZE_ARROW = 29
+const TOP_DEFAULT = 14
+const WIDTH_ARROW_DEFAULT = 11
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -30,7 +30,7 @@ const sizeStyleMapping = {
   },
   [ShapeType.ROUND_SQUARE]: {
     width: 210,
-    height: 40,
+    height: 45,
   },
 }
 
@@ -64,13 +64,13 @@ export const useShapeStyle = () => {
   const strokeStyle = {
     ...(!isFill && {
       '&:before': {
-        top: `-${TOP_DEFAULT + resizeBorder * 3}px`,
+        top: -31,
         content: '""',
         position: 'absolute',
         zIndex: 100,
-        borderLeft: `${DEFAULT_SIZE_ARROW + resizeBorder}px solid transparent`,
-        borderRight: `${DEFAULT_SIZE_ARROW + resizeBorder}px solid transparent`,
-        borderTop: `${BORDER_SIZE_ARROW + resizeBorder}px solid white`,
+        borderLeft: `${DEFAULT_SIZE_ARROW - resizeBorder}px solid transparent`,
+        borderRight: `${DEFAULT_SIZE_ARROW - resizeBorder}px solid transparent`,
+        borderTop: `${BORDER_SIZE_ARROW - resizeBorder}px solid white`,
         boxShadow: 'none',
       },
     }),
@@ -94,14 +94,14 @@ export const useShapeStyle = () => {
     position: 'absolute',
     cursor: 'grab',
     padding: 0,
-    bottom: -13,
-    color: base.white,
+    bottom: -11,
+    color: 'transparent',
     '&& .MuiSlider-rail': {
       display: 'none',
     },
     '&& .MuiSlider-thumb': {
       borderRadius: 0,
-      borderTop: `25px solid ${conventionBg}`,
+      borderTop: `20px solid ${conventionBg}`,
       borderLeft: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
       borderRight: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
       transition: 'none',
