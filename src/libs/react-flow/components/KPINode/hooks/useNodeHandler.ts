@@ -29,6 +29,7 @@ const useNodeHandler = () => {
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
   const { nodeInputValidate } = useFormularHanlder()
   const { data, form } = useKPINodeContext()
+
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
     const input_value = data.input_value || ''

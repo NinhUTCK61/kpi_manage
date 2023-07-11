@@ -10,13 +10,11 @@ import { useNodeUpdateMutation } from './useNodeUpdateMutation'
 const useNodeCreateMutation = () => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const removeNode = useRFStore((state) => state.removeNode)
-  const setNodeFocused = useRFStore((state) => state.setNodeFocused)
+
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
   const { t } = useTranslation('common')
   const { bulkUpdate } = useNodeUpdateMutation()
-
-  // const { mutate: mulUpdate } = api.node.bulkUpdate.useMutation()
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
@@ -46,7 +44,6 @@ const useNodeCreateMutation = () => {
         // TODO: handle error when update multiple nodes
         bulkUpdate.mutate(diff.map((n) => n.data))
       }
-      setNodeFocused(null)
     },
     onSettled() {
       utils.node.list.invalidate()

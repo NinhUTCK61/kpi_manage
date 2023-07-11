@@ -4,7 +4,7 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import React, { FormEvent, KeyboardEvent as KeyboardEventReact, memo } from 'react'
+import React, { KeyboardEvent as KeyboardEventReact, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useEventListener } from 'usehooks-ts'
 import { useKPINodeContext } from '../context'
@@ -47,11 +47,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     changeFormFocusState(false)
   }
 
-  const saveForm = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    saveValue()
-  }
-
   const handleFocus = () => {
     changeFormFocusState(true)
   }
@@ -73,6 +68,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur()
       }
+      saveValue()
     }
   }
 
@@ -97,7 +93,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
       <Stack
         component="form"
-        onSubmit={saveForm}
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
         sx={{
@@ -135,8 +130,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             inputProps={{ style }}
             autoComplete="off"
           />
-
-          <input type="submit" hidden />
         </FormProvider>
       </Stack>
     </ClickAwayListener>
