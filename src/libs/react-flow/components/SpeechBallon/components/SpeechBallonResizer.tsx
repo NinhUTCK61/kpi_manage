@@ -1,11 +1,11 @@
 import { ShapeType } from '@/features/node'
+import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { Stack } from '@mui/material'
 import { useMemo, useRef } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
 import { useOnClickOutside } from 'usehooks-ts'
 import { useSpeechBallonContext } from '../context'
-import { useUpdateSpeechBallonMutation } from '../hooks'
 
 export const minSizeResize = {
   [ShapeType.SQUARE]: {
@@ -29,7 +29,7 @@ export const minSizeResize = {
 const SpeechBallonResizer = () => {
   const { data, handleResizing, isResizeEnabled, handleResize } = useSpeechBallonContext()
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
-  const { mutate: updateSpeechBallon } = useUpdateSpeechBallonMutation()
+  const { updateReactFlowNode } = useNodeUpdateHandler()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const minSizeStyle = minSizeResize[shapeType]
   const resizeRef = useRef(null)
@@ -66,9 +66,10 @@ const SpeechBallonResizer = () => {
       node_style: newNodeStyle,
       x: params.x,
       y: params.y,
+      is_saved: nodeFocusedMemo.data.is_saved,
     }
 
-    updateSpeechBallon(dataUpdate)
+    updateReactFlowNode(dataUpdate, 'speech_ballon')
     handleResizing(false)
   }
 

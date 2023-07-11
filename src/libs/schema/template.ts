@@ -17,6 +17,10 @@ export const DeleteTemplateInputSchema = z.object({
   is_permanently: z.boolean().optional().default(false),
 })
 
+export const SearchTemplateInputSchema = z.object({
+  name: z.string().trim(),
+})
+
 export const ListTemplateInputSchema = z.object({ isTrash: z.boolean().default(false) })
 
 export const TemplateDataSchema = z.object({
@@ -44,3 +48,4 @@ export type LikeTemplateInputType = z.infer<typeof LikeTemplateInputSchema>
 export type UpdateTemplateInputType = z.infer<typeof UpdateTemplateInputSchema>
 export type UserTemplateType = UserTemplate & { template: Template }
 export type TemplateOutputType = z.infer<typeof TemplateDataOutputSchema>
+export type SearchTemplateInputType = z.infer<typeof SearchTemplateInputSchema>

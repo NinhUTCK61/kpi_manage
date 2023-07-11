@@ -6,7 +6,6 @@ import { CommonHelper } from './common.hepler'
 export class TemplateHelper extends CommonHelper {
   transformTemplateOutput(listTemplate: UserTemplateType[]) {
     const templateData: TemplateOutputType = []
-
     listTemplate.forEach((item) => {
       const {
         template: { id: _, ...restTemplate },
