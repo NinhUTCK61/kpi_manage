@@ -69,6 +69,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     }
 
     if (e.key === 'Enter') {
+      changeFormFocusState(false)
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur()
       }
@@ -82,10 +83,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   }
 
   const handleKeyDownListen = (e: KeyboardEvent) => {
-    if (formFocus) {
-      changeFormFocusState(false)
-      return
-    }
+    if (e.target instanceof HTMLInputElement) return
+    if (formFocus) return
     if (e.shiftKey && e.altKey && e.ctrlKey && e.metaKey) return
     if (e.key == 'Enter') {
       setNodeFocused(null)
