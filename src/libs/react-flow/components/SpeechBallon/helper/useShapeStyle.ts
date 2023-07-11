@@ -1,11 +1,10 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, blue, customPrimary, yellow } from '@/libs/config/theme'
-import { useSpeechBallonContext } from '@/libs/react-flow/components/SpeechBallon/context'
+import { useSpeechBallonContext } from '../context'
 
-const DEFAULT_SIZE_ARROW = 17
-const BORDER_SIZE_ARROW = 29
-const TOP_DEFAULT = 14
-const WIDTH_ARROW_DEFAULT = 11
+const DEFAULT_SIZE_ARROW = 13
+const BORDER_SIZE_ARROW = 22
+const WIDTH_ARROW_DEFAULT = 10
 
 const borderStyleMapping = {
   [ShapeType.SQUARE]: 0,
@@ -14,7 +13,7 @@ const borderStyleMapping = {
   [ShapeType.ROUND_SQUARE]: '16px',
 }
 
-const sizeStyleMapping = {
+export const sizeStyleMapping = {
   [ShapeType.SQUARE]: {
     width: 190,
     height: 190,
@@ -64,7 +63,7 @@ export const useShapeStyle = () => {
   const strokeStyle = {
     ...(!isFill && {
       '&:before': {
-        top: -31,
+        top: -25,
         content: '""',
         position: 'absolute',
         zIndex: 100,
@@ -88,7 +87,6 @@ export const useShapeStyle = () => {
     alignItems: 'center',
     ...(borderStyle && { borderRadius: borderStyle }),
   }
-
   const getArrowStyles = {
     ...arrowTrackMapping[shapeType],
     position: 'absolute',
@@ -101,7 +99,7 @@ export const useShapeStyle = () => {
     },
     '&& .MuiSlider-thumb': {
       borderRadius: 0,
-      borderTop: `20px solid ${conventionBg}`,
+      borderTop: `19px solid ${conventionBg}`,
       borderLeft: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
       borderRight: `${WIDTH_ARROW_DEFAULT}px solid transparent`,
       transition: 'none',

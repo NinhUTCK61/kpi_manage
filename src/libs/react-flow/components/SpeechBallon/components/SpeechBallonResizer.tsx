@@ -22,7 +22,7 @@ export const minSizeResize = {
   },
   [ShapeType.ROUND_SQUARE]: {
     minWidth: 210,
-    minHeight: 36,
+    minHeight: 45,
   },
 }
 
