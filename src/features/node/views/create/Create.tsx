@@ -17,6 +17,7 @@ import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
 import { useReactFlowHandler } from '../hooks'
 import { KpiReactFlow, TOOLBAR_HEIGHT, Toolbar } from './components'
+import { DialogDeleteNode } from './components/DialogDeleteNode'
 import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
@@ -114,6 +115,8 @@ export const CreateView: React.FC = () => {
         </KpiReactFlow>
         <KpiControls />
       </Container>
+
+      <DialogDeleteNode />
     </Layout>
   )
 }

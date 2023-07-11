@@ -472,6 +472,17 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({ nodes })
       },
+      // DialogDelete
+      handleToggleDialogDelete(dialogProps) {
+        if (dialogProps) {
+          set({ dialogDelete: dialogProps })
+          return
+        }
+
+        set({
+          dialogDelete: null,
+        })
+      },
     })),
   )
 

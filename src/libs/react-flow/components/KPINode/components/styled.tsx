@@ -67,14 +67,18 @@ const RightHandler = styled(Handle, {
   },
 }))
 
-const TextId = styled(Typography)(({ theme }) => ({
+const TextId = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'error',
+})<{ error?: boolean }>(({ theme, error }) => ({
   position: 'absolute',
   top: 0,
   right: 0,
   background: theme.palette.blue[0],
-  color: theme.palette.blue[500],
+  color: error ? theme.palette.error.dark : theme.palette.blue[500],
   padding: theme.spacing(0.5, 1),
   borderRadius: 4,
+  whiteSpace: 'nowrap',
+  fontWeight: error ? 900 : 500,
 }))
 
 const IconImage = styled(Image)({

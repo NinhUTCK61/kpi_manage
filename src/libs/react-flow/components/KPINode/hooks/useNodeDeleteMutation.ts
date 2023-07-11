@@ -18,6 +18,7 @@ const useNodeDeleteMutation = () => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
+  const handleToggleDialogDelete = useRFStore((state) => state.handleToggleDialogDelete)
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
@@ -75,14 +76,11 @@ const useNodeDeleteMutation = () => {
     const nodes = getKpiNodes()
     const slugs = getNodeIncludeSlug(node, nodes)
     if (slugs.length) {
-      enqueueSnackbar(
-        t('error.delete_node_has_formula_1') +
-          slugs.join(',') +
-          t('error.delete_node_has_formula_2'),
-        {
-          variant: 'error',
-        },
-      )
+      handleToggleDialogDelete({
+        open: true,
+        node: node.data.slug,
+        nodeRelated: slugs,
+      })
       return
     }
     mutation.mutate({ id })

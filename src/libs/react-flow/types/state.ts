@@ -7,6 +7,7 @@ import {
 } from '@/libs/schema/comment'
 import { UpdateNodeInputType } from '@/libs/schema/node'
 import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
+import { DialogDeleteNodeProps } from '@/libs/shared/types/utils'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
 import {
   HierarchyFlowNode,
@@ -86,4 +87,7 @@ export type RFStore = {
     shouldFocus?: boolean,
   ) => void
   toggleDraggable: (id: string, isDraggable?: boolean) => void
+  //dialogDeleteNode
+  dialogDelete: DialogDeleteNodeProps | null
+  handleToggleDialogDelete: (dialogProps?: DialogDeleteNodeProps) => void
 }

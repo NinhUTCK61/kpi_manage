@@ -10,4 +10,10 @@ type ContextMenuState = {
   mouseY: number
 } | null
 
-export type { DialogBaseProps, DialogActionType, ContextMenuState }
+type DialogDeleteNodeProps = {
+  open: boolean
+  node: string
+  nodeRelated: string[]
+}
+
+export type { ContextMenuState, DialogActionType, DialogBaseProps, DialogDeleteNodeProps }
