@@ -8,7 +8,7 @@ import React, { FormEvent, KeyboardEvent as KeyboardEventReact, memo } from 'rea
 import { FormProvider } from 'react-hook-form'
 import { useEventListener } from 'usehooks-ts'
 import { useKPINodeContext } from '../context'
-import { useFormularHanlder, useNodeForm, useNodeHandler } from '../hooks'
+import { NodeFormProps, useFormularHanlder, useNodeForm, useNodeHandler } from '../hooks'
 import { InputNodeFormula } from './InputFomula'
 import { InputNode } from './InputNode'
 import { StackError } from './styled'
@@ -21,13 +21,13 @@ type NodeFormMemoTypes = {
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, formFocus }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
-  const { control, getValues, error, setError } = method
+  const { control, getValues, error, setFocus, setError } = method
   const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { nodeInputValidate } = useFormularHanlder()
-  const input = document.querySelectorAll('input')
+
   const saveValue = () => {
     if (error) return
     const nodes = getKpiNodes()
@@ -65,11 +65,13 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       const inputArr = Object.keys(getValues())
       const currentIndex = inputArr.indexOf(name)
       const nextIndex = currentIndex === inputArr.length - 1 ? 0 : currentIndex + 1
-      input.forEach((item) => {
-        if (item.name === (inputArr[nextIndex] as string)) {
-          item.focus()
-        }
-      })
+      setFocus(inputArr[nextIndex] as keyof NodeFormProps)
+    }
+
+    if (e.key === 'Enter') {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur()
+      }
     }
   }
 
@@ -80,7 +82,10 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   }
 
   const handleKeyDownListen = (e: KeyboardEvent) => {
-    if (formFocus) return
+    if (formFocus) {
+      changeFormFocusState(false)
+      return
+    }
     if (e.shiftKey && e.altKey && e.ctrlKey && e.metaKey) return
     if (e.key == 'Enter') {
       setNodeFocused(null)
