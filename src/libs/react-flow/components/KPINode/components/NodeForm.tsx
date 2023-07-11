@@ -68,7 +68,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       setFocus(inputArr[nextIndex] as keyof NodeFormProps)
     }
 
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       changeFormFocusState(false)
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur()
