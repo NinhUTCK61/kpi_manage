@@ -34,6 +34,7 @@ const storeSelector = (state: RFStore) => ({
   nodes: state.nodes,
   edges: state.edges,
   viewportAction: state.viewportAction,
+  changeViewportAction: state.changeViewportAction,
   setNodeFocused: state.setNodeFocused,
   nodeFocused: state.nodeFocused,
   container: state.container,
@@ -51,6 +52,7 @@ export const CreateView: React.FC = () => {
     handleWheel,
     handleNodesDelete,
     handleNodeClick,
+    handleNodeDragStart,
     handleNodeDragStop,
     handleContextMenu,
   } = useReactFlowHandler()
@@ -96,6 +98,7 @@ export const CreateView: React.FC = () => {
           onWheel={handleWheel}
           onNodeClick={handleNodeClick}
           onPaneClick={handlePaneClick}
+          onNodeDragStart={handleNodeDragStart}
           onNodeDragStop={handleNodeDragStop}
           proOptions={{
             hideAttribution: true,

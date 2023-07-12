@@ -1,7 +1,9 @@
+import { ViewPortAction } from '@/features/node'
 import { ContextMenuState } from '@/libs/shared/types/utils'
 import { Stack } from '@mui/material'
 import React, { useState } from 'react'
 import { NodeProps } from 'reactflow'
+import { useRFStore } from '../../hooks'
 import { SpeechBallonNodeType } from '../../types'
 import { SpeechBallonResizer } from './components'
 import { ContextMenu } from './components/ContextMenu'
@@ -12,6 +14,7 @@ type KpiSpeechBallonNodeProps = NodeProps<SpeechBallonNodeType>
 
 const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xPos, yPos }) => {
   const [contextMenu, setContextMenu] = useState<ContextMenuState>(null)
+  const changeViewportAction = useRFStore((state) => state.changeViewportAction)
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault()
@@ -23,6 +26,7 @@ const KpiSpeechBallonNodeInner: React.FC<KpiSpeechBallonNodeProps> = ({ data, xP
           }
         : null,
     )
+    changeViewportAction(ViewPortAction.SpeechBallon)
   }
 
   const handleClose = () => {
