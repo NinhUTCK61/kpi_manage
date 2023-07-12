@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
 const useSpeechBallonCreateMutation = () => {
-  const { t } = useTranslation(['file'])
+  const { t } = useTranslation('file')
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
   const removeSpeechBallon = useRFStore((state) => state.removeSpeechBallon)
   const utils = api.useContext()
@@ -16,7 +16,7 @@ const useSpeechBallonCreateMutation = () => {
       addSpeechBallon(dataConvert, true)
     },
     onError(_, variables) {
-      enqueueSnackbar(t('err.create_SpeechBallon'), {
+      enqueueSnackbar(t('err.create_speech_ballon'), {
         variant: 'error',
       })
       removeSpeechBallon(variables.id)

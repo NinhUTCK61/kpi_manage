@@ -23,7 +23,7 @@
     "log_out": "ログアウト"
   },
   "limit_name": "Maximum length of 250 characters",
-  "incorrect": "Email or password is incorrect.",
+  "incorrect": "メールアドレス、またはパスワードが正しくありません。",
   "limit_password": "8桁以上で入力する必要があります。",
   "minimum_special_character": "少なくとも1桁以上の特殊文字を含める必要があります。",
   "minimum_uppercase": "少なくとも1桁以上の大文字を含める必要があります。",
@@ -69,42 +69,42 @@
     "internal_server_error": "内部サーバーエラーが発生しました。",
     "invalid_token": "トークンが見つからないか、期限切れです。",
     "email_conflict": "このメールアドレスは既に登録されています。",
-    "kpi_issue_required": "「KPIに関する課題」を選択してください。",
-    "kpi_reason_required": "「KPI Masterを知ったきっかけ」を選択してください。",
+    "kpi_issue_required": "「KPIに関する課題」を教えてください。（※複数選択可）",
+    "kpi_reason_required": "「KPI Masterを知ったきっかけ」を教えてください。（※複数選択可）",
     "error_match_password": "パスワードとパスワードの確認が一致しません。",
     "match_new_password": " 新しいパスワードと新しいパスワードの確認が一致しません。",
     "unauthorized": "認証されていません。",
-    "dob_invalid": "生年月日は、現在の日付より後にすることはできません。",
+    "dob_invalid": "未来の日付は入力できません。",
     "create_node": "ノードを作成できませんでした。",
-    "error_date": "生年月日は、現在の日付より後にすることはできません。",
-    "speechballon_not_found": "Speech ballon not found!",
+    "error_date": "未来の日付は入力できません。",
+    "speechballon_not_found": "吹き出しが見つかりません!",
     "user_not_found": "ユーザーが見つかりませんでした。",
     "send_mail_fail": "メールを送信できませんでした。",
-    "same_password": "このパスワードは最新使用されています。別のパスワードを設定してください。",
+    "same_password": "このパスワードは既に使用されています。別のパスワードを入力してください。",
     "incorrect_password": "パスワードが正しくありません。",
 
-    "invalid_string_label": "タイトルの入力は必須です。",
+    "invalid_string_label": "タイトルは必須です。",
     "invalid_empty_node_form": "内容を入力してください。",
     "node_not_found": " は存在しません。",
     "invalid_formula": "無効な計算式です ",
     "invalid_node": "このボックス自体のIDは入力できません。",
     "delete_node_has_formula_1": "このボックスは「",
     "delete_node_has_formula_2": "」の数式に存在しています。本当に削除しますか？",
-    "formula_repetition" : "循環依存が検出されました。",
+    "formula_repetition": "循環依存が検出されました。",
 
-    "create_comment": "Create comment fail",
-    "create_comment_reply": "Create comment reply fail",
-    "update_comment": "Update comment fail",
-    "update_comment_reply": "Update comment reply fail",
-    "remove_comment": "Remove comment fail",
-    "remove_comment_reply": "Remove comment reply fail"
+    "create_comment": "コメントの作成に失敗しました。",
+    "create_comment_reply": "コメント返信の作成に失敗しました。",
+    "update_comment": "コメントの更新に失敗しました。",
+    "update_comment_reply": "コメント返信の更新に失敗しました。",
+    "remove_comment": "コメントスレッドの削除に失敗しました。",
+    "remove_comment_reply": "コメント返信の削除に失敗しました。"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",
     "delete_template": "このファイルを削除しました。",
     "template_deleted": "このファイルを削除しました。",
     "template_not_found": "ファイルが見つかりま                                                                                                                                                                                                                                     きませんでした。",
-    "template_restore_success": "ノードの復元に成功しました。" 
+    "template_restore_success": "ノードの復元に成功しました。"
   },
   "node": {
     "delete_success": "ノードを削除しました。"
@@ -118,7 +118,7 @@
       "detail_set_thumbnail_2": "PNG、JPG (最大 800x400px)"
     },
     "submit": "登録",
-    "delete_node":"の削除"
+    "delete_node": "の削除"
   },
   "modal": {
     "ok": "OK",

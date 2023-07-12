@@ -41,11 +41,11 @@
   "upload_question": "この画像をアップロードしますか？",
   "upload_title": "このファイルにサムネイルを設定しますか？",
   "upload_success": "ファイルのサムネイルを設定しました。",
-  "upload_fail": "画像のアップロードに失敗しました。時間をおいてから再度試してください。",
+  "upload_fail": "画像のアップロードに失敗しました。時間をおいてから再度お試しください。",
   "ok": "OK",
   "cancel": "キャンセル",
   "incorrect_upload_image": "画像形式が正しくありません。",
-  "error_size_image_upload": "画像の容量は3mbより大きいです、他の画像をお変更ください。",
+  "error_size_image_upload": "この画像の容量は3MBを超えています。3MB未満の容量の画像に変更してください。",
   "favorite_template": "お気に入りに追加しました。",
   "remove_favorite_template": "お気に入りを解除しました。"
 }

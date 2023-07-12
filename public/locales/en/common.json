@@ -90,22 +90,22 @@
     "invalid_node": "Cannot enter the ID of this box itself.",
     "delete_node_has_formula_1": "This box exists in the formula of [",
     "delete_node_has_formula_2": "]. Are you sure to delete?",
-    "formula_repetition" : "Circular dependency detected. ",
+    "formula_repetition": "Circular dependency detected. ",
 
-    "create_comment": "Create comment fail",
-    "create_comment_reply": "Create comment reply fail",
-    "update_comment": "Update comment fail",
-    "update_comment_reply": "Update comment reply fail",
-    "remove_comment": "Remove comment fail",
-    "remove_comment_reply": "Remove comment reply fail"
+    "create_comment": "Failed to create comment.",
+    "create_comment_reply": "Failed to create comment reply.",
+    "update_comment": "Failed to update comment.",
+    "update_comment_reply": "Failed to update comment reply.",
+    "remove_comment": "Failed to remove comment thread.",
+    "remove_comment_reply": "Failed to remove comment reply."
   },
   "template": {
     "move_to_trash": "Move to trash success!",
-    "delete_template": "Delete template success!",
+    "delete_template": "Deleted template file success!",
     "template_deleted": "The template has been deleted.",
     "template_not_found": "Template not found!",
-    "template_not_deleted": "Template not deleted yet!",
-    "template_restore_success": "Template restore success!"
+    "template_not_deleted": "File has not been deleted yet!",
+    "template_restore_success": "Restored file success!"
   },
   "node": {
     "delete_success": "Delete node success!"
@@ -119,7 +119,7 @@
       "detail_set_thumbnail_2": "PNG, JPG or (max. 800x400px)"
     },
     "submit": "Submit",
-    "delete_node":"Delete node "
+    "delete_node": "Delete node "
   },
   "modal": {
     "ok": "OK",

@@ -9,7 +9,7 @@ const useSpeechBallonDeleteMutation = () => {
   const addSpeechBallon = useRFStore((state) => state.addSpeechBallon)
   const getNodeById = useRFStore((state) => state.getNodeById)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('file')
   const utils = api.useContext()
 
   const mutation = api.speechBallon.delete.useMutation({
@@ -21,7 +21,7 @@ const useSpeechBallonDeleteMutation = () => {
       return { prevData }
     },
     onError(err, _, ctx) {
-      enqueueSnackbar(t('error.remove_comment'), {
+      enqueueSnackbar(t('err.remove_speech_ballon'), {
         variant: 'error',
       })
       if (ctx?.prevData) addSpeechBallon(ctx.prevData as ReactFlowSpeechBallonNode)
