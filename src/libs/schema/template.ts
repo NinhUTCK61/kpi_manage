@@ -21,7 +21,14 @@ export const SearchTemplateInputSchema = z.object({
   name: z.string().trim(),
 })
 
-export const ListTemplateInputSchema = z.object({ isTrash: z.boolean().default(false) })
+export const ListTemplateInputSchema = z.object({
+  isTrash: z.boolean().default(false),
+  name: z.string().optional(),
+})
+
+export const FavoriteTemplateSchema = z.object({
+  name: z.string().optional(),
+})
 
 export const TemplateDataSchema = z.object({
   template_id: z.string(),

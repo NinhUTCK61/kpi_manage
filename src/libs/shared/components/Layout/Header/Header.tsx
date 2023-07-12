@@ -1,29 +1,17 @@
-import { InputAdornment, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
-import SearchIcon from 'public/assets/svgs/search.svg'
-import { useForm } from 'react-hook-form'
-import { InputSearch } from '../../Form/Input'
 import { StackContainer } from '../StackContainer'
 import { Account } from './Account'
 import { AppBar } from './AppBar'
 import { Language } from './Language'
+import { Search } from './Search'
 
 const HEADER_HEIGHT = 60
 
-type SearchType = {
-  search: string
-}
-
 const Header = () => {
   const router = useRouter()
-
-  const { control } = useForm<SearchType>({
-    defaultValues: {
-      search: '',
-    },
-  })
 
   return (
     <AppBar elevation={0}>
@@ -36,17 +24,7 @@ const Header = () => {
             style={{ cursor: 'pointer' }}
             priority
           />
-
-          <InputSearch
-            name="search"
-            control={control}
-            placeholder="Search"
-            startAdornment={
-              <InputAdornment position="start">
-                <Image src={SearchIcon} alt="search-icon" />
-              </InputAdornment>
-            }
-          />
+          <Search />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Language />

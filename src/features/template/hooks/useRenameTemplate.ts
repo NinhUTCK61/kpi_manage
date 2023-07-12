@@ -18,7 +18,7 @@ const useRenameTemplate = () => {
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
-      utils.template.favorite.setData(undefined, (old = []) =>
+      utils.template.favorite.setData({}, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
@@ -41,7 +41,7 @@ const useRenameTemplate = () => {
 
       showError(err, t('rename_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
-      utils.template.favorite.setData(undefined, ctx?.prevFavData)
+      utils.template.favorite.setData({}, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()

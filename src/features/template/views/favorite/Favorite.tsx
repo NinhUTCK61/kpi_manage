@@ -5,7 +5,8 @@ import { DialogActionType } from '@/libs/shared/types/utils'
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useLayoutEffect, useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
@@ -77,7 +78,27 @@ export const Favorite = () => {
         }),
     },
   }
-  const { data: favoriteData, refetch, isLoading } = api.template.favorite.useQuery()
+
+  const router = useRouter()
+  const paramSearch = (router.query.search as string) || ''
+
+  useLayoutEffect(() => {
+    router.push(
+      {
+        query: {},
+      },
+      undefined,
+      { shallow: true },
+    )
+  }, [])
+
+  const {
+    data: favoriteData,
+    refetch,
+    isLoading,
+  } = api.template.favorite.useQuery({
+    name: paramSearch ? paramSearch : '',
+  })
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>

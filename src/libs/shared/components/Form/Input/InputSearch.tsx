@@ -35,7 +35,7 @@ function InputSearch<T extends FieldValues>({
 }
 
 const InputStyled = styled(InputBase)(({ theme }) => ({
-  paddingLeft: theme.spacing(2),
+  marginRight: theme.spacing(1.75),
   borderRadius: theme.spacing(1),
   color: theme.palette.common.black,
   gap: 8,
@@ -44,7 +44,7 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
     padding: theme.spacing(1, 1.75, 1, 0),
   },
   height: 38,
-  width: 366,
+  width: 465,
   '& .MuiInputAdornment-positionStart': {
     marginRight: 0,
   },

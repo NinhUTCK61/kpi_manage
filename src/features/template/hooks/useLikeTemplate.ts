@@ -23,13 +23,13 @@ const useLikeTemplate = () => {
 
       if (templateData) {
         if (template.is_favorite) {
-          utils.template.favorite.setData(undefined, (old = []) => [
+          utils.template.favorite.setData({}, (old = []) => [
             ...old,
             { ...templateData, is_favorite: true },
           ])
           return
         }
-        utils.template.favorite.setData(undefined, (old = []) =>
+        utils.template.favorite.setData({}, (old = []) =>
           old.filter((el) => el.template_id !== template.id),
         )
       }
@@ -39,7 +39,7 @@ const useLikeTemplate = () => {
     onError: (err, _, ctx) => {
       showError(err, t('like_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
-      utils.template.favorite.setData(undefined, ctx?.prevFavData)
+      utils.template.favorite.setData({}, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()

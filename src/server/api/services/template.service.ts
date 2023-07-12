@@ -14,13 +14,17 @@ import { User } from 'next-auth'
 import { TemplateHelper } from './helper/template.helper'
 
 export class TemplateService extends TemplateHelper {
-  async list(userId: string, isTrash: boolean) {
+  async list(userId: string, isTrash: boolean, name: string) {
     const deletedOpt = isTrash ? { not: null } : null
+
     const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: userId,
         template: {
           deleted_at: deletedOpt,
+          name: {
+            contains: name,
+          },
         },
       },
       orderBy: {
@@ -200,13 +204,16 @@ export class TemplateService extends TemplateHelper {
     return !!userTemplate
   }
 
-  async favorite(user: User) {
+  async favorite(user: User, name: string) {
     const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: user.id,
         is_favorite: true,
         template: {
           deleted_at: null,
+          name: {
+            contains: name,
+          },
         },
       },
       orderBy: {
