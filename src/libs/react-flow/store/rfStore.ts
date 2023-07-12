@@ -132,7 +132,10 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           const nodes = reLayout(nodesUpdated)
 
           if (shouldFocus) {
-            set({ nodes, nodeFocused: node })
+            set({
+              nodes,
+              nodeFocused: nodeUpdate,
+            })
             return
           }
 
