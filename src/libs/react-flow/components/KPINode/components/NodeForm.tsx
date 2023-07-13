@@ -31,7 +31,10 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const { t } = useTranslation('file')
 
   const saveValue = () => {
-    if (error) return
+    if (error) {
+      method.reset()
+      return
+    }
     const nodes = getKpiNodes()
     if (!nodeFocused || (nodeFocused && nodeFocused.type !== 'kpi')) return
     const nodeData = { ...data, ...getValues() }
@@ -66,6 +69,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     }
 
     if (e.key === 'Enter' && !e.shiftKey) {
+      if (error) return
       changeFormFocusState(false)
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur()
