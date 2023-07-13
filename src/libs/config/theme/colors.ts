@@ -16,6 +16,7 @@ const base = {
   white: '#FFFFFF',
   gray: '#D9D9D9',
   contrastText: '#222222',
+  blackBold: '#000000',
 }
 
 const blueGrey = {

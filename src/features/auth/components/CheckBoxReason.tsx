@@ -1,3 +1,4 @@
+import { base } from '@/libs/config/theme'
 import {
   FormControlLabel,
   FormGroup,
@@ -37,7 +38,11 @@ const CheckBoxReason: React.FC<CheckBoxTypes> = ({ label, onClick, reason }) => 
             checkedIcon={<Image src={CheckedIcon} width={20} height={20} alt="checkbox" />}
           />
         }
-        label={<Typography variant="body2">{label}</Typography>}
+        label={
+          <Typography variant="body2" color={base.blackBold}>
+            {label}
+          </Typography>
+        }
       />
     </FormGroup>
   )
