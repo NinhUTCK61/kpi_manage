@@ -26,6 +26,7 @@ const storeSelector = (state: RFStore) => ({
   removeEmptyKPINode: state.removeEmptyKPINode,
   setActivePosition: state.setActivePosition,
   viewportAction: state.viewportAction,
+  changeViewportAction: state.changeViewportAction,
   addSpeechBallon: state.addSpeechBallon,
   container: state.container,
   templateId: state.templateId,
@@ -44,6 +45,7 @@ export const useReactFlowHandler = () => {
     removeEmptyNode,
     setActivePosition,
     viewportAction,
+    changeViewportAction,
     addSpeechBallon,
     container,
     templateId,
@@ -157,6 +159,22 @@ export const useReactFlowHandler = () => {
     [nodeFocused?.type, removeEmptyNode, setNodeFocused],
   )
 
+  const handleNodeDragStart = useCallback(
+    (_: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
+      switch (node.type) {
+        case 'comment':
+          changeViewportAction(ViewPortAction.Comment)
+          break
+        case 'speech_ballon':
+          changeViewportAction(ViewPortAction.SpeechBallon)
+          break
+        default:
+          break
+      }
+    },
+    [changeViewportAction],
+  )
+
   const handleNodeDragStop = useCallback(
     (_: MouseEvent, node: RFNode<ReactFlowNodeData>) => {
       const data = {
@@ -212,6 +230,7 @@ export const useReactFlowHandler = () => {
     handlePaneClick,
     handleNodesDelete,
     handleNodeClick,
+    handleNodeDragStart,
     handleNodeDragStop,
     handleContextMenu,
   }
