@@ -1,7 +1,6 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
-import { useRFStore } from '@/libs/react-flow'
-
+import { sizeStyleMapping, useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { pxToNumber } from '@/libs/utils/misc'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
@@ -22,6 +21,8 @@ const shapes = [
 const ChooseShape: React.FC = () => {
   const [shape, setShape] = useState<ShapeType>(ShapeType.ROUND_SQUARE)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const widthHeightRatio =
+    sizeStyleMapping[ShapeType.ROUND_SQUARE].width / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
 
   const nodeFocusedMemo = useMemo(() => {
     if (!nodeFocused || nodeFocused.type !== 'speech_ballon') return
@@ -70,9 +71,18 @@ const ChooseShape: React.FC = () => {
       is_saved: nodeFocusedMemo.data.is_saved,
     }
 
-    if (!isRoundSquare && hasDimensionValue) {
-      const height = pxToNumber(style.width) > pxToNumber(style.height) ? style.width : style.height
-      const width = pxToNumber(style.height) > pxToNumber(style.width) ? style.height : style.width
+    if (hasDimensionValue) {
+      let height, width
+      const widthDefault = sizeStyleMapping[ShapeType.ROUND_SQUARE].width //default width of ROUND SQUARE
+
+      if (isRoundSquare) {
+        width = pxToNumber(style.width) < widthDefault ? `${widthDefault}px` : style.width
+        height = `${pxToNumber(width) / widthHeightRatio}px`
+      } else {
+        height = pxToNumber(style.width) > pxToNumber(style.height) ? style.width : style.height
+        width = pxToNumber(style.height) > pxToNumber(style.width) ? style.height : style.width
+      }
+
       const newNodeStyle = JSON.stringify({ ...style, height, width })
 
       updateReactFlowNode(
@@ -82,8 +92,7 @@ const ChooseShape: React.FC = () => {
         },
         'speech_ballon',
       )
-    }
-    updateReactFlowNode(dataUpdate, 'speech_ballon')
+    } else updateReactFlowNode(dataUpdate, 'speech_ballon')
   }
 
   useEffect(() => {
