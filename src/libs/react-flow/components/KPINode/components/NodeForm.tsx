@@ -2,6 +2,7 @@ import { blue, red } from '@/libs/config/theme'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
 import React, { KeyboardEvent as KeyboardEventReact, memo } from 'react'
@@ -27,6 +28,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { nodeInputValidate } = useFormularHanlder()
+  const { t } = useTranslation('file')
 
   const saveValue = () => {
     if (error) return
@@ -116,7 +118,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             control={control}
             name="input_title"
             required
-            label="Label"
+            label={t('kpi_node.label') as string}
             inputProps={{ style }}
             autoComplete="off"
           />
@@ -126,7 +128,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
           <InputNode
             control={control}
             name="unit"
-            label="Unit"
+            label={t('kpi_node.unit') as string}
             inputProps={{ style }}
             autoComplete="off"
           />
