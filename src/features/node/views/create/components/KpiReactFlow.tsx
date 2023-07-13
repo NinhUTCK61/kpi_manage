@@ -31,6 +31,12 @@ const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) 
         pointerEvents: 'none !important',
       },
     }),
+    ...(action !== ViewPortAction.Move && {
+      '&& .react-flow__node-kpi': {
+        cursor: 'unset',
+        pointerEvents: 'none !important',
+      },
+    }),
   }
 })
 
