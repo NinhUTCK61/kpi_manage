@@ -4,6 +4,7 @@ const FormLabel = styled(MuiFormLabel)(({ theme }) => ({
   '&.Mui-error': {
     color: theme.palette.greyScale[900],
   },
+  color: theme.palette.greyScale[900],
   marginBottom: '6px',
   fontWeight: 400,
   fontSize: 15,
