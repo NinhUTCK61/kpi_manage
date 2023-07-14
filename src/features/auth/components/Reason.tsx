@@ -1,5 +1,6 @@
 import { CheckBoxReason } from '@/features/auth/components/CheckBoxReason'
 import { api } from '@/libs/api'
+import { base } from '@/libs/config/theme'
 import { SignUpFormType } from '@/libs/schema'
 import { FormHelperText } from '@/libs/shared/components'
 import { Stack, Typography } from '@mui/material'
@@ -40,7 +41,7 @@ const ReasonSection: React.FC<ReasonPropType> = ({ type }) => {
   return (
     <Stack justifyContent="center">
       <Stack justifyContent="center">
-        <Typography variant="body1" fontWeight={600}>
+        <Typography variant="body1" fontWeight={600} color={base.black}>
           {type === ReasonType.ISSUE ? t('reason_title_issue') : t('reason_title_reason')}
           <Typography ml={0.5} variant="body2" component="span" sx={{ color: 'red !important' }}>
             *
