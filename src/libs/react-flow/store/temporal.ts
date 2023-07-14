@@ -1,6 +1,7 @@
 import { differenceWith, isEqual } from 'lodash'
 import type { StateCreator, StoreApi } from 'zustand'
 import { RFStore, ReactFlowNode, TemporalOptions, _TemporalState } from '../types'
+import { UpdateStateReason } from './middleware'
 
 export const temporalStateCreator = (
   userSet: StoreApi<RFStore>['setState'],
@@ -58,7 +59,7 @@ export const temporalStateCreator = (
 
         if (!isEqual(pastState, currentState)) {
           console.log('run handle set', pastState.nodes)
-          console.log('------------------------------------------------------------')
+          console.log('------------------------------END------------------------------')
           get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
           set({
             pastStates: get().pastStates.concat(pastState),
@@ -73,62 +74,63 @@ export const temporalStateCreator = (
   return stateCreator as StateCreator<_TemporalState, [], []>
 }
 
-export enum DiffReason {
-  NoDiff = 'NoDiff',
-  Unknown = 'Unknown',
-  AddNewEmptyNode = 'AddNewEmptyNode',
-  AddNewComment = 'AddNewComment',
-  // Valid reasons
-  UpdatePosition = 'UpdatePosition',
-}
-
 export const validateDiffNodeState = (
   pastNodes: ReactFlowNode[],
   newNodes: ReactFlowNode[],
-): { isValid: boolean; reason: DiffReason; oldDiff: ReactFlowNode[]; newDiff: ReactFlowNode[] } => {
+  updateReason: UpdateStateReason,
+): { isValid: boolean; oldDiff: ReactFlowNode[]; newDiff: ReactFlowNode[] } => {
   const [oldDiff, newDiff] = getDifferenceNodesByData(pastNodes, newNodes)
 
-  let isValid = true
-  let reason: DiffReason = DiffReason.Unknown
+  let isValid = false
 
-  if (oldDiff.length === 0 || newDiff.length === 0) {
-    isValid = false
-    reason = DiffReason.NoDiff
-  }
-
-  if (oldDiff.length === 1) {
-    const node = oldDiff[0] as ReactFlowNode
-    // case update position => true
-    if (node.position.x !== node.data.x || node.position.y !== node.data.y) {
+  switch (updateReason) {
+    case UpdateStateReason.AddKPINode:
+      // if (newDiff.length === 1) {
       isValid = true
-      reason = DiffReason.UpdatePosition
-
-      return { isValid, reason, oldDiff, newDiff }
-    }
+      // }
+      break
+    case UpdateStateReason.UpdateKPINode:
+      isValid = true
+      break
+    case UpdateStateReason.UpdateSpeechBallonNodePosition:
+      isValid = true
+    default:
+      break
   }
 
-  if (newDiff.length === 1) {
-    // case update one node like: position, data, style
-    const node = newDiff[0] as ReactFlowNode
-    // case update position => true
-    // case adds new empty node => false
-    if (node.type === 'kpi' && !node.data.is_saved) {
-      isValid = false
-      reason = DiffReason.AddNewEmptyNode
-    }
+  // if (oldDiff.length === 0 || newDiff.length === 0) {
+  //   isValid = false
+  // }
 
-    if (node.type === 'speech_ballon' && !node.data.is_saved) {
-      isValid = false
-      reason = DiffReason.AddNewComment
-    }
-  }
+  // if (oldDiff.length === 1) {
+  //   const node = oldDiff[0] as ReactFlowNode
+  //   // case update position => true
+  //   if (node.position.x !== node.data.x || node.position.y !== node.data.y) {
+  //     isValid = true
 
-  if (newDiff.some((el) => el.type === 'comment')) {
-    isValid = false
-    reason = DiffReason.AddNewComment
-  }
+  //     return { isValid, oldDiff, newDiff }
+  //   }
+  // }
 
-  return { isValid, reason, oldDiff, newDiff }
+  // if (newDiff.length === 1) {
+  //   // case update one node like: position, data, style
+  //   const node = newDiff[0] as ReactFlowNode
+  //   // case update position => true
+  //   // case adds new empty node => false
+  //   if (node.type === 'kpi' && !node.data.is_saved) {
+  //     isValid = false
+  //   }
+
+  //   if (node.type === 'speech_ballon' && !node.data.is_saved) {
+  //     isValid = false
+  //   }
+  // }
+
+  // if (newDiff.some((el) => el.type === 'comment')) {
+  //   isValid = false
+  // }
+
+  return { isValid, oldDiff, newDiff }
 }
 
 function getDifferenceNodesByData<T extends ReactFlowNode>(

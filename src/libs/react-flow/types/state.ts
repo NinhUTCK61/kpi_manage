@@ -10,6 +10,7 @@ import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { DialogDeleteNodeProps } from '@/libs/shared/types/utils'
 import React from 'react'
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
+import { UpdateStateReason } from '../store/middleware'
 import {
   HierarchyFlowNode,
   ReactFlowCommentNode,
@@ -45,13 +46,17 @@ export type RFStore = {
     ignoreComment?: boolean
     ignoreKpi?: boolean
   }): void
+  getKpiNodes: () => ReactFlowKPINode[]
+
   // Speech ballon
   addSpeechBallon: (node: ReactFlowSpeechBallonNode, shouldFocus?: boolean) => void
   removeSpeechBallon: (speechBallonId: string) => void
   removeEmptySpeechBallon: () => void
-  nodeCopy: ReactFlowNode | null
-  setNodeCopy: (node: string | null) => void
-  updateSpeechBallon: (node: UpdateSpeechBallonInputType, shouldFocus?: boolean) => void
+  updateSpeechBallon: (
+    node: UpdateSpeechBallonInputType,
+    shouldFocus?: boolean,
+    reason?: UpdateStateReason,
+  ) => void
   // Comment action
   addComment: (node: ReactFlowCommentNode) => void
   updateComment: (data: UpdateCommentInputType) => void
@@ -62,15 +67,10 @@ export type RFStore = {
     remove: CommentReplyOutputType | undefined
     commentReplyIndex: number | undefined
   }
-  getKpiNodes: () => ReactFlowKPINode[]
 
   // Toolbar action
   viewportAction: ViewPortAction
   changeViewportAction: (action: ViewPortAction) => void
-  stroke: number | null
-  changeShapeStroke: (stroke: number) => void
-  shape: string | null
-  changeShapeType: (shape: string) => void
   //Zoom action
   zoom: number
   handleZoom: (isZoomIn?: boolean) => void
@@ -91,6 +91,10 @@ export type RFStore = {
   //dialogDeleteNode
   dialogDelete: DialogDeleteNodeProps | null
   handleToggleDialogDelete: (dialogProps?: DialogDeleteNodeProps) => void
+
+  nodeCopy: ReactFlowNode | null
+  setNodeCopy: (node: string | null) => void
+  updateStateReason: UpdateStateReason
 }
 
 type onSave = ((pastState: ReactFlowNode[], currentState: ReactFlowNode[]) => void) | undefined

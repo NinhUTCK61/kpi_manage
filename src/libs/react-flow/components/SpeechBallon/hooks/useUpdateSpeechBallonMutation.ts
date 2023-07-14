@@ -1,6 +1,7 @@
 import { api } from '@/libs/api'
 import { convertToReactFlowSpeechBallonSingle } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
@@ -15,7 +16,14 @@ const useUpdateSpeechBallonMutation = () => {
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-      updateSpeechBallon(variables, !!nodeFocused)
+      const isUpdatePosition = variables.x !== prevData?.data.x || variables.y !== prevData?.data.y
+      updateSpeechBallon(
+        variables,
+        !!nodeFocused,
+        isUpdatePosition
+          ? UpdateStateReason.UpdateSpeechBallonNodePosition
+          : UpdateStateReason.UpdateSpeechBallonNodeData,
+      )
       return { prevData }
     },
     onError(err, _, ctx) {

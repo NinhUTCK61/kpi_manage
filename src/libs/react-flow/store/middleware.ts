@@ -10,7 +10,7 @@ import {
   Write,
   _TemporalState,
 } from '../types'
-import { DiffReason, temporalStateCreator, validateDiffNodeState } from './temporal'
+import { temporalStateCreator, validateDiffNodeState } from './temporal'
 
 declare module 'zustand/vanilla' {
   interface StoreMutators<S, A> {
@@ -27,6 +27,45 @@ type KPIMiddleware = <
 ) => StateCreator<RFStore, Mps, Mcs>
 
 // type D3MiddlewareImpl = (f: StateCreator<RFStore, [], []>) => StateCreator<RFStore, [], []>
+
+export enum UpdateStateReason {
+  Unknown = 'Unknown',
+  Init = 'Init',
+  Undo = 'Undo',
+  Redo = 'Redo',
+  NodesChangeByReactFlow = 'NodesChangeByReactFlow',
+  EdgesChangeByReactFlow = 'EdgesChangeByReactFlow',
+  AddKPINode = 'AddKPINode',
+  AddSpeechBallonNode = 'AddSpeechBallonNode',
+  DeleteKPINode = 'DeleteKPINode',
+  DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
+  UpdateKPINode = 'UpdateKPINode',
+  UpdateNodeFocused = 'UpdateNodeFocused',
+  UpdateNodePosition = 'UpdateNodePosition',
+  BulkUpdateKpiNodes = 'BulkUpdateKpiNodes',
+
+  UpdateSpeechBallonNodeData = 'UpdateSpeechBallonNodeData',
+  UpdateSpeechBallonNodePosition = 'UpdateSpeechBallonNodePosition',
+
+  AddCommentNode = 'AddCommentNode',
+  UpdateCommentNode = 'UpdateCommentNode',
+  DeleteCommentNode = 'DeleteCommentNode',
+  AddCommentReply = 'AddCommentReply',
+  UpdateCommentReply = 'UpdateCommentReply',
+  DeleteCommentReply = 'DeleteCommentReply',
+
+  RemoveNodeById = 'RemoveNodeById',
+  RemoveEdge = 'RemoveEdge',
+
+  RemoveEmptyNode = 'RemoveEmptyNode',
+
+  UpdateEdge = 'UpdateEdge',
+
+  RemoveEmptyKPINode = 'RemoveEmptyKPINode',
+  RemoveEmptySpeechBallonNode = 'RemoveEmptySpeechBallonNode',
+
+  ToggleDraggable = 'ToggleDraggable',
+}
 
 const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
   const configWithTemporal = (
@@ -58,25 +97,41 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       let pastNodes = get().nodes
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
-      console.log('------------------------------------------------------------')
-      console.log('newState', newState)
+      const viewPort = get().viewportAction
+      if (
+        typeof newState === 'object' &&
+        newState.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
+      ) {
+        console.log('----------------------------START--------------------------------')
+        console.log('newState', newState)
+      }
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
-        console.log('state', pastNodes, newState.nodes)
-        const { isValid, reason, oldDiff, newDiff } = validateDiffNodeState(
+        const updateReason = newState.updateStateReason ?? UpdateStateReason.Unknown
+        // console.log('state', pastNodes, newState.nodes)
+        const { isValid, oldDiff, newDiff } = validateDiffNodeState(
           pastNodes,
           newState.nodes as ReactFlowNode[],
+          updateReason,
         )
 
         if (isValid) {
-          consola.withTag('VALID').info('diff', oldDiff, newDiff, reason)
+          consola.withTag('VALID').info('oldDiff', oldDiff, updateReason)
+          consola.withTag('VALID').info('newDiff', newDiff, updateReason)
         } else {
-          consola.log('diff', oldDiff, isValid, reason)
+          if (
+            typeof newState === 'object' &&
+            newState.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
+          ) {
+            consola.log('oldDiff', oldDiff)
+            consola.log('newDiff', newDiff)
+            console.log(isValid, updateReason)
+          }
         }
         if (isValid) {
-          switch (reason) {
-            case DiffReason.UpdatePosition:
+          switch (updateReason) {
+            case UpdateStateReason.UpdateSpeechBallonNodePosition:
               pastNodes = produce(pastNodes, (draft) => {
                 oldDiff.forEach((node) => {
                   const nodeIdx = draft.findIndex((n) => n.id === node.id)
@@ -98,11 +153,13 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
           const pastState: Partial<RFStore> = {
             nodes: pastNodes,
             edges: pastEdges,
+            nodeFocused: pastNodeFocused,
+            viewportAction: viewPort,
           }
 
-          if (pastNodeFocused?.type !== 'kpi') {
-            pastState.nodeFocused = pastNodeFocused
-          }
+          // if (pastNodeFocused?.type !== 'kpi') {
+          //   pastState.nodeFocused = pastNodeFocused
+          // }
 
           handleSetTemporal(pastState)
         }
@@ -115,4 +172,4 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
   return configWithTemporal as StateCreator<RFStore, [], []>
 }
 
-export const kpiMiddleware = _KPIMiddleware as unknown as KPIMiddleware
+export const kpiMiddleware = _KPIMiddleware as KPIMiddleware

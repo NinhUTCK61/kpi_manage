@@ -1,4 +1,3 @@
-import { ViewPortAction } from '@/features/node/constant'
 import { memo } from 'react'
 import { NodeProps } from 'reactflow'
 import { useRFStore } from '../../hooks'
@@ -11,12 +10,10 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
   const { data, isConnectable, selected } = props
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const nodeCopy = useRFStore((state) => state.nodeCopy)
-  const viewportAction = useRFStore((state) => state.viewportAction)
 
   const isMatches = nodeFocused?.id === data.id
-  const isActive =
-    ((data.slug === 'root' && isMatches) || (isMatches && selected)) &&
-    viewportAction === ViewPortAction.Move
+  const isActive = (data.slug === 'root' && isMatches) || (isMatches && selected)
+  console.log(data.slug, isMatches, isActive)
 
   const disabledMenu = []
 

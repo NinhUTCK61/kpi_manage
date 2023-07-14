@@ -1,4 +1,4 @@
-import { useTemporalStore } from '@/libs/react-flow'
+import { useRFStore, useTemporalStore } from '@/libs/react-flow'
 import { Stack } from '@mui/material'
 import Image from 'next/image'
 import RedoInactive from 'public/assets/svgs/redo.svg'
@@ -10,6 +10,13 @@ import { shallow } from 'zustand/shallow'
 
 const UndoRedo: FC = () => {
   const { undo, redo, pastStates, futureStates } = useTemporalStore((state) => state, shallow)
+  const currentState = useRFStore(
+    (state) => ({
+      nodes: state.nodes,
+      nodeFocused: state.nodeFocused,
+    }),
+    shallow,
+  )
 
   const canRedo = futureStates.length > 0
   const canUndo = pastStates.length > 0
@@ -29,6 +36,14 @@ const UndoRedo: FC = () => {
         }}
       >
         past state
+      </button>
+
+      <button
+        onClick={() => {
+          console.log(currentState)
+        }}
+      >
+        current state
       </button>
 
       <button
