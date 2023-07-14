@@ -9,19 +9,19 @@ import { useSpeechBallonContext } from '../context'
 
 export const minSizeResize = {
   [ShapeType.SQUARE]: {
-    minWidth: 190,
-    minHeight: 190,
+    minWidth: 150,
+    minHeight: 150,
   },
   [ShapeType.CIRCULAR]: {
-    minWidth: 190,
-    minHeight: 190,
+    minWidth: 150,
+    minHeight: 150,
   },
   [ShapeType.MEDIUM_ROUND_SQUARE]: {
-    minWidth: 190,
-    minHeight: 190,
+    minWidth: 150,
+    minHeight: 150,
   },
   [ShapeType.ROUND_SQUARE]: {
-    minWidth: 210,
+    minWidth: 150,
     minHeight: 45,
   },
 }

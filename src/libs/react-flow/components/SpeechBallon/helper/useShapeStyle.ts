@@ -15,20 +15,20 @@ const borderStyleMapping = {
 
 export const sizeStyleMapping = {
   [ShapeType.SQUARE]: {
-    width: 190,
-    height: 190,
+    width: 150,
+    height: 150,
   },
   [ShapeType.CIRCULAR]: {
-    width: 190,
-    height: 190,
+    width: 150,
+    height: 150,
     padding: '20px 0',
   },
   [ShapeType.MEDIUM_ROUND_SQUARE]: {
-    width: 190,
-    height: 190,
+    width: 150,
+    height: 150,
   },
   [ShapeType.ROUND_SQUARE]: {
-    width: 210,
+    width: 150,
     height: 45,
   },
 }
