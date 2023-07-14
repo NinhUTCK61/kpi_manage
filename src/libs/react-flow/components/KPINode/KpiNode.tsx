@@ -23,8 +23,14 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
   if (data.slug === 'root') {
     disabledMenu.push(CtxMenuType.Delete)
   }
+
   if (!nodeCopy || nodeCopy.type !== 'kpi') {
     disabledMenu.push(CtxMenuType.Paste)
+  }
+
+  if (!data.is_saved) {
+    disabledMenu.push(CtxMenuType.Delete)
+    disabledMenu.push(CtxMenuType.Copy)
   }
 
   return (
