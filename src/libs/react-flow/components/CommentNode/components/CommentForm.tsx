@@ -99,7 +99,7 @@ const CommentForm: React.FC = () => {
     >
       <Stack direction="row" spacing={1} alignItems="center" minHeight={48}>
         <Stack direction="row" alignItems="center" justifyContent="center">
-          <Image src={CommentIcon} alt="comment icon" />
+          <Image src={CommentIcon} alt="comment icon" width={32} height={32} />
         </Stack>
 
         <Stack component="form" position="relative" width={320} onSubmit={handleSubmit}>

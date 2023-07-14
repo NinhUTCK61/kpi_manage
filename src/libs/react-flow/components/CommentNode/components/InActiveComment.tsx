@@ -13,7 +13,7 @@ const InActiveComment: React.FC = () => {
 
   return (
     <ButtonAction onClick={handleOpenComment} sx={{ borderRadius: '100%' }}>
-      <Image src={CommentActiveIcon} alt="comment icon" />
+      <Image src={CommentActiveIcon} alt="comment icon" width={32} height={32} />
     </ButtonAction>
   )
 }
