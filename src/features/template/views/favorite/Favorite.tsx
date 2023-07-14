@@ -1,12 +1,13 @@
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
+import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
@@ -80,24 +81,16 @@ export const Favorite = () => {
   }
 
   const router = useRouter()
-  const paramSearch = (router.query.search as string) || ''
+  const searchParam = (router.query.search as string) || ''
 
-  useLayoutEffect(() => {
-    router.push(
-      {
-        query: {},
-      },
-      undefined,
-      { shallow: true },
-    )
-  }, [])
+  useClearParam()
 
   const {
     data: favoriteData,
     refetch,
     isLoading,
   } = api.template.favorite.useQuery({
-    name: paramSearch ? paramSearch : '',
+    searchName: searchParam ? searchParam : '',
   })
 
   return (

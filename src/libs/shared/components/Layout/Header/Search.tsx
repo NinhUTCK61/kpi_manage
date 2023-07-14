@@ -19,16 +19,16 @@ const Search = () => {
 
   const router = useRouter()
 
-  const paramSearch = (router.query.search as string) || ''
+  const searchParam = (router.query.search as string) || ''
 
   const [searchValue, setSearchValue] = useState<string>('')
 
-  const handleTypingSearch = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
   }
 
-  const handleClickSearch = () => {
-    if (paramSearch !== searchValue) {
+  const handleSearchClick = () => {
+    if (searchParam !== searchValue) {
       router.push(
         {
           query: { search: searchValue },
@@ -41,7 +41,7 @@ const Search = () => {
 
   const handleKeySubmit = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleClickSearch()
+      handleSearchClick()
     }
   }
 
@@ -52,10 +52,10 @@ const Search = () => {
         control={control}
         placeholder="Search..."
         value={searchValue}
-        onChange={handleTypingSearch}
+        onChange={handleSearchChange}
         onKeyUp={handleKeySubmit}
       />
-      <ButtonSearch variant="contained" onClick={handleClickSearch}>
+      <ButtonSearch variant="contained" onClick={handleSearchClick}>
         <Image src={SearchIcon} alt="" width={16} height={16} />
       </ButtonSearch>
     </SectionSearch>

@@ -1,6 +1,7 @@
 import { ThumbnailAction } from '@/features/template/components'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
+import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
@@ -8,7 +9,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import AddIcon from 'public/assets/svgs/plus.svg'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
 import { ButtonCreate, SelectStatus, TemplateItem } from './components'
@@ -30,17 +31,9 @@ const Home = () => {
   const mutationDelete = useDeleteTemplate()
 
   const router = useRouter()
-  const paramSearch = (router.query.search as string) || ''
+  const searchParam = (router.query.search as string) || ''
 
-  useLayoutEffect(() => {
-    router.push(
-      {
-        query: {},
-      },
-      undefined,
-      { shallow: true },
-    )
-  }, [])
+  useClearParam()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -96,7 +89,7 @@ const Home = () => {
 
   const { data, refetch, isLoading } = api.template.list.useQuery({
     isTrash: isTrash,
-    name: paramSearch ? paramSearch : '',
+    searchName: searchParam ? searchParam : '',
   })
 
   return (
