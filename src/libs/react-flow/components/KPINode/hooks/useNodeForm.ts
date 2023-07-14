@@ -3,6 +3,7 @@ import { KPINodeType } from '@/libs/react-flow/types'
 import { isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useKPINodeContext } from '../context'
+import { useErrorState } from './useErrorState'
 
 export type NodeFormProps = {
   input_title: string
@@ -16,7 +17,14 @@ export const useNodeForm = (data: KPINodeType) => {
   const { handleError } = useTranslateError()
   const [error, setError] = useState('')
 
+  const { error: errorState, message } = useErrorState(true, form.watch('input_value') as string)
+
   useEffect(() => {
+    if (errorState) {
+      setError(message)
+      return
+    }
+
     const errors = form.formState.errors
     if (isEmpty(errors)) {
       setError('')
@@ -29,7 +37,7 @@ export const useNodeForm = (data: KPINodeType) => {
     if (errors.input_value?.message) {
       setError(handleError(errors.input_value.message as string))
     }
-  }, [form.formState, handleError])
+  }, [errorState, form.formState, handleError, message])
 
   useEffect(() => {
     setTimeout(() => {

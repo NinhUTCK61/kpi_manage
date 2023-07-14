@@ -24,7 +24,7 @@ const InActive: React.FC = () => {
   const { t } = useTranslation('common')
   const d3Node = d3Root.find((node) => node.data.id === data.id)
   const hasChild = d3Node?.children && d3Node.children.length > 0
-  const { error, listSlugError } = useErrorState()
+  const { error, message } = useErrorState()
   const firstSlug = data.slug[0]
   const edgeColor = generateColors(firstSlug as string)
 
@@ -63,7 +63,7 @@ const InActive: React.FC = () => {
         )}
       </RightHandler>
       {error ? (
-        <Tooltip title={`${listSlugError.join(',')} ${t('error.node_not_found')}`}>
+        <Tooltip title={message}>
           <TextId variant="caption" error>{`ⓘ ${data.slug}`}</TextId>
         </Tooltip>
       ) : (
