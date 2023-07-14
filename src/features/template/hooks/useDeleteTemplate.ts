@@ -20,7 +20,7 @@ const useDeleteTemplate = () => {
           : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
       })
 
-      utils.template.favorite.setData(undefined, (old = []) => {
+      utils.template.favorite.setData({}, (old = []) => {
         return template.is_permanently
           ? old.filter((e) => e.template_id !== template.id)
           : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
@@ -39,7 +39,7 @@ const useDeleteTemplate = () => {
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))
       utils.template.list.setData({ isTrash: ctx?.isTrash }, ctx?.prevData)
-      utils.template.favorite.setData(undefined, ctx?.prevFavData)
+      utils.template.favorite.setData({}, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()

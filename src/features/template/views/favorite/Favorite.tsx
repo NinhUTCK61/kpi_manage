@@ -1,10 +1,12 @@
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
+import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
@@ -77,7 +79,19 @@ export const Favorite = () => {
         }),
     },
   }
-  const { data: favoriteData, refetch, isLoading } = api.template.favorite.useQuery()
+
+  const router = useRouter()
+  const searchParam = (router.query.search as string) || ''
+
+  useClearParam()
+
+  const {
+    data: favoriteData,
+    refetch,
+    isLoading,
+  } = api.template.favorite.useQuery({
+    searchName: searchParam ? searchParam : '',
+  })
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
