@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 import { DEFAULT_NODE_ATTRIBUTES } from '../constant'
 import { HierarchyFlowNode, KPINodeType } from '../types'
+import { convertSlugToNumber } from './utils'
 
 export function generateIds(d3Node: HierarchyFlowNode): void {
   d3Node.each((node) => {
@@ -28,8 +29,14 @@ export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
       return numberToLetters(maxChildNumber + 1)
     }
   } else {
-    const nextSlugNumber = (!children ? 0 : children.length) + 1
-    return parentSlug + nextSlugNumber
+    if (children?.length) {
+      return (
+        parentSlug +
+        (convertSlugToNumber(children[children.length - 1]?.data.data.slug as string) + 1)
+      )
+    }
+
+    return parentSlug + 1
   }
 }
 
