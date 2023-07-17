@@ -11,14 +11,14 @@ const useRenameTemplate = () => {
   const mutation = api.template.update.useMutation({
     onMutate: async (template) => {
       await utils.template.list.cancel()
-      const prevData = utils.template.list.getData({ isTrash: false })
-      const prevFavData = utils.template.favorite.getData()
+      const prevData = utils.template.list.getData({ isTrash: false, searchName: '' })
+      const prevFavData = utils.template.favorite.getData({ searchName: '' })
 
-      utils.template.list.setData({ isTrash: false }, (old = []) =>
+      utils.template.list.setData({ isTrash: false, searchName: '' }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
-      utils.template.favorite.setData({}, (old = []) =>
+      utils.template.favorite.setData({ searchName: '' }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
@@ -45,6 +45,7 @@ const useRenameTemplate = () => {
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 
@@ -52,14 +53,24 @@ const useRenameTemplate = () => {
     onMutate: async (template) => {
       await utils.template.list.cancel()
       const prevData = utils.template.byId.getData({ id: template.id })
+      const prevTemplateData = utils.template.list.getData({ isTrash: false, searchName: '' })
+      const prevFavData = utils.template.favorite.getData({ searchName: '' })
 
       utils.template.byId.setData({ id: template.id }, (old) =>
         old ? { ...old, name: String(template.name) } : old,
       )
 
+      utils.template.list.setData({ isTrash: false, searchName: '' }, (old = []) =>
+        old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
+      )
+
+      utils.template.favorite.setData({ searchName: '' }, (old = []) =>
+        old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
+      )
+
       const template_id = String(template.id)
 
-      return { prevData, template_id }
+      return { prevData, template_id, prevFavData, prevTemplateData }
     },
     onSuccess: () => {
       enqueueSnackbar(t('description_rename_success'), {
@@ -68,6 +79,9 @@ const useRenameTemplate = () => {
     },
     onError: (err, _, ctx) => {
       ctx?.prevData && utils.template.byId.setData({ id: ctx?.template_id }, ctx?.prevData)
+      utils.template.list.setData({ isTrash: false }, ctx?.prevTemplateData)
+      utils.template.favorite.setData({}, ctx?.prevFavData)
+
       if (err.data?.zodError) {
         const errorMes = JSON.parse(err.message)[0].message
         enqueueSnackbar(handleError(errorMes), {
@@ -81,6 +95,7 @@ const useRenameTemplate = () => {
     },
     onSettled: () => {
       utils.template.list.invalidate()
+      utils.template.favorite.invalidate()
     },
   })
 
