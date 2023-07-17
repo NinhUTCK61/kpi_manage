@@ -10,26 +10,26 @@ const useLikeTemplate = () => {
   const mutation = api.template.like.useMutation({
     onMutate: async (template) => {
       await utils.template.list.cancel()
-      const prevData = utils.template.list.getData({ isTrash: false })
+      const prevData = utils.template.list.getData({ isTrash: false, searchName: '' })
 
-      utils.template.list.setData({ isTrash: false }, (old = []) =>
+      utils.template.list.setData({ isTrash: false, searchName: '' }, (old = []) =>
         old.map((e) =>
           e.template_id === template.id ? { ...e, is_favorite: template.is_favorite } : e,
         ),
       )
 
-      const prevFavData = utils.template.favorite.getData()
+      const prevFavData = utils.template.favorite.getData({ searchName: '' })
       const templateData = prevData?.find((el) => el.template_id === template.id)
 
       if (templateData) {
         if (template.is_favorite) {
-          utils.template.favorite.setData({}, (old = []) => [
+          utils.template.favorite.setData({ searchName: '' }, (old = []) => [
             ...old,
             { ...templateData, is_favorite: true },
           ])
           return
         }
-        utils.template.favorite.setData({}, (old = []) =>
+        utils.template.favorite.setData({ searchName: '' }, (old = []) =>
           old.filter((el) => el.template_id !== template.id),
         )
       }
@@ -38,8 +38,8 @@ const useLikeTemplate = () => {
     },
     onError: (err, _, ctx) => {
       showError(err, t('like_failed'))
-      utils.template.list.setData({ isTrash: false }, ctx?.prevData)
-      utils.template.favorite.setData({}, ctx?.prevFavData)
+      utils.template.list.setData({ isTrash: false, searchName: '' }, ctx?.prevData)
+      utils.template.favorite.setData({ searchName: '' }, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
