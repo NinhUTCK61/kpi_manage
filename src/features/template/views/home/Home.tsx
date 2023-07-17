@@ -132,7 +132,7 @@ const Home = () => {
           />
 
           <Typography variant="body2" mt={2}>
-            {isTrash ? t('no_deleted_files', { ns: 'common' }) : t('no_files', { ns: 'common' })}
+            {searchParam && !data?.length && t('no_found_file', { ns: 'common' })}
           </Typography>
         </Stack>
       )}

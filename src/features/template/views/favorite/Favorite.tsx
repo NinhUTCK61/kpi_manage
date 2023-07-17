@@ -127,7 +127,7 @@ export const Favorite = () => {
           />
 
           <Typography variant="body2" mt={2}>
-            {t('no_favorite_files', { ns: 'favorite' })}
+            {searchParam && !favoriteData?.length && t('no_found_file', { ns: 'common' })}
           </Typography>
         </Stack>
       )}
