@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { useErrorState } from '../hooks'
-import { generateColors } from '../utils'
+import { generateColors, sliceString } from '../utils'
 import {
   LeftHandler,
   NodeIcon,
@@ -67,7 +67,11 @@ const InActive: React.FC = () => {
           <TextId variant="caption" error>{`ⓘ ${data.slug}`}</TextId>
         </Tooltip>
       ) : (
-        <TextId variant="caption">{data.slug}</TextId>
+        <Tooltip title={data.slug}>
+          <TextId variant="caption">
+            {data.slug.length > 8 ? sliceString(data.slug, 3, 3) : data.slug}
+          </TextId>
+        </Tooltip>
       )}
     </NodeInActiveContainer>
   )
