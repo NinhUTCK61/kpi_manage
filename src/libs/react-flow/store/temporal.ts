@@ -94,41 +94,12 @@ export const validateDiffNodeState = (
       break
     case UpdateStateReason.UpdateSpeechBallonNodePosition:
       isValid = true
+      break
+    case UpdateStateReason.RemoveNodeById:
+      isValid = true
     default:
       break
   }
-
-  // if (oldDiff.length === 0 || newDiff.length === 0) {
-  //   isValid = false
-  // }
-
-  // if (oldDiff.length === 1) {
-  //   const node = oldDiff[0] as ReactFlowNode
-  //   // case update position => true
-  //   if (node.position.x !== node.data.x || node.position.y !== node.data.y) {
-  //     isValid = true
-
-  //     return { isValid, oldDiff, newDiff }
-  //   }
-  // }
-
-  // if (newDiff.length === 1) {
-  //   // case update one node like: position, data, style
-  //   const node = newDiff[0] as ReactFlowNode
-  //   // case update position => true
-  //   // case adds new empty node => false
-  //   if (node.type === 'kpi' && !node.data.is_saved) {
-  //     isValid = false
-  //   }
-
-  //   if (node.type === 'speech_ballon' && !node.data.is_saved) {
-  //     isValid = false
-  //   }
-  // }
-
-  // if (newDiff.some((el) => el.type === 'comment')) {
-  //   isValid = false
-  // }
 
   return { isValid, oldDiff, newDiff }
 }

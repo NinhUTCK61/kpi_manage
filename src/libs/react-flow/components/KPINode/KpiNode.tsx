@@ -13,7 +13,6 @@ function KpiNodeInner(props: NodeProps<KPINodeType>) {
 
   const isMatches = nodeFocused?.id === data.id
   const isActive = (data.slug === 'root' && isMatches) || (isMatches && selected)
-  console.log(data.slug, isMatches, isActive)
 
   const disabledMenu = []
 
