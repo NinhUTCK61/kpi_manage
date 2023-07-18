@@ -28,6 +28,11 @@ const InActive: React.FC = () => {
   const firstSlug = data.slug[0]
   const edgeColor = generateColors(firstSlug as string)
 
+  const title = error ? message : data.slug
+  const _slug = data.slug.length > 8 ? sliceString(data.slug, 3, 3) : data.slug
+
+  const slug = error ? `ⓘ ${data.slug}` : _slug
+
   return (
     <NodeInActiveContainer
       sx={{
@@ -62,17 +67,11 @@ const InActive: React.FC = () => {
           />
         )}
       </RightHandler>
-      {error ? (
-        <Tooltip title={message}>
-          <TextId variant="caption" error>{`ⓘ ${data.slug}`}</TextId>
-        </Tooltip>
-      ) : (
-        <Tooltip title={data.slug}>
-          <TextId variant="caption">
-            {data.slug.length > 8 ? sliceString(data.slug, 3, 3) : data.slug}
-          </TextId>
-        </Tooltip>
-      )}
+      <Tooltip title={title}>
+        <TextId variant="caption" error={error}>
+          {slug}
+        </TextId>
+      </Tooltip>
     </NodeInActiveContainer>
   )
 }
