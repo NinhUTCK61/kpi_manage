@@ -67,7 +67,7 @@
     "template_not_found": "Template not found!",
     "template_deleted": "The template has been deleted.",
     "internal_server_error": "An internal server error occurred.",
-    "invalid_token": "Token not found or expired!",
+    "invalid_token": "Verify email has expired.",
     "email_conflict": "Email already exists.",
     "error_match_password": "Password and Confirm Password does not match.",
     "match_new_password": "New password and Confirm new password does not match.",
@@ -90,7 +90,7 @@
     "invalid_node": "Cannot enter the ID of this box itself.",
     "delete_node_has_formula_1": "This box exists in the formula of [",
     "delete_node_has_formula_2": "]. Are you sure to delete?",
-    "formula_repetition": "Circular dependency detected. ",
+    "formula_repetition": "Circular dependency detected.",
 
     "create_comment": "Failed to create comment.",
     "create_comment_reply": "Failed to create comment reply.",
