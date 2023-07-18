@@ -1,3 +1,4 @@
+import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { Select as MuiSelect, SelectChangeEvent, Stack, Typography, styled } from '@mui/material'
@@ -28,12 +29,19 @@ const ChooseTypeLayout: React.FC = () => {
     setType(value)
 
     if (!nodeFocusedMemo) return
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+    const isTextColorValid =
+      nodeStyle.color !== base.white && nodeStyle.color !== customPrimary[700]
+    const defaultColor = value === 'FILL' ? base.white : customPrimary[700]
+    const textColor = isTextColorValid ? nodeStyle.color : defaultColor
+    const newNodeStyle = JSON.stringify({ ...nodeStyle, color: textColor })
 
     updateReactFlowNode(
       {
         layout: value,
         id: nodeFocusedMemo.data.id,
         is_saved: nodeFocusedMemo.data.is_saved,
+        node_style: newNodeStyle,
       },
       'speech_ballon',
     )
