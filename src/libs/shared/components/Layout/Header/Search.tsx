@@ -29,9 +29,11 @@ const Search = () => {
 
   const handleSearchClick = () => {
     if (searchParam !== searchValue) {
+      setSearchValue(searchValue.trim())
+
       router.push(
         {
-          query: { search: searchValue },
+          query: { search: searchValue.trim() },
         },
         undefined,
         { shallow: true },

@@ -12,6 +12,13 @@ import { ListItemButton } from './ItemSidebar'
 
 const SIDE_BAR_WIDTH = 250
 
+export const menuHref = {
+  home: '/',
+  favorite: '/favorite',
+  consultation: '/consultation',
+  knowledge_blog: '/knowledge_blog',
+}
+
 const Sidebar = () => {
   const { t } = useTranslation()
   const menus = [
