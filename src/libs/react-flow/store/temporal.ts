@@ -97,6 +97,9 @@ export const validateDiffNodeState = (
       break
     case UpdateStateReason.RemoveNodeById:
       isValid = true
+    case UpdateStateReason.UpdateSpeechBallonNodeData:
+      isValid = true
+      break
     default:
       break
   }

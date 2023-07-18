@@ -16,7 +16,10 @@ const useUpdateSpeechBallonMutation = () => {
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-      const isUpdatePosition = variables.x !== prevData?.data.x || variables.y !== prevData?.data.y
+
+      const hasPositionChanged = variables.x || variables.y
+      const isUpdatePosition =
+        hasPositionChanged && (variables.x !== prevData?.data.x || variables.y !== prevData?.data.y)
       updateSpeechBallon(
         variables,
         !!nodeFocused,
