@@ -72,7 +72,7 @@ const TextId = styled(Typography, {
 })<{ error?: boolean }>(({ theme, error }) => ({
   position: 'absolute',
   top: 0,
-  right: 0,
+  left: 0,
   background: error ? theme.palette.red[0] : theme.palette.blue[0],
   color: error ? theme.palette.error.dark : theme.palette.blue[500],
   padding: theme.spacing(0.5, 1),

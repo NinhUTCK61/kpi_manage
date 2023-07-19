@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { useErrorState } from '../hooks'
-import { generateColors } from '../utils'
+import { generateColors, sliceString } from '../utils'
 import {
   LeftHandler,
   NodeIcon,
@@ -27,6 +27,11 @@ const InActive: React.FC = () => {
   const { error, message } = useErrorState()
   const firstSlug = data.slug[0]
   const edgeColor = generateColors(firstSlug as string)
+
+  const title = error ? message : data.slug
+  const _slug = data.slug.length > 8 ? sliceString(data.slug, 3, 3) : data.slug
+
+  const slug = error ? `ⓘ ${data.slug}` : _slug
 
   return (
     <NodeInActiveContainer
@@ -62,13 +67,11 @@ const InActive: React.FC = () => {
           />
         )}
       </RightHandler>
-      {error ? (
-        <Tooltip title={message}>
-          <TextId variant="caption" error>{`ⓘ ${data.slug}`}</TextId>
-        </Tooltip>
-      ) : (
-        <TextId variant="caption">{data.slug}</TextId>
-      )}
+      <Tooltip title={title}>
+        <TextId variant="caption" error={error}>
+          {slug}
+        </TextId>
+      </Tooltip>
     </NodeInActiveContainer>
   )
 }

@@ -79,3 +79,11 @@ export function convertSlugToString(inputString: string) {
 
   return convertedString
 }
+
+export const sliceString = (str: string | null, sliceStart = 100, sliceEnd?: number) => {
+  if (!str) return ''
+  if (str.length > sliceStart) {
+    return str.slice(0, sliceStart) + '...' + (sliceEnd ? str.slice(-Number(sliceEnd)) : '')
+  }
+  return str
+}

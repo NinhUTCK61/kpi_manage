@@ -21,7 +21,7 @@ const useErrorState = (check?: boolean, inputValue?: string) => {
     )
   }
   error = !!listSlugError.length
-  const message = listSlugError.join(',') + t('error.node_not_found')
+  const message = data.slug + ' : ' + listSlugError.join(',') + t('error.node_not_found')
   return { error, message }
 }
 
