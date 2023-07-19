@@ -91,19 +91,3 @@ export function isPaneClick(e: MouseEvent | TouchEvent) {
   if (!isString(targetClass)) return
   return targetClass === PANE_CLASS_NAME || targetClassKpiNode
 }
-
-export function convertSlugToNumber(slug: string) {
-  let numericPart = ''
-  for (let i = 0; i < slug.length; i++) {
-    const char = slug.charAt(i) as unknown as number
-    if (!isNaN(char)) {
-      numericPart += char
-    }
-  }
-
-  if (numericPart !== '') {
-    return parseInt(numericPart)
-  } else {
-    return 0
-  }
-}

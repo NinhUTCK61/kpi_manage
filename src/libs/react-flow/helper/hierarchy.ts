@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
+import { nextSlug } from '../components/KPINode/utils'
 import { DEFAULT_NODE_ATTRIBUTES } from '../constant'
 import { HierarchyFlowNode, KPINodeType } from '../types'
-import { convertSlugToNumber } from './utils'
 
 export function generateIds(d3Node: HierarchyFlowNode): void {
   d3Node.each((node) => {
@@ -16,7 +16,10 @@ export function generateIds(d3Node: HierarchyFlowNode): void {
   })
 }
 
-export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
+export function generateNextIdByAdd(
+  parentNode: HierarchyFlowNode,
+  d3Root: HierarchyFlowNode,
+): string {
   const { data, children } = parentNode
   const parentSlug = data.data.slug
 
@@ -30,13 +33,13 @@ export function generateNextIdByAdd(parentNode: HierarchyFlowNode): string {
     }
   } else {
     if (children?.length) {
-      return (
-        parentSlug +
-        (convertSlugToNumber(children[children.length - 1]?.data.data.slug as string) + 1)
-      )
+      const maxCurrentSlug = children[children.length - 1]?.data.data.slug as string
+      const newSlug = nextSlug(maxCurrentSlug)
+
+      return generateNewSlug(newSlug, d3Root)
     }
 
-    return parentSlug + 1
+    return generateNewSlug(parentSlug + 1, d3Root)
   }
 }
 
@@ -134,12 +137,31 @@ function indexToSlug(index: number): string {
 
 export const generateNextId = generateNextIdByAdd
 
-export const generateNextNode = (parentNode: HierarchyFlowNode): KPINodeType => {
+export const generateNextNode = (
+  parentNode: HierarchyFlowNode,
+  d3Root: HierarchyFlowNode,
+): KPINodeType => {
   return {
     id: nanoid(),
-    slug: generateNextId(parentNode),
+    slug: generateNextId(parentNode, d3Root),
     parent_node_id: parentNode.data.id,
     is_saved: false,
     ...DEFAULT_NODE_ATTRIBUTES,
   }
+}
+
+const generateNewSlug = (slug: string, d3Root: HierarchyFlowNode) => {
+  let pass = false
+  let _slug = slug
+  //Tăng slug+1 đến khi hợp lệ
+  while (!pass) {
+    const node = d3Root.find((node) => node.data.data.slug === _slug)
+    if (node) {
+      _slug = nextSlug(_slug)
+    } else {
+      pass = true
+    }
+  }
+
+  return _slug
 }
