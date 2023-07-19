@@ -7,6 +7,7 @@ import { FocusEvent, FormEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
+import { sizeStyleMapping } from '../helper'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
@@ -138,7 +139,10 @@ export const SpeechBallonForm: React.FC = () => {
         transform: 'translate(-50%, -50%)',
         overflow: 'hidden',
       }
-    : { width: '100%', height: style.height ? style.height : '100%' }
+    : {
+        width: '100%',
+        height: style.height ? style.height : sizeStyleMapping[data.shape as ShapeType].height,
+      }
 
   const positionShape = isShapeCircular && {
     position: 'relative',

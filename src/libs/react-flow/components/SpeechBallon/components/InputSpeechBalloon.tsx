@@ -44,9 +44,6 @@ const InputStyled = styled(InputBase)(({ readOnly }) => ({
       cursor: 'grab !important',
     }),
   },
-  '&.MuiInputBase-root': {
-    height: '100%',
-  },
 }))
 
 export { InputSpeechBalloon }
