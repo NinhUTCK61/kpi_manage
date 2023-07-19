@@ -24,14 +24,23 @@ export const temporalStateCreator = (
           // userGet must be called before userSet
           const currentState = get().getCurrentState()
           const statesToApply = get().pastStates.splice(-steps, steps)
+          const stateToApply = statesToApply.shift()
 
-          const statesApply = statesToApply.shift()
+          const rfStoreState: Partial<RFStore> = {
+            nodes: stateToApply?.nodes || [],
+            edges: stateToApply?.edges || [],
+            nodeFocused: stateToApply?.nodeFocused,
+            viewportAction: stateToApply?.viewportAction,
+          }
 
           // If there is length, we know that statesToApply is not empty
-          userSet({ ...statesApply })
+          userSet(rfStoreState)
           set({
             pastStates: get().pastStates,
-            futureStates: get().futureStates.concat(currentState, statesToApply.reverse()),
+            futureStates: get().futureStates.concat(
+              { ...currentState, updatedReason: stateToApply?.updatedReason },
+              statesToApply.reverse(),
+            ),
           })
         }
       },
@@ -41,11 +50,22 @@ export const temporalStateCreator = (
           const currentState = get().getCurrentState()
 
           const statesToApply = get().futureStates.splice(-steps, steps)
+          const stateToApply = statesToApply.shift()
+
+          const rfStoreState: Partial<RFStore> = {
+            nodes: stateToApply?.nodes || [],
+            edges: stateToApply?.edges || [],
+            nodeFocused: stateToApply?.nodeFocused,
+            viewportAction: stateToApply?.viewportAction,
+          }
 
           // If there is length, we know that statesToApply is not empty
-          userSet({ ...statesToApply.shift() })
+          userSet(rfStoreState)
           set({
-            pastStates: get().pastStates.concat(currentState, statesToApply.reverse()),
+            pastStates: get().pastStates.concat(
+              { ...currentState, updatedReason: stateToApply?.updatedReason },
+              statesToApply.reverse(),
+            ),
             futureStates: get().futureStates,
           })
         }
@@ -54,15 +74,16 @@ export const temporalStateCreator = (
       setOnSave: (_onSave) => set({ _onSave }),
       // Internal properties
       _onSave: options?.onSave,
-      _handleSet: (pastState) => {
+      _handleSet: (pastState, updatedReason) => {
         const currentState = get().getCurrentState()
+        const pastTemporalState = { ...pastState, updatedReason }
 
         if (!isEqual(pastState, currentState)) {
           console.log('run handle set', pastState.nodes)
           console.log('------------------------------END------------------------------')
           get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
           set({
-            pastStates: get().pastStates.concat(pastState),
+            pastStates: get().pastStates.concat(pastTemporalState),
             futureStates: [],
           })
         }
@@ -84,19 +105,19 @@ export const validateDiffNodeState = (
   let isValid = false
 
   switch (updateReason) {
-    case UpdateStateReason.AddKPINode:
+    case UpdateStateReason.AddEmptyKPINode:
       // if (newDiff.length === 1) {
       isValid = true
       // }
       break
+    case UpdateStateReason.AddKPINode:
+      isValid = true
+      break
     case UpdateStateReason.UpdateKPINode:
       isValid = true
       break
-    case UpdateStateReason.UpdateSpeechBallonNodePosition:
-      isValid = true
-      break
     case UpdateStateReason.RemoveNodeById:
-      isValid = true
+    case UpdateStateReason.UpdateSpeechBallonNodePosition:
     case UpdateStateReason.UpdateSpeechBallonNodeData:
       isValid = true
       break

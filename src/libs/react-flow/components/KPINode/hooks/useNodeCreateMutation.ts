@@ -1,6 +1,7 @@
 import { api } from '@/libs/api'
 import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
@@ -18,7 +19,7 @@ const useNodeCreateMutation = () => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode({ ...variables, is_saved: true })
+      updateNode({ ...variables, is_saved: true }, false, UpdateStateReason.AddKPINode)
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {

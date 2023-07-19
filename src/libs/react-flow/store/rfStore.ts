@@ -106,7 +106,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodes: _nodes,
           edges: [...edges, edge],
-          updateStateReason: UpdateStateReason.AddKPINode,
+          updateStateReason: UpdateStateReason.AddEmptyKPINode,
         })
 
         return _newNode
@@ -118,7 +118,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         return get().nodes.find((n) => n.id === id) || null
       },
       // TODO: update kpi node
-      updateKPINode(kpiNodeData, shouldFocus = false) {
+      updateKPINode(kpiNodeData, shouldFocus = false, reason) {
         const _nodes = get().nodes
         const nodeIndex = _nodes.findIndex((n) => n.type === 'kpi' && n.data.id === kpiNodeData.id)
         if (nodeIndex !== -1) {
@@ -133,16 +133,18 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
           const nodes = reLayout(nodesUpdated)
 
+          const updateStateReason = reason || UpdateStateReason.UpdateKPINode
+
           if (shouldFocus) {
             set({
               nodes,
               nodeFocused: nodeUpdate,
-              updateStateReason: UpdateStateReason.UpdateKPINode,
+              updateStateReason,
             })
             return
           }
 
-          set({ nodes, updateStateReason: UpdateStateReason.UpdateKPINode })
+          set({ nodes, updateStateReason })
         }
       },
       bulkUpdateKpiNode(nodeUpdates) {

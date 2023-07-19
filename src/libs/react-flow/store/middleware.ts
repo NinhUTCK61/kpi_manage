@@ -35,8 +35,12 @@ export enum UpdateStateReason {
   Redo = 'Redo',
   NodesChangeByReactFlow = 'NodesChangeByReactFlow',
   EdgesChangeByReactFlow = 'EdgesChangeByReactFlow',
-  AddKPINode = 'AddKPINode',
+
+  AddEmptyKPINode = 'AddNewEmptyKPINode',
+  AddKPINode = 'AddNewKPINode',
+
   AddSpeechBallonNode = 'AddSpeechBallonNode',
+
   DeleteKPINode = 'DeleteKPINode',
   DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
   UpdateKPINode = 'UpdateKPINode',
@@ -161,7 +165,7 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
           //   pastState.nodeFocused = pastNodeFocused
           // }
 
-          handleSetTemporal(pastState)
+          handleSetTemporal(pastState, { updateStateReason: updateReason, oldDiff, newDiff })
         }
       }
     }

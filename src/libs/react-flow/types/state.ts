@@ -32,7 +32,11 @@ export type RFStore = {
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
   hasChild(nodeId: string): boolean
   removeEmptyKPINode: () => void
-  updateKPINode: (node: UpdateNodeInputType & { is_saved?: boolean }, shouldFocus?: boolean) => void
+  updateKPINode: (
+    node: UpdateNodeInputType & { is_saved?: boolean },
+    shouldFocus?: boolean,
+    reason?: UpdateStateReason,
+  ) => void
   bulkUpdateKpiNode: (nodes: UpdateNodeInputType[]) => void
   removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
@@ -97,13 +101,25 @@ export type RFStore = {
   updateStateReason: UpdateStateReason
 }
 
-type onSave = ((pastState: ReactFlowNode[], currentState: ReactFlowNode[]) => void) | undefined
+export type onSave = (pastNodes: ReactFlowNode[], currentNodes: ReactFlowNode[]) => void | undefined
 
 export type Write<T, U> = Omit<T, keyof U> & U
 
+type UpdatedState = {
+  updateStateReason: UpdateStateReason
+  oldDiff: ReactFlowNode[]
+  newDiff: ReactFlowNode[]
+}
+
+export type UpdatedReason = {
+  updateStateReason: UpdateStateReason
+  oldDiff: ReactFlowNode[]
+  newDiff: ReactFlowNode[]
+}
+
 export interface _TemporalState {
-  pastStates: Partial<RFStore>[]
-  futureStates: Partial<RFStore>[]
+  pastStates: Array<Partial<RFStore> & { updatedReason?: UpdatedReason }>
+  futureStates: Array<Partial<RFStore> & { updatedReason?: UpdatedReason }>
   getCurrentState: () => Partial<RFStore>
 
   undo: (steps?: number) => void
@@ -111,14 +127,14 @@ export interface _TemporalState {
   clear: () => void
 
   setOnSave: (onSave: onSave) => void
-  _onSave: onSave
-  _handleSet: (pastState: Partial<RFStore>) => void
+  _onSave?: onSave
+  _handleSet: (pastState: Partial<RFStore>, updatedState: UpdatedState) => void
 }
 
 export interface TemporalOptions {
   pastStates?: Partial<RFStore>[]
   futureStates?: Partial<RFStore>[]
-  onSave?: onSave
+  onSave: onSave
 }
 
 export type TemporalState = Omit<_TemporalState, '_onSave' | '_handleSet'>

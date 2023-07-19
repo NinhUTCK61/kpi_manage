@@ -185,8 +185,6 @@ export const useReactFlowHandler = () => {
 
       const nodeById = getNodeById(node.id)
 
-      console.log('------------node drop stop--------------------')
-
       if (
         (nodeById?.data.x === data.x && nodeById?.data.y === data.y) ||
         (isSpeechBallonData(node.data) && !node.data.is_saved)
