@@ -53,7 +53,7 @@ const ChooseStyleAlignText: React.FC = () => {
 
   const handleChangeTextAlign = (value: TextAlign) => {
     if (!nodeFocusedMemo) return
-
+    if (value === textAlign) return
     setTextAlign(textAlign !== value ? value : TextAlign.Unset)
 
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
