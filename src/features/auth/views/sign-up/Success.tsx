@@ -8,6 +8,7 @@ import { enqueueSnackbar } from 'notistack'
 import Logo from 'public/assets/svgs/logo.svg'
 import { useCountdown } from 'usehooks-ts'
 import { CustomImage } from '../../components'
+import { LanguageEmail } from '../../constant'
 
 type PropType = {
   email: string
@@ -39,7 +40,7 @@ const Success: React.FC<PropType> = ({ email }) => {
   const handleResendEmail = () => {
     if (count === 0 || count === 60) {
       mutate(
-        { email },
+        { email, language: router.locale as LanguageEmail },
         {
           onError(error) {
             enqueueSnackbar(t(error.message), {

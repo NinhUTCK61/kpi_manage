@@ -16,6 +16,7 @@ export const LoginSchema = z.object({
 
 export const ForgotPasswordInputSchema = z.object({
   email: emailPolicySchema,
+  language: z.enum(['en', 'jp']).default('jp'),
 })
 
 export type SignInType = z.infer<typeof LoginSchema>
@@ -44,6 +45,7 @@ export const SignUpInputSchema = z
     role_in_company: z.string().min(1),
     date_of_birth: z.string().datetime().nullable(),
     reasons: z.array(z.number()),
+    language: z.enum(['en', 'jp']).default('jp'),
   })
   .refine(
     (data) => {
