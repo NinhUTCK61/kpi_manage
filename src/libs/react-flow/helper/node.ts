@@ -19,7 +19,7 @@ export const generateNextReactFlowNode = (
       ? d3Root
       : (d3Root.find((node) => node.data.id === parentId) as HierarchyFlowNode)
 
-  const nextFlowNode = generateNextNode(parentNode)
+  const nextFlowNode = generateNextNode(parentNode, d3Root)
 
   const node: ReactFlowKPINode = {
     id: nextFlowNode.id,

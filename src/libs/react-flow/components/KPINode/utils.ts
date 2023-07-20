@@ -87,3 +87,16 @@ export const sliceString = (str: string | null, sliceStart = 100, sliceEnd?: num
   }
   return str
 }
+
+export function nextSlug(slug: string) {
+  const pattern = /([A-Za-z]+)(\d+)/
+  const match = slug.match(pattern)
+
+  if (match) {
+    const alphaPart = match[1]
+    const numericPart = parseInt(match[2] as string, 10)
+    return `${alphaPart}${numericPart + 1}`
+  } else {
+    return slug
+  }
+}
