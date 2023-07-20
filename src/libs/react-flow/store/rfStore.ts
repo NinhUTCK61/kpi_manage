@@ -157,7 +157,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         })
         set({ nodes: newNodes, updateStateReason: UpdateStateReason.BulkUpdateKpiNodes })
       },
-      removeNode(nodeId) {
+      removeNode(nodeId, reason) {
         const { nodes, edges, d3Root } = get()
         const nodeToRemove = d3Root.find((n) => n.data.id === nodeId)
 
@@ -175,7 +175,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodes: newNodes,
           edges: filteredEdges,
-          updateStateReason: UpdateStateReason.RemoveNodeById,
+          updateStateReason: reason ?? UpdateStateReason.RemoveNodeById,
         })
 
         return { nodes: newNodes, edges: filteredEdges }

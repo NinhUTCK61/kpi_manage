@@ -37,8 +37,11 @@ export type RFStore = {
     shouldFocus?: boolean,
     reason?: UpdateStateReason,
   ) => void
-  bulkUpdateKpiNode: (nodes: UpdateNodeInputType[]) => void
-  removeNode: (nodeId: string) => { nodes: ReactFlowNode[]; edges: Edge[] }
+  bulkUpdateKpiNode: (nodes: UpdateNodeInputType[], reason?: UpdateStateReason) => void
+  removeNode: (
+    nodeId: string,
+    reason?: UpdateStateReason,
+  ) => { nodes: ReactFlowNode[]; edges: Edge[] }
   removeEdgeByNodeId: (nodeId: string) => Edge[]
   getKPINodeById: (id: string) => ReactFlowNode | null
   setNodeFocused: <T extends ReactFlowNode>(node: string | T | null) => void
@@ -53,8 +56,12 @@ export type RFStore = {
   getKpiNodes: () => ReactFlowKPINode[]
 
   // Speech ballon
-  addSpeechBallon: (node: ReactFlowSpeechBallonNode, shouldFocus?: boolean) => void
-  removeSpeechBallon: (speechBallonId: string) => void
+  addSpeechBallon: (
+    node: ReactFlowSpeechBallonNode,
+    shouldFocus?: boolean,
+    reason?: UpdateStateReason,
+  ) => void
+  removeSpeechBallon: (speechBallonId: string, reason?: UpdateStateReason) => void
   removeEmptySpeechBallon: () => void
   updateSpeechBallon: (
     node: UpdateSpeechBallonInputType,
@@ -101,7 +108,9 @@ export type RFStore = {
   updateStateReason: UpdateStateReason
 }
 
-export type onSave = (pastNodes: ReactFlowNode[], currentNodes: ReactFlowNode[]) => void | undefined
+export type TemporalRFStoreState = Partial<RFStore> & { updatedReason?: UpdatedReason }
+
+export type onStateChange = (stateApply: TemporalRFStoreState, type: 'undo' | 'redo') => void
 
 export type Write<T, U> = Omit<T, keyof U> & U
 
@@ -118,23 +127,23 @@ export type UpdatedReason = {
 }
 
 export interface _TemporalState {
-  pastStates: Array<Partial<RFStore> & { updatedReason?: UpdatedReason }>
-  futureStates: Array<Partial<RFStore> & { updatedReason?: UpdatedReason }>
+  pastStates: Array<TemporalRFStoreState>
+  futureStates: Array<TemporalRFStoreState>
   getCurrentState: () => Partial<RFStore>
 
   undo: (steps?: number) => void
   redo: (steps?: number) => void
   clear: () => void
 
-  setOnSave: (onSave: onSave) => void
-  _onSave?: onSave
+  setOnStateChange: (onSave: onStateChange) => void
+  _onStateChange?: onStateChange
   _handleSet: (pastState: Partial<RFStore>, updatedState: UpdatedState) => void
 }
 
 export interface TemporalOptions {
   pastStates?: Partial<RFStore>[]
   futureStates?: Partial<RFStore>[]
-  onSave: onSave
+  onStateChange: onStateChange
 }
 
-export type TemporalState = Omit<_TemporalState, '_onSave' | '_handleSet'>
+export type TemporalState = Omit<_TemporalState, '_onStateChange' | '_handleSet'>

@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { filterKpiNodes } from '../utils'
 
-const useNodeCreateMutation = () => {
+const useNodeCreateMutation = (reason?: UpdateStateReason) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const removeNode = useRFStore((state) => state.removeNode)
 
@@ -19,7 +19,7 @@ const useNodeCreateMutation = () => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode({ ...variables, is_saved: true }, false, UpdateStateReason.AddKPINode)
+      updateNode({ ...variables, is_saved: true }, false, reason ?? UpdateStateReason.AddKPINode)
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {

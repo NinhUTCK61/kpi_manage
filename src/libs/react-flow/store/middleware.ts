@@ -29,6 +29,7 @@ type KPIMiddleware = <
 // type D3MiddlewareImpl = (f: StateCreator<RFStore, [], []>) => StateCreator<RFStore, [], []>
 
 export enum UpdateStateReason {
+  OnUndoRedo = 'OnUndoRedo',
   Unknown = 'Unknown',
   Init = 'Init',
   Undo = 'Undo',

@@ -1,6 +1,12 @@
 import { differenceWith, isEqual } from 'lodash'
 import type { StateCreator, StoreApi } from 'zustand'
-import { RFStore, ReactFlowNode, TemporalOptions, _TemporalState } from '../types'
+import {
+  RFStore,
+  ReactFlowNode,
+  TemporalOptions,
+  TemporalRFStoreState,
+  _TemporalState,
+} from '../types'
 import { UpdateStateReason } from './middleware'
 
 export const temporalStateCreator = (
@@ -24,7 +30,7 @@ export const temporalStateCreator = (
           // userGet must be called before userSet
           const currentState = get().getCurrentState()
           const statesToApply = get().pastStates.splice(-steps, steps)
-          const stateToApply = statesToApply.shift()
+          const stateToApply = statesToApply.shift() as TemporalRFStoreState
 
           const rfStoreState: Partial<RFStore> = {
             nodes: stateToApply?.nodes || [],
@@ -34,6 +40,7 @@ export const temporalStateCreator = (
           }
 
           // If there is length, we know that statesToApply is not empty
+          get()._onStateChange?.(stateToApply, 'undo')
           userSet(rfStoreState)
           set({
             pastStates: get().pastStates,
@@ -50,7 +57,7 @@ export const temporalStateCreator = (
           const currentState = get().getCurrentState()
 
           const statesToApply = get().futureStates.splice(-steps, steps)
-          const stateToApply = statesToApply.shift()
+          const stateToApply = statesToApply.shift() as TemporalRFStoreState
 
           const rfStoreState: Partial<RFStore> = {
             nodes: stateToApply?.nodes || [],
@@ -58,6 +65,8 @@ export const temporalStateCreator = (
             nodeFocused: stateToApply?.nodeFocused,
             viewportAction: stateToApply?.viewportAction,
           }
+
+          get()._onStateChange?.(stateToApply, 'redo')
 
           // If there is length, we know that statesToApply is not empty
           userSet(rfStoreState)
@@ -71,9 +80,9 @@ export const temporalStateCreator = (
         }
       },
       clear: () => set({ pastStates: [], futureStates: [] }),
-      setOnSave: (_onSave) => set({ _onSave }),
+      setOnStateChange: (_onStateChange) => set({ _onStateChange }),
       // Internal properties
-      _onSave: options?.onSave,
+      _onStateChange: options?.onStateChange,
       _handleSet: (pastState, updatedReason) => {
         const currentState = get().getCurrentState()
         const pastTemporalState = { ...pastState, updatedReason }
@@ -81,7 +90,7 @@ export const temporalStateCreator = (
         if (!isEqual(pastState, currentState)) {
           console.log('run handle set', pastState.nodes)
           console.log('------------------------------END------------------------------')
-          get()._onSave?.(pastState.nodes as ReactFlowNode[], currentState.nodes as ReactFlowNode[])
+
           set({
             pastStates: get().pastStates.concat(pastTemporalState),
             futureStates: [],
@@ -102,12 +111,16 @@ export const validateDiffNodeState = (
 ): { isValid: boolean; oldDiff: ReactFlowNode[]; newDiff: ReactFlowNode[] } => {
   const [oldDiff, newDiff] = getDifferenceNodesByData(pastNodes, newNodes)
 
+  if (updateReason === UpdateStateReason.OnUndoRedo) {
+    return { isValid: false, oldDiff, newDiff }
+  }
+
   let isValid = false
 
   switch (updateReason) {
     case UpdateStateReason.AddEmptyKPINode:
       // if (newDiff.length === 1) {
-      isValid = true
+      // isValid = true
       // }
       break
     case UpdateStateReason.AddKPINode:
