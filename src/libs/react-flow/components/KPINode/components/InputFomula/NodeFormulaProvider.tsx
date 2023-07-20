@@ -33,7 +33,7 @@ export type SuggestStateProps = {
 
 export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [suggestState, setSuggestState] = useState<SuggestStateProps>(defaultValueState)
-  const { setError, getValues, setValue } = useFormContext<NodeFormProps>()
+  const { setError, getValues, setValue, setFocus } = useFormContext<NodeFormProps>()
   const [nodeSearch, setNodeSearch] = useState<ReactFlowKPINode[]>([])
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const elementRef = useRef<HTMLUListElement>(null)
@@ -44,7 +44,14 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (!suggestState.textSelected) return
       if (nodeSearch.length === 0) return
+      if (e.key === 'Escape') {
+        setNodeSearch([])
+        setSuggestState(defaultValueState)
+        return
+      }
+
       const _state = suggestState
+      // bắt sự kiện keyDown,keyUp để chuyển vị trí select trong popup suggest
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         const isDown = e.key === 'ArrowDown'
         const _indexSuggest = _state.indexSuggest
@@ -69,6 +76,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       }
 
       if (e.key === 'Enter') {
+        // Thay đổi value tại vị trí của con trỏ
         const newValue = convertFormula(
           getValues('input_value') as string,
           nodeSearch[suggestState.indexSuggest]?.data?.slug as string,
@@ -77,10 +85,11 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         )
         setValue('input_value', newValue)
         setSuggestState(defaultValueState)
+        setFocus('input_value')
         e.preventDefault()
       }
     },
-    [getValues, nodeSearch, setValue, suggestState],
+    [getValues, nodeSearch, setFocus, setValue, suggestState],
   )
 
   const handlingData = useCallback(
@@ -125,7 +134,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
   const handleKeyUp = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') return
+      if (e.key === 'Enter' || e.key === 'Escape') return
       handlingData(e)
     },
     [handlingData],
@@ -148,8 +157,10 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       )
       setValue('input_value', newValue)
       setSuggestState(defaultValueState)
+      setFocus('input_value')
+      //Sau khi chọn xong thì phải focus lại input
     },
-    [getValues, setValue, suggestState.endIndexText, suggestState.startIndexText],
+    [getValues, setFocus, setValue, suggestState.endIndexText, suggestState.startIndexText],
   )
 
   const contextValue = useMemo(

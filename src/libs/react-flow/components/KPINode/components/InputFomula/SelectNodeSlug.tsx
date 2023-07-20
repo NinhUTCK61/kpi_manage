@@ -4,13 +4,19 @@ import { useNodeFormulaContext } from './context'
 
 const SelectNodeSlug: React.FC = () => {
   const { suggestState, nodeSearch, elementRef, handleSelect } = useNodeFormulaContext()
+
   if (!suggestState.textSelected || !nodeSearch?.length) return null
 
   return (
-    <Paper elevation={2}>
+    <Paper>
       <Box sx={{ position: 'relative' }}>
         <IconTop />
-        <List ref={elementRef}>
+        <List
+          ref={elementRef}
+          onWheelCapture={(e) => {
+            e.stopPropagation()
+          }}
+        >
           {nodeSearch.map((node, index) => (
             <ListItem
               active={index === suggestState.indexSuggest}
