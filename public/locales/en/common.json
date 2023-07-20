@@ -93,11 +93,11 @@
     "formula_repetition": "Circular dependency detected.",
 
     "create_comment": "Failed to create comment.",
-    "create_comment_reply": "Failed to create comment reply.",
+    "create_comment_reply": "Failed to create reply.",
     "update_comment": "Failed to update comment.",
-    "update_comment_reply": "Failed to update comment reply.",
+    "update_comment_reply": "Failed to update reply.",
     "remove_comment": "Failed to remove comment thread.",
-    "remove_comment_reply": "Failed to remove comment reply."
+    "remove_comment_reply": "Failed to remove reply."
   },
   "template": {
     "move_to_trash": "Move to trash success!",
