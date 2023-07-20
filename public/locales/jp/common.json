@@ -93,11 +93,11 @@
     "formula_repetition": "エラー（循環参照）です。",
 
     "create_comment": "コメントの作成に失敗しました。",
-    "create_comment_reply": "コメント返信の作成に失敗しました。",
-    "update_comment": "コメントの更新に失敗しました。",
-    "update_comment_reply": "コメント返信の更新に失敗しました。",
+    "create_comment_reply": "返信の作成に失敗しました。",
+    "update_comment": "コメントの編集に失敗しました。",
+    "update_comment_reply": "返信の編集に失敗しました。",
     "remove_comment": "コメントスレッドの削除に失敗しました。",
-    "remove_comment_reply": "コメント返信の削除に失敗しました。"
+    "remove_comment_reply": "返信の削除に失敗しました。"
   },
   "template": {
     "move_to_trash": "ゴミ箱に移動しました。",
