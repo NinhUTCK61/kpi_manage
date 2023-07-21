@@ -138,7 +138,7 @@
   "select_month": "Month",
   "select_day": "Day",
   "verify_resend": "Resend email",
-  "no_files": "You don't have any files",
   "no_deleted_files": "You don't have any deleted files",
-  "no_found_file": "File not found!"
+  "no_found_file": "File not found!",
+  "no_file": "There are no files"
 }
