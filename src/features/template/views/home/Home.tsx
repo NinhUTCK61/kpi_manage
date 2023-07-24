@@ -92,6 +92,19 @@ const Home = () => {
     searchName: searchParam ? searchParam : '',
   })
 
+  const getMessageNoFile = () => {
+    const isEmpty = !data?.length
+    const noFilesMessage = t('no_file', { ns: 'common' })
+    const noFoundFileMessage = t('no_found_file', { ns: 'common' })
+    const noDeletedFilesMessage = t('no_deleted_files', { ns: 'common' })
+
+    if (isTrash) {
+      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noDeletedFilesMessage
+    } else {
+      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noFilesMessage
+    }
+  }
+
   return (
     <Layout title={t('seo_title')}>
       <ButtonCreate
@@ -132,7 +145,7 @@ const Home = () => {
           />
 
           <Typography variant="body2" mt={2}>
-            {searchParam && !data?.length && t('no_found_file', { ns: 'common' })}
+            {getMessageNoFile()}
           </Typography>
         </Stack>
       )}

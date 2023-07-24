@@ -119,15 +119,12 @@ export const Favorite = () => {
         </Grid>
       ) : (
         <Stack direction="column" alignItems="center" height="70%" justifyContent="center">
-          <Image
-            src={EmptyFile}
-            width={200}
-            height={200}
-            alt={t('no_favorite_files', { ns: 'favorite' })}
-          />
+          <Image src={EmptyFile} width={200} height={200} alt={t('no_file', { ns: 'common' })} />
 
           <Typography variant="body2" mt={2}>
-            {searchParam && !favoriteData?.length && t('no_found_file', { ns: 'common' })}
+            {searchParam
+              ? !favoriteData?.length && t('no_found_file', { ns: 'common' })
+              : !favoriteData?.length && t('no_file', { ns: 'common' })}
           </Typography>
         </Stack>
       )}
