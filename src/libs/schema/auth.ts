@@ -2,7 +2,7 @@ import { UserSchema } from 'prisma/generated/zod'
 import { z } from 'zod'
 import { NonEmptyPassword } from './utils'
 
-const regExpEmail = /^([\w\.\+]{1,})([^\W])(@)([\w]{1,})(\.[\w]{1,})+$/
+const regExpEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
 
 export const emailPolicySchema = z
   .string()
