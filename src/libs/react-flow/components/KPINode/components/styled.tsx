@@ -9,8 +9,11 @@ import {
   Stack,
   SvgIcon,
   SvgIconProps,
+  Tooltip,
+  TooltipProps,
   Typography,
   styled,
+  tooltipClasses,
 } from '@mui/material'
 import Image from 'next/image'
 import { Handle } from 'reactflow'
@@ -201,6 +204,18 @@ const ListItem = styled(MuiListItem, {
   },
 }))
 
+const TooltipSlug = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    fontSize: 12,
+    padding: theme.spacing(0.5, 1),
+  },
+  [`&& .${tooltipClasses.tooltipPlacementTop}`]: {
+    marginBottom: 8,
+  },
+}))
+
 export {
   BottomHandler,
   IconImage,
@@ -219,4 +234,5 @@ export {
   StackError,
   TextId,
   TextOverflow,
+  TooltipSlug,
 }
