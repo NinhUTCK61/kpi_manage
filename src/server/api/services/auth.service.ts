@@ -16,7 +16,7 @@ class AuthService {
     this.model = prisma.user
   }
 
-  async forgotPassword(email: string) {
+  async forgotPassword(email: string, language: string) {
     const user = await this.model.findUnique({
       where: {
         email,
@@ -49,6 +49,7 @@ class AuthService {
         user.email as string,
         token,
         user.name as string,
+        language,
       )
     } catch (error) {
       throw new TRPCError({
@@ -61,7 +62,7 @@ class AuthService {
   }
 
   async signUp(userInfo: z.infer<typeof SignUpInputSchema>) {
-    const { email, password, last_name, reasons, ...createUserData } = userInfo
+    const { email, password, last_name, reasons, language, ...createUserData } = userInfo
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -103,7 +104,7 @@ class AuthService {
           }),
         ])
 
-        await MailUtils.getInstance().sendVerifyMail(email, token, last_name)
+        await MailUtils.getInstance().sendVerifyMail(email, token, last_name, language)
 
         const { password: _, ...userWithoutPassword } = user
 
@@ -268,7 +269,7 @@ class AuthService {
     return checkToken
   }
 
-  async resendVerifyEmail(email: string) {
+  async resendVerifyEmail(email: string, language: string) {
     const checkEmail = await prisma.user.findUnique({
       where: {
         email,
@@ -309,6 +310,7 @@ class AuthService {
       email,
       checkVerifyToken.token,
       checkEmail.first_name as string,
+      language,
     )
     return 'ok!'
   }

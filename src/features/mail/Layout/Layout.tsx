@@ -31,7 +31,7 @@ const hand3 =
     ? 'https://i.imgur.com/IRSDJnn.png'
     : `${baseUrl}/assets/imgs/hand3.png`
 
-const MailLayout: FC<PropsWithChildren> = ({ children }) => {
+const MailLayout: FC<PropsWithChildren<{ language: string }>> = ({ children, language }) => {
   return (
     <Tailwind>
       <Html>
@@ -41,13 +41,35 @@ const MailLayout: FC<PropsWithChildren> = ({ children }) => {
             <Header />
             <Section className="px-6 py-1 sm:py-6">
               {children}
-              <Text style={textStyle} className="m-0">
-                Thank you for choosing KPI-Master!
-                <br />
-                Best regards,
-                <br />
-                The KPI Master Team
-              </Text>
+              {language === 'jp' ? (
+                <>
+                  <Text className="my-6" style={textStyle}>
+                    KPI Masterが、貴社ビジネスの課題解決の助けとなることを願っています。
+                  </Text>
+
+                  <Text className="my-6" style={textStyle}>
+                    よろしくお願い致します。
+                  </Text>
+
+                  <Text className="my-6" style={textStyle}>
+                    KPI Master運営チーム
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text className="my-6" style={textStyle}>
+                    We hope KPI Master can help you solve your business challenges.
+                  </Text>
+
+                  <Text className="my-6" style={textStyle}>
+                    Best regards.
+                  </Text>
+
+                  <Text className="my-6" style={textStyle}>
+                    KPI Master Management Team
+                  </Text>
+                </>
+              )}
             </Section>
             <Row>
               <Column align="right">
@@ -75,7 +97,7 @@ const main = {
   maxWidth: '656px',
 }
 
-const textStyle = {
+export const textStyle = {
   fontSize: '17px',
   color: '#222222',
 }

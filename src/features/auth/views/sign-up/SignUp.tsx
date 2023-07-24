@@ -3,9 +3,11 @@ import { SignUpFormType, SignUpInputType } from '@/libs/schema'
 import { LayoutUnAuth } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import { FC, useCallback } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { LanguageEmail } from '../../constant'
 import { createSignUpFormSchema } from '../../hepler'
 import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
@@ -13,6 +15,7 @@ import { Success } from './Success'
 const SignUp: FC = () => {
   const { mutate, isLoading, isSuccess, data } = api.auth.signUp.useMutation()
   const { data: reasons } = api.reason.list.useQuery()
+  const router = useRouter()
 
   const methods = useForm<SignUpFormType>({
     defaultValues: {
@@ -32,15 +35,18 @@ const SignUp: FC = () => {
 
   const onSubmit: SubmitHandler<SignUpInputType> = useCallback(
     async (data) => {
-      mutate(data, {
-        onError: (err) => {
-          const error = String(err.message)
-          const description = t(error, { ns: 'common' })
-          enqueueSnackbar(t('title_failed'), { variant: 'error', description })
+      mutate(
+        { ...data, language: router.locale as LanguageEmail },
+        {
+          onError: (err) => {
+            const error = String(err.message)
+            const description = t(error, { ns: 'common' })
+            enqueueSnackbar(t('title_failed'), { variant: 'error', description })
+          },
         },
-      })
+      )
     },
-    [mutate, t],
+    [mutate, t, router],
   )
 
   return (

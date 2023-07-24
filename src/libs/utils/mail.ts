@@ -43,19 +43,21 @@ class MailUtils {
     await this.transporter.sendMail(mailOptions)
   }
 
-  async sendPasswordResetMail(email: string, token: string, name: string) {
+  async sendPasswordResetMail(email: string, token: string, name: string, language: string) {
     const url = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
-    const html = render(ForgotPasswordMail({ url, name }) as ReactElement)
-    const subject = 'Password Reset - KPI Master'
+    const html = render(ForgotPasswordMail({ url, name, language }) as ReactElement)
+    const subject =
+      language === 'jp' ? 'パスワードのリセット - KPI Master' : 'Password Reset - KPI Master'
 
     const mailer = await this.sendMail({ to: email, subject, html })
     return mailer
   }
 
-  async sendVerifyMail(email: string, token: string, name: string) {
+  async sendVerifyMail(email: string, token: string, name: string, language: string) {
     const url = `${process.env.NEXTAUTH_URL}/verify?token=${token}`
-    const html = render(VerifyEmail({ url, name }) as ReactElement)
-    const subject = 'Email Verification - KPI Master'
+    const html = render(VerifyEmail({ url, name, language }) as ReactElement)
+    const subject =
+      language === 'jp' ? 'メール認証 - KPI Master' : 'Email Verification - KPI Master'
 
     const mailer = await this.sendMail({ to: email, subject, html })
     return mailer

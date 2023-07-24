@@ -1,7 +1,9 @@
+import { LanguageEmail } from '@/features'
 import { api } from '@/libs/api'
 import { AlertTitle, CircularProgress, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import {
   CustomContentProps,
   SnackbarContent,
@@ -55,6 +57,8 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
       closeSnackbar(id)
     }
 
+    const router = useRouter()
+
     return (
       <SnackbarContent ref={ref} role="alert" {...other}>
         <Alert
@@ -72,7 +76,7 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
               variant="contained"
               onClick={() => {
                 mutate(
-                  { email: verifyEmail },
+                  { email: verifyEmail, language: router.locale as LanguageEmail },
                   {
                     onError(error) {
                       enqueueSnackbar(t(error.message), {
