@@ -71,7 +71,9 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({
           nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
-          updateStateReason: UpdateStateReason.NodesChangeByReactFlow,
+          updateBy: {
+            updateStateReason: UpdateStateReason.NodesChangeByReactFlow,
+          },
         })
 
         // console.log(`==========apply node change by ${changes[0]?.type}==========`)
@@ -106,7 +108,10 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodes: _nodes,
           edges: [...edges, edge],
-          updateStateReason: UpdateStateReason.AddEmptyKPINode,
+          updateBy: {
+            updateStateReason: UpdateStateReason.AddEmptyKPINode,
+            payload: node,
+          },
         })
 
         return _newNode
@@ -132,22 +137,26 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
 
           const nodes = reLayout(nodesUpdated)
-
           const updateStateReason = reason || UpdateStateReason.UpdateKPINode
+
+          const updateBy = {
+            updateStateReason,
+            payload: kpiNodeData,
+          }
 
           if (shouldFocus) {
             set({
               nodes,
               nodeFocused: nodeUpdate,
-              updateStateReason,
+              updateBy,
             })
             return
           }
 
-          set({ nodes, updateStateReason })
+          set({ nodes, updateBy })
         }
       },
-      bulkUpdateKpiNode(nodeUpdates) {
+      bulkUpdateKpiNode(nodeUpdates, reason) {
         const _nodes = [...get().nodes]
         const newNodes = produce(_nodes, (draft) => {
           nodeUpdates.forEach((nodeUpdate) => {
@@ -155,9 +164,15 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
             if (node) node.data = { ...node.data, ...nodeUpdate }
           })
         })
-        set({ nodes: newNodes, updateStateReason: UpdateStateReason.BulkUpdateKpiNodes })
+        set({
+          nodes: newNodes,
+          updateBy: {
+            updateStateReason: reason ?? UpdateStateReason.BulkUpdateKpiNodes,
+            payload: nodeUpdates,
+          },
+        })
       },
-      removeNode(nodeId, reason) {
+      removeKPINode(nodeId, reason) {
         const { nodes, edges, d3Root } = get()
         const nodeToRemove = d3Root.find((n) => n.data.id === nodeId)
 
@@ -175,7 +190,10 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         set({
           nodes: newNodes,
           edges: filteredEdges,
-          updateStateReason: reason ?? UpdateStateReason.RemoveNodeById,
+          updateBy: {
+            updateStateReason: reason ?? UpdateStateReason.RemoveKPINodeById,
+            payload: nodeId,
+          },
         })
 
         return { nodes: newNodes, edges: filteredEdges }
@@ -183,7 +201,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       removeEdgeByNodeId(nodeId) {
         const oldEdges = get().edges
         const edges = rmEdges(oldEdges, nodeId)
-        set({ edges, updateStateReason: UpdateStateReason.RemoveEdge })
+        set({
+          edges,
+          updateBy: {
+            updateStateReason: UpdateStateReason.RemoveEdge,
+            payload: nodeId,
+          },
+        })
         return edges
       },
       removeEmptyKPINode() {
@@ -196,7 +220,14 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const nodes = reLayout(_nodes)
         const edges = rmEdges(oldEdges, emptyNode.id)
 
-        set({ nodes, edges, updateStateReason: UpdateStateReason.RemoveEmptyKPINode })
+        set({
+          nodes,
+          edges,
+          updateBy: {
+            updateStateReason: UpdateStateReason.RemoveEmptyKPINode,
+            payload: emptyNode,
+          },
+        })
       },
       getKPINodeById(id) {
         const node = get().nodes.find((n) => n.type === 'kpi' && n.data.id === id)
@@ -254,12 +285,24 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
       addComment(node) {
         const _nodes = get().nodes
         const nodes = [..._nodes, node]
-        set({ nodes, updateStateReason: UpdateStateReason.AddCommentNode })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.AddCommentNode,
+            payload: node,
+          },
+        })
       },
       removeComment(commentId: string) {
         const _nodes = get().nodes
         const nodes = _nodes.filter((comment) => comment.id !== commentId)
-        set({ nodes, updateStateReason: UpdateStateReason.DeleteCommentNode })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.DeleteCommentNode,
+            payload: commentId,
+          },
+        })
       },
       updateComment(commentNode) {
         const _nodes = get().nodes
@@ -272,7 +315,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           if (comment) comment.data = { ...comment.data, ...commentNode }
         })
 
-        set({ nodes, updateStateReason: UpdateStateReason.UpdateCommentNode })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.UpdateCommentNode,
+            payload: commentNode,
+          },
+        })
       },
       addCommentReply(reply, commentReplyIndex) {
         const _nodes = get().nodes
@@ -289,7 +338,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
         })
 
-        set({ nodes, updateStateReason: UpdateStateReason.AddCommentReply })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.AddCommentReply,
+            payload: reply,
+          },
+        })
       },
       removeCommentReply(reply) {
         const _nodes = get().nodes
@@ -311,7 +366,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
         })
 
-        set({ nodes, updateStateReason: UpdateStateReason.DeleteCommentReply })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.DeleteCommentReply,
+            payload: reply,
+          },
+        })
         return { remove, commentReplyIndex }
       },
       updateCommentReply({ id, comment_id, content }) {
@@ -328,7 +389,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
         })
 
-        set({ nodes, updateStateReason: UpdateStateReason.UpdateCommentReply })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.UpdateCommentReply,
+            payload: { id, comment_id, content },
+          },
+        })
       },
       removeEmptyNode(ignoreOptions) {
         const _nodes = get().nodes
@@ -354,18 +421,28 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         const _nodesReLayout = reLayout(nodes)
 
-        set({ nodes: _nodesReLayout, updateStateReason: UpdateStateReason.RemoveEmptyNode })
+        set({
+          nodes: _nodesReLayout,
+          updateBy: {
+            updateStateReason: UpdateStateReason.RemoveEmptyNode,
+          },
+        })
       },
       // speech ballon node
-      addSpeechBallon(speechBallonNode, shouldFocus) {
+      addSpeechBallon(speechBallonNode, shouldFocus, reason) {
         get().removeEmptySpeechBallon()
         const nodes = get().nodes
+
+        const updateBy = {
+          updateStateReason: reason ?? UpdateStateReason.AddSpeechBallonNode,
+          payload: speechBallonNode,
+        }
 
         if (shouldFocus) {
           set({
             nodes: [...nodes, speechBallonNode],
             nodeFocused: speechBallonNode,
-            updateStateReason: UpdateStateReason.AddSpeechBallonNode,
+            updateBy,
           })
 
           return
@@ -373,7 +450,7 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         set({
           nodes: [...nodes, speechBallonNode],
-          updateStateReason: UpdateStateReason.AddSpeechBallonNode,
+          updateBy,
         })
       },
       removeEmptySpeechBallon() {
@@ -381,12 +458,23 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
         const empty = _nodes.find((n) => n.type === 'speech_ballon' && !n.data.text)
         if (!empty) return
         const nodes = _nodes.filter((n) => n.id !== empty.id)
-        set({ nodes, updateStateReason: UpdateStateReason.RemoveEmptySpeechBallonNode })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.RemoveEmptySpeechBallonNode,
+          },
+        })
       },
-      removeSpeechBallon(speechBallonId) {
+      removeSpeechBallon(speechBallonId, reason) {
         const _nodes = get().nodes
         const nodes = _nodes.filter((speechBallon) => speechBallon.id !== speechBallonId)
-        set({ nodes, updateStateReason: UpdateStateReason.DeleteSpeechBallonNode })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: reason ?? UpdateStateReason.DeleteSpeechBallonNode,
+            payload: speechBallonId,
+          },
+        })
       },
       updateSpeechBallon(speechBallonData, shouldFocus, reason) {
         const _nodes = get().nodes
@@ -416,17 +504,21 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
 
           const updateStateReason = reason ?? UpdateStateReason.UpdateSpeechBallonNodeData
+          const updateBy = {
+            updateStateReason,
+            payload: speechBallonData,
+          }
 
           if (shouldFocus) {
             set({
               nodes: updatedNodes,
               nodeFocused: { ...updatedNode },
-              updateStateReason,
+              updateBy,
             })
           } else {
             set({
               nodes: updatedNodes,
-              updateStateReason,
+              updateBy,
             })
           }
         }
@@ -492,7 +584,13 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           }
         })
 
-        set({ nodes, updateStateReason: UpdateStateReason.ToggleDraggable })
+        set({
+          nodes,
+          updateBy: {
+            updateStateReason: UpdateStateReason.ToggleDraggable,
+            payload: { id, isDraggable },
+          },
+        })
       },
       // DialogDelete
       handleToggleDialogDelete(dialogProps) {

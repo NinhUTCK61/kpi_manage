@@ -39,16 +39,16 @@ export enum UpdateStateReason {
 
   AddEmptyKPINode = 'AddNewEmptyKPINode',
   AddKPINode = 'AddNewKPINode',
-
-  AddSpeechBallonNode = 'AddSpeechBallonNode',
-
   DeleteKPINode = 'DeleteKPINode',
-  DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
   UpdateKPINode = 'UpdateKPINode',
+
   UpdateNodeFocused = 'UpdateNodeFocused',
   UpdateNodePosition = 'UpdateNodePosition',
   BulkUpdateKpiNodes = 'BulkUpdateKpiNodes',
 
+  AddEmptySpeechBallonNode = 'AddEmptySpeechBallonNode',
+  AddSpeechBallonNode = 'AddSpeechBallonNode',
+  DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
   UpdateSpeechBallonNodeData = 'UpdateSpeechBallonNodeData',
   UpdateSpeechBallonNodePosition = 'UpdateSpeechBallonNodePosition',
 
@@ -59,7 +59,7 @@ export enum UpdateStateReason {
   UpdateCommentReply = 'UpdateCommentReply',
   DeleteCommentReply = 'DeleteCommentReply',
 
-  RemoveNodeById = 'RemoveNodeById',
+  RemoveKPINodeById = 'RemoveKPINodeById',
   RemoveEdge = 'RemoveEdge',
 
   RemoveEmptyNode = 'RemoveEmptyNode',
@@ -105,7 +105,10 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       const viewPort = get().viewportAction
       if (
         typeof newState === 'object' &&
-        newState.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
+        newState.updateBy?.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow &&
+        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptyNode &&
+        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptyKPINode &&
+        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptySpeechBallonNode
       ) {
         console.log('----------------------------START--------------------------------')
         console.log('newState', newState)
@@ -113,12 +116,13 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
-        const updateReason = newState.updateStateReason ?? UpdateStateReason.Unknown
+        const updateBy = newState.updateBy as RFStore['updateBy']
+        const updateReason = newState.updateBy?.updateStateReason ?? UpdateStateReason.Unknown
         // console.log('state', pastNodes, newState.nodes)
         const { isValid, oldDiff, newDiff } = validateDiffNodeState(
           pastNodes,
           newState.nodes as ReactFlowNode[],
-          updateReason,
+          updateBy as RFStore['updateBy'],
         )
 
         if (isValid) {
@@ -127,13 +131,12 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         } else {
           if (
             typeof newState === 'object' &&
-            newState.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
+            newState.updateBy?.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
           ) {
-            consola.log('oldDiff', oldDiff)
-            consola.log('newDiff', newDiff)
             console.log(isValid, updateReason)
           }
         }
+
         if (isValid) {
           switch (updateReason) {
             case UpdateStateReason.UpdateSpeechBallonNodePosition:
@@ -162,11 +165,7 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
             viewportAction: viewPort,
           }
 
-          // if (pastNodeFocused?.type !== 'kpi') {
-          //   pastState.nodeFocused = pastNodeFocused
-          // }
-
-          handleSetTemporal(pastState, { updateStateReason: updateReason, oldDiff, newDiff })
+          handleSetTemporal(pastState, { updateBy, oldDiff, newDiff })
         }
       }
     }

@@ -10,7 +10,7 @@ import { filterKpiNodes } from '../utils'
 
 const useNodeCreateMutation = (reason?: UpdateStateReason) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
-  const removeNode = useRFStore((state) => state.removeNode)
+  const removeKPINode = useRFStore((state) => state.removeKPINode)
 
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
@@ -26,7 +26,7 @@ const useNodeCreateMutation = (reason?: UpdateStateReason) => {
         variant: 'error',
       })
 
-      removeNode(variables.id)
+      removeKPINode(variables.id)
     },
     onSuccess(_, variables) {
       // update node position after re-layout

@@ -16,7 +16,7 @@ import { useCallback } from 'react'
 import { filterKpiNodes } from '../utils'
 
 const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
-  const removeNode = useRFStore((state) => state.removeNode)
+  const removeKPINode = useRFStore((state) => state.removeKPINode)
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
@@ -28,7 +28,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
 
   const mutation = api.node.delete.useMutation({
     async onMutate(variables) {
-      const { nodes, edges } = removeNode(variables.id, updateStateReason)
+      const { nodes, edges } = removeKPINode(variables.id, updateStateReason)
       const prevData = utils.node.list.getData({ template_id: templateId })
 
       utils.node.list.setData(

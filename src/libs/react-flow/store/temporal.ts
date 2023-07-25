@@ -1,3 +1,4 @@
+import { ViewPortAction } from '@/features/node'
 import { differenceWith, isEqual } from 'lodash'
 import type { StateCreator, StoreApi } from 'zustand'
 import {
@@ -35,8 +36,17 @@ export const temporalStateCreator = (
           const rfStoreState: Partial<RFStore> = {
             nodes: stateToApply?.nodes || [],
             edges: stateToApply?.edges || [],
-            nodeFocused: stateToApply?.nodeFocused,
-            viewportAction: stateToApply?.viewportAction,
+            // nodeFocused: stateToApply?.nodeFocused,
+            viewportAction: stateToApply?.viewportAction || ViewPortAction.Move,
+          }
+
+          if (
+            stateToApply?.updatedReason?.updateBy.updateStateReason !==
+              UpdateStateReason.UpdateKPINode &&
+            stateToApply?.updatedReason?.updateBy.updateStateReason !==
+              UpdateStateReason.BulkUpdateKpiNodes
+          ) {
+            rfStoreState.nodeFocused = stateToApply?.nodeFocused
           }
 
           // If there is length, we know that statesToApply is not empty
@@ -62,8 +72,17 @@ export const temporalStateCreator = (
           const rfStoreState: Partial<RFStore> = {
             nodes: stateToApply?.nodes || [],
             edges: stateToApply?.edges || [],
-            nodeFocused: stateToApply?.nodeFocused,
-            viewportAction: stateToApply?.viewportAction,
+            // nodeFocused: stateToApply?.nodeFocused,
+            viewportAction: stateToApply?.viewportAction || ViewPortAction.Move,
+          }
+
+          if (
+            stateToApply?.updatedReason?.updateBy.updateStateReason !==
+              UpdateStateReason.UpdateKPINode &&
+            stateToApply?.updatedReason?.updateBy.updateStateReason !==
+              UpdateStateReason.BulkUpdateKpiNodes
+          ) {
+            rfStoreState.nodeFocused = stateToApply?.nodeFocused
           }
 
           get()._onStateChange?.(stateToApply, 'redo')
@@ -88,9 +107,6 @@ export const temporalStateCreator = (
         const pastTemporalState = { ...pastState, updatedReason }
 
         if (!isEqual(pastState, currentState)) {
-          console.log('run handle set', pastState.nodes)
-          console.log('------------------------------END------------------------------')
-
           set({
             pastStates: get().pastStates.concat(pastTemporalState),
             futureStates: [],
@@ -107,8 +123,9 @@ export const temporalStateCreator = (
 export const validateDiffNodeState = (
   pastNodes: ReactFlowNode[],
   newNodes: ReactFlowNode[],
-  updateReason: UpdateStateReason,
+  updateBy: RFStore['updateBy'],
 ): { isValid: boolean; oldDiff: ReactFlowNode[]; newDiff: ReactFlowNode[] } => {
+  const updateReason = updateBy?.updateStateReason ?? UpdateStateReason.Unknown
   const [oldDiff, newDiff] = getDifferenceNodesByData(pastNodes, newNodes)
 
   if (updateReason === UpdateStateReason.OnUndoRedo) {
@@ -118,20 +135,16 @@ export const validateDiffNodeState = (
   let isValid = false
 
   switch (updateReason) {
-    case UpdateStateReason.AddEmptyKPINode:
-      // if (newDiff.length === 1) {
-      // isValid = true
-      // }
-      break
     case UpdateStateReason.AddKPINode:
-      isValid = true
-      break
     case UpdateStateReason.UpdateKPINode:
+    case UpdateStateReason.BulkUpdateKpiNodes:
+    case UpdateStateReason.RemoveKPINodeById:
       isValid = true
       break
-    case UpdateStateReason.RemoveNodeById:
+    case UpdateStateReason.AddSpeechBallonNode:
     case UpdateStateReason.UpdateSpeechBallonNodePosition:
     case UpdateStateReason.UpdateSpeechBallonNodeData:
+    case UpdateStateReason.DeleteSpeechBallonNode:
       isValid = true
       break
     default:

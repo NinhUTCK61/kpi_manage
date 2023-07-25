@@ -1,11 +1,16 @@
 import {
-  ReactFlowKPINode,
+  KPINodeType,
+  ReactFlowSpeechBallonNode,
+  SpeechBallonNodeType,
   UpdatedReason,
   onStateChange,
   useNodeCreateMutation,
   useNodeDeleteMutation,
-  useRFStore,
+  useNodeUpdateMutation,
+  useSpeechBallonCreateMutation,
+  useSpeechBallonDeleteMutation,
   useTemporalStore,
+  useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
 import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { Stack } from '@mui/material'
@@ -24,45 +29,109 @@ const UndoRedo: FC = () => {
     (state) => state,
     shallow,
   )
-  const currentState = useRFStore(
-    (state) => ({
-      nodes: state.nodes,
-      nodeFocused: state.nodeFocused,
-    }),
-    shallow,
-  )
 
-  const { mutate: create } = useNodeCreateMutation(UpdateStateReason.OnUndoRedo)
-  const { handleDelete } = useNodeDeleteMutation(UpdateStateReason.OnUndoRedo)
+  const { mutate: createKPI } = useNodeCreateMutation(UpdateStateReason.OnUndoRedo)
+  const { handleDelete: delKPI } = useNodeDeleteMutation(UpdateStateReason.OnUndoRedo)
+  const {
+    update: { mutate: updateKPI },
+    bulkUpdate: { mutate: bulkUpdateKPI },
+  } = useNodeUpdateMutation(UpdateStateReason.OnUndoRedo)
+
+  const { mutate: createSB } = useSpeechBallonCreateMutation(UpdateStateReason.OnUndoRedo)
+  const { mutate: updateSB } = useUpdateSpeechBallonMutation(UpdateStateReason.OnUndoRedo)
+  const { mutate: deleteSB } = useSpeechBallonDeleteMutation(UpdateStateReason.OnUndoRedo)
 
   const onStateChange: onStateChange = useCallback(
     (stateToApply, type) => {
       consola.withTag(type).info(stateToApply)
       const { nodes, updatedReason } = stateToApply
-      const { oldDiff, newDiff, updateStateReason } = updatedReason as UpdatedReason
-      switch (updateStateReason) {
-        case UpdateStateReason.RemoveNodeById:
-          if (type === 'undo') {
-            create((oldDiff[0] as ReactFlowKPINode).data)
-          } else {
-          }
-          break
-        case UpdateStateReason.AddEmptyKPINode:
-          if (type === 'undo') {
-          } else {
+      const { updateBy } = updatedReason as UpdatedReason
+      switch (updateBy.updateStateReason) {
+        case UpdateStateReason.RemoveKPINodeById:
+          {
+            const nodeId = updateBy.payload as string
+            const nodeData = nodes?.find((node) => node.id === nodeId)?.data as KPINodeType
+            if (type === 'undo') {
+              createKPI(nodeData)
+            } else {
+              delKPI(nodeId)
+            }
           }
           break
         case UpdateStateReason.AddKPINode:
-          if (type === 'undo') {
-            handleDelete((newDiff[0] as ReactFlowKPINode).id)
-          } else {
+          {
+            const nodeData = updateBy.payload as KPINodeType
+            if (type === 'undo') {
+              delKPI(nodeData.id)
+            } else {
+              createKPI(nodeData)
+            }
+          }
+          break
+        case UpdateStateReason.UpdateKPINode:
+          {
+            const newNodeData = updateBy.payload as KPINodeType
+            const oldNodeData = nodes?.find((node) => node.id === newNodeData.id)?.data
+            if (type === 'undo') {
+              updateKPI(oldNodeData as KPINodeType)
+            } else {
+              updateKPI(newNodeData)
+            }
+          }
+          break
+        case UpdateStateReason.BulkUpdateKpiNodes:
+          {
+            const nodesUpdated = updateBy.payload as KPINodeType[]
+            const updatedIds = nodesUpdated.map((node) => node.id)
+            const oldNodesData = nodes
+              ?.filter((node) => updatedIds.includes(node.id))
+              .map((node) => node.data) as KPINodeType[]
+
+            if (type === 'undo') {
+              bulkUpdateKPI(oldNodesData)
+            } else {
+              bulkUpdateKPI(nodesUpdated)
+            }
+          }
+          break
+        case UpdateStateReason.AddSpeechBallonNode:
+          {
+            const nodeData = (updateBy.payload as ReactFlowSpeechBallonNode).data
+            if (type === 'undo') {
+              deleteSB({ id: nodeData.id })
+            } else {
+              createSB(nodeData)
+            }
+          }
+          break
+        case UpdateStateReason.UpdateSpeechBallonNodeData:
+        case UpdateStateReason.UpdateSpeechBallonNodePosition:
+          {
+            const newNodeData = updateBy.payload as KPINodeType
+            const oldNodeData = nodes?.find((node) => node.id === newNodeData.id)?.data
+            if (type === 'undo') {
+              updateSB(oldNodeData as KPINodeType)
+            } else {
+              updateSB(newNodeData)
+            }
+          }
+          break
+        case UpdateStateReason.DeleteSpeechBallonNode:
+          {
+            const nodeId = updateBy.payload as string
+            const nodeData = nodes?.find((node) => node.id === nodeId)?.data as SpeechBallonNodeType
+            if (type === 'undo') {
+              createSB(nodeData)
+            } else {
+              deleteSB({ id: nodeId })
+            }
           }
           break
         default:
           break
       }
     },
-    [create, handleDelete],
+    [bulkUpdateKPI, createKPI, createSB, delKPI, deleteSB, updateKPI, updateSB],
   )
 
   useIsomorphicLayoutEffect(() => {
@@ -80,30 +149,6 @@ const UndoRedo: FC = () => {
         alt="undo"
         style={{ cursor: canUndo ? 'pointer' : 'auto' }}
       />
-
-      <button
-        onClick={() => {
-          console.log(pastStates)
-        }}
-      >
-        past state
-      </button>
-
-      <button
-        onClick={() => {
-          console.log(currentState)
-        }}
-      >
-        current state
-      </button>
-
-      <button
-        onClick={() => {
-          console.log(futureStates)
-        }}
-      >
-        future state
-      </button>
 
       <Image
         src={canRedo ? RedoActive : RedoInactive}

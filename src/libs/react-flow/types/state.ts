@@ -38,7 +38,7 @@ export type RFStore = {
     reason?: UpdateStateReason,
   ) => void
   bulkUpdateKpiNode: (nodes: UpdateNodeInputType[], reason?: UpdateStateReason) => void
-  removeNode: (
+  removeKPINode: (
     nodeId: string,
     reason?: UpdateStateReason,
   ) => { nodes: ReactFlowNode[]; edges: Edge[] }
@@ -105,7 +105,10 @@ export type RFStore = {
 
   nodeCopy: ReactFlowNode | null
   setNodeCopy: (node: string | null) => void
-  updateStateReason: UpdateStateReason
+  updateBy: {
+    updateStateReason: UpdateStateReason
+    payload?: unknown
+  }
 }
 
 export type TemporalRFStoreState = Partial<RFStore> & { updatedReason?: UpdatedReason }
@@ -114,14 +117,8 @@ export type onStateChange = (stateApply: TemporalRFStoreState, type: 'undo' | 'r
 
 export type Write<T, U> = Omit<T, keyof U> & U
 
-type UpdatedState = {
-  updateStateReason: UpdateStateReason
-  oldDiff: ReactFlowNode[]
-  newDiff: ReactFlowNode[]
-}
-
 export type UpdatedReason = {
-  updateStateReason: UpdateStateReason
+  updateBy: RFStore['updateBy']
   oldDiff: ReactFlowNode[]
   newDiff: ReactFlowNode[]
 }
@@ -137,7 +134,7 @@ export interface _TemporalState {
 
   setOnStateChange: (onSave: onStateChange) => void
   _onStateChange?: onStateChange
-  _handleSet: (pastState: Partial<RFStore>, updatedState: UpdatedState) => void
+  _handleSet: (pastState: Partial<RFStore>, updatedReason: UpdatedReason) => void
 }
 
 export interface TemporalOptions {
