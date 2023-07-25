@@ -1,7 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { formatNumber } from '@/libs/utils/format'
-import { Tooltip } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
@@ -14,6 +13,7 @@ import {
   RightHandler,
   TextId,
   TextOverflow,
+  TooltipSlug,
 } from './styled'
 
 const InActive: React.FC = () => {
@@ -67,11 +67,11 @@ const InActive: React.FC = () => {
           />
         )}
       </RightHandler>
-      <Tooltip title={title}>
+      <TooltipSlug title={title} placement="top">
         <TextId variant="caption" error={error}>
           {slug}
         </TextId>
-      </Tooltip>
+      </TooltipSlug>
     </NodeInActiveContainer>
   )
 }
