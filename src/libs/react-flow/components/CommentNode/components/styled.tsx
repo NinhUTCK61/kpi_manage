@@ -76,11 +76,6 @@ const ButtonMenu = styled(ButtonBase)(({ theme }) => ({
   },
 }))
 
-const BackgroundDefault = styled(Stack)({
-  backgroundColor: greyScale[200],
-  borderRadius: '100%',
-})
-
 const ListCommentContainer = styled(Box)({
   maxHeight: 300,
   overflowY: 'auto',
@@ -96,7 +91,6 @@ const ListCommentContainer = styled(Box)({
 })
 
 export {
-  BackgroundDefault,
   ButtonAction,
   ButtonMenu,
   ButtonSendContainer,
