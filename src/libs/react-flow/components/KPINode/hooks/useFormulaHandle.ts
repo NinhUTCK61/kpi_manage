@@ -80,7 +80,21 @@ const useFormularHanlder = () => {
     return errorMessage
   }
 
-  return { nodeInputValidate }
+  const validateBeforeSubmit = (
+    inputValue: string,
+    listNode: ReactFlowKPINode[],
+    nodeFocused: ReactFlowKPINode,
+  ) => {
+    if (inputValue === '=') {
+      return t('error.invalid_formula')
+    }
+
+    const errorMessage = nodeInputValidate(inputValue, listNode, nodeFocused)
+
+    return errorMessage
+  }
+
+  return { nodeInputValidate, validateBeforeSubmit }
 }
 
 export { useFormularHanlder }
