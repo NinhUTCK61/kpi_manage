@@ -44,7 +44,7 @@ class MailUtils {
   }
 
   async sendPasswordResetMail(email: string, token: string, name: string, language: string) {
-    const url = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
+    const url = `${process.env.NEXTAUTH_URL}/${language}/reset-password?token=${token}`
     const html = render(ForgotPasswordMail({ url, name, language }) as ReactElement)
     const subject =
       language === 'jp' ? 'パスワードのリセット - KPI Master' : 'Password Reset - KPI Master'
@@ -54,7 +54,7 @@ class MailUtils {
   }
 
   async sendVerifyMail(email: string, token: string, name: string, language: string) {
-    const url = `${process.env.NEXTAUTH_URL}/verify?token=${token}`
+    const url = `${process.env.NEXTAUTH_URL}/${language}/verify?token=${token}`
     const html = render(VerifyEmail({ url, name, language }) as ReactElement)
     const subject =
       language === 'jp' ? 'メール認証 - KPI Master' : 'Email Verification - KPI Master'
