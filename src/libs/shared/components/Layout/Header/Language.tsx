@@ -1,8 +1,10 @@
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
-import { Stack, Typography, styled } from '@mui/material'
+import { IconButton, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
+import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import EnglishIcon from 'public/assets/svgs/english.svg'
 import JapanIcon from 'public/assets/svgs/japanese.svg'
 import { useState } from 'react'
@@ -53,9 +55,14 @@ const Language: React.FC = () => {
         onClick={handleClick}
       >
         <Image src={languages.find((e) => e.id === language)?.icon} alt="english" />
+
         <Typography ml={0.75} variant="body2" width={64} textAlign="center">
           {languages.find((e) => e.id === language)?.title}
         </Typography>
+
+        <IconButton size="small" sx={{ p: 0 }}>
+          <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
+        </IconButton>
       </Item>
       <Menu
         anchorEl={anchorEl}
