@@ -40,7 +40,7 @@ const ChangePassword: FC = () => {
     <Layout title={t('seo_title')}>
       <Box width={450}>
         <Typography variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
-          {t('seo_title')}
+          {t('title')}
         </Typography>
 
         <FormChangePassword

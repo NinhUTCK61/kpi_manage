@@ -20,11 +20,7 @@ const Login: FC = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInType>({
+  const { control, handleSubmit } = useForm<SignInType>({
     defaultValues: {
       email: '',
       password: '',
