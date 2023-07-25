@@ -17,7 +17,8 @@ import {
   useCommentUpdateMutation,
 } from '../hooks'
 import { CommentAction } from './CommentAction'
-import { BackgroundDefault, ButtonAction, ButtonMenu } from './styled'
+import { ButtonAction, ButtonMenu } from './styled'
+import AvatarDefault from '/public/assets/svgs/avatar_default.svg'
 
 type CommentItemProps = {
   data: CommentReplyOutputType | CommentOutputType
@@ -90,19 +91,13 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
       <Stack direction="row" justifyContent="space-between" mb={1}>
         <Stack direction="row" spacing={1}>
           <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
-            {data?.author.image ? (
-              <Image
-                src={getImageUrl(data?.author.image)}
-                alt="file"
-                width={24}
-                height={24}
-                style={{ borderRadius: '100%' }}
-              />
-            ) : (
-              <BackgroundDefault width={24} height={24} justifyContent="center" alignItems="center">
-                <Typography variant="body2">{data?.author.name?.split('')[0]}</Typography>
-              </BackgroundDefault>
-            )}
+            <Image
+              src={data.author.image ? getImageUrl(data?.author.image) : AvatarDefault}
+              alt="file"
+              width={24}
+              height={24}
+              style={{ borderRadius: '100%' }}
+            />
           </Stack>
 
           <Typography variant="body2" color={base.black} fontWeight={600}>

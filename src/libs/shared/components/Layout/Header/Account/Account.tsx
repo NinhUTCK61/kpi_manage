@@ -14,7 +14,8 @@ import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
-import { Avatar, StackName } from './Menu'
+import { StackName } from './Menu'
+import AvatarDefault from '/public/assets/svgs/avatar_default.svg'
 
 const Account = () => {
   const { t } = useTranslation()
@@ -68,17 +69,13 @@ const Account = () => {
         style={{ margin: '18px ' }}
       />
       <StackName direction="row" spacing={1} onClick={handleClick}>
-        {sessionData?.user.image ? (
-          <Image
-            src={getImageUrl(sessionData.user.image)}
-            width={28}
-            height={28}
-            alt="avatar"
-            style={{ borderRadius: '100%' }}
-          />
-        ) : (
-          <Avatar>{sessionData?.user.name?.split('')[0]}</Avatar>
-        )}
+        <Image
+          src={sessionData?.user.image ? getImageUrl(sessionData?.user.image) : AvatarDefault}
+          width={28}
+          height={28}
+          alt="avatar"
+          style={{ borderRadius: '100%' }}
+        />
 
         <Typography variant="body2">{sessionData?.user?.name}</Typography>
 

@@ -1,5 +1,5 @@
 import { getImageUrl } from '@/libs/utils/misc'
-import { Stack, Typography } from '@mui/material'
+import { Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
@@ -9,12 +9,8 @@ import { useForm } from 'react-hook-form'
 import { useCommentReplyCreateMutation } from '../hooks'
 import { CommentFormType } from './CommentForm'
 import { InputComment } from './InputComment'
-import {
-  BackgroundDefault,
-  ButtonAction,
-  ButtonSendContainer,
-  CommentReplyContainer,
-} from './styled'
+import { ButtonAction, ButtonSendContainer, CommentReplyContainer } from './styled'
+import AvatarDefault from '/public/assets/svgs/avatar_default.svg'
 import SendIcon from '/public/assets/svgs/send.svg'
 
 type CommentReplyFormProps = {
@@ -71,19 +67,13 @@ const CommentReplyForm: React.FC<CommentReplyFormProps> = ({ commentId }) => {
       ref={scrollRef}
     >
       <Stack width={32} height={48} borderRadius="100%" direction="row" alignItems="center">
-        {data?.user.image ? (
-          <Image
-            src={getImageUrl(data?.user.image)}
-            alt="file"
-            width={32}
-            height={32}
-            style={{ borderRadius: '100%' }}
-          />
-        ) : (
-          <BackgroundDefault width={32} height={32} justifyContent="center" alignItems="center">
-            <Typography variant="body1">{data?.user.name?.split('')[0]}</Typography>
-          </BackgroundDefault>
-        )}
+        <Image
+          src={data?.user.image ? getImageUrl(data?.user.image) : AvatarDefault}
+          alt="file"
+          width={32}
+          height={32}
+          style={{ borderRadius: '100%' }}
+        />
       </Stack>
 
       <Stack component="form" position="relative" width="100%" onSubmit={handleSubmit}>
