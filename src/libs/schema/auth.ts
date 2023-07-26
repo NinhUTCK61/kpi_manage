@@ -79,7 +79,7 @@ export type SignUpFormType = z.infer<typeof SignUpSchemaForm>
 export const ResetPasswordInputSchema = z
   .object({
     password: passwordPolicySchema,
-    confirmPassword: passwordPolicySchema,
+    confirmPassword: passwordPolicySchema.default(''),
     token: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
