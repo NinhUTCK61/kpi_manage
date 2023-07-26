@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 import { SpeechBallonNodeType } from '../../types'
+import { ArrowResizeType } from './components/SpeechBallonNodeProvider'
 
 type SpeechBallonContextType = {
   data: SpeechBallonNodeType
@@ -11,6 +12,8 @@ type SpeechBallonContextType = {
   handleResize: (isResizeEnabled: boolean) => void
   isResizing: boolean
   handleResizing: (isResizeEnabled: boolean) => void
+  shapeResize: ArrowResizeType
+  handleShapeResize: (size: ArrowResizeType) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)

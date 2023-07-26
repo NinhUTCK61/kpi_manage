@@ -3,6 +3,11 @@ import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { PropsWithChildren, useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { SpeechBallonContext } from '../context'
 
+export type ArrowResizeType = {
+  width: number
+  height: number
+}
+
 export const SpeechBallonNodeProvider: React.FC<
   PropsWithChildren<{
     data: SpeechBallonNodeType
@@ -26,6 +31,11 @@ export const SpeechBallonNodeProvider: React.FC<
     setResizing(value)
   }, [])
 
+  const [shapeResize, setArrowResize] = useState<ArrowResizeType>({ width: 0, height: 0 })
+  const handleShapeResize = useCallback((size: ArrowResizeType) => {
+    setArrowResize(size)
+  }, [])
+
   // disable draggable when editing
   useLayoutEffect(() => {
     toggleDraggable(data.id, !isEditing && !isResizeEnabled)
@@ -42,6 +52,8 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
+      shapeResize,
+      handleShapeResize,
     }),
     [
       data,
@@ -53,6 +65,8 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
+      handleShapeResize,
+      shapeResize,
     ],
   )
 
