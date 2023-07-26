@@ -1,4 +1,4 @@
-import { Box, List } from '@mui/material'
+import { Box, List, useMediaQuery, useTheme } from '@mui/material'
 import { HEADER_HEIGHT } from '../Header/Header'
 
 import { useTranslation } from 'next-i18next'
@@ -35,37 +35,46 @@ const Sidebar = () => {
     // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
   ]
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
-    <Box
-      sx={{
-        marginTop: `${HEADER_HEIGHT}px`,
-        width: SIDE_BAR_WIDTH,
-      }}
-    >
-      <Box
-        sx={{
-          position: 'fixed',
-          width: SIDE_BAR_WIDTH,
-          height: '100%',
-          borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
-        }}
-      >
-        <List
+    <>
+      {!isMobile ? (
+        <Box
           sx={{
-            width: '100%',
-            maxWidth: 360,
-            bgcolor: 'background.paper',
-            px: 2,
-            py: 3.25,
+            marginTop: `${HEADER_HEIGHT}px`,
+            width: SIDE_BAR_WIDTH,
           }}
-          component="nav"
         >
-          {menus.map((menu) => (
-            <ListItemButton key={menu.title} menu={menu} />
-          ))}
-        </List>
-      </Box>
-    </Box>
+          <Box
+            sx={{
+              position: 'fixed',
+              width: SIDE_BAR_WIDTH,
+              height: '100%',
+              borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
+            }}
+          >
+            <List
+              sx={{
+                width: '100%',
+                maxWidth: 360,
+                bgcolor: 'background.paper',
+                px: 2,
+                py: 3.25,
+              }}
+              component="nav"
+            >
+              {menus.map((menu) => (
+                <ListItemButton key={menu.title} menu={menu} />
+              ))}
+            </List>
+          </Box>
+        </Box>
+      ) : (
+        <></>
+      )}
+    </>
   )
 }
 

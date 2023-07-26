@@ -1,4 +1,3 @@
-import { greyScale } from '@/libs/config/theme'
 import { ForgotPasswordInputSchema } from '@/libs/schema'
 import { Input } from '@/libs/shared/components'
 import { Button, Stack, Typography } from '@mui/material'
@@ -9,6 +8,7 @@ import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { Control } from 'react-hook-form'
 import { z } from 'zod'
+import { ChildTitle, Title } from '../sign-up'
 
 type FormForgotPasswordTypes = {
   control: Control<z.infer<typeof ForgotPasswordInputSchema>>
@@ -30,27 +30,21 @@ const FormForgotPassword: React.FC<FormForgotPasswordTypes> = ({
   return (
     <Stack justifyContent="center" alignItems="center">
       <Stack
-        width={450}
+        width={{ xs: '100%', sm: 450 }}
         direction="column"
         margin="auto"
-        mt={10}
+        mt={{ xs: 2, sm: 10 }}
         component="form"
         onSubmit={handleSubmit}
       >
-        <Stack alignItems="center" mb={4}>
+        <Stack alignItems="center" mb={{ xs: 2, sm: 4 }}>
           <Image src={Logo} alt="logo" />
 
-          <Typography variant="h2" mt={1.5} mb={0.5}>
-            {t('title') as string}
-          </Typography>
+          <Title mt={1.5}>{t('title') as string}</Title>
 
-          <Typography variant="body1" color={greyScale[600]} mb={4}>
-            {t('child_title') as string}
-          </Typography>
+          <ChildTitle mb={{ xs: 3, sm: 4 }}>{t('child_title') as string}</ChildTitle>
 
-          <Typography variant="body2" textAlign="center" color={greyScale[600]}>
-            {t('child_title_2') as string}
-          </Typography>
+          <ChildTitle textAlign="center">{t('child_title_2') as string}</ChildTitle>
         </Stack>
 
         <Stack width="100%" spacing={2}>

@@ -1,4 +1,5 @@
 import { api } from '@/libs/api'
+import { base } from '@/libs/config/theme'
 import styled from '@emotion/styled'
 import { Button, Fade, Slide, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
@@ -9,6 +10,7 @@ import Logo from 'public/assets/svgs/logo.svg'
 import { useCountdown } from 'usehooks-ts'
 import { CustomImage } from '../../components'
 import { LanguageEmail } from '../../constant'
+import { ChildTitle, Title } from './styled'
 
 type PropType = {
   email: string
@@ -71,15 +73,14 @@ const Success: React.FC<PropType> = ({ email }) => {
             alignItems: 'center',
             justifyContent: 'flex-start',
             mb: 2,
-            pt: 5,
+            pt: { xs: 2, sm: 5 },
           }}
         >
           <Stack alignItems="center" mb={4}>
             <CustomImage src={Logo} alt="logo" />
-            <Typography variant="h2" mb={0.5}>
-              {t('title_success')}
-            </Typography>
-            <Typography color="greyScale.600">{t('description_success')}</Typography>
+            <Title>{t('title_success')}</Title>
+
+            <ChildTitle>{t('description_success')}</ChildTitle>
           </Stack>
 
           <Stack width={{ xs: '100%', md: 460 }} spacing={2}>
@@ -87,22 +88,29 @@ const Success: React.FC<PropType> = ({ email }) => {
               {t('back')}
             </Button>
           </Stack>
-          <Stack width={{ xs: '100%', md: 460 }} spacing={2} mt={3.5} justifyContent="center">
+          <Stack
+            width={{ xs: '100%', md: 460 }}
+            spacing={2}
+            mt={{ xs: 2, sm: 3 }}
+            justifyContent="center"
+          >
             <Button
               disabled={isVisibleCount}
               onClick={handleResendEmail}
               sx={{
                 cursor: 'pointer',
                 transition: 'all 1s',
+                color: base.black,
+                fontWeight: '400',
               }}
             >
               {t('resend_email')}
             </Button>
+
             <Typography
               textAlign="center"
               align="center"
               variant="body2"
-              color="base.contrastText"
               visibility={isVisibleCount ? 'visible' : 'hidden'}
             >
               {t('resend_email_countdown')}

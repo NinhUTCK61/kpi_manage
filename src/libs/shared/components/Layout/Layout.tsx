@@ -1,7 +1,8 @@
 import { Box, BoxProps, Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { HEADER_HEIGHT, Header } from './Header'
+import { HEADER_HEIGHT } from './Header'
+import { HeaderMobile } from './Header/HeaderMobile'
 import { Sidebar } from './Sidebar'
 
 type LayoutType = BoxProps<
@@ -29,7 +30,7 @@ const Layout: React.FC<LayoutType> = ({
         <title>{title || 'KPI master'}</title>
         <meta name="description" content={description} />
       </Head>
-      {HeaderComponent ? HeaderComponent : <Header />}
+      {HeaderComponent ? HeaderComponent : <HeaderMobile />}
       <Stack direction="row">
         {!disableSidebar && <Sidebar />}
         <ContentPage {...contentProps}>{children}</ContentPage>
@@ -48,4 +49,7 @@ const ContentPage = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   overflow: 'hidden',
   padding: theme.spacing(3, 4),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+  },
 }))

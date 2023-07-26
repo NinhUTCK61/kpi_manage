@@ -1,4 +1,3 @@
-import { greyScale } from '@/libs/config/theme'
 import { ResetPasswordInputSchema } from '@/libs/schema'
 import { Input, PasswordStateValidation } from '@/libs/shared/components'
 import { Button, Typography } from '@mui/material'
@@ -10,6 +9,7 @@ import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { Control, useWatch } from 'react-hook-form'
 import { z } from 'zod'
+import { ChildTitle, Title } from '../sign-up'
 
 type FormResetPasswordTypes = {
   control: Control<z.infer<typeof ResetPasswordInputSchema>>
@@ -32,28 +32,26 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
 
   return (
     <Stack
-      width={460}
+      width={{ xs: '100%', sm: 460 }}
       direction="column"
       margin="auto"
-      mt={10}
+      mt={{ xs: 2, sm: 10 }}
+      mb={5}
       component="form"
       onSubmit={handleSubmit}
     >
-      <Stack alignItems="center" mb={4}>
+      <Stack alignItems="center" mb={{ xs: 3, sm: 4 }}>
         <Image src={Logo} alt="logo" />
 
-        <Typography variant="h2" mt={1.5} mb={0.5}>
-          {t('seo_title')}
-        </Typography>
+        <Title mt={1.5}>{t('seo_title')}</Title>
 
-        <Typography variant="body1" color={greyScale[600]} textAlign="center" width={512}>
+        <ChildTitle textAlign="center" width={{ xs: '100%', sm: 512 }}>
           {t('title')}
-        </Typography>
+        </ChildTitle>
       </Stack>
 
-      <Stack width="100%" spacing={2}>
+      <Stack width={{ xs: '100%', sm: 450 }} spacing={2}>
         <Input
-          sx={{ width: 450 }}
           control={control}
           name="password"
           label={t('new_password') as string}
@@ -62,7 +60,6 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
         />
 
         <Input
-          sx={{ width: 450 }}
           control={control}
           name="confirmPassword"
           label={t('confirm_password') as string}
@@ -75,7 +72,7 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
         <Button
           variant="contained"
           disabled={isLoading}
-          sx={{ textTransform: 'capitalize', width: 450 }}
+          sx={{ textTransform: 'capitalize' }}
           type="submit"
         >
           {t('submit')}

@@ -14,6 +14,7 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { CustomImage } from '../../components'
 import { AcceptLaw } from '../../components/AcceptLaw'
+import { ChildTitle, Title } from './styled'
 
 type FormSignUpTypes = {
   handleSubmit(): void
@@ -30,19 +31,19 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
     <Stack justifyContent="center" alignItems="center">
       <Stack
         sx={{
-          width: 'auto',
+          width: { xs: '100%', sm: 'auto' },
           height: '100%',
           alignItems: 'center',
           justifyContent: 'flex-start',
           mb: 2,
         }}
       >
-        <Stack alignItems="center" mb={4}>
+        <Stack alignItems="center" mb={{ xs: 3, sm: 4 }} mt={{ xs: 2, sm: 0 }}>
           <CustomImage src={Logo} alt="logo" priority />
-          <Typography variant="h2" mb={0.5}>
-            {t('title')}
-          </Typography>
-          <Typography color="greyScale.600">{t('child_title')}</Typography>
+
+          <Title>{t('title')}</Title>
+
+          <ChildTitle>{t('child_title')}</ChildTitle>
         </Stack>
 
         <Stack width={{ xs: '100%', md: 460 }} component="form" onSubmit={handleSubmit} spacing={2}>
@@ -132,12 +133,14 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
           <Button fullWidth variant="contained" disabled={!isAccept && !isLoading} type="submit">
             {t('submit')}
           </Button>
+
           <AcceptLaw changeFeature={{ isAccept, setIsAccept: setIsAccept }} />
 
           <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
             <Typography variant="body2" color="greyScale.600" fontWeight={400}>
               {t('have_account')}
             </Typography>
+
             <Typography
               variant="body2"
               color={(theme) => theme.palette.customPrimary[500]}

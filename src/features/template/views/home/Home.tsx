@@ -107,15 +107,18 @@ const Home = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <ButtonCreate
-        variant="contained"
-        startIcon={<Image src={AddIcon} alt="add" />}
-        onClick={() => mutationCreate.mutate()}
-      >
-        {t('create')}
-      </ButtonCreate>
+      <Stack>
+        <ButtonCreate
+          variant="contained"
+          startIcon={<Image src={AddIcon} alt="add" />}
+          onClick={() => mutationCreate.mutate()}
+          sx={{ order: { xs: 2, sm: 1 } }}
+        >
+          {t('create')}
+        </ButtonCreate>
 
-      <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
+        <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
+      </Stack>
 
       {isLoading ? (
         <Stack direction="row" justifyContent="center" alignItems="center" height="70%">

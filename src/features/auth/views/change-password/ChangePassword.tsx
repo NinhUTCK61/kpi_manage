@@ -2,7 +2,7 @@ import { api } from '@/libs/api'
 import { ChangePasswordInputSchema, ChangePasswordType } from '@/libs/schema'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { FC } from 'react'
@@ -38,7 +38,7 @@ const ChangePassword: FC = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <Box width={450}>
+      <Box width={{ xs: '100%', sm: 450 }}>
         <Typography variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
           {t('title')}
         </Typography>
@@ -54,3 +54,11 @@ const ChangePassword: FC = () => {
 }
 
 export { ChangePassword }
+
+const Title = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h3,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 15,
+    lineHeight: '22px',
+  },
+}))

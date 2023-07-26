@@ -1,8 +1,9 @@
+import { ChildTitle, Title } from '@/features'
 import { LayoutUnAuth, MuiImage } from '@/libs/shared/components'
 import { authRouter } from '@/server/api/routers/auth'
 import { authOptions } from '@/server/auth'
 import { prisma } from '@/server/db'
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import type { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth'
 import { useTranslation } from 'next-i18next'
@@ -57,15 +58,15 @@ const Verify: FC<Props> = ({ success, errorMessage }) => {
 
   return (
     <LayoutUnAuth title={t('verify_title')}>
-      <Stack mb={2} pt={5} alignItems="center">
+      <Stack mb={2} pt={{ xs: 2, sm: 5 }} alignItems="center">
         <Stack alignItems="center" mb={4}>
           <MuiImage src={_success ? VerifySuccess : VerifyError} alt="verify image" />
-          <Typography variant="h2" mb={0.5}>
-            {t(_success ? 'verify_success' : 'verify_fail')}
-          </Typography>
-          <Typography color="greyScale.600">
+
+          <Title mt={1.5}>{t(_success ? 'verify_success' : 'verify_fail')}</Title>
+
+          <ChildTitle>
             {t(_success ? 'description_verify_success' : (errorMessage as string))}
-          </Typography>
+          </ChildTitle>
         </Stack>
 
         <Stack width={{ xs: '100%', md: 460 }} spacing={2}>

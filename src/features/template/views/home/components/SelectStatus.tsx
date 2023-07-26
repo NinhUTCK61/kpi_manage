@@ -36,7 +36,7 @@ const SelectStatus: React.FC<SelectStatusTypes> = ({ isTrash, setIsTrash }) => {
     setAnchorEl(null)
   }
   return (
-    <Stack direction="row" justifyContent="space-between" mb={1.5}>
+    <Stack direction="row" justifyContent="space-between" mb={1.5} order={1}>
       <Typography variant="h3" fontWeight={700}>
         {isTrash ? t('deleted_file_title') : t('my_files')}
       </Typography>

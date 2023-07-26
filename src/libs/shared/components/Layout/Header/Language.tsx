@@ -63,6 +63,8 @@ const Language: React.FC = () => {
         <IconButton size="small" sx={{ p: 0 }}>
           <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
         </IconButton>
+
+        <TextLanguage>{languages.find((e) => e.id === language)?.title}</TextLanguage>
       </Item>
       <Menu
         anchorEl={anchorEl}
@@ -95,5 +97,15 @@ const Item = styled(Stack)({
   alignItems: 'center',
   cursor: 'pointer',
 })
+
+const TextLanguage = styled(Typography)(({ theme }) => ({
+  ...theme.typography.body2,
+  width: 64,
+  marginLeft: 6,
+  textAlign: 'center',
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}))
 
 export { Language }

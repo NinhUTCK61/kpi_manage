@@ -15,6 +15,7 @@ import Logo from 'public/assets/svgs/logo.svg'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from '../components'
+import { ChildTitle, Title } from './sign-up'
 
 const Login: FC = () => {
   const router = useRouter()
@@ -73,7 +74,7 @@ const Login: FC = () => {
   return (
     <>
       <LayoutUnAuth title={t('seo_title')}>
-        <Stack direction="row" justifyContent="center" pt={10}>
+        <Stack direction="row" justifyContent="center" pt={{ xs: 2, sm: 10 }}>
           <Stack
             alignItems="center"
             sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', md: 'flex' } }}
@@ -92,17 +93,21 @@ const Login: FC = () => {
           </Stack>
 
           <Stack
-            sx={{ width: 450, height: '100%', alignItems: 'center', justifyContent: 'flex-start' }}
+            sx={{
+              width: { xs: '100%', sm: 450 },
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+            }}
           >
             <Stack alignItems="center" mb={4}>
               <CustomImage src={Logo} priority alt="logo" />
-              <Typography variant="h2" mb={0.5} align="center">
-                {t('title')}
-              </Typography>
 
-              <Typography color="greyScale.600" align="center" whiteSpace="nowrap">
+              <Title align="center">{t('title')}</Title>
+
+              <ChildTitle align="center" whiteSpace="nowrap">
                 {t('child_title')}
-              </Typography>
+              </ChildTitle>
             </Stack>
 
             <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -127,7 +132,8 @@ const Login: FC = () => {
                 {t('login')}
               </Button>
             </Stack>
-            <Stack width={450} mt={1} spacing={1}>
+
+            <Stack width={{ xs: '100%', sm: 450 }} mt={1} spacing={1}>
               <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
                 <TextColor onClick={redirectForgot} mr={1.75}>
                   {t('forgot')}
