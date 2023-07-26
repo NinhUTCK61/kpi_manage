@@ -10,7 +10,7 @@ import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import TermsOfUseIcon from 'public/assets/svgs/blog.svg'
 import ChangeIcon from 'public/assets/svgs/change_pass.svg'
 import LogOutIcon from 'public/assets/svgs/log_out.svg'
-import NotificationIcon from 'public/assets/svgs/noti.svg'
+// import NotificationIcon from 'public/assets/svgs/noti.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
@@ -61,14 +61,14 @@ const Account = () => {
 
   return (
     <>
-      <Image
+      {/* <Image
         src={NotificationIcon}
         alt="notification-icon"
         height={20}
         width={20}
         style={{ margin: '18px ' }}
-      />
-      <StackName direction="row" spacing={1} onClick={handleClick}>
+      /> */}
+      <StackName direction="row" spacing={1} onClick={handleClick} ml={2}>
         <Image
           src={sessionData?.user.image ? getImageUrl(sessionData?.user.image) : AvatarDefault}
           width={28}
