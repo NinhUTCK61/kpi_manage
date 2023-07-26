@@ -6,7 +6,7 @@
 module.exports = {
   // https://www.i18next.com/overview/configuration-options#logging
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'jp',
     locales: ['en', 'jp'],
   },
   reloadOnPrerender: process.env.NODE_ENV === 'development',
