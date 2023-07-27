@@ -12,7 +12,7 @@
   "remove_favorite": "お気に入りを削除",
   "menu_context": {
     "edit": "ボックスを編集",
-    "edit_speechBallon": "吹き出しを編集",
+    "edit_speechBallon": "吹き出しの内容を編集",
     "copy": "コピー",
     "paste": "ペースト",
     "delete": "削除",
