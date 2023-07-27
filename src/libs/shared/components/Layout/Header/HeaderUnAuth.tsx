@@ -17,7 +17,12 @@ const HeaderUnAuth = () => {
     <AppBar elevation={0}>
       <StackContainer>
         <Stack direction="row" spacing={19.75} alignItems="center">
-          <MuiImage src={LogoHeader} alt="logo-header" priority onClick={() => router.push('/')} />
+          <MuiImage
+            src={LogoHeader}
+            alt="logo-header"
+            priority
+            onClick={() => router.push('/sign-in')}
+          />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Language />
