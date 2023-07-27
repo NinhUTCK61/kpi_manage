@@ -1,7 +1,6 @@
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { produce } from 'immer'
 import * as math from 'mathjs'
-import { generateCalculatorStackV2 } from '../components/KPINode/helper'
 
 const sliceKeyInsideSpace = (inputString: string, cursorPosition: number) => {
   const spaceBeforeIndex = inputString.lastIndexOf(' ', cursorPosition - 1)
@@ -145,9 +144,11 @@ export const getDiffValue2Number = (
   listNodeChange: ReactFlowKPINode[],
 ) => {
   const nodes: ReactFlowKPINode[] = []
-  const slugs = generateCalculatorStackV2(listNodeChange)
+  // const slugs = generateCalculatorStackV2(listNodeChange)
   let _listNOdeChange = listNodeChange
   const listSlugWithNodeFocused: string[] = []
+  // Chỉ lấy các node liên quan tới nodeFocused(các node đã nhập nodeFocused vào formula)
+  const slugs = findChildNodesV2(_listNOdeChange, nodeFocused.data.slug)
   slugs.forEach((slug) => {
     const node = _listNOdeChange.find((e) => e.data.slug === slug && e.data.is_formula)
     if (!node) return
@@ -246,6 +247,70 @@ export function findChildNodes(
   }
 
   return childNodes
+}
+
+// array = ['A','root','B'] , elementToAddAfter = 'root', newElement = 'B' => ['A','B','root']
+function updateArrayByElement(array: string[], elementToAddAfter: string, newElement: string) {
+  const index = array.indexOf(elementToAddAfter)
+  const _array = array.filter((e) => e !== newElement)
+  if (index !== -1) {
+    // Sử dụng phương thức splice để thêm newElement vào sau phần tử có giá trị elementToAddAfter
+    _array.splice(index, -1, newElement)
+  }
+  return _array
+}
+
+export function findChildNodesV2(nodes: ReactFlowKPINode[], parent: string) {
+  let output: string[] = []
+  const slugsChild = findChildNodes(nodes, parent, [], [])
+  for (let i = 0; i < slugsChild.length; i++) {
+    const slug = slugsChild[i] as string
+    const slugsChildBySlug = findChildNodes(nodes, slug, [], [])
+    output = output.length ? output : slugsChild
+
+    if (!slugsChildBySlug) continue
+
+    //Neu node nay dung truoc node cha cua no(slug), thi node này sẽ tính la lỗi
+    const nodeError = output.filter(
+      (e) => slugsChildBySlug.includes(e) && output.indexOf(e) < output.indexOf(slug),
+    )
+
+    if (!nodeError.length) continue
+    // ví dụ : slugs =['A', 'root', 'C11', 'C1', 'C111', 'C', 'B1', 'B', 'B11', 'B111']
+    // các node con của slug = B1 là  ['root', 'C11', 'C111', 'C1', 'C']
+    // cần cho slug B1 lên trước vị trí root, vì root là con gần nhất so với B1
+    output = updateArrayByElement(output, nodeError[0] as string, slug)
+  }
+  return output
+}
+
+export function findChildNodesV3(nodes: ReactFlowKPINode[], parent: string) {
+  const slugsChild = findChildNodes(nodes, parent, [], [])
+  let output: string[] = []
+  for (let i = 0; i < slugsChild.length; i++) {
+    const slug = slugsChild[i] as string
+    const slugsParentBySlug = findParentNodes(nodes, slug, [], [])
+    output = output.length ? output : slugsChild
+
+    if (!slugsParentBySlug.length) continue
+
+    // nếu node này đứng trước vị trí của các node cha của nó, thì các node đứng sau sẽ tính là lỗi
+    const errorNode = output.filter(
+      (e) => slugsParentBySlug.includes(e) && output.indexOf(e) > output.indexOf(slug),
+    )
+    if (!errorNode.length) continue
+
+    // Ví dụ: slugs = ['A', 'root', 'C11', 'C1', 'C111', 'C', 'B1', 'B', 'B11', 'B111']
+    // các node cha của root(slug) là ['A', 'A1', 'B', 'B1', 'B11', 'B111']
+    // nhưng root(slug) đang đứng trước các node ['B1', 'B', 'B11', 'B111']
+    // foreact các node lỗi này để đưa lên trước vị trí của root(slug)
+
+    errorNode.forEach((e) => {
+      // adđ vị trí các node cha bị sai lên trước node này
+      output = updateArrayByElement(output, slug, e)
+    })
+  }
+  return output
 }
 
 //findParentNodes(input1, 'A111') => ['A', 'C']
