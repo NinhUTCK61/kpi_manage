@@ -1,5 +1,6 @@
 import { TemplateOutputType, UserTemplateType } from '@/libs/schema'
 import { prisma } from '@/server/db'
+import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { CommonHelper } from './common.hepler'
 
@@ -44,13 +45,15 @@ export class TemplateHelper extends CommonHelper {
     return UserTemplate
   }
 
-  async handleSearchTemplate(searchName: string, userId: string) {
-    // await prisma.$executeRaw`SET pg_bigm.similarity_limit TO 0.07`
+  async handleSearchTemplate(searchName: string, userId: string, isTrash: boolean) {
+    const isDeleted = isTrash
+      ? Prisma.sql`tl.deleted_at IS NOT NULL`
+      : Prisma.sql`tl.deleted_at IS NULL`
 
-    const resultTemplates: UserTemplateType[] = await prisma.$queryRaw`SELECT *
+    const resultTemplates: TemplateOutputType = await prisma.$queryRaw`SELECT *
       FROM "UserTemplate" as ut
       INNER JOIN "Template" as tl ON ut.template_id = tl.id
-      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) =% normalize(${searchName}, NFKC)`
+      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) =% normalize(${searchName}, NFKC) AND ${isDeleted} `
 
     return resultTemplates
   }
