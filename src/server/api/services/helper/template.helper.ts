@@ -45,12 +45,13 @@ export class TemplateHelper extends CommonHelper {
   }
 
   async handleSearchTemplate(searchName: string, userId: string) {
-    const resultTemplates: UserTemplateType[] = await prisma.$queryRaw`
-      SELECT *
+    // await prisma.$executeRaw`SET pg_bigm.similarity_limit TO 0.07`
+
+    const resultTemplates: UserTemplateType[] = await prisma.$queryRaw`SELECT *
       FROM "UserTemplate" as ut
       INNER JOIN "Template" as tl ON ut.template_id = tl.id
-      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) = normalize(${searchName}, NFKC)
-    `
+      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) =% normalize(${searchName}, NFKC)`
+
     return resultTemplates
   }
 }

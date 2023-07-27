@@ -34,7 +34,13 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName ? this.handleSearchTemplate(searchName, userId) : userTemplate
+    const listTemplate = searchName
+      ? await this.handleSearchTemplate(searchName, userId)
+      : userTemplate
+
+    if (searchName) {
+      return listTemplate
+    }
 
     const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
 
@@ -210,9 +216,6 @@ export class TemplateService extends TemplateHelper {
         is_favorite: true,
         template: {
           deleted_at: null,
-          name: {
-            contains: searchName,
-          },
         },
       },
       orderBy: {
