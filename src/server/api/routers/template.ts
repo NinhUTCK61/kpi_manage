@@ -84,7 +84,7 @@ export const templateRouter = createTRPCRouter({
     .meta({ openapi: { method: 'GET', path: '/template/search', protect: true } })
     .input(SearchTemplateInputSchema)
     .output(TemplateDataOutputSchema)
-    .query(({ input, ctx }) => {
-      return templateService.search(input, ctx.session.user.id)
+    .query(({ input }) => {
+      return templateService.search(input)
     }),
 })

@@ -43,4 +43,14 @@ export class TemplateHelper extends CommonHelper {
 
     return UserTemplate
   }
+
+  async handleSearchTemplate(searchName: string) {
+    const resultTemplates: UserTemplateType[] = await prisma.$queryRaw`
+      SELECT *
+      FROM "UserTemplate" as ut
+      INNER JOIN "Template" as tl ON ut.template_id = tl.id
+      WHERE normalize(name, 'NFKC') = normalize(${searchName}, 'NFKC')
+    `
+    return resultTemplates
+  }
 }
