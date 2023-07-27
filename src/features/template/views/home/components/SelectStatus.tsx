@@ -1,6 +1,6 @@
 import { base } from '@/libs/config/theme'
 import { Menu, MenuItem } from '@/libs/shared/components'
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
@@ -36,17 +36,16 @@ const SelectStatus: React.FC<SelectStatusTypes> = ({ isTrash, setIsTrash }) => {
     setAnchorEl(null)
   }
   return (
-    <Stack direction="row" justifyContent="space-between" mb={1.5} order={1}>
-      <Typography variant="h3" fontWeight={700}>
-        {isTrash ? t('deleted_file_title') : t('my_files')}
-      </Typography>
+    <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1.5} order={1}>
+      <Title>{isTrash ? t('deleted_file_title') : t('my_files')}</Title>
+
       <Button
         aria-controls={openMenu ? 'status-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={openMenu ? 'true' : undefined}
         disableRipple
         onClick={handleClick}
-        sx={{ color: base.black }}
+        sx={{ color: base.black, fontWeight: { xs: 400, sm: 600 } }}
         startIcon={<Image src={openMenu ? ArrowLeftIcon : ArrowDownIcon} alt="down" />}
       >
         {isTrash ? t('deleted_file') : t('all_file')}
@@ -78,3 +77,14 @@ const SelectStatus: React.FC<SelectStatusTypes> = ({ isTrash, setIsTrash }) => {
 }
 
 export { SelectStatus }
+
+const Title = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h3,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  [theme.breakpoints.down('sm')]: {
+    fontWeight: 600,
+    fontSize: 19,
+    lineHeight: '26px',
+  },
+}))

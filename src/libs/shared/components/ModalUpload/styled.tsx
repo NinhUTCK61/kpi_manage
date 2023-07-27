@@ -10,6 +10,9 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   padding: 24,
   borderRadius: '12px',
   background: theme.palette.base.white,
+  [theme.breakpoints.down('sm')]: {
+    width: 340,
+  },
 }))
 
 const CloseButton = styled(Button)({

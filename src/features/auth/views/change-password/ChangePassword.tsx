@@ -2,11 +2,12 @@ import { api } from '@/libs/api'
 import { ChangePasswordInputSchema, ChangePasswordType } from '@/libs/schema'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Typography, styled } from '@mui/material'
+import { Box } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Title } from '../profile'
 import { FormChangePassword } from './FormChangePassword'
 
 const ChangePassword: FC = () => {
@@ -39,9 +40,9 @@ const ChangePassword: FC = () => {
   return (
     <Layout title={t('seo_title')}>
       <Box width={{ xs: '100%', sm: 450 }}>
-        <Typography variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
+        <Title variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
           {t('title')}
-        </Typography>
+        </Title>
 
         <FormChangePassword
           isLoading={isLoading}
@@ -54,11 +55,3 @@ const ChangePassword: FC = () => {
 }
 
 export { ChangePassword }
-
-const Title = styled(Typography)(({ theme }) => ({
-  ...theme.typography.h3,
-  [theme.breakpoints.down('sm')]: {
-    fontSize: 15,
-    lineHeight: '22px',
-  },
-}))

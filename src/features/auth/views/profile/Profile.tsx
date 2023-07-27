@@ -2,7 +2,7 @@ import { api } from '@/libs/api'
 import { UserProfile, UserProfileType } from '@/libs/schema/profile'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Typography } from '@mui/material'
+import { Typography, styled } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
@@ -89,9 +89,7 @@ export const Profile = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <Typography variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
-        {t('seo_title')}
-      </Typography>
+      <Title>{t('seo_title')}</Title>
 
       <BackgroundProfile onDrop={onSelectImage} />
 
@@ -108,3 +106,16 @@ export const Profile = () => {
     </Layout>
   )
 }
+
+export const Title = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h3,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  marginBottom: 24,
+  [theme.breakpoints.down('sm')]: {
+    fontWeight: 600,
+    fontSize: 19,
+    lineHeight: '26px',
+    marginBottom: 16,
+  },
+}))

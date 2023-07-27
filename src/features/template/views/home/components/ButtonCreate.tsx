@@ -12,7 +12,7 @@ const ButtonCreate = styled(Button)(({ theme }) => ({
     width: 230,
     fontSize: 16,
     lineHeight: '22px',
-    fontWeight: '600',
+    fontWeight: 600,
     marginBottom: theme.spacing(2),
   },
 }))

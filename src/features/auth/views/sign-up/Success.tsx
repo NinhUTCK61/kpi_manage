@@ -101,7 +101,7 @@ const Success: React.FC<PropType> = ({ email }) => {
                 cursor: 'pointer',
                 transition: 'all 1s',
                 color: base.black,
-                fontWeight: '400',
+                fontWeight: 400,
               }}
             >
               {t('resend_email')}

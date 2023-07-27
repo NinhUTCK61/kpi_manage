@@ -1,6 +1,4 @@
-import { Box, List, useMediaQuery, useTheme } from '@mui/material'
-import { HEADER_HEIGHT } from '../Header/Header'
-
+import { Box, List } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import KnowledgeIcon from 'public/assets/svgs/blog.svg'
 import ConsultationIcon from 'public/assets/svgs/consulation.svg'
@@ -35,46 +33,38 @@ const Sidebar = () => {
     // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
   ]
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
   return (
-    <>
-      {!isMobile ? (
-        <Box
+    <Box
+      sx={{
+        marginTop: `${HEADER_HEIGHT}px`,
+        width: SIDE_BAR_WIDTH,
+        display: { xs: 'none', lg: 'block' },
+      }}
+    >
+      <Box
+        sx={{
+          position: 'fixed',
+          width: SIDE_BAR_WIDTH,
+          height: '100%',
+          borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
+        }}
+      >
+        <List
           sx={{
-            marginTop: `${HEADER_HEIGHT}px`,
-            width: SIDE_BAR_WIDTH,
+            width: '100%',
+            maxWidth: 360,
+            bgcolor: 'background.paper',
+            px: 2,
+            py: 3.25,
           }}
+          component="nav"
         >
-          <Box
-            sx={{
-              position: 'fixed',
-              width: SIDE_BAR_WIDTH,
-              height: '100%',
-              borderRight: (theme) => `1px solid ${theme.palette.greyScale[300]}`,
-            }}
-          >
-            <List
-              sx={{
-                width: '100%',
-                maxWidth: 360,
-                bgcolor: 'background.paper',
-                px: 2,
-                py: 3.25,
-              }}
-              component="nav"
-            >
-              {menus.map((menu) => (
-                <ListItemButton key={menu.title} menu={menu} />
-              ))}
-            </List>
-          </Box>
-        </Box>
-      ) : (
-        <></>
-      )}
-    </>
+          {menus.map((menu) => (
+            <ListItemButton key={menu.title} menu={menu} />
+          ))}
+        </List>
+      </Box>
+    </Box>
   )
 }
 

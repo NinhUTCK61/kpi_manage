@@ -49,6 +49,9 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
     marginRight: 0,
   },
   fontSize: 15,
+  [theme.breakpoints.down('lg')]: {
+    width: 400,
+  },
 }))
 
 export { InputSearch }

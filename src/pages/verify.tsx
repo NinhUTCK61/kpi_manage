@@ -1,4 +1,4 @@
-import { ChildTitle, Title } from '@/features'
+import { ChildTitle, Title } from '@/features/auth/views/sign-up'
 import { LayoutUnAuth, MuiImage } from '@/libs/shared/components'
 import { authRouter } from '@/server/api/routers/auth'
 import { authOptions } from '@/server/auth'

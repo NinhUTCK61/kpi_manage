@@ -125,7 +125,7 @@ const TextOverflow = styled(Typography)({
 
 const Menu = styled(MuiMenu)(({ theme }) => ({
   '.MuiMenu-paper': {
-    boxShadow: theme.shadows[3],
+    boxShadow: theme.shadows[1],
   },
 }))
 
