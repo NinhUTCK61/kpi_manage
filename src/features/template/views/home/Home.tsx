@@ -125,7 +125,13 @@ const Home = () => {
           <CircularProgress size="2rem" />
         </Stack>
       ) : data && data.length > 0 ? (
-        <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
+        <Grid
+          container
+          rowSpacing={4}
+          spacing={2}
+          columns={{ md: 12, xl: 15 }}
+          justifyContent={{ xs: 'center', md: 'flex-start' }}
+        >
           {data.map((template, index) => (
             <Grid item key={index} xl="auto" lg={3} md={4} sm={1} xs={12}>
               <TemplateItem

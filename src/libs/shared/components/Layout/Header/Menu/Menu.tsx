@@ -37,7 +37,7 @@ const Menu: React.FC<MenuProps> = ({ open, handleCloseMenu }) => {
   ]
 
   return (
-    <MenuMobile variant="persistent" anchor="left" open={open}>
+    <MenuMobile anchor="left" open={open}>
       <ButtonClose onClick={handleCloseMenu}>
         <CustomImage alt="icon" src={CloseIcon} sx={{ mb: 0 }} />
       </ButtonClose>
