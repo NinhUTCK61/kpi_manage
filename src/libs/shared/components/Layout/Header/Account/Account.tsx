@@ -55,7 +55,10 @@ const Account = () => {
     {
       title: t('menu.log_out'),
       icon: LogOutIcon,
-      handle: () => signOut({ callbackUrl: '/' }),
+      handle: () =>
+        signOut({
+          callbackUrl: router.locale === 'jp' ? '/jp/sign-in' : '/sign-in',
+        }),
     },
   ]
 
