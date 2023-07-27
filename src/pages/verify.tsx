@@ -1,4 +1,4 @@
-import { ChildTitle, Title } from '@/features/auth/views/sign-up'
+import { BigTitle, ChildTitle } from '@/features'
 import { LayoutUnAuth, MuiImage } from '@/libs/shared/components'
 import { authRouter } from '@/server/api/routers/auth'
 import { authOptions } from '@/server/auth'
@@ -62,7 +62,7 @@ const Verify: FC<Props> = ({ success, errorMessage }) => {
         <Stack alignItems="center" mb={4}>
           <MuiImage src={_success ? VerifySuccess : VerifyError} alt="verify image" />
 
-          <Title mt={1.5}>{t(_success ? 'verify_success' : 'verify_fail')}</Title>
+          <BigTitle mt={1.5}>{t(_success ? 'verify_success' : 'verify_fail')}</BigTitle>
 
           <ChildTitle>
             {t(_success ? 'description_verify_success' : (errorMessage as string))}

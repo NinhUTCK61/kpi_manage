@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Title } from '../profile'
+import { Title } from '../styled'
 import { FormChangePassword } from './FormChangePassword'
 
 const ChangePassword: FC = () => {
@@ -40,9 +40,7 @@ const ChangePassword: FC = () => {
   return (
     <Layout title={t('seo_title')}>
       <Box width={{ xs: '100%', sm: 450 }}>
-        <Title variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
-          {t('title')}
-        </Title>
+        <Title>{t('title')}</Title>
 
         <FormChangePassword
           isLoading={isLoading}

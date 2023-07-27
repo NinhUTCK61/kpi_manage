@@ -1,5 +1,15 @@
 import { CustomImage } from '@/features/auth/components'
-import { Button, Drawer, ListItemIcon, Stack, Typography, styled } from '@mui/material'
+import {
+  Button,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -25,44 +35,44 @@ const Menu: React.FC<MenuProps> = ({ open, handleCloseMenu }) => {
     {
       title: t('sidebar.consultation'),
       icon: ConsultationIcon,
-      handle: () => router.push('/'),
+      handle: () => router.push('/consultation'),
+      disable: true,
     },
     {
       title: t('sidebar.knowledge_blog'),
       icon: KnowledgeIcon,
-      handle: () => router.push('/'),
+      handle: () => router.push('/knowledge-blog'),
+      disable: true,
     },
     // { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
     // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
   ]
 
   return (
-    <MenuMobile anchor="left" open={open}>
+    <MenuMobile anchor="left" open={open} onClose={handleCloseMenu}>
       <ButtonClose onClick={handleCloseMenu}>
         <CustomImage alt="icon" src={CloseIcon} sx={{ mb: 0 }} />
       </ButtonClose>
 
-      <Stack direction="column" spacing={1}>
-        {menus.map((menu) => (
-          <Stack
-            key={menu.title}
-            direction="row"
-            alignItems="center"
-            padding="8px 16px"
-            onClick={menu.handle}
-          >
-            <ListItemIcon sx={{ minWidth: 20, mr: 0.5 }}>
-              <Image src={menu.icon} alt="icon" width={20} height={20} />
-            </ListItemIcon>
+      <List component="div" disablePadding>
+        <Stack direction="column" spacing={1}>
+          {menus.map((menu) => (
+            <ListItemButton key={menu.title} onClick={menu.handle} disabled={menu.disable}>
+              <ListItemIcon sx={{ minWidth: 20, mr: 0.5 }}>
+                <Image src={menu.icon} alt="icon" width={20} height={20} />
+              </ListItemIcon>
 
-            <Typography color="base.black" variant="body2">
-              {menu.title}
-            </Typography>
-          </Stack>
-        ))}
+              <ListItemText>
+                <Typography color="base.black" variant="body2">
+                  {menu.title}
+                </Typography>
+              </ListItemText>
+            </ListItemButton>
+          ))}
 
-        <Account />
-      </Stack>
+          <Account />
+        </Stack>
+      </List>
     </MenuMobile>
   )
 }

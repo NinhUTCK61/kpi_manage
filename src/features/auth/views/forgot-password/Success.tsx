@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Email from 'public/assets/svgs/email.svg'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChildTitle, Title } from '../sign-up'
+import { BigTitle, ChildTitle } from '../styled'
 
 const Success: FC = () => {
   const router = useRouter()
@@ -26,9 +26,9 @@ const Success: FC = () => {
         >
           <Image src={Email} alt="email" />
 
-          <Title mt={1.5} mb={{ xs: 1, sm: 2 }}>
+          <BigTitle mt={1.5} mb={{ xs: 1, sm: 2 }}>
             {t('title') as string}
-          </Title>
+          </BigTitle>
 
           <ChildTitle textAlign="center">{t('title_send_mail_success')}</ChildTitle>
 

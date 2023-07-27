@@ -1,6 +1,19 @@
 import { Typography, styled } from '@mui/material'
 
 const Title = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h3,
+  fontWeight: 700,
+  textTransform: 'uppercase',
+  marginBottom: 24,
+  [theme.breakpoints.down('sm')]: {
+    fontWeight: 600,
+    fontSize: 19,
+    lineHeight: '26px',
+    marginBottom: 16,
+  },
+}))
+
+const BigTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
   marginBottom: 4,
   [theme.breakpoints.down('sm')]: {
@@ -20,4 +33,4 @@ const ChildTitle = styled(Typography)(({ theme }) => ({
   },
 }))
 
-export { ChildTitle, Title }
+export { BigTitle, ChildTitle, Title }

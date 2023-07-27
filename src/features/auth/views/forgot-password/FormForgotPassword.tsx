@@ -8,7 +8,7 @@ import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { Control } from 'react-hook-form'
 import { z } from 'zod'
-import { ChildTitle, Title } from '../sign-up'
+import { BigTitle, ChildTitle } from '../styled'
 
 type FormForgotPasswordTypes = {
   control: Control<z.infer<typeof ForgotPasswordInputSchema>>
@@ -40,7 +40,7 @@ const FormForgotPassword: React.FC<FormForgotPasswordTypes> = ({
         <Stack alignItems="center" mb={{ xs: 2, sm: 4 }}>
           <Image src={Logo} alt="logo" />
 
-          <Title mt={1.5}>{t('title') as string}</Title>
+          <BigTitle mt={1.5}>{t('title') as string}</BigTitle>
 
           <ChildTitle mb={{ xs: 3, sm: 4 }}>{t('child_title') as string}</ChildTitle>
 

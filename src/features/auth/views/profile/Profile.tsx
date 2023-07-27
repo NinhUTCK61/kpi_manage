@@ -2,12 +2,12 @@ import { api } from '@/libs/api'
 import { UserProfile, UserProfileType } from '@/libs/schema/profile'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Typography, styled } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Title } from '../styled'
 import { BackgroundProfile } from './BackgroundProfile'
 import { FormProfile } from './FormProfile'
 import { ModalUploadImage } from './ModalUploadImage'
@@ -106,16 +106,3 @@ export const Profile = () => {
     </Layout>
   )
 }
-
-export const Title = styled(Typography)(({ theme }) => ({
-  ...theme.typography.h3,
-  fontWeight: 700,
-  textTransform: 'uppercase',
-  marginBottom: 24,
-  [theme.breakpoints.down('sm')]: {
-    fontWeight: 600,
-    fontSize: 19,
-    lineHeight: '26px',
-    marginBottom: 16,
-  },
-}))

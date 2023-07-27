@@ -96,7 +96,7 @@ export const Favorite = () => {
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
-      <Stack mb={3}>
+      <Stack mb={{ xs: 2, sm: 3 }}>
         <Title>{t('favorite_files', { ns: 'favorite' })}</Title>
       </Stack>
 
