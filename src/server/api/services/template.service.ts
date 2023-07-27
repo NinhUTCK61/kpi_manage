@@ -1,7 +1,5 @@
 import {
   LikeTemplateInputType,
-  SearchTemplateInputType,
-  TemplateOutputType,
   TemplateType,
   UpdateTemplateInputType,
   UserTemplateType,
@@ -36,7 +34,7 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName ? this.handleSearchTemplate(searchName) : userTemplate
+    const listTemplate = searchName ? this.handleSearchTemplate(searchName, userId) : userTemplate
 
     const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
 
@@ -227,18 +225,10 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName ? this.handleSearchTemplate(searchName) : userTemplate
+    const listTemplate = searchName ? this.handleSearchTemplate(searchName, user.id) : userTemplate
 
     const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
 
     return templates
-  }
-
-  async search({ searchName }: SearchTemplateInputType) {
-    const templateData: TemplateOutputType = await prisma.$queryRaw`
-        SET pg_bigm.similarity_limit TO 0.05
-        SELECT * FROM "Template" WHERE normalize(name, NFKC) =% normalize(${searchName}, NFKC)
-      `
-    return templateData
   }
 }
