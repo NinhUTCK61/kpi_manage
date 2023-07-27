@@ -4,7 +4,6 @@ import {
   GetTemplateByIdInputSchema,
   LikeTemplateInputSchema,
   ListTemplateInputSchema,
-  SearchTemplateInputSchema,
   TemplateDataOutputSchema,
   TemplateDataSchema,
   UpdateTemplateInputSchema,
@@ -79,12 +78,5 @@ export const templateRouter = createTRPCRouter({
     .output(TemplateDataOutputSchema)
     .query(({ ctx, input }) => {
       return templateService.favorite(ctx.session.user, input.searchName as string)
-    }),
-  search: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/template/search', protect: true } })
-    .input(SearchTemplateInputSchema)
-    .output(TemplateDataOutputSchema)
-    .query(({ input, ctx }) => {
-      return templateService.search(input, ctx.session.user.id)
     }),
 })

@@ -1,8 +1,8 @@
 import {
   LikeTemplateInputType,
-  SearchTemplateInputType,
   TemplateType,
   UpdateTemplateInputType,
+  UserTemplateType,
 } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
@@ -22,10 +22,6 @@ export class TemplateService extends TemplateHelper {
         user_id: userId,
         template: {
           deleted_at: deletedOpt,
-          name: {
-            contains: searchName,
-            mode: 'insensitive',
-          },
         },
       },
       orderBy: {
@@ -38,7 +34,9 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const templates = this.transformTemplateOutput(userTemplate)
+    const listTemplate = searchName ? this.handleSearchTemplate(searchName, userId) : userTemplate
+
+    const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
 
     return templates
   }
@@ -227,34 +225,10 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const templateData = this.transformTemplateOutput(userTemplate)
+    const listTemplate = searchName ? this.handleSearchTemplate(searchName, user.id) : userTemplate
 
-    return templateData
-  }
+    const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
 
-  async search({ searchName }: SearchTemplateInputType, userId: string) {
-    const result = await prisma.userTemplate.findMany({
-      where: {
-        user_id: userId,
-        template: {
-          name: {
-            contains: searchName,
-            mode: 'insensitive',
-          },
-        },
-      },
-      orderBy: {
-        template: {
-          created_at: 'desc',
-        },
-      },
-      include: {
-        template: true,
-      },
-    })
-
-    const templateData = this.transformTemplateOutput(result)
-
-    return templateData
+    return templates
   }
 }
