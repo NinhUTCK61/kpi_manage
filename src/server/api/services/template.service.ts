@@ -1,9 +1,4 @@
-import {
-  LikeTemplateInputType,
-  TemplateType,
-  UpdateTemplateInputType,
-  UserTemplateType,
-} from '@/libs/schema'
+import { LikeTemplateInputType, TemplateType, UpdateTemplateInputType } from '@/libs/schema'
 import { generateDefaultNode } from '@/libs/utils/node'
 import { prisma } from '@/server/db'
 
@@ -34,11 +29,11 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName ? this.handleSearchTemplate(searchName, userId) : userTemplate
+    const listTemplate = searchName
+      ? this.handleSearchTemplate(searchName, userId, isTrash)
+      : this.transformTemplateOutput(userTemplate)
 
-    const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
-
-    return templates
+    return listTemplate
   }
 
   async update({ id, ...restUpdate }: UpdateTemplateInputType, user: User) {
@@ -210,9 +205,6 @@ export class TemplateService extends TemplateHelper {
         is_favorite: true,
         template: {
           deleted_at: null,
-          name: {
-            contains: searchName,
-          },
         },
       },
       orderBy: {
@@ -225,10 +217,10 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName ? this.handleSearchTemplate(searchName, user.id) : userTemplate
+    const listTemplate = searchName
+      ? this.handleSearchTemplate(searchName, user.id, false)
+      : this.transformTemplateOutput(userTemplate)
 
-    const templates = this.transformTemplateOutput(listTemplate as UserTemplateType[])
-
-    return templates
+    return listTemplate
   }
 }
