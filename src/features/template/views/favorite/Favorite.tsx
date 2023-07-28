@@ -113,7 +113,7 @@ export const Favorite = () => {
           justifyContent={{ xs: 'center', md: 'flex-start' }}
         >
           {favoriteData?.map((template, index) => (
-            <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
+            <Grid item key={index} xl="auto" lg={3} md={4} sm={6} xs={12}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}

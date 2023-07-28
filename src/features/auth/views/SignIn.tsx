@@ -77,7 +77,7 @@ const Login: FC = () => {
         <Stack direction="row" justifyContent="center" pt={{ xs: 2, sm: 10 }}>
           <Stack
             alignItems="center"
-            sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', lg: 'flex' } }}
             spacing={5.25}
             justifyContent="center"
           >
@@ -105,7 +105,7 @@ const Login: FC = () => {
 
               <BigTitle align="center">{t('title')}</BigTitle>
 
-              <ChildTitle align="center" whiteSpace="nowrap">
+              <ChildTitle align="center" width={{ xs: '100%', sm: 460 }}>
                 {t('child_title')}
               </ChildTitle>
             </Stack>
