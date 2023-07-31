@@ -4,8 +4,8 @@ import { PropsWithChildren, useCallback, useLayoutEffect, useMemo, useState } fr
 import { SpeechBallonContext } from '../context'
 
 export type ArrowResizeType = {
-  width: number
-  height: number
+  widthArrow: number | null
+  heightArrow: number | null
 }
 
 export const SpeechBallonNodeProvider: React.FC<
@@ -31,8 +31,11 @@ export const SpeechBallonNodeProvider: React.FC<
     setResizing(value)
   }, [])
 
-  const [shapeResize, setArrowResize] = useState<ArrowResizeType>({ width: 0, height: 0 })
-  const handleShapeResize = useCallback((size: ArrowResizeType) => {
+  const [arrowResize, setArrowResize] = useState<ArrowResizeType>({
+    widthArrow: null,
+    heightArrow: null,
+  })
+  const handleArrowResize = useCallback((size: ArrowResizeType) => {
     setArrowResize(size)
   }, [])
 
@@ -52,8 +55,8 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
-      shapeResize,
-      handleShapeResize,
+      arrowResize,
+      handleArrowResize,
     }),
     [
       data,
@@ -65,8 +68,8 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
-      handleShapeResize,
-      shapeResize,
+      arrowResize,
+      handleArrowResize,
     ],
   )
 

@@ -60,6 +60,7 @@ export const useShapeStyle = () => {
     ...getShapeStyles,
     ...(isResizing && { width: '100%', height: '100%' }),
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
+    transition: 'all 0.3s',
   }
 
   const getArrowBox = {

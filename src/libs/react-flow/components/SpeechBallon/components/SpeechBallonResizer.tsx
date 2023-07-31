@@ -28,7 +28,7 @@ export const minSizeResize = {
 }
 
 const SpeechBallonResizer = () => {
-  const { data, handleResizing, isResizeEnabled, handleResize, handleShapeResize } =
+  const { data, handleResizing, isResizeEnabled, handleResize, handleArrowResize } =
     useSpeechBallonContext()
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
   const { updateReactFlowNode } = useNodeUpdateHandler()
@@ -56,16 +56,14 @@ const SpeechBallonResizer = () => {
   const onUpdateResize = (_: ResizeDragEvent, params: ResizeParams) => {
     if (!nodeFocusedMemo) return
 
-    const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
-
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
 
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
       width: `${params.width}px`,
       height: `${params.height}px`,
-      widthArrow: Math.min(WIDTH_ARROW * percentResize, params.width),
-      heightArrow: HEIGHT_ARROW * percentResize,
+      widthArrow: handleArrowCalculate(params).width,
+      heightArrow: handleArrowCalculate(params).height,
       transformArrow: nodeStyle.transformArrow,
     })
 
@@ -83,7 +81,20 @@ const SpeechBallonResizer = () => {
 
   const onResizing = (_: ResizeDragEvent, params: ResizeParams) => {
     handleResizing(true)
-    handleShapeResize({ width: params.width, height: params.height })
+    if (!nodeFocusedMemo) return
+    console.log(handleArrowCalculate(params).width)
+    handleArrowResize({
+      widthArrow: handleArrowCalculate(params).width,
+      heightArrow: handleArrowCalculate(params).height,
+    })
+  }
+
+  const handleArrowCalculate = (params: ResizeParams) => {
+    const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
+    return {
+      width: Math.min(WIDTH_ARROW * percentResize, params.width - 20),
+      height: HEIGHT_ARROW * percentResize,
+    }
   }
 
   return (

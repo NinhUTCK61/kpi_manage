@@ -105,7 +105,7 @@ const ChooseShape: React.FC = () => {
         sizeStyleMapping[value].height / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
       const newNodeStyle = JSON.stringify({
         ...style,
-        heightArrow: HEIGHT_ARROW * Math.ceil(percentResize / 4),
+        heightArrow: HEIGHT_ARROW * Math.ceil(percentResize / 3),
         widthArrow: WIDTH_ARROW * percentResize,
       })
 

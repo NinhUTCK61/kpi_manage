@@ -1,44 +1,37 @@
-import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import Moveable, { DIRECTIONS, OnRender, OnRotate, OnWarpEnd } from 'react-moveable'
 import { useSpeechBallonContext } from '../context'
-import { HEIGHT_ARROW, WIDTH_ARROW, sizeStyleMapping, useShapeStyle } from '../helper'
+import { HEIGHT_ARROW, WIDTH_ARROW, useShapeStyle } from '../helper'
 
 function ArrowSpeechBallon() {
   const { updateReactFlowNode } = useNodeUpdateHandler()
-  const { data, isResizeEnabled, shapeResize } = useSpeechBallonContext()
+  const { data, isResizeEnabled, arrowResize } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
-  const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
-  const sizeStyle = sizeStyleMapping[shapeType]
-  const heightShape = style.height || shapeResize.height || sizeStyle.height
-  const widthShape = style.width || shapeResize.width || sizeStyle.width
 
   const { getArrowStyles, insideArrow, getArrowBox } = useShapeStyle()
 
-  const percentMinimum =
-    (heightShape + widthShape) /
-      (sizeStyleMapping[ShapeType.ROUND_SQUARE].height +
-        sizeStyleMapping[ShapeType.ROUND_SQUARE].width) || 1
-
   const widthArrow = useMemo(() => {
-    return style.widthArrow || WIDTH_ARROW
-  }, [style.widthArrow])
+    return arrowResize.widthArrow || style.widthArrow || WIDTH_ARROW
+  }, [style.widthArrow, arrowResize.widthArrow])
 
   const heightArrow = useMemo(() => {
-    return style.heightArrow || HEIGHT_ARROW
-  }, [style.heightArrow])
+    return arrowResize.heightArrow || style.heightArrow || HEIGHT_ARROW
+  }, [style.heightArrow, arrowResize.heightArrow])
+
+  console.log(widthArrow, heightArrow)
 
   useLayoutEffect(() => {
     if (targetRef.current) {
-      targetRef.current.style.width = widthArrow * percentMinimum + 'px'
-      targetRef.current.style.height = heightArrow * percentMinimum + 'px'
+      targetRef.current.style.width = widthArrow + 'px'
+      targetRef.current.style.maxWidth = widthArrow + 'px'
+      targetRef.current.style.height = heightArrow + 'px'
       if (moveableRef.current) {
         moveableRef.current.moveable.updateRect()
       }
     }
-  }, [heightArrow, widthArrow, percentMinimum])
+  }, [heightArrow, widthArrow])
 
   const targetRef = useRef<HTMLDivElement | null>(null)
 

@@ -12,8 +12,8 @@ type SpeechBallonContextType = {
   handleResize: (isResizeEnabled: boolean) => void
   isResizing: boolean
   handleResizing: (isResizeEnabled: boolean) => void
-  shapeResize: ArrowResizeType
-  handleShapeResize: (size: ArrowResizeType) => void
+  arrowResize: ArrowResizeType
+  handleArrowResize: (size: ArrowResizeType) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)
