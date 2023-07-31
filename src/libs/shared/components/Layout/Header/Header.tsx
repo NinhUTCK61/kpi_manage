@@ -9,7 +9,7 @@ import { StackContainer } from '../StackContainer'
 import { Account } from './Account'
 import { AppBar } from './AppBar'
 import { Language } from './Language'
-import { Menu } from './Menu'
+import { MenuMobile } from './MenuMobile'
 import { Search } from './Search'
 
 const HEADER_HEIGHT = 60
@@ -18,14 +18,14 @@ const displaySearchHref = [menuHref.home, menuHref.favorite]
 
 const Header = () => {
   const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
 
   const handleCloseMenu = () => {
-    setOpen(false)
+    setOpenMenu(false)
   }
 
   const handleOpenMenu = () => {
-    setOpen(true)
+    setOpenMenu(true)
   }
 
   return (
@@ -58,7 +58,7 @@ const Header = () => {
         </Stack>
       </StackContainer>
 
-      <Menu open={open} handleCloseMenu={handleCloseMenu} />
+      <MenuMobile openMenu={openMenu} handleCloseMenu={handleCloseMenu} />
     </AppBar>
   )
 }

@@ -1,4 +1,4 @@
-import { BigTitle, ChildTitle } from '@/features'
+import { DescriptionTitle, SubTitle } from '@/features'
 import { LayoutUnAuth, MuiImage } from '@/libs/shared/components'
 import { authRouter } from '@/server/api/routers/auth'
 import { authOptions } from '@/server/auth'
@@ -62,11 +62,11 @@ const Verify: FC<Props> = ({ success, errorMessage }) => {
         <Stack alignItems="center" mb={4}>
           <MuiImage src={_success ? VerifySuccess : VerifyError} alt="verify image" />
 
-          <BigTitle mt={1.5}>{t(_success ? 'verify_success' : 'verify_fail')}</BigTitle>
+          <SubTitle mt={1.5}>{t(_success ? 'verify_success' : 'verify_fail')}</SubTitle>
 
-          <ChildTitle>
+          <DescriptionTitle>
             {t(_success ? 'description_verify_success' : (errorMessage as string))}
-          </ChildTitle>
+          </DescriptionTitle>
         </Stack>
 
         <Stack width={{ xs: '100%', md: 460 }} spacing={2}>

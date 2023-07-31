@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Logo from 'public/assets/svgs/logo.svg'
 import { useTranslation } from 'react-i18next'
-import { BigTitle, ChildTitle } from '../styled'
+import { DescriptionTitle, SubTitle } from '../styled'
 
 const Success: React.FC = () => {
   const router = useRouter()
@@ -29,9 +29,9 @@ const Success: React.FC = () => {
           <Stack alignItems="center" mb={4}>
             <Image src={Logo} alt="logo" />
 
-            <BigTitle>{t('reset_password_success')}</BigTitle>
+            <SubTitle>{t('reset_password_success')}</SubTitle>
 
-            <ChildTitle>{t('title_reset_success')}</ChildTitle>
+            <DescriptionTitle>{t('title_reset_success')}</DescriptionTitle>
           </Stack>
 
           <Stack width={{ xs: '100%', md: 460 }} spacing={2}>

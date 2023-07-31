@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { CustomImage } from '../../components'
 import { AcceptLaw } from '../../components/AcceptLaw'
-import { BigTitle, ChildTitle } from '../styled'
+import { DescriptionTitle, SubTitle } from '../styled'
 
 type FormSignUpTypes = {
   handleSubmit(): void
@@ -41,9 +41,9 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
         <Stack alignItems="center" mb={{ xs: 3, sm: 4 }} mt={{ xs: 2, sm: 0 }}>
           <CustomImage src={Logo} alt="logo" priority />
 
-          <BigTitle>{t('title')}</BigTitle>
+          <SubTitle>{t('title')}</SubTitle>
 
-          <ChildTitle>{t('child_title')}</ChildTitle>
+          <DescriptionTitle>{t('child_title')}</DescriptionTitle>
         </Stack>
 
         <Stack width={{ xs: '100%', md: 460 }} component="form" onSubmit={handleSubmit} spacing={2}>

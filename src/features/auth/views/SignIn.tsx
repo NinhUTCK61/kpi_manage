@@ -15,7 +15,7 @@ import Logo from 'public/assets/svgs/logo.svg'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from '../components'
-import { BigTitle, ChildTitle } from './styled'
+import { DescriptionTitle, SubTitle } from './styled'
 
 const Login: FC = () => {
   const router = useRouter()
@@ -103,11 +103,11 @@ const Login: FC = () => {
             <Stack alignItems="center" mb={4}>
               <CustomImage src={Logo} priority alt="logo" />
 
-              <BigTitle align="center">{t('title')}</BigTitle>
+              <SubTitle align="center">{t('title')}</SubTitle>
 
-              <ChildTitle align="center" width={{ xs: '100%', sm: 460 }}>
+              <DescriptionTitle align="center" width={{ xs: '100%', sm: 460 }}>
                 {t('child_title')}
-              </ChildTitle>
+              </DescriptionTitle>
             </Stack>
 
             <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>

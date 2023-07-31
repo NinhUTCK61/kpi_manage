@@ -10,7 +10,7 @@ import Logo from 'public/assets/svgs/logo.svg'
 import { useCountdown } from 'usehooks-ts'
 import { CustomImage } from '../../components'
 import { LanguageEmail } from '../../constant'
-import { BigTitle, ChildTitle } from '../styled'
+import { DescriptionTitle, SubTitle } from '../styled'
 
 type PropType = {
   email: string
@@ -79,9 +79,9 @@ const Success: React.FC<PropType> = ({ email }) => {
           <Stack alignItems="center" mb={4}>
             <CustomImage src={Logo} alt="logo" />
 
-            <BigTitle>{t('title_success')}</BigTitle>
+            <SubTitle>{t('title_success')}</SubTitle>
 
-            <ChildTitle>{t('description_success')}</ChildTitle>
+            <DescriptionTitle>{t('description_success')}</DescriptionTitle>
           </Stack>
 
           <Stack width={{ xs: '100%', md: 460 }} spacing={2}>

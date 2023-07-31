@@ -13,7 +13,7 @@ const Title = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const BigTitle = styled(Typography)(({ theme }) => ({
+const SubTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
   marginBottom: 4,
   [theme.breakpoints.down('sm')]: {
@@ -24,7 +24,7 @@ const BigTitle = styled(Typography)(({ theme }) => ({
   },
 }))
 
-const ChildTitle = styled(Typography)(({ theme }) => ({
+const DescriptionTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.greyScale[600],
   textAlign: 'center',
   [theme.breakpoints.down('sm')]: {
@@ -33,4 +33,4 @@ const ChildTitle = styled(Typography)(({ theme }) => ({
   },
 }))
 
-export { BigTitle, ChildTitle, Title }
+export { DescriptionTitle, SubTitle, Title }

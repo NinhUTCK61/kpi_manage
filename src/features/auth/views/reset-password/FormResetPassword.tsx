@@ -9,7 +9,7 @@ import ArrowLeft from 'public/assets/svgs/arrow_left.svg'
 import Logo from 'public/assets/svgs/logo.svg'
 import { Control, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { BigTitle, ChildTitle } from '../styled'
+import { DescriptionTitle, SubTitle } from '../styled'
 
 type FormResetPasswordTypes = {
   control: Control<z.infer<typeof ResetPasswordInputSchema>>
@@ -43,11 +43,11 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
       <Stack alignItems="center" mb={{ xs: 3, sm: 4 }}>
         <Image src={Logo} alt="logo" />
 
-        <BigTitle mt={1.5}>{t('seo_title')}</BigTitle>
+        <SubTitle mt={1.5}>{t('seo_title')}</SubTitle>
 
-        <ChildTitle textAlign="center" width={{ xs: '100%', sm: 512 }}>
+        <DescriptionTitle textAlign="center" width={{ xs: '100%', sm: 512 }}>
           {t('title')}
-        </ChildTitle>
+        </DescriptionTitle>
       </Stack>
 
       <Stack width={{ xs: '100%', sm: 450 }} spacing={2}>

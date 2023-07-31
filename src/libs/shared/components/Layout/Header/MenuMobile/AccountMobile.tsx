@@ -22,7 +22,7 @@ import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
 
-const Account = () => {
+const AccountMobile = () => {
   const { data: sessionData } = useSession()
   const { t } = useTranslation()
   const router = useRouter()
@@ -53,14 +53,17 @@ const Account = () => {
     {
       title: t('menu.log_out'),
       icon: LogOutIcon,
-      handle: () => signOut({ callbackUrl: '/' }),
+      handle: () =>
+        signOut({
+          callbackUrl: router.locale === 'jp' ? '/jp/sign-in' : '/sign-in',
+        }),
     },
   ]
 
-  const [open, setOpen] = useState(false)
+  const [openAccount, setOpenAccount] = useState(false)
 
   const handleClick = () => {
-    setOpen(!open)
+    setOpenAccount(!openAccount)
   }
 
   return (
@@ -81,14 +84,14 @@ const Account = () => {
             {sessionData?.user?.name}
           </Typography>
         </ListItemText>
-        {open ? (
+        {openAccount ? (
           <Image src={ArrowUpIcon} width={20} height={20} alt="arrow_up" />
         ) : (
           <Image src={ArrowDownIcon} width={20} height={20} alt="arrow_down" />
         )}
       </ListItemButton>
 
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={openAccount} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <Stack direction="column" spacing={1} ml={2}>
             {menus.map((menu) => (
@@ -111,4 +114,4 @@ const Account = () => {
   )
 }
 
-export { Account }
+export { AccountMobile }

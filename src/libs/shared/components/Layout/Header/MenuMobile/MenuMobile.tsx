@@ -17,15 +17,15 @@ import KnowledgeIcon from 'public/assets/svgs/blog.svg'
 import ConsultationIcon from 'public/assets/svgs/consulation.svg'
 import HomeIcon from 'public/assets/svgs/home.svg'
 import FavoriteIcon from 'public/assets/svgs/unlike_star.svg'
-import { Account } from './Account'
+import { AccountMobile } from './AccountMobile'
 import CloseIcon from '/public/assets/svgs/close.svg'
 
 type MenuProps = {
   handleCloseMenu: () => void
-  open: boolean
+  openMenu: boolean
 }
 
-const Menu: React.FC<MenuProps> = ({ open, handleCloseMenu }) => {
+const MenuMobile: React.FC<MenuProps> = ({ openMenu, handleCloseMenu }) => {
   const { t } = useTranslation('common')
   const router = useRouter()
 
@@ -49,10 +49,10 @@ const Menu: React.FC<MenuProps> = ({ open, handleCloseMenu }) => {
   ]
 
   return (
-    <MenuMobile anchor="left" open={open} onClose={handleCloseMenu}>
-      <ButtonClose onClick={handleCloseMenu}>
+    <MenuMobileContainer anchor="left" open={openMenu} onClose={handleCloseMenu}>
+      <ButtonCloseMenu onClick={handleCloseMenu}>
         <CustomImage alt="icon" src={CloseIcon} sx={{ mb: 0 }} />
-      </ButtonClose>
+      </ButtonCloseMenu>
 
       <List component="div" disablePadding>
         <Stack direction="column" spacing={1}>
@@ -70,16 +70,16 @@ const Menu: React.FC<MenuProps> = ({ open, handleCloseMenu }) => {
             </ListItemButton>
           ))}
 
-          <Account />
+          <AccountMobile />
         </Stack>
       </List>
-    </MenuMobile>
+    </MenuMobileContainer>
   )
 }
 
-export { Menu }
+export { MenuMobile }
 
-const MenuMobile = styled(Drawer)(({ theme }) => ({
+const MenuMobileContainer = styled(Drawer)(({ theme }) => ({
   position: 'relative',
   display: 'none',
   '&.MuiDrawer-root': {
@@ -94,7 +94,7 @@ const MenuMobile = styled(Drawer)(({ theme }) => ({
   },
 }))
 
-const ButtonClose = styled(Button)({
+const ButtonCloseMenu = styled(Button)({
   position: 'absolute',
   right: 16,
   top: 16,
