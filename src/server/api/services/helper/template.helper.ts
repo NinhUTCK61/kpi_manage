@@ -50,6 +50,7 @@ export class TemplateHelper extends CommonHelper {
       ? Prisma.sql`tl.deleted_at IS NOT NULL`
       : Prisma.sql`tl.deleted_at IS NULL`
 
+    await prisma.$executeRaw`SET pg_bigm.similarity_limit TO 0.07`
     const resultTemplates: TemplateOutputType = await prisma.$queryRaw`SELECT *
       FROM "UserTemplate" as ut
       INNER JOIN "Template" as tl ON ut.template_id = tl.id

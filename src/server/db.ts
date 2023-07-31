@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client'
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient
   middlewareApplied: boolean
-  runSetSimilarityLimit: boolean
 }
 
 export const prisma =
@@ -12,11 +11,6 @@ export const prisma =
   new PrismaClient({
     log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
-
-if (!globalForPrisma.runSetSimilarityLimit) {
-  await prisma.$executeRaw`SET pg_bigm.similarity_limit TO 0.07`
-  globalForPrisma.runSetSimilarityLimit = true
-}
 
 // if (!globalForPrisma.middlewareApplied) {
 //   prisma.$use(async (params, next) => {
