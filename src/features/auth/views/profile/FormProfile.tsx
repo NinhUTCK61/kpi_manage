@@ -25,7 +25,7 @@ export const FormProfile: React.FC<FormUpdateProfileTypes> = ({
   const { t } = useTranslation(['sign_up', 'profile'])
 
   return (
-    <Stack component="form" width={{ xs: '100%', sm: 460 }} onSubmit={handleSubmit} spacing={2}>
+    <Stack component="form" width={{ xs: '100%', sm: 500 }} onSubmit={handleSubmit} spacing={2}>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <InputProfile
           control={control}

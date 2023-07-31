@@ -6,8 +6,8 @@
   "language": "言語",
   "update_profile_success": "プロフィールを編集しました。",
   "cancel": "キャンセル",
-  "enter_first_name": "名前（名）を入力",
-  "enter_last_name": "名前（姓）を入力",
+  "enter_first_name": "名前（名）を入力してください",
+  "enter_last_name": "名前（姓）を入力してください",
   "modal_upload": {
     "title_1": "このプロフィールにプロフィール画像を設定しますか？",
     "title_2": "この画像をアップロードしますか？",

@@ -24,7 +24,7 @@ const Success: React.FC = () => {
           alignItems="center"
           justifyContent="flex-start"
           mb={2}
-          pt={5}
+          pt={{ xs: 2, sm: 5 }}
         >
           <Stack alignItems="center" mb={4}>
             <Image src={Logo} alt="logo" />
