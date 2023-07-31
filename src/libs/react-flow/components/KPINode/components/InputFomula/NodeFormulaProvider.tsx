@@ -128,6 +128,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         setNodeSearch(check)
         return
       }
+      setNodeSearch([])
     },
     [getKpiNodes, nodeFocused, nodeInputValidate, setError, suggestState],
   )
