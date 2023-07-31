@@ -56,11 +56,9 @@ const Language: React.FC = () => {
       >
         <Image src={languages.find((e) => e.id === language)?.icon} alt="english" />
 
-        <Typography ml={0.75} variant="body2" width={64} textAlign="center">
-          {languages.find((e) => e.id === language)?.title}
-        </Typography>
+        <TextLanguage>{languages.find((e) => e.id === language)?.title}</TextLanguage>
 
-        <IconButton size="small" sx={{ p: 0 }}>
+        <IconButton size="small" sx={{ p: 0, display: { xs: 'none', lg: 'inline-flex' } }}>
           <Image src={open ? ArrowLeftIcon : ArrowDownIcon} alt="down" />
         </IconButton>
       </Item>
@@ -79,6 +77,7 @@ const Language: React.FC = () => {
         {languages.map((e) => (
           <MenuItem key={e.id} onClick={() => changLanguage(e.id)}>
             <Image src={e.icon} alt={e.title} height={20} width={20} />
+
             <Typography ml={0.75} variant="body2">
               {e.title}
             </Typography>
@@ -95,5 +94,15 @@ const Item = styled(Stack)({
   alignItems: 'center',
   cursor: 'pointer',
 })
+
+const TextLanguage = styled(Typography)(({ theme }) => ({
+  ...theme.typography.body2,
+  width: 64,
+  marginLeft: 6,
+  textAlign: 'center',
+  [theme.breakpoints.down('lg')]: {
+    display: 'none',
+  },
+}))
 
 export { Language }

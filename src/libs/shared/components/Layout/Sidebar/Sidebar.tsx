@@ -1,11 +1,10 @@
 import { Box, List } from '@mui/material'
-import { HEADER_HEIGHT } from '../Header/Header'
-
 import { useTranslation } from 'next-i18next'
 import KnowledgeIcon from 'public/assets/svgs/blog.svg'
 import ConsultationIcon from 'public/assets/svgs/consulation.svg'
 import HomeIcon from 'public/assets/svgs/home.svg'
-import FavoriteIcon from 'public/assets/svgs/unlike_star.svg'
+import FavoriteIcon from 'public/assets/svgs/star.svg'
+import { HEADER_HEIGHT } from '../Header'
 import { ListItemButton } from './ItemSidebar'
 // import FAQIcon from 'public/assets/svgs/faq.svg'
 // import UseCase from 'public/assets/svgs/use_case.svg'
@@ -40,6 +39,7 @@ const Sidebar = () => {
       sx={{
         marginTop: `${HEADER_HEIGHT}px`,
         width: SIDE_BAR_WIDTH,
+        display: { xs: 'none', lg: 'block' },
       }}
     >
       <Box

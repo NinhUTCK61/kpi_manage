@@ -33,7 +33,7 @@ const AcceptLaw: React.FC<PropChangeFeature> = ({ changeFeature }) => {
     <FormGroup>
       <FormControlLabel
         sx={{
-          mx: 0,
+          mx: { xs: 'auto', sm: 0 },
         }}
         control={
           <Checkbox

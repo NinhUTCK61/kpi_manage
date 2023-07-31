@@ -48,7 +48,7 @@ const Search = () => {
   }
 
   return (
-    <SectionSearch alignItems="center" direction="row">
+    <SectionSearch>
       <InputSearch
         name="search"
         control={control}
@@ -77,4 +77,9 @@ const SectionSearch = styled(Stack)(({ theme }) => ({
   background: theme.palette.trueGrey[100],
   borderRadius: 8,
   padding: theme.spacing(0, 1.75),
+  flexDirection: 'row',
+  alignItems: 'center',
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }))

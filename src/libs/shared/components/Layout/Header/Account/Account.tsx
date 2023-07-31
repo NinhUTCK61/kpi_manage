@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { getImageUrl } from '@/libs/utils/misc'
-import { IconButton, ListItemIcon, Typography } from '@mui/material'
+import { Box, IconButton, ListItemIcon, Typography } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -63,7 +63,7 @@ const Account = () => {
   ]
 
   return (
-    <>
+    <Box display={{ xs: 'none', lg: 'block' }}>
       {/* <Image
         src={NotificationIcon}
         alt="notification-icon"
@@ -111,7 +111,7 @@ const Account = () => {
           </MenuItem>
         ))}
       </Menu>
-    </>
+    </Box>
   )
 }
 

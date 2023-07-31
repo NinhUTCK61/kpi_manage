@@ -48,4 +48,7 @@ const ContentPage = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   overflow: 'hidden',
   padding: theme.spacing(3, 4),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+  },
 }))

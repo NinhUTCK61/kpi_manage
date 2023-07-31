@@ -33,11 +33,18 @@ const DialogThumbnail: React.FC<DialogThumbnailTypes> = ({ open, handleClose, on
           <Image src={ThumbnailIcon} alt="delete" />
         </Stack>
 
-        <Stack>
-          <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mb={0.5}>
+        <Stack direction="column" spacing={1}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            alignItems="center"
+            spacing={0.5}
+            justifyContent="center"
+            mb={0.5}
+          >
             <TextColorCustom alignSelf="center" variant="body2">
               {t('dialog.thumbnail.click_to_upload')}
             </TextColorCustom>
+
             <Typography color="greyScale.600" variant="body2">
               {t('dialog.thumbnail.detail_set_thumbnail_1')}
             </Typography>
@@ -63,12 +70,19 @@ const Dialog = styled(MuiDialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
     borderRadius: 12,
     padding: theme.spacing(2, 3),
+    margin: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      width: 400,
+    },
   },
 }))
 
-const DialogContent = styled(MuiDialogContent)({
+const DialogContent = styled(MuiDialogContent)(({ theme }) => ({
   width: 512,
   p: 0,
   cursor: 'pointer',
-})
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
+}))
 export { DialogThumbnail }

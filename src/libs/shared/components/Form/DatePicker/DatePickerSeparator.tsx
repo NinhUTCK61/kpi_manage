@@ -27,12 +27,18 @@ const StyledAutocomplete = styled((props: AutocompleteProps<string, false, true,
     popupIcon={<Image src={ArrowDown} width={16} height={16} alt="arrow" />}
     {...props}
   />
-))({
+))(({ theme }) => ({
   minWidth: 142,
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 104,
+    '&& .MuiOutlinedInput-root': {
+      paddingRight: '30px !important',
+    },
+  },
   '&& .MuiOutlinedInput-root': {
     padding: '0 4px 0 4px',
   },
-})
+}))
 
 function DatePickerSeparator<T extends FieldValues>({
   name,

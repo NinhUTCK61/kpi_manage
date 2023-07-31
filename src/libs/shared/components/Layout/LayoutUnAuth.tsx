@@ -40,7 +40,7 @@ const ContentPage = styled('div')(({ theme }) => ({
     paddingRight: theme.spacing(8),
   },
   [theme.breakpoints.down('sm')]: {
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
 }))

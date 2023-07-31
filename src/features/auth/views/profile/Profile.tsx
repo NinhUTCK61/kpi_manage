@@ -2,12 +2,12 @@ import { api } from '@/libs/api'
 import { UserProfile, UserProfileType } from '@/libs/schema/profile'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Title } from '../styled'
 import { BackgroundProfile } from './BackgroundProfile'
 import { FormProfile } from './FormProfile'
 import { ModalUploadImage } from './ModalUploadImage'
@@ -89,9 +89,7 @@ export const Profile = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <Typography variant="h3" fontWeight="700" textTransform="uppercase" mb={3}>
-        {t('seo_title')}
-      </Typography>
+      <Title>{t('seo_title')}</Title>
 
       <BackgroundProfile onDrop={onSelectImage} />
 

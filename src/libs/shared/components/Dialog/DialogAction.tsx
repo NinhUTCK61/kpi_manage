@@ -86,6 +86,10 @@ const TitleDiaLog = styled(Typography)(({ theme }) => ({
   lineHeight: '28px',
   color: theme.palette.base.black,
   marginBottom: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 17,
+    lineHeight: '24px',
+  },
 }))
 
 const DescriptionDiaLog = styled(Typography)(({ theme }) => ({
@@ -94,6 +98,10 @@ const DescriptionDiaLog = styled(Typography)(({ theme }) => ({
   lineHeight: '20px',
   color: theme.palette.grey[600],
   marginBottom: theme.spacing(2),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 15,
+    lineHeight: '22px',
+  },
 }))
 
 const DialogActions = styled(MuiDialogActions)({
@@ -107,6 +115,7 @@ const Dialog = styled(MuiDialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
     borderRadius: 12,
     padding: theme.spacing(3),
+    margin: theme.spacing(2),
   },
 }))
 export { DialogAction }

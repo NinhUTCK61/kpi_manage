@@ -1,9 +1,10 @@
+import { Title } from '@/features/auth'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
 import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
-import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -95,10 +96,8 @@ export const Favorite = () => {
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
-      <Stack mb={3}>
-        <Typography variant="h3" fontWeight={700} textTransform="uppercase">
-          {t('favorite_files', { ns: 'favorite' })}
-        </Typography>
+      <Stack mb={{ xs: 2, sm: 3 }}>
+        <Title>{t('favorite_files', { ns: 'favorite' })}</Title>
       </Stack>
 
       {isLoading ? (
@@ -106,9 +105,15 @@ export const Favorite = () => {
           <CircularProgress size="2rem" />
         </Stack>
       ) : favoriteData && favoriteData.length > 0 ? (
-        <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
+        <Grid
+          container
+          rowSpacing={4}
+          spacing={2}
+          columns={{ md: 12, xl: 15 }}
+          justifyContent={{ xs: 'center', md: 'flex-start' }}
+        >
           {favoriteData?.map((template, index) => (
-            <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
+            <Grid item key={index} xl="auto" lg={3} md={4} sm={6} xs={12}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}
@@ -119,7 +124,13 @@ export const Favorite = () => {
         </Grid>
       ) : (
         <Stack direction="column" alignItems="center" height="70%" justifyContent="center">
-          <Image src={EmptyFile} width={200} height={200} alt={t('no_file', { ns: 'common' })} />
+          <Box width={{ xs: 118, sm: 200 }} height={{ xs: 118, sm: 200 }}>
+            <Image
+              src={EmptyFile}
+              style={{ width: '100%', height: '100%' }}
+              alt={t('no_file', { ns: 'common' })}
+            />
+          </Box>
 
           <Typography variant="body2" mt={2}>
             {searchParam

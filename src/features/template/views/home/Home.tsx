@@ -4,7 +4,7 @@ import { useModalState } from '@/libs/hooks'
 import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
-import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -107,24 +107,33 @@ const Home = () => {
 
   return (
     <Layout title={t('seo_title')}>
-      <ButtonCreate
-        variant="contained"
-        startIcon={<Image src={AddIcon} alt="add" />}
-        onClick={() => mutationCreate.mutate()}
-      >
-        {t('create')}
-      </ButtonCreate>
+      <Stack>
+        <ButtonCreate
+          variant="contained"
+          startIcon={<Image src={AddIcon} alt="add" />}
+          onClick={() => mutationCreate.mutate()}
+          sx={{ order: { xs: 2, sm: 1 } }}
+        >
+          {t('create')}
+        </ButtonCreate>
 
-      <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
+        <SelectStatus isTrash={isTrash} setIsTrash={setIsTrash} />
+      </Stack>
 
       {isLoading ? (
         <Stack direction="row" justifyContent="center" alignItems="center" height="70%">
           <CircularProgress size="2rem" />
         </Stack>
       ) : data && data.length > 0 ? (
-        <Grid container rowSpacing={4} spacing={2} columns={{ md: 12, xl: 15 }}>
+        <Grid
+          container
+          rowSpacing={4}
+          spacing={2}
+          columns={{ md: 12, xl: 15 }}
+          justifyContent={{ xs: 'center', md: 'flex-start' }}
+        >
           {data.map((template, index) => (
-            <Grid item key={index} xl="auto" lg={3} md={4} sm={5} xs={12}>
+            <Grid item key={index} xl="auto" lg={3} md={4} sm={6} xs={12}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}
@@ -135,14 +144,17 @@ const Home = () => {
         </Grid>
       ) : (
         <Stack direction="column" alignItems="center" height="70%" justifyContent="center">
-          <Image
-            src={EmptyFile}
-            width={200}
-            height={200}
-            alt={
-              isTrash ? t('no_deleted_files', { ns: 'common' }) : t('no_files', { ns: 'common' })
-            }
-          />
+          <Box width={{ xs: 118, sm: 200 }} height={{ xs: 118, sm: 200 }}>
+            <Image
+              src={EmptyFile}
+              width={200}
+              height={200}
+              style={{ width: '100%', height: '100%' }}
+              alt={
+                isTrash ? t('no_deleted_files', { ns: 'common' }) : t('no_files', { ns: 'common' })
+              }
+            />
+          </Box>
 
           <Typography variant="body2" mt={2}>
             {getMessageNoFile()}

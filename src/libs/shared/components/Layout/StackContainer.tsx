@@ -6,6 +6,9 @@ const StackContainer = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   height: '100%',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(0, 2),
+  },
 }))
 
 export { StackContainer }

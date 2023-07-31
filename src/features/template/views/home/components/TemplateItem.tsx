@@ -115,7 +115,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   return (
     <>
-      <Card elevation={0}>
+      <Card elevation={0} sx={{ width: { xs: 343, sm: 268 } }}>
         <CardHeader
           action={
             <IconButton onClick={handleClick}>
@@ -124,7 +124,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
           }
         />
 
-        <CardContent sx={{ padding: '0 !important', height: 206 }}>
+        <CardContent sx={{ padding: '0 !important', height: { xs: 264, sm: 206 } }}>
           <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
             <Image
               src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
@@ -134,9 +134,11 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
                 objectFit: 'cover',
+                width: '100%',
+                height: '100%',
               }}
-              width={268}
-              height={206}
+              width={343}
+              height={264}
               loading="lazy"
             />
           </CustomLink>
@@ -193,10 +195,12 @@ const MenuItemFileDelete = styled(MenuItem)(({ theme }) => ({
 }))
 
 const Card = styled(MuiCard)(({ theme }) => ({
-  maxWidth: 268,
   borderRadius: 12,
   position: 'relative',
   border: `1px solid ${theme.palette.greyScale[300]}`,
+  [theme.breakpoints.up('sm')]: {
+    maxWidth: 268,
+  },
 }))
 
 const CardHeader = styled(MuiCardHeader)({
