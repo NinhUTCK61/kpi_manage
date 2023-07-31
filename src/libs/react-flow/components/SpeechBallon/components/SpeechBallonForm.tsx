@@ -150,7 +150,7 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   return isEditing ? (
-    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
+    <ClickAwayListener mouseEvent="onPointerDown" onClickAway={handleClickAway}>
       <SpeechBallonContainer sx={{ ...positionShape }}>
         <form onSubmit={handleSubmit} style={{ height: '100%' }}>
           <InputSpeechBalloon

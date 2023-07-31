@@ -96,7 +96,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   useEventListener('keydown', (e) => handleKeyDownListen(e))
 
   return (
-    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={handleClickAway}>
+    <ClickAwayListener mouseEvent="onPointerDown" onClickAway={handleClickAway}>
       <Stack
         component="form"
         onFocus={handleFocus}
