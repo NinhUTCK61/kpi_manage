@@ -18,6 +18,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, onCloseModal
   const { data: session, update } = useSession()
   const { mutate: mutateProfile } = useUpdateImageProfile()
   const { data, mutateAsync } = api.utils.createPreSignUrl.useMutation()
+  const { mutateAsync: mutateDeleteImage } = api.utils.deleteImage.useMutation()
   const { t } = useTranslation('profile')
 
   useEffect(() => {
@@ -38,12 +39,15 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, onCloseModal
     onSuccess: () => {
       mutateProfile(
         {
-          image: `profile/${session?.user.id}.${nameImage.split('.').pop()}`,
+          image: `profile/${session?.user.id}${image[0]?.lastModified}.${nameImage
+            .split('.')
+            .pop()}`,
         },
         {
           onSuccess(data) {
             setPreviewURL('')
             onCloseModal()
+            mutateDeleteImage({ key: session?.user.image as string })
             update({ image: data.image })
           },
         },
@@ -58,7 +62,9 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, onCloseModal
   })
 
   const handleUploadImage = async () => {
-    const key = `profile/${session?.user.id}.${image[0]?.name.split('.').pop()}`
+    const key = `profile/${session?.user.id}${image[0]?.lastModified}.${image[0]?.name
+      .split('.')
+      .pop()}`
 
     if (data && data?.key === key && data.expires > Date.now() + 600) {
       mutation.mutate(data.url)

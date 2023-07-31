@@ -1,5 +1,5 @@
 import { env } from '@/env.mjs'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export class UtilsService {
@@ -15,5 +15,20 @@ export class UtilsService {
     const command = new PutObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key })
     const url = await getSignedUrl(client, command, { expiresIn: 1800 })
     return { url, expires: Date.now() + 1800 * 1000, key }
+  }
+
+  async deleteImage(key: string) {
+    const client = new S3Client({
+      region: env.AWS_S3_REGION,
+      credentials: {
+        accessKeyId: env.AWS_S3_ACCESS_KEY_ID,
+        secretAccessKey: env.AWS_S3_SECRET_ACCESS_KEY,
+      },
+    })
+
+    const command = new DeleteObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key })
+    await client.send(command)
+
+    return 'Success'
   }
 }
