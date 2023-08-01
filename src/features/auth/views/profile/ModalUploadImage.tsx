@@ -47,7 +47,7 @@ const ModalUploadImage: React.FC<ModalUploadImageTypes> = ({ image, onCloseModal
           onSuccess(data) {
             setPreviewURL('')
             onCloseModal()
-            mutateDeleteImage({ key: session?.user.image as string })
+            if (session?.user.image) mutateDeleteImage({ key: session.user.image as string })
             update({ image: data.image })
           },
         },

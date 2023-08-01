@@ -20,7 +20,7 @@ const useUpdateImageTemplate = () => {
         message: t('upload_success'),
       })
 
-      mutateDeleteImage({ key: ctx?.prevData?.image_url as string })
+      if (ctx?.prevData?.image_url) mutateDeleteImage({ key: ctx.prevData.image_url as string })
     },
     onError() {
       enqueueSnackbar({
