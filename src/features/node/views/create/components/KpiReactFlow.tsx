@@ -18,7 +18,7 @@ const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) 
   const cursorIcon = cursorIconMap[action]
   return {
     '& .react-flow__pane': {
-      cursor: `url(${cursorIcon}) 5 10 ,auto`,
+      cursor: `url(${cursorIcon}) ,auto`,
     },
     ...(action === ViewPortAction.Pan && {
       '& .react-flow__pane.dragging': {
