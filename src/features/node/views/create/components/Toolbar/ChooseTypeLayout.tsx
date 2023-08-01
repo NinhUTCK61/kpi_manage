@@ -1,7 +1,7 @@
 import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
 import { Checkbox, FormControlLabel, FormGroup, Stack, Typography } from '@mui/material'
-import { ChangeEvent, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
 
 const ChooseTypeLayout: React.FC = () => {
@@ -11,34 +11,41 @@ const ChooseTypeLayout: React.FC = () => {
     return nodeFocused
   }, [nodeFocused])
 
-  const [checked, setChecked] = useState<boolean>(nodeFocusedMemo?.data.layout === 'FILL')
+  const [checked, setChecked] = useState<boolean>(true)
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const handleChange = (_: ChangeEvent<HTMLInputElement>) => {
-    setChecked(!checked)
-
+  const handleChange = (event: ChangeEvent) => {
+    const isCheckbox = (event.target as HTMLInputElement).checked 
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const isTextColorValid =
       nodeStyle.color !== base.white && nodeStyle.color !== customPrimary[700]
-    const defaultColor = checked ? base.white : customPrimary[700]
+    const defaultColor = isCheckbox ? base.white : customPrimary[700]
     const textColor = isTextColorValid ? nodeStyle.color : defaultColor
     const newNodeStyle = JSON.stringify({ ...nodeStyle, color: textColor })
 
     updateReactFlowNode(
       {
-        layout: checked ? 'FILL' : 'STROKE',
+        layout: isCheckbox ? 'FILL' : 'STROKE',
         id: nodeFocusedMemo.data.id,
         is_saved: nodeFocusedMemo.data.is_saved,
         node_style: newNodeStyle,
       },
       'speech_ballon',
     )
-    console.log(checked)
   }
 
-  const isChecked = nodeFocusedMemo && nodeFocusedMemo.data.layout === 'FILL' ? true : false
+  const handleClick = ()=>{
+    if (!nodeFocusedMemo) return
+    setChecked(!checked)
+  }
+
+  useEffect(()=>{
+    if (!nodeFocusedMemo) return
+    setChecked(nodeFocusedMemo.data.layout === 'FILL' ? true: false)
+    console.log(nodeFocusedMemo.data.layout)
+  },[nodeFocusedMemo])
 
   return (
     <Stack direction="row" alignItems="center" spacing={0.25} padding="0 8px">
@@ -47,7 +54,7 @@ const ChooseTypeLayout: React.FC = () => {
           sx={{
             mx: { xs: 'auto', sm: 0 },
           }}
-          control={<Checkbox checked={isChecked} sx={{ padding: 0 }} onChange={handleChange} />}
+          control={<Checkbox checked={checked} sx={{ padding: 0 }} onChange={handleChange} onClick={handleClick}/>}
           label={<Typography>Background Fill</Typography>}
         />
       </FormGroup>
