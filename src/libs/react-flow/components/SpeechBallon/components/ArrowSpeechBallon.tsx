@@ -3,35 +3,38 @@ import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import Moveable, { DIRECTIONS, OnRender, OnRotate, OnWarpEnd } from 'react-moveable'
 import { useSpeechBallonContext } from '../context'
-import { HEIGHT_ARROW, WIDTH_ARROW, useShapeStyle } from '../helper'
+import { DEFAULT_DEG_ARROW, HEIGHT_ARROW, WIDTH_ARROW, useShapeStyle } from '../helper'
 
 function ArrowSpeechBallon() {
   const { updateReactFlowNode } = useNodeUpdateHandler()
-  const { data, isResizeEnabled, arrowResize } = useSpeechBallonContext()
+  const { data, isResizeEnabled } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
 
   const { getArrowStyles, insideArrow, getArrowBox } = useShapeStyle()
 
   const widthArrow = useMemo(() => {
-    return arrowResize.widthArrow || style.widthArrow || WIDTH_ARROW
-  }, [style.widthArrow, arrowResize.widthArrow])
+    return style.widthArrow || WIDTH_ARROW
+  }, [style.widthArrow])
 
   const heightArrow = useMemo(() => {
-    return arrowResize.heightArrow || style.heightArrow || HEIGHT_ARROW
-  }, [style.heightArrow, arrowResize.heightArrow])
+    return style.heightArrow || HEIGHT_ARROW
+  }, [style.heightArrow])
 
-  console.log(widthArrow, heightArrow)
+  const transformArrow = useMemo(() => {
+    return style.transformArrow || DEFAULT_DEG_ARROW
+  }, [style.transformArrow])
 
   useLayoutEffect(() => {
     if (targetRef.current) {
       targetRef.current.style.width = widthArrow + 'px'
       targetRef.current.style.maxWidth = widthArrow + 'px'
       targetRef.current.style.height = heightArrow + 'px'
+      targetRef.current.style.transform = transformArrow
       if (moveableRef.current) {
         moveableRef.current.moveable.updateRect()
       }
     }
-  }, [heightArrow, widthArrow])
+  }, [heightArrow, widthArrow, transformArrow])
 
   const targetRef = useRef<HTMLDivElement | null>(null)
 

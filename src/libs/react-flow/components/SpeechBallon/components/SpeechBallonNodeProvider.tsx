@@ -31,17 +31,9 @@ export const SpeechBallonNodeProvider: React.FC<
     setResizing(value)
   }, [])
 
-  const [arrowResize, setArrowResize] = useState<ArrowResizeType>({
-    widthArrow: null,
-    heightArrow: null,
-  })
-  const handleArrowResize = useCallback((size: ArrowResizeType) => {
-    setArrowResize(size)
-  }, [])
-
   // disable draggable when editing
   useLayoutEffect(() => {
-    toggleDraggable(data.id, !isEditing && !isResizeEnabled)
+    toggleDraggable(data.id, !isEditing)
   }, [data.id, isEditing, toggleDraggable, isResizeEnabled])
 
   const contextValue = useMemo(
@@ -55,8 +47,6 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
-      arrowResize,
-      handleArrowResize,
     }),
     [
       data,
@@ -68,8 +58,6 @@ export const SpeechBallonNodeProvider: React.FC<
       handleResize,
       isResizing,
       handleResizing,
-      arrowResize,
-      handleArrowResize,
     ],
   )
 
