@@ -30,7 +30,7 @@ export class TemplateService extends TemplateHelper {
     })
 
     const listTemplate = searchName
-      ? await this.handleSearchTemplate(searchName, userId, isTrash)
+      ? await this.handleSearchTemplate(searchName, userId, isTrash, true)
       : this.transformTemplateOutput(userTemplate)
 
     return listTemplate
@@ -218,7 +218,7 @@ export class TemplateService extends TemplateHelper {
     })
 
     const listTemplate = searchName
-      ? await this.handleSearchTemplate(searchName, user.id, false)
+      ? await this.handleSearchTemplate(searchName, user.id, false, true)
       : this.transformTemplateOutput(userTemplate)
 
     return listTemplate
