@@ -36,5 +36,6 @@
   "kpi_node": {
     "label": "Label",
     "unit": "Unit"
-  }
+  },
+  "choose_layout_title": "Background fill"
 }
