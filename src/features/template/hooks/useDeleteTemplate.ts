@@ -7,12 +7,17 @@ const useDeleteTemplate = () => {
   const { t } = useTranslation('home')
   const utils = api.useContext()
   const { showError } = useTranslateError()
+  const { mutateAsync: mutateDeleteImage } = api.utils.deleteImage.useMutation()
 
   const mutation = api.template.delete.useMutation({
     onMutate: async (template) => {
       await utils.template.list.cancel()
-      const prevData = utils.template.list.getData({ isTrash: template.is_permanently })
-      const prevFavData = utils.template.favorite.getData()
+      const prevData = utils.template.list.getData({
+        isTrash: template.is_permanently,
+        searchName: '',
+      })
+      const prevFavData = utils.template.favorite.getData({ searchName: '' })
+      const templateDelete = prevData?.find((el) => el.template_id === template.id)
 
       utils.template.list.setData({ isTrash: template.is_permanently }, (old = []) => {
         return template.is_permanently
@@ -26,7 +31,7 @@ const useDeleteTemplate = () => {
           : old.map((e) => (e.template_id === template.id ? { ...e, deleted_at: new Date() } : e))
       })
 
-      return { prevData, isTrash: template.is_permanently, prevFavData }
+      return { prevData, isTrash: template.is_permanently, prevFavData, templateDelete }
     },
     onSuccess: (data, _, ctx) => {
       enqueueSnackbar(
@@ -35,6 +40,10 @@ const useDeleteTemplate = () => {
           variant: 'success',
         },
       )
+
+      if (ctx?.templateDelete?.image_url) {
+        mutateDeleteImage({ key: ctx.templateDelete.image_url as string })
+      }
     },
     onError: (err, _, ctx) => {
       showError(err, t(ctx?.isTrash ? 'permanently_delete_failed' : 'delete_failed'))
