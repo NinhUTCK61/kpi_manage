@@ -1,19 +1,22 @@
 import { base, customPrimary } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
-import { InputStyled, MenuItem } from '@/libs/shared/components'
-import { Select as MuiSelect, SelectChangeEvent, Stack, Typography, styled } from '@mui/material'
+import {
+  FormControlLabel,
+  FormGroup,
+  Checkbox as MuiCheckbox,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import { LayoutType } from '@prisma/client'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import ArrowDown from 'public/assets/svgs/arrow_down.svg'
-import { useEffect, useMemo, useState } from 'react'
+import CheckedIcon from 'public/assets/svgs/checked_layout.svg'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
 
-const shapes = [
-  { value: '1', type: LayoutType.FILL, label: 'Fill' },
-  { value: '2', type: LayoutType.STROKE, label: 'Stroke' },
-]
-
 const ChooseTypeLayout: React.FC = () => {
+  const { t } = useTranslation('file')
   const [type, setType] = useState<LayoutType>('FILL')
 
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -25,7 +28,10 @@ const ChooseTypeLayout: React.FC = () => {
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const handleChange = (value: LayoutType) => {
+  const handleChange = (event: ChangeEvent) => {
+    const isCheckbox = (event.target as HTMLInputElement).checked
+    const value = isCheckbox ? 'FILL' : 'STROKE'
+
     setType(value)
 
     if (!nodeFocusedMemo) return
@@ -54,52 +60,39 @@ const ChooseTypeLayout: React.FC = () => {
   }, [nodeFocusedMemo])
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1.5}>
-      <Select
-        value={type}
-        onChange={(event: SelectChangeEvent<unknown>) =>
-          handleChange(event.target.value as LayoutType)
-        }
-        input={<CustomInput />}
-        IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
-        defaultValue={type}
-      >
-        {shapes.map((item) => (
-          <MenuItem
-            key={item.value}
-            value={item.type}
-            sx={{ padding: '8px 12px' }}
-            autoFocus={item.type === 'FILL'}
-          >
-            <Typography variant="body2" color="base.black">
-              {item.label}
+    <Stack direction="row" alignItems="center" spacing={0.25} padding="0 8px">
+      <FormGroup>
+        <FormControlLabel
+          sx={{
+            mx: { xs: 'auto', sm: 0 },
+          }}
+          control={
+            <Checkbox
+              checked={type === 'FILL'}
+              checkedIcon={<Image src={CheckedIcon} width={14} height={14} alt="checked" />}
+              onChange={handleChange}
+            />
+          }
+          label={
+            <Typography variant="body2" minWidth={120}>
+              {t('choose_layout_title')}
             </Typography>
-          </MenuItem>
-        ))}
-      </Select>
+          }
+        />
+      </FormGroup>
     </Stack>
   )
 }
 
-const Select = styled(MuiSelect)(({ theme }) => ({
-  border: `1px solid ${theme.palette.greyScale[400]}`,
-  paddingRight: 8,
-  marginRight: 12,
-  height: 32,
-  minWidth: 99,
-  background: theme.palette.common.white,
-  '& .MuiSelect-icon': {
-    top: 'auto',
-  },
-}))
-
-const CustomInput = styled(InputStyled)({
-  '& fieldset': {
-    border: 'none',
-  },
-  '& .MuiOutlinedInput-input': {
-    display: 'flex',
-  },
-})
-
 export { ChooseTypeLayout }
+
+const Checkbox = styled(MuiCheckbox)({
+  padding: 3,
+  width: 20,
+  height: 20,
+  borderRadius: 2,
+  color: 'transparent',
+  border: `1px solid ${customPrimary[700]}`,
+  background: 'white',
+  marginRight: 6,
+})

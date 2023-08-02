@@ -1,7 +1,7 @@
 {
   "rename": "ファイル名を変更",
   "favorite": "お気に入り",
-  "fill": "塗りつぶし",
+  "fill": "塗りつぶし色",
   "stroke": "線の幅",
   "shape": "形",
   "text_color": "テキスト色",
@@ -36,5 +36,6 @@
   "kpi_node": {
     "label": "ラベル",
     "unit": "単位"
-  }
+  },
+  "choose_layout_title": "背景の塗りつぶし"
 }

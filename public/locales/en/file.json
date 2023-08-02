@@ -1,7 +1,7 @@
 {
   "rename": "Rename",
   "favorite": "Favorite this file",
-  "fill": "Fill",
+  "fill": "Fill color",
   "stroke": "Stroke",
   "shape": "Shape",
   "text_color": "Text color",
@@ -36,5 +36,6 @@
   "kpi_node": {
     "label": "Label",
     "unit": "Unit"
-  }
+  },
+  "choose_layout_title": "Background fill"
 }
