@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
-import { GridItem, TemplateItem } from '../home/components'
+import { TemplateItem } from '../home/components'
 import EmptyFile from '/public/assets/svgs/no_file.svg'
 
 export const Favorite = () => {
@@ -109,16 +109,17 @@ export const Favorite = () => {
           container
           rowSpacing={4}
           spacing={2}
+          columns={{ xs: 2, sm: 4, md: 6, lg: 8, xl: 10 }}
           justifyContent={{ xs: 'center', md: 'flex-start' }}
         >
           {favoriteData?.map((template, index) => (
-            <GridItem item key={index}>
+            <Grid item xs={2} key={index}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}
                 refetch={refetch}
               />
-            </GridItem>
+            </Grid>
           ))}
         </Grid>
       ) : (
