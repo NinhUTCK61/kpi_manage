@@ -18,6 +18,8 @@ const shapes = [
   { el: RoundSquare, type: ShapeType.ROUND_SQUARE },
 ]
 
+const DEFAULT_DEGREE_CHANGE = 'rotate(-2.15397deg)'
+
 const ChooseShape: React.FC = () => {
   const [shape, setShape] = useState<ShapeType>(ShapeType.ROUND_SQUARE)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -89,8 +91,9 @@ const ChooseShape: React.FC = () => {
         ...style,
         height,
         width,
-        heightArrow: HEIGHT_ARROW * percentResize,
-        widthArrow: Math.min(WIDTH_ARROW * percentResize, pxToNumber(width)),
+        heightArrow: (HEIGHT_ARROW + pxToNumber(height)) / 2,
+        widthArrow: Math.min(WIDTH_ARROW * percentResize, pxToNumber(height)),
+        transformArrow: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
       updateReactFlowNode(
@@ -105,8 +108,9 @@ const ChooseShape: React.FC = () => {
         sizeStyleMapping[value].height / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
       const newNodeStyle = JSON.stringify({
         ...style,
-        heightArrow: HEIGHT_ARROW * Math.ceil(percentResize / 4),
+        heightArrow: (HEIGHT_ARROW + sizeStyleMapping[value].height) / 2,
         widthArrow: WIDTH_ARROW * percentResize,
+        transformArrow: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
       updateReactFlowNode({ ...dataUpdate, node_style: newNodeStyle }, 'speech_ballon')

@@ -30,6 +30,7 @@ export const sizeStyleMapping = {
 
 export const WIDTH_ARROW = 30
 export const HEIGHT_ARROW = 41
+export const DEFAULT_DEG_ARROW = 'rotate(-21.15397deg) '
 
 export const useShapeStyle = () => {
   const { data, isResizing } = useSpeechBallonContext()
@@ -53,13 +54,14 @@ export const useShapeStyle = () => {
 
   const transformArrow = style.transformArrow
     ? style.transformArrow.slice(style.transformArrow.indexOf(')') + 1)
-    : 'rotate(-21.15397deg) '
+    : DEFAULT_DEG_ARROW
 
   const getShapeContainer = {
     ...sizeStyle,
     ...getShapeStyles,
     ...(isResizing && { width: '100%', height: '100%' }),
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
+    // transition: 'all 0.2s',
   }
 
   const getArrowBox = {

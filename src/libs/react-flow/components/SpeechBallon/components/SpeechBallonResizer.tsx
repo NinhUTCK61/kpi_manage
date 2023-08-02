@@ -28,11 +28,11 @@ export const minSizeResize = {
 }
 
 const SpeechBallonResizer = () => {
-  const { data, handleResizing, isResizeEnabled, handleResize, handleShapeResize } =
-    useSpeechBallonContext()
+  const { data, handleResizing, isResizeEnabled, handleResize } = useSpeechBallonContext()
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
   const { updateReactFlowNode } = useNodeUpdateHandler()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
+  const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
   const minSizeStyle = minSizeResize[shapeType]
   const resizeRef = useRef(null)
 
@@ -56,16 +56,14 @@ const SpeechBallonResizer = () => {
   const onUpdateResize = (_: ResizeDragEvent, params: ResizeParams) => {
     if (!nodeFocusedMemo) return
 
-    const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
-
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
 
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
       width: `${params.width}px`,
       height: `${params.height}px`,
-      widthArrow: Math.min(WIDTH_ARROW * percentResize, params.width),
-      heightArrow: HEIGHT_ARROW * percentResize,
+      widthArrow: handleArrowCalculate(params).widthArrow,
+      heightArrow: handleArrowCalculate(params).heightArrow,
       transformArrow: nodeStyle.transformArrow,
     })
 
@@ -83,7 +81,24 @@ const SpeechBallonResizer = () => {
 
   const onResizing = (_: ResizeDragEvent, params: ResizeParams) => {
     handleResizing(true)
-    handleShapeResize({ width: params.width, height: params.height })
+    if (!nodeFocusedMemo) return
+    const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
+
+    const newNodeStyle = JSON.stringify({
+      ...nodeStyle,
+      widthArrow: handleArrowCalculate(params).widthArrow,
+      heightArrow: handleArrowCalculate(params).heightArrow,
+    })
+
+    updateSpeechBallon({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+  }
+
+  const handleArrowCalculate = (params: ResizeParams) => {
+    const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
+    return {
+      widthArrow: Math.min(WIDTH_ARROW * percentResize, params.width - 20),
+      heightArrow: HEIGHT_ARROW * percentResize,
+    }
   }
 
   return (
