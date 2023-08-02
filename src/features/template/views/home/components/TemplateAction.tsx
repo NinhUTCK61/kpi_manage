@@ -19,6 +19,8 @@ type TemplateActionTypes = {
   inputNameRef: Ref<HTMLElement | null>
 }
 
+export const HEIGHT_TEMPLATE_ACTION = 68
+
 const TemplateAction: React.FC<TemplateActionTypes> = ({
   template,
   name,
@@ -93,6 +95,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
 const CardActions = styled(MuiCardActions)(({ theme }) => ({
   padding: '11px 16px',
   background: theme.palette.greyScale[200],
+  height: HEIGHT_TEMPLATE_ACTION,
 }))
 
 const InputRename = styled(InputBase)(({ theme }) => ({

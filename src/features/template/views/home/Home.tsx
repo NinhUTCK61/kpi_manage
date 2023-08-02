@@ -12,7 +12,7 @@ import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
-import { ButtonCreate, SelectStatus, TemplateItem } from './components'
+import { ButtonCreate, GridItem, SelectStatus, TemplateItem } from './components'
 import EmptyFile from '/public/assets/svgs/no_file.svg'
 
 const Home = () => {
@@ -129,17 +129,16 @@ const Home = () => {
           container
           rowSpacing={4}
           spacing={2}
-          columns={{ md: 12, xl: 15 }}
           justifyContent={{ xs: 'center', md: 'flex-start' }}
         >
           {data.map((template, index) => (
-            <Grid item key={index} xl="auto" lg={3} md={4} sm={6} xs={12}>
+            <GridItem item key={index}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}
                 refetch={refetch}
               />
-            </Grid>
+            </GridItem>
           ))}
         </Grid>
       ) : (
