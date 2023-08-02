@@ -1,6 +1,6 @@
 import { colorAlphabet } from '@/libs/config/theme'
 import { ReactFlowNodeOutputType } from '@/libs/schema/node'
-import { differenceWith, isEqual } from 'lodash'
+import { isEqual } from 'lodash'
 import { isEmptyKPINodeForm } from '../../helper'
 import { KPINodeType, ReactFlowNode } from '../../types'
 
@@ -31,14 +31,6 @@ export const getSaveAction = (newData: KPINodeType, oldData: KPINodeType): SaveA
   }
 
   return SaveAction.UPDATE
-}
-
-export function getDifferenceNodesByPosition<T extends ReactFlowNode>(nodes: T[], queryNodes: T[]) {
-  const diff = differenceWith(nodes, queryNodes, (a, b) => {
-    return a.id === b.id && a.position.x === b.position.x && a.position.y === b.position.y
-  })
-
-  return diff
 }
 
 export function filterKpiNodes<

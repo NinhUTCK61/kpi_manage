@@ -1,9 +1,7 @@
+import { UndoRedo } from '@/features/node/views/create/components/Toolbar/UndoRedo'
 import { useRFStore } from '@/libs/react-flow'
 import { Stack, styled } from '@mui/material'
-import Image from 'next/image'
-import RedoIcon from 'public/assets/svgs/redo.svg'
-import UndoIcon from 'public/assets/svgs/undo_active.svg'
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import { ChooseStyleAlignText } from './ChooseAlignText'
 import { ChooseFontSize } from './ChooseFontSize'
 import { ChooseShape } from './ChooseShape'
@@ -17,17 +15,13 @@ import { ViewportAction } from './ViewportAction'
 
 const TOOLBAR_HEIGHT = 60
 
-export const ToolbarInner: React.FC = () => {
+export const ToolbarInner: FC = () => {
   const nodeFocused = useRFStore((state) => state.nodeFocused)
 
   return (
     <Container>
       <Stack direction="row" alignItems="center">
-        <Stack direction="row" spacing={2} mr={3}>
-          <Image src={UndoIcon} alt="undo" style={{ cursor: 'pointer' }} />
-
-          <Image src={RedoIcon} alt="undo" />
-        </Stack>
+        <UndoRedo />
 
         <Stack direction="row" id="choose-style-area">
           <Stack
@@ -82,7 +76,7 @@ const Container = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.greyScale[100],
   padding: theme.spacing(2.5),
   flexDirection: 'row',
-  alginItems: 'center',
+  alignItems: 'center',
   justifyContent: 'space-between',
 }))
 

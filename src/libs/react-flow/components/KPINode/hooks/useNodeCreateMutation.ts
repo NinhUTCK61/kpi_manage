@@ -1,15 +1,16 @@
 import { api } from '@/libs/api'
+import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
-import { useNodeUpdateMutation } from './useNodeUpdateMutation'
+import { filterKpiNodes } from '../utils'
 
-const useNodeCreateMutation = () => {
+const useNodeCreateMutation = (reason?: UpdateStateReason) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
-  const removeNode = useRFStore((state) => state.removeNode)
+  const removeKPINode = useRFStore((state) => state.removeKPINode)
 
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
@@ -18,14 +19,14 @@ const useNodeCreateMutation = () => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode({ ...variables, is_saved: true })
+      updateNode({ ...variables, is_saved: true }, false, reason ?? UpdateStateReason.AddKPINode)
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {
         variant: 'error',
       })
 
-      removeNode(variables.id)
+      removeKPINode(variables.id)
     },
     onSuccess(_, variables) {
       // update node position after re-layout

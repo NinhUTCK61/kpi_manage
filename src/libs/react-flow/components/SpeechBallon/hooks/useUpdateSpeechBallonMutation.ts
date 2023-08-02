@@ -1,11 +1,12 @@
 import { api } from '@/libs/api'
 import { convertToReactFlowSpeechBallonSingle } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
-const useUpdateSpeechBallonMutation = () => {
+const useUpdateSpeechBallonMutation = (updateReason?: UpdateStateReason) => {
   const { t } = useTranslation('file')
   const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
   const getNodeById = useRFStore((state) => state.getNodeById)
@@ -15,7 +16,20 @@ const useUpdateSpeechBallonMutation = () => {
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-      updateSpeechBallon(variables, !!nodeFocused)
+
+      console.log(11111, prevData)
+      const hasPositionChanged = variables.x || variables.y
+      const isUpdatePosition =
+        hasPositionChanged && (variables.x !== prevData?.data.x || variables.y !== prevData?.data.y)
+
+      console.log(22222, isUpdatePosition)
+
+      const defaultReason = updateReason ?? UpdateStateReason.UpdateSpeechBallonNodeData
+      updateSpeechBallon(
+        variables,
+        !!nodeFocused,
+        isUpdatePosition ? UpdateStateReason.UpdateSpeechBallonNodePosition : defaultReason,
+      )
       return { prevData }
     },
     onError(err, _, ctx) {

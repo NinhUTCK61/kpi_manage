@@ -1,6 +1,8 @@
 import { api } from '@/libs/api'
+import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { getNodeIncludeSlug } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import {
   ReactFlowKPINodeOutputType,
@@ -10,11 +12,11 @@ import {
 import { intersectionBy } from 'lodash'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { filterKpiNodes, getDifferenceNodesByPosition } from '../utils'
-import { useNodeUpdateMutation } from './useNodeUpdateMutation'
+import { useCallback } from 'react'
+import { filterKpiNodes } from '../utils'
 
-const useNodeDeleteMutation = () => {
-  const removeNode = useRFStore((state) => state.removeNode)
+const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
+  const removeKPINode = useRFStore((state) => state.removeKPINode)
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
@@ -26,7 +28,7 @@ const useNodeDeleteMutation = () => {
 
   const mutation = api.node.delete.useMutation({
     async onMutate(variables) {
-      const { nodes, edges } = removeNode(variables.id)
+      const { nodes, edges } = removeKPINode(variables.id, updateStateReason)
       const prevData = utils.node.list.getData({ template_id: templateId })
 
       utils.node.list.setData(
@@ -68,23 +70,27 @@ const useNodeDeleteMutation = () => {
     },
   })
 
-  const handleDelete = (id: string) => {
-    const node = utils.node.list
-      .getData({ template_id: templateId })
-      ?.nodes.find((n) => n.id === id)
-    if (!node || node.type !== 'kpi') return
-    const nodes = getKpiNodes()
-    const slugs = getNodeIncludeSlug(node, nodes)
-    if (slugs.length) {
-      handleToggleDialogDelete({
-        open: true,
-        node: node.data.slug,
-        nodeRelated: slugs,
-      })
-      return
-    }
-    mutation.mutate({ id })
-  }
+  const handleDelete = useCallback(
+    (id: string) => {
+      const node = utils.node.list
+        .getData({ template_id: templateId })
+        ?.nodes.find((n) => n.id === id)
+      if (!node || node.type !== 'kpi') return
+      const nodes = getKpiNodes()
+      const slugs = getNodeIncludeSlug(node, nodes)
+      if (slugs.length) {
+        handleToggleDialogDelete({
+          open: true,
+          node: node.data.slug,
+          nodeRelated: slugs,
+        })
+        return
+      }
+      mutation.mutate({ id })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getKpiNodes, handleToggleDialogDelete, templateId],
+  )
 
   return { handleDelete, ...mutation }
 }

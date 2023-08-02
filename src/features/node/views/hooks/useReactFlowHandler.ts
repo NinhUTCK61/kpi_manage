@@ -12,6 +12,7 @@ import {
   useSpeechBallonDeleteMutation,
   useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { nanoid } from 'nanoid'
 import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode, useReactFlow } from 'reactflow'
@@ -100,6 +101,7 @@ export const useReactFlowHandler = () => {
           type: 'speech_ballon',
         },
         true,
+        UpdateStateReason.AddEmptySpeechBallonNode,
       )
     },
     [addSpeechBallon, container, project, templateId],

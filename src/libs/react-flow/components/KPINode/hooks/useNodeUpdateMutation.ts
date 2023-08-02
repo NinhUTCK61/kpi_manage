@@ -1,9 +1,10 @@
 import { api } from '@/libs/api'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 
-const useNodeUpdateMutation = () => {
+const useNodeUpdateMutation = (updateReason?: UpdateStateReason) => {
   const updateNode = useRFStore((state) => state.updateKPINode)
   const templateId = useRFStore((state) => state.templateId)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -13,7 +14,7 @@ const useNodeUpdateMutation = () => {
 
   const update = api.node.update.useMutation({
     async onMutate(variables) {
-      updateNode(variables, !!nodeFocused)
+      updateNode(variables, !!nodeFocused, updateReason)
 
       const prevData = utils.node.list.getData({ template_id: templateId })
       const prevDataNode = prevData?.nodes.find((node) => node.data.id === variables.id)
@@ -45,7 +46,7 @@ const useNodeUpdateMutation = () => {
 
   const bulkUpdate = api.node.bulkUpdate.useMutation({
     onSuccess(data) {
-      bulkUpdateKpiNode(data)
+      bulkUpdateKpiNode(data, updateReason)
     },
     onError() {
       enqueueSnackbar(t('error.internal_server_error'), {
