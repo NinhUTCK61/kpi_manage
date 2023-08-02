@@ -45,12 +45,7 @@ export class TemplateHelper extends CommonHelper {
     return UserTemplate
   }
 
-  async handleSearchTemplate(
-    searchName: string,
-    userId: string,
-    isTrash: boolean,
-    isFavorite: boolean,
-  ) {
+  async handleSearchTemplate(searchName: string, userId: string, isTrash: boolean) {
     const isDeleted = isTrash
       ? Prisma.sql`tl.deleted_at IS NOT NULL`
       : Prisma.sql`tl.deleted_at IS NULL`
@@ -59,7 +54,7 @@ export class TemplateHelper extends CommonHelper {
     const resultTemplates: TemplateOutputType = await prisma.$queryRaw`SELECT *
       FROM "UserTemplate" as ut
       INNER JOIN "Template" as tl ON ut.template_id = tl.id
-      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) =% normalize(${searchName}, NFKC) AND ${isDeleted} AND ut.is_favorite = ${isFavorite} `
+      WHERE ut.user_id = ${userId} AND normalize(name, NFKC) =% normalize(${searchName}, NFKC) AND ${isDeleted}`
 
     return resultTemplates
   }

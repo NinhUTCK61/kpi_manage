@@ -30,7 +30,7 @@ export class TemplateService extends TemplateHelper {
     })
 
     const listTemplate = searchName
-      ? await this.handleSearchTemplate(searchName, userId, isTrash, true)
+      ? await this.handleSearchTemplate(searchName, userId, isTrash)
       : this.transformTemplateOutput(userTemplate)
 
     return listTemplate
@@ -198,7 +198,7 @@ export class TemplateService extends TemplateHelper {
     return !!userTemplate
   }
 
-  async favorite(user: User, searchName: string) {
+  async favorite(user: User) {
     const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: user.id,
@@ -217,9 +217,7 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName
-      ? await this.handleSearchTemplate(searchName, user.id, false, true)
-      : this.transformTemplateOutput(userTemplate)
+    const listTemplate = this.transformTemplateOutput(userTemplate)
 
     return listTemplate
   }

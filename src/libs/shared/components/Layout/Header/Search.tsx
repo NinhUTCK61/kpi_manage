@@ -1,3 +1,4 @@
+import { useSearchStore } from '@/libs/react-flow'
 import { Button, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -19,25 +20,19 @@ const Search = () => {
 
   const router = useRouter()
 
-  const searchParam = (router.query.search as string) || ''
-
   const [searchValue, setSearchValue] = useState<string>('')
+
+  const { searchParam, setSearchParam } = useSearchStore()
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
   }
 
   const handleSearchClick = () => {
-    if (searchParam !== searchValue) {
+    if (searchValue !== searchParam) {
       setSearchValue(searchValue.trim())
-
-      router.push(
-        {
-          query: { search: searchValue.trim() },
-        },
-        undefined,
-        { shallow: true },
-      )
+      setSearchParam(searchValue.trim())
+      router.push('/', undefined, { shallow: true })
     }
   }
 
@@ -53,7 +48,7 @@ const Search = () => {
         name="search"
         control={control}
         placeholder="Search..."
-        value={searchValue}
+        value={'searchValue'}
         onChange={handleSearchChange}
         onKeyUp={handleKeySubmit}
       />

@@ -4,10 +4,9 @@ import { useModalState } from '@/libs/hooks'
 import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
-import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Grid, Stack } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
@@ -81,18 +80,9 @@ export const Favorite = () => {
     },
   }
 
-  const router = useRouter()
-  const searchParam = (router.query.search as string) || ''
-
   useClearParam()
 
-  const {
-    data: favoriteData,
-    refetch,
-    isLoading,
-  } = api.template.favorite.useQuery({
-    searchName: searchParam ? searchParam : '',
-  })
+  const { data: favoriteData, refetch, isLoading } = api.template.favorite.useQuery()
 
   return (
     <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
@@ -131,12 +121,6 @@ export const Favorite = () => {
               alt={t('no_file', { ns: 'common' })}
             />
           </Box>
-
-          <Typography variant="body2" mt={2}>
-            {searchParam
-              ? !favoriteData?.length && t('no_found_file', { ns: 'common' })
-              : !favoriteData?.length && t('no_file', { ns: 'common' })}
-          </Typography>
         </Stack>
       )}
 

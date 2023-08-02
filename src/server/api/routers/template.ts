@@ -1,6 +1,5 @@
 import {
   DeleteTemplateInputSchema,
-  FavoriteTemplateSchema,
   GetTemplateByIdInputSchema,
   LikeTemplateInputSchema,
   ListTemplateInputSchema,
@@ -74,9 +73,9 @@ export const templateRouter = createTRPCRouter({
     }),
   favorite: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/template/favorite', protect: true } })
-    .input(FavoriteTemplateSchema)
+    .input(z.void())
     .output(TemplateDataOutputSchema)
-    .query(({ ctx, input }) => {
-      return templateService.favorite(ctx.session.user, input.searchName as string)
+    .query(({ ctx }) => {
+      return templateService.favorite(ctx.session.user)
     }),
 })

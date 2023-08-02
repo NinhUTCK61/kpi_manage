@@ -7,7 +7,6 @@ import { DialogActionType } from '@/libs/shared/types/utils'
 import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
@@ -30,10 +29,9 @@ const Home = () => {
   const mutationRestore = useRestoreTemplate()
   const mutationDelete = useDeleteTemplate()
 
-  const router = useRouter()
-  const searchParam = (router.query.search as string) || ''
-
   useClearParam()
+
+  // const { searchParam } = useSearchStore()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -89,7 +87,7 @@ const Home = () => {
 
   const { data, refetch, isLoading } = api.template.list.useQuery({
     isTrash: isTrash,
-    searchName: searchParam ? searchParam : '',
+    searchName: '',
   })
 
   const getMessageNoFile = () => {
