@@ -1,7 +1,6 @@
 import { Title } from '@/features/auth'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
-import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Box, CircularProgress, Grid, Stack } from '@mui/material'
@@ -79,8 +78,6 @@ export const Favorite = () => {
         }),
     },
   }
-
-  useClearParam()
 
   const { data: favoriteData, refetch, isLoading } = api.template.favorite.useQuery()
 

@@ -1,9 +1,9 @@
-import { useSearchStore } from '@/libs/react-flow'
+import { useSearchStore } from '@/features/template/store'
 import { Button, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputSearch } from '../../Form/Input'
 
@@ -20,20 +20,17 @@ const Search = () => {
 
   const router = useRouter()
 
+  const { searchTemplate, setSearchTemplate } = useSearchStore()
   const [searchValue, setSearchValue] = useState<string>('')
-
-  const { searchParam, setSearchParam } = useSearchStore()
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
   }
 
   const handleSearchClick = () => {
-    if (searchValue !== searchParam) {
-      setSearchValue(searchValue.trim())
-      setSearchParam(searchValue.trim())
-      router.push('/', undefined, { shallow: true })
-    }
+    setSearchValue(searchValue.trim())
+    setSearchTemplate(searchValue.trim())
+    router.push('/', undefined, { shallow: true })
   }
 
   const handleKeySubmit = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -42,13 +39,16 @@ const Search = () => {
     }
   }
 
+  useEffect(() => {
+    setSearchValue(searchTemplate)
+  }, [searchTemplate, router.asPath, setSearchTemplate])
   return (
     <SectionSearch>
       <InputSearch
         name="search"
         control={control}
         placeholder="Search..."
-        value={'searchValue'}
+        value={searchValue}
         onChange={handleSearchChange}
         onKeyUp={handleKeySubmit}
       />

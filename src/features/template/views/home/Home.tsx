@@ -1,4 +1,5 @@
 import { ThumbnailAction } from '@/features/template/components'
+import { useSearchStore } from '@/features/template/store'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
 import { useClearParam } from '@/libs/hooks/useClearParam'
@@ -31,7 +32,7 @@ const Home = () => {
 
   useClearParam()
 
-  // const { searchParam } = useSearchStore()
+  const { searchTemplate } = useSearchStore()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -87,7 +88,7 @@ const Home = () => {
 
   const { data, refetch, isLoading } = api.template.list.useQuery({
     isTrash: isTrash,
-    searchName: '',
+    searchName: searchTemplate,
   })
 
   const getMessageNoFile = () => {
@@ -97,9 +98,9 @@ const Home = () => {
     const noDeletedFilesMessage = t('no_deleted_files', { ns: 'common' })
 
     if (isTrash) {
-      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noDeletedFilesMessage
+      return searchTemplate ? isEmpty && noFoundFileMessage : isEmpty && noDeletedFilesMessage
     } else {
-      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noFilesMessage
+      return searchTemplate ? isEmpty && noFoundFileMessage : isEmpty && noFilesMessage
     }
   }
 
