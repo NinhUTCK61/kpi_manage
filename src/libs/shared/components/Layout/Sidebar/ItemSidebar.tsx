@@ -45,14 +45,14 @@ const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   )
 }
 
-const StyleListItemButton = styled(MuiListItemButton)<StyleListItemButtonType>(
-  ({ theme, active }) => ({
-    backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
-    borderRadius: '6px',
-    padding: `8px 12px`,
-    marginBottom: theme.spacing(1),
-  }),
-)
+const StyleListItemButton = styled(MuiListItemButton, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<StyleListItemButtonType>(({ theme, active }) => ({
+  backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
+  borderRadius: '6px',
+  padding: `8px 12px`,
+  marginBottom: theme.spacing(1),
+}))
 
 const ListItemIcon = styled(MuiListItemIcon)({
   minWidth: 20,

@@ -129,6 +129,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
             <Image
               src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
               alt="file"
+              priority
               style={{
                 cursor: template.deleted_at ? 'default' : 'pointer',
                 borderTopLeftRadius: 12,
@@ -139,7 +140,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
               }}
               width={343}
               height={264}
-              loading="lazy"
             />
           </CustomLink>
         </CardContent>
