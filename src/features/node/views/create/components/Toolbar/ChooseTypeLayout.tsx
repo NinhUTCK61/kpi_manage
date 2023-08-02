@@ -8,6 +8,7 @@ import {
   Typography,
   styled,
 } from '@mui/material'
+import { LayoutType } from '@prisma/client'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import CheckedIcon from 'public/assets/svgs/checked_layout.svg'
@@ -16,30 +17,34 @@ import { useNodeUpdateHandler } from '../../../hooks'
 
 const ChooseTypeLayout: React.FC = () => {
   const { t } = useTranslation('file')
+  const [type, setType] = useState<LayoutType>('FILL')
+
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const [checked, setChecked] = useState<boolean>(false)
-  const { updateReactFlowNode } = useNodeUpdateHandler()
+
   const nodeFocusedMemo = useMemo(() => {
     if (!nodeFocused || nodeFocused.type !== 'speech_ballon') return
     return nodeFocused
   }, [nodeFocused])
 
+  const { updateReactFlowNode } = useNodeUpdateHandler()
+
   const handleChange = (event: ChangeEvent) => {
     const isCheckbox = (event.target as HTMLInputElement).checked
+    const value = isCheckbox ? 'FILL' : 'STROKE'
+
+    setType(value)
 
     if (!nodeFocusedMemo) return
-
-    setChecked(!checked)
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
     const isTextColorValid =
       nodeStyle.color !== base.white && nodeStyle.color !== customPrimary[700]
-    const defaultColor = isCheckbox ? base.white : customPrimary[700]
+    const defaultColor = value === 'FILL' ? base.white : customPrimary[700]
     const textColor = isTextColorValid ? nodeStyle.color : defaultColor
     const newNodeStyle = JSON.stringify({ ...nodeStyle, color: textColor })
 
     updateReactFlowNode(
       {
-        layout: isCheckbox ? 'FILL' : 'STROKE',
+        layout: value,
         id: nodeFocusedMemo.data.id,
         is_saved: nodeFocusedMemo.data.is_saved,
         node_style: newNodeStyle,
@@ -49,8 +54,9 @@ const ChooseTypeLayout: React.FC = () => {
   }
 
   useEffect(() => {
-    if (!nodeFocusedMemo || nodeFocusedMemo.type !== 'speech_ballon') return
-    setChecked(nodeFocusedMemo.data.layout === 'FILL' ? true : false)
+    if (!nodeFocusedMemo) return
+    const layoutType = nodeFocusedMemo.data.layout
+    layoutType ? setType(layoutType) : setType('FILL')
   }, [nodeFocusedMemo])
 
   return (
@@ -62,7 +68,7 @@ const ChooseTypeLayout: React.FC = () => {
           }}
           control={
             <Checkbox
-              checked={checked}
+              checked={type === 'FILL'}
               checkedIcon={<Image src={CheckedIcon} width={14} height={14} alt="checked" />}
               onChange={handleChange}
             />
