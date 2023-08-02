@@ -8,7 +8,7 @@ import Image, { type StaticImageData } from 'next/image'
 import { useRouter } from 'next/router'
 
 type StyleListItemButtonType = {
-  active?: number
+  active?: boolean
 }
 
 type ListItemButtonType = {
@@ -24,7 +24,7 @@ const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   const router = useRouter()
 
   const checkHref = (href: string) => {
-    return router.pathname === href ? 1 : 0
+    return router.pathname === href
   }
 
   const handleDirection = () => {
