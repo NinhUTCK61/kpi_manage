@@ -31,6 +31,37 @@ export class NodeHelper extends CommonHelper {
     }
   }
 
+  async validateTemplateOfUser(nodeId: Node[], user_id: string) {
+    // check all node has same template_id
+    const templateIds = nodeId.map((node) => {
+      return node.template_id
+    })
+
+    const templateIdSet = new Set(templateIds)
+    if (templateIdSet.size !== 1) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+
+    // check template is owned by user
+    const templateId = templateIdSet.values().next().value
+    const userTemplate = await prisma.userTemplate.findFirst({
+      where: {
+        template_id: templateId,
+        user_id,
+      },
+    })
+
+    if (!userTemplate) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'error.template_not_found',
+      })
+    }
+  }
+
   handleFormValues(nodes: (Node | UpdateNodeInputType)[]) {
     const arrayField: (keyof Node)[] = [
       'slug',

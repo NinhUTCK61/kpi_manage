@@ -15,7 +15,7 @@ const useNodeCreateMutation = (reason?: UpdateStateReason) => {
   const nodes = useRFStore((state) => state.nodes)
   const utils = api.useContext()
   const { t } = useTranslation('common')
-  const { bulkUpdate } = useNodeUpdateMutation()
+  const { bulkUpdate } = useNodeUpdateMutation(reason ?? UpdateStateReason.BulkUpdateNodeInternal)
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
@@ -27,6 +27,7 @@ const useNodeCreateMutation = (reason?: UpdateStateReason) => {
       })
 
       removeKPINode(variables.id)
+      utils.node.list.invalidate()
     },
     onSuccess(_, variables) {
       // update node position after re-layout
@@ -45,9 +46,6 @@ const useNodeCreateMutation = (reason?: UpdateStateReason) => {
         // TODO: handle error when update multiple nodes
         bulkUpdate.mutate(diff.map((n) => n.data))
       }
-    },
-    onSettled() {
-      utils.node.list.invalidate()
     },
   })
 

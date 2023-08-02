@@ -24,7 +24,9 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
   const utils = api.useContext()
   const { t } = useTranslation('common')
 
-  const { bulkUpdate } = useNodeUpdateMutation()
+  const { bulkUpdate } = useNodeUpdateMutation(
+    updateStateReason ?? UpdateStateReason.BulkUpdateNodeInternal,
+  )
 
   const mutation = api.node.delete.useMutation({
     async onMutate(variables) {
@@ -49,6 +51,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
       })
 
       utils.node.list.setData({ template_id: ctx?.templateId as string }, ctx?.prevData)
+      utils.node.list.invalidate()
     },
     onSuccess(_, __, ctx) {
       const newNodes = filterKpiNodes<ReactFlowKPINode>(ctx?.nodes || [])
@@ -64,9 +67,6 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
           bulkUpdate.mutate(diff.map((n) => n.data))
         }
       }
-    },
-    onSettled() {
-      utils.node.list.invalidate()
     },
   })
 

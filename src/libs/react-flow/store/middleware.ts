@@ -37,6 +37,8 @@ export enum UpdateStateReason {
   NodesChangeByReactFlow = 'NodesChangeByReactFlow',
   EdgesChangeByReactFlow = 'EdgesChangeByReactFlow',
 
+  BulkUpdateNodeInternal = 'BulkUpdateNodeInternal',
+
   AddEmptyKPINode = 'AddNewEmptyKPINode',
   AddKPINode = 'AddNewKPINode',
   DeleteKPINode = 'DeleteKPINode',
@@ -105,13 +107,14 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       const viewPort = get().viewportAction
       if (
         typeof newState === 'object' &&
-        newState.updateBy?.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow &&
-        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptyNode &&
-        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptyKPINode &&
-        newState.updateBy?.updateStateReason !== UpdateStateReason.RemoveEmptySpeechBallonNode
+        newState.updateBy?.updateStateReason &&
+        newState.updateBy.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow &&
+        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyNode &&
+        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyKPINode &&
+        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptySpeechBallonNode
       ) {
-        console.log('----------------------------START--------------------------------')
-        console.log('newState', newState)
+        consola.log('----------------------------START--------------------------------')
+        consola.log('newState', newState)
       }
       // Gọi hàm set gốc
       set(...args)
@@ -126,15 +129,9 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         )
 
         if (isValid) {
-          consola.withTag('VALID').info('oldDiff', oldDiff, updateReason)
-          consola.withTag('VALID').info('newDiff', newDiff, updateReason)
-        } else {
-          if (
-            typeof newState === 'object' &&
-            newState.updateBy?.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow
-          ) {
-            console.log(isValid, updateReason)
-          }
+          consola.withTag('VALID').success('reason : ', updateReason)
+          consola.withTag('VALID').info('oldDiff', oldDiff)
+          consola.withTag('VALID').info('newDiff', newDiff)
         }
 
         if (isValid) {

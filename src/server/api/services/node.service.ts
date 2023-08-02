@@ -43,14 +43,15 @@ export class NodeService extends NodeHelper {
       return node.id
     })
 
-    await this.validateNodeOfUser(nodeIds, user.id)
+    await this.validateTemplateOfUser(nodes, user.id)
 
     const updateQueries = nodes.map((node: Node) => {
-      return prisma.node.update({
+      return prisma.node.upsert({
         where: {
           id: node.id,
         },
-        data: node,
+        update: node,
+        create: node,
       })
     })
 

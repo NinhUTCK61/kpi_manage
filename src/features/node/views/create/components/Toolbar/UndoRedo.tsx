@@ -20,9 +20,15 @@ import RedoInactive from 'public/assets/svgs/redo.svg'
 import RedoActive from 'public/assets/svgs/redo_active.svg'
 import UndoInactive from 'public/assets/svgs/undo.svg'
 import UndoActive from 'public/assets/svgs/undo_active.svg'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { useIsomorphicLayoutEffect } from 'usehooks-ts'
 import { shallow } from 'zustand/shallow'
+
+declare global {
+  interface Window {
+    logPastState: () => void
+  }
+}
 
 const UndoRedo: FC = () => {
   const { undo, redo, pastStates, futureStates, setOnStateChange } = useTemporalStore(
@@ -40,6 +46,10 @@ const UndoRedo: FC = () => {
   const { mutate: createSB } = useSpeechBallonCreateMutation(UpdateStateReason.OnUndoRedo)
   const { mutate: updateSB } = useUpdateSpeechBallonMutation(UpdateStateReason.OnUndoRedo)
   const { mutate: deleteSB } = useSpeechBallonDeleteMutation(UpdateStateReason.OnUndoRedo)
+
+  useEffect(() => {
+    window.logPastState = () => console.log(pastStates)
+  }, [pastStates])
 
   const onStateChange: onStateChange = useCallback(
     (stateToApply, type) => {
