@@ -55,7 +55,7 @@ const AccountMobile = () => {
       icon: LogOutIcon,
       handle: () =>
         signOut({
-          callbackUrl: router.locale === 'jp' ? '/jp/sign-in' : '/sign-in',
+          callbackUrl: '/' + router.locale + '/sign-in',
         }),
     },
   ]
