@@ -1,4 +1,3 @@
-import { useSearchStore } from '@/features/template/store'
 import {
   ListItemButton as MuiListItemButton,
   ListItemIcon as MuiListItemIcon,
@@ -7,8 +6,6 @@ import {
 } from '@mui/material'
 import Image, { type StaticImageData } from 'next/image'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { menuHref } from './Sidebar'
 
 type StyleListItemButtonType = {
   active?: boolean
@@ -25,7 +22,6 @@ type ListItemButtonType = {
 
 const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   const router = useRouter()
-  const { setSearchTemplate } = useSearchStore()
   const checkHref = (href: string) => {
     return router.pathname === href
   }
@@ -33,18 +29,6 @@ const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   const handleDirection = () => {
     router.push(menu.href)
   }
-
-  useEffect(() => {
-    const handleRouteChangeComplete = () => {
-      if (router.pathname === menuHref.home) {
-        setSearchTemplate('')
-      }
-    }
-    router.events.on('routeChangeComplete', handleRouteChangeComplete)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChangeComplete)
-    }
-  }, [router, setSearchTemplate])
 
   return (
     <StyleListItemButton

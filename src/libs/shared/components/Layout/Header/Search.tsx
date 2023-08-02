@@ -1,35 +1,35 @@
 import { useSearchStore } from '@/features/template/store'
-import { Button, Stack, styled } from '@mui/material'
+import { Button, InputBase, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { InputSearch } from '../../Form/Input'
-
-type SearchType = {
-  search: string
-}
+import { KeyboardEvent, useEffect, useRef } from 'react'
 
 const Search = () => {
-  const { control } = useForm<SearchType>({
-    defaultValues: {
-      search: '',
-    },
-  })
-
   const router = useRouter()
+  const { setSearchTemplate, searchTemplate } = useSearchStore()
+  const inputRef = useRef<HTMLInputElement>()
 
-  const { searchTemplate, setSearchTemplate } = useSearchStore()
-  const [searchValue, setSearchValue] = useState<string>('')
+  useEffect(() => {
+    const handleRouteChangeComplete = (url: string) => {
+      if (url === '/' || url === '/en') {
+        return
+      }
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }
+      setSearchTemplate('')
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
+    }
+    router.events.on('routeChangeComplete', handleRouteChangeComplete)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete)
+    }
+  }, [router, setSearchTemplate])
 
   const handleSearchClick = () => {
-    setSearchValue(searchValue.trim())
-    setSearchTemplate(searchValue.trim())
+    console.log(inputRef.current?.value)
+    setSearchTemplate(inputRef.current?.value.trim())
     router.push('/', undefined, { shallow: true })
   }
 
@@ -39,18 +39,14 @@ const Search = () => {
     }
   }
 
-  useEffect(() => {
-    setSearchValue(searchTemplate)
-  }, [searchTemplate, router.asPath, setSearchTemplate])
   return (
     <SectionSearch>
       <InputSearch
         name="search"
-        control={control}
+        inputRef={inputRef}
         placeholder="Search..."
-        value={searchValue}
-        onChange={handleSearchChange}
         onKeyUp={handleKeySubmit}
+        defaultValue={searchTemplate}
       />
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
         <Image src={SearchIcon} alt="" width={16} height={16} />
@@ -76,5 +72,25 @@ const SectionSearch = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
     display: 'none',
+  },
+}))
+
+const InputSearch = styled(InputBase)(({ theme }) => ({
+  marginRight: theme.spacing(1.75),
+  borderRadius: theme.spacing(1),
+  color: theme.palette.common.black,
+  gap: 8,
+  backgroundColor: theme.palette.greyScale[100],
+  '& .MuiOutlinedInput-input': {
+    padding: theme.spacing(1, 1.75, 1, 0),
+  },
+  height: 38,
+  width: 465,
+  '& .MuiInputAdornment-positionStart': {
+    marginRight: 0,
+  },
+  fontSize: 15,
+  [theme.breakpoints.down('lg')]: {
+    width: 400,
   },
 }))
