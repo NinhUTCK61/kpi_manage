@@ -4,9 +4,9 @@ import { TemplateDataSchema } from '@/libs/schema'
 import { CustomLink, Menu, MenuItem } from '@/libs/shared/components'
 import { getImageUrl } from '@/libs/utils/misc'
 import {
-  CardContent,
   IconButton,
   Card as MuiCard,
+  CardContent as MuiCardContent,
   CardHeader as MuiCardHeader,
   styled,
 } from '@mui/material'
@@ -17,7 +17,7 @@ import ImageFile from 'public/assets/imgs/image_template_default.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
-import { TemplateAction } from './TemplateAction'
+import { HEIGHT_TEMPLATE_ACTION, TemplateAction } from './TemplateAction'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
@@ -115,7 +115,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
 
   return (
     <>
-      <Card elevation={0} sx={{ width: { xs: 343, sm: 268 } }}>
+      <Card elevation={0}>
         <CardHeader
           action={
             <IconButton onClick={handleClick}>
@@ -124,7 +124,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
           }
         />
 
-        <CardContent sx={{ padding: '0 !important', height: { xs: 264, sm: 206 } }}>
+        <CardContent>
           <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
             <Image
               src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
@@ -197,6 +197,8 @@ const MenuItemFileDelete = styled(MenuItem)(({ theme }) => ({
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: 12,
   position: 'relative',
+  height: '100%',
+  maxWidth: '100% !important',
   border: `1px solid ${theme.palette.greyScale[300]}`,
   [theme.breakpoints.up('sm')]: {
     maxWidth: 268,
@@ -208,6 +210,11 @@ const CardHeader = styled(MuiCardHeader)({
   right: 5,
   top: 5,
   padding: 0,
+})
+
+const CardContent = styled(MuiCardContent)({
+  padding: '0 !important',
+  height: `calc(100% - ${HEIGHT_TEMPLATE_ACTION}px)`,
 })
 
 export { TemplateItem }

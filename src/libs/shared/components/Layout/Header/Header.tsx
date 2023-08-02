@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <AppBar elevation={0}>
       <StackContainer>
-        <Stack direction="row" spacing={19.75} alignItems="center">
+        <Stack direction="row" spacing={18.75} alignItems="center">
           <Image
             src={LogoHeader}
             alt="logo-header"

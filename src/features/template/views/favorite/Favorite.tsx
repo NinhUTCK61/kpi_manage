@@ -109,11 +109,11 @@ export const Favorite = () => {
           container
           rowSpacing={4}
           spacing={2}
-          columns={{ md: 12, xl: 15 }}
+          columns={{ xs: 2, sm: 4, md: 6, lg: 8, xl: 10 }}
           justifyContent={{ xs: 'center', md: 'flex-start' }}
         >
           {favoriteData?.map((template, index) => (
-            <Grid item key={index} xl="auto" lg={3} md={4} sm={6} xs={12}>
+            <Grid item xs={2} key={index}>
               <TemplateItem
                 template={template}
                 handleFileAction={handleFileAction}

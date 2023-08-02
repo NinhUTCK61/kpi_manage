@@ -6,7 +6,7 @@ import { enAU, ja } from 'date-fns/locale'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { enqueueSnackbar } from 'notistack'
-import LikeIcon from 'public/assets/svgs/like_star.svg'
+import LikeIcon from 'public/assets/svgs/like_star_1.svg'
 import UnLikeIcon from 'public/assets/svgs/unlike_star.svg'
 import { Ref } from 'react'
 import { z } from 'zod'
@@ -18,6 +18,8 @@ type TemplateActionTypes = {
   handleChangeName(event: React.ChangeEvent<HTMLInputElement>): void
   inputNameRef: Ref<HTMLElement | null>
 }
+
+export const HEIGHT_TEMPLATE_ACTION = 68
 
 const TemplateAction: React.FC<TemplateActionTypes> = ({
   template,
@@ -93,6 +95,7 @@ const TemplateAction: React.FC<TemplateActionTypes> = ({
 const CardActions = styled(MuiCardActions)(({ theme }) => ({
   padding: '11px 16px',
   background: theme.palette.greyScale[200],
+  height: HEIGHT_TEMPLATE_ACTION,
 }))
 
 const InputRename = styled(InputBase)(({ theme }) => ({
