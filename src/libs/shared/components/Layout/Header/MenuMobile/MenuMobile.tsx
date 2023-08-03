@@ -68,16 +68,22 @@ const MenuMobile: React.FC<MenuProps> = ({ openMenu, handleCloseMenu }) => {
 export { MenuMobile }
 
 const MenuMobileContainer = styled(Drawer)(({ theme }) => ({
-  display: 'none',
   '&.MuiDrawer-root': {
     '&& .MuiPaper-root': {
       width: '100%',
-      padding: '16px 8px',
+      padding: theme.spacing(2),
       borderRight: 'none',
     },
   },
-  [theme.breakpoints.down('lg')]: {
-    display: 'block',
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+  [theme.breakpoints.up('sm')]: {
+    '&.MuiDrawer-root': {
+      '&& .MuiPaper-root': {
+        padding: theme.spacing(3, 4),
+      },
+    },
   },
 }))
 

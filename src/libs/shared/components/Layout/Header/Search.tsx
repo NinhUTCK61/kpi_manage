@@ -3,6 +3,7 @@ import { Button, InputBase, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
+import SearchIconBlack from 'public/assets/svgs/icon_search_black.svg'
 import { KeyboardEvent, useEffect } from 'react'
 import { shallow } from 'zustand/shallow'
 
@@ -58,8 +59,12 @@ const Search = () => {
       />
 
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
-        <Image src={SearchIcon} alt="" width={16} height={16} />
+        <Image src={SearchIcon} alt="search icon" width={16} height={16} />
       </ButtonSearch>
+
+      <ButtonSearchMobile onClick={handleSearchClick}>
+        <Image src={SearchIconBlack} alt="search icon mobile" width={20} height={20} />
+      </ButtonSearchMobile>
     </SectionSearch>
   )
 }
@@ -71,6 +76,9 @@ const ButtonSearch = styled(Button)(({ theme }) => ({
   height: 24,
   width: 32,
   minWidth: 0,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }))
 
 const SectionSearch = styled(Stack)(({ theme }) => ({
@@ -101,5 +109,13 @@ const InputSearch = styled(InputBase)(({ theme }) => ({
   },
   [theme.breakpoints.down('md')]: {
     width: '100%',
+  },
+}))
+
+const ButtonSearchMobile = styled(Button)(({ theme }) => ({
+  padding: 0,
+  minWidth: 0,
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
   },
 }))
