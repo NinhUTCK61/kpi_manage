@@ -12,13 +12,13 @@ const useRenameTemplate = () => {
     onMutate: async (template) => {
       await utils.template.list.cancel()
       const prevData = utils.template.list.getData({ isTrash: false, searchName: '' })
-      const prevFavData = utils.template.favorite.getData({ searchName: '' })
+      const prevFavData = utils.template.favorite.getData()
 
       utils.template.list.setData({ isTrash: false, searchName: '' }, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
-      utils.template.favorite.setData({ searchName: '' }, (old = []) =>
+      utils.template.favorite.setData(undefined, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
@@ -41,7 +41,7 @@ const useRenameTemplate = () => {
 
       showError(err, t('rename_failed'))
       utils.template.list.setData({ isTrash: false }, ctx?.prevData)
-      utils.template.favorite.setData({}, ctx?.prevFavData)
+      utils.template.favorite.setData(undefined, ctx?.prevFavData)
     },
     onSettled: () => {
       utils.template.list.invalidate()
@@ -54,7 +54,7 @@ const useRenameTemplate = () => {
       await utils.template.list.cancel()
       const prevData = utils.template.byId.getData({ id: template.id })
       const prevTemplateData = utils.template.list.getData({ isTrash: false, searchName: '' })
-      const prevFavData = utils.template.favorite.getData({ searchName: '' })
+      const prevFavData = utils.template.favorite.getData()
 
       utils.template.byId.setData({ id: template.id }, (old) =>
         old ? { ...old, name: String(template.name) } : old,
@@ -64,7 +64,7 @@ const useRenameTemplate = () => {
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
-      utils.template.favorite.setData({ searchName: '' }, (old = []) =>
+      utils.template.favorite.setData(undefined, (old = []) =>
         old.map((e) => (e.template_id === template.id ? { ...e, name: String(template.name) } : e)),
       )
 
@@ -80,7 +80,7 @@ const useRenameTemplate = () => {
     onError: (err, _, ctx) => {
       ctx?.prevData && utils.template.byId.setData({ id: ctx?.template_id }, ctx?.prevData)
       utils.template.list.setData({ isTrash: false }, ctx?.prevTemplateData)
-      utils.template.favorite.setData({}, ctx?.prevFavData)
+      utils.template.favorite.setData(undefined, ctx?.prevFavData)
 
       if (err.data?.zodError) {
         const errorMes = JSON.parse(err.message)[0].message

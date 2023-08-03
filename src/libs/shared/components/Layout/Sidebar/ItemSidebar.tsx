@@ -22,7 +22,6 @@ type ListItemButtonType = {
 
 const ListItemButton: React.FC<ListItemButtonType> = ({ menu }) => {
   const router = useRouter()
-
   const checkHref = (href: string) => {
     return router.pathname === href
   }

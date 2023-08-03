@@ -1,6 +1,7 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { Stack } from '@mui/material'
 import { useMemo, useRef } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
@@ -90,7 +91,11 @@ const SpeechBallonResizer = () => {
       heightArrow: handleArrowCalculate(params).heightArrow,
     })
 
-    updateSpeechBallon({ ...nodeFocusedMemo.data, node_style: newNodeStyle })
+    updateSpeechBallon(
+      { ...nodeFocusedMemo.data, node_style: newNodeStyle },
+      false,
+      UpdateStateReason.UpdateSpeechBallonNodeSize,
+    )
   }
 
   const handleArrowCalculate = (params: ResizeParams) => {

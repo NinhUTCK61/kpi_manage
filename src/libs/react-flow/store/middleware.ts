@@ -53,6 +53,7 @@ export enum UpdateStateReason {
   DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
   UpdateSpeechBallonNodeData = 'UpdateSpeechBallonNodeData',
   UpdateSpeechBallonNodePosition = 'UpdateSpeechBallonNodePosition',
+  UpdateSpeechBallonNodeSize = 'UpdateSpeechBallonNodeSize',
 
   AddCommentNode = 'AddCommentNode',
   UpdateCommentNode = 'UpdateCommentNode',
