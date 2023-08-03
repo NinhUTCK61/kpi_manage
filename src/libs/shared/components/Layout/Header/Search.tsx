@@ -55,6 +55,7 @@ const Search = () => {
         placeholder="Search..."
         onKeyUp={handleKeySubmit}
       />
+
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
         <Image src={SearchIcon} alt="" width={16} height={16} />
       </ButtonSearch>
@@ -77,9 +78,6 @@ const SectionSearch = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0, 1.75),
   flexDirection: 'row',
   alignItems: 'center',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
 }))
 
 const InputSearch = styled(InputBase)(({ theme }) => ({

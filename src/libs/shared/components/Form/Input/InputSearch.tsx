@@ -22,6 +22,7 @@ function InputSearch<T extends FieldValues>({
 
   return (
     <InputControl
+      sx={{ width: '100%' }}
       fieldError={error}
       fullWidth={fullWidth}
       label={label}
@@ -38,19 +39,22 @@ const InputStyled = styled(InputBase)(({ theme }) => ({
   marginRight: theme.spacing(1.75),
   borderRadius: theme.spacing(1),
   color: theme.palette.common.black,
-  gap: 8,
   backgroundColor: theme.palette.greyScale[100],
+  gap: 8,
+  height: 38,
+  width: 465,
+  fontSize: 15,
   '& .MuiOutlinedInput-input': {
     padding: theme.spacing(1, 1.75, 1, 0),
   },
-  height: 38,
-  width: 465,
   '& .MuiInputAdornment-positionStart': {
     marginRight: 0,
   },
-  fontSize: 15,
   [theme.breakpoints.down('lg')]: {
-    width: 400,
+    width: 350,
+  },
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
   },
 }))
 

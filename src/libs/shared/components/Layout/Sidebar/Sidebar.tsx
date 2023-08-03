@@ -39,7 +39,7 @@ const Sidebar = () => {
       sx={{
         marginTop: `${HEADER_HEIGHT}px`,
         width: SIDE_BAR_WIDTH,
-        display: { xs: 'none', lg: 'block' },
+        display: { xs: 'none', md: 'block' },
       }}
     >
       <Box
