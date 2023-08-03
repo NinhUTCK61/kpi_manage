@@ -54,6 +54,7 @@ const Search = () => {
         onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Search..."
         onKeyUp={handleKeySubmit}
+        type="search"
       />
 
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
@@ -96,6 +97,9 @@ const InputSearch = styled(InputBase)(({ theme }) => ({
   },
   fontSize: 15,
   [theme.breakpoints.down('lg')]: {
-    width: 400,
+    width: 350,
+  },
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
   },
 }))

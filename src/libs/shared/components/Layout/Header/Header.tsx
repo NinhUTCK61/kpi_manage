@@ -30,7 +30,11 @@ const Header = () => {
       setOpenMenu(false)
       setOpenSearch(false)
     }
-  }, [isLarge])
+
+    if (displaySearchHref.includes(router.pathname)) {
+      setOpenSearch(false)
+    }
+  }, [isLarge, router])
 
   const handleOpenMenu = () => {
     setOpenMenu(true)
@@ -51,13 +55,19 @@ const Header = () => {
   return (
     <AppBar elevation={0}>
       {openSearch ? (
-        <StackSearch>
-          <ButtonCloseSearch onClick={handleCloseSearch}>
-            <Image src={ArrowLeftIcon} width={20} height={20} alt="close search icon" />
-          </ButtonCloseSearch>
+        <>
+          {displaySearchHref.includes(router.pathname) && (
+            <StackSearch>
+              <ButtonCloseSearch onClick={handleCloseSearch}>
+                <Image src={ArrowLeftIcon} width={20} height={20} alt="close search icon" />
+              </ButtonCloseSearch>
 
-          <Box width="100%">{displaySearchHref.includes(router.pathname) && <Search />}</Box>
-        </StackSearch>
+              <SearchBar>
+                <Search />
+              </SearchBar>
+            </StackSearch>
+          )}
+        </>
       ) : (
         <StackContainer>
           <Stack direction="row" spacing={18.75} alignItems="center">
@@ -75,7 +85,9 @@ const Header = () => {
           </Stack>
 
           <Stack direction="row" alignItems="center">
-            <SearchMobileButton handleOpenSearch={handleOpenSearch} />
+            {displaySearchHref.includes(router.pathname) && (
+              <SearchMobileButton handleOpenSearch={handleOpenSearch} />
+            )}
 
             <Language />
 
@@ -98,13 +110,18 @@ const StackSearch = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   height: '100%',
+  width: '100%',
   [theme.breakpoints.up('md')]: {
     display: 'none',
   },
 }))
 
 const ButtonCloseSearch = styled(Button)({
-  minWidth: 0,
+  minWidth: 20,
   marginRight: 8,
   padding: 0,
+})
+
+const SearchBar = styled(Box)({
+  width: 'calc(100% - 28px)', // 100% - widthButtonCloseSearch
 })

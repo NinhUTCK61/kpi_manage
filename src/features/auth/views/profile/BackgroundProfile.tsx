@@ -50,6 +50,7 @@ const AvatarWhenEit = styled(Box)({
   position: 'relative',
   width: 100,
   height: 100,
+  cursor: 'pointer',
 })
 
 const Camera = styled(Box)({
