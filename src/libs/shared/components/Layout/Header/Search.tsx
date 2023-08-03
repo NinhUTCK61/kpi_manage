@@ -3,12 +3,19 @@ import { Button, InputBase, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
-import { KeyboardEvent, useEffect, useRef } from 'react'
+import { KeyboardEvent, useEffect } from 'react'
+import { shallow } from 'zustand/shallow'
 
 const Search = () => {
   const router = useRouter()
-  const { setSearchTemplate, searchTemplate } = useSearchStore()
-  const inputRef = useRef<HTMLInputElement>()
+  const { setSearchTemplate, searchInput, setSearchInput } = useSearchStore(
+    (state) => ({
+      setSearchTemplate: state.setSearchTemplate,
+      searchInput: state.searchInput,
+      setSearchInput: state.setSearchInput,
+    }),
+    shallow,
+  )
 
   useEffect(() => {
     const handleRouteChangeComplete = (url: string) => {
@@ -17,20 +24,20 @@ const Search = () => {
       }
 
       setSearchTemplate('')
-      if (inputRef.current) {
-        inputRef.current.value = ''
-      }
+      setSearchInput('')
     }
     router.events.on('routeChangeComplete', handleRouteChangeComplete)
     return () => {
       router.events.off('routeChangeComplete', handleRouteChangeComplete)
     }
-  }, [router, setSearchTemplate])
+  }, [router.events, setSearchInput, setSearchTemplate])
 
   const handleSearchClick = () => {
-    console.log(inputRef.current?.value)
-    setSearchTemplate(inputRef.current?.value.trim())
-    router.push('/', undefined, { shallow: true })
+    setSearchTemplate(searchInput)
+    if (router.pathname === '/' || router.pathname === '/en') {
+      return
+    }
+    router.push('/')
   }
 
   const handleKeySubmit = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -43,10 +50,10 @@ const Search = () => {
     <SectionSearch>
       <InputSearch
         name="search"
-        inputRef={inputRef}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Search..."
         onKeyUp={handleKeySubmit}
-        defaultValue={searchTemplate}
       />
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
         <Image src={SearchIcon} alt="" width={16} height={16} />
