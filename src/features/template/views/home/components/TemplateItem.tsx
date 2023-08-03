@@ -17,7 +17,7 @@ import ImageFile from 'public/assets/imgs/image_template_default.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
-import { HEIGHT_TEMPLATE_ACTION, TemplateAction } from './TemplateAction'
+import { TemplateAction } from './TemplateAction'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
@@ -212,9 +212,15 @@ const CardHeader = styled(MuiCardHeader)({
   padding: 0,
 })
 
-const CardContent = styled(MuiCardContent)({
+const CardContent = styled(MuiCardContent)(({ theme }) => ({
   padding: '0 !important',
-  height: `calc(100% - ${HEIGHT_TEMPLATE_ACTION}px)`,
-})
+  height: 320,
+  [theme.breakpoints.down('xl')]: {
+    height: 300,
+  },
+  [theme.breakpoints.down('lg')]: {
+    height: 280,
+  },
+}))
 
 export { TemplateItem }
