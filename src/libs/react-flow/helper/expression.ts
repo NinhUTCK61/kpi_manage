@@ -140,7 +140,7 @@ export const getNodeIncludeSlug = (node: ReactFlowKPINode, nodes: ReactFlowKPINo
 
 //get list node change value2number when one node in formula change
 export const getDiffValue2Number = (
-  nodeFocused: ReactFlowKPINode,
+  nodeFocused: ReactFlowKPINode | string,
   listNodeChange: ReactFlowKPINode[],
 ) => {
   const nodes: ReactFlowKPINode[] = []
@@ -148,14 +148,15 @@ export const getDiffValue2Number = (
   let _listNOdeChange = listNodeChange
   const listSlugWithNodeFocused: string[] = []
   // Chỉ lấy các node liên quan tới nodeFocused(các node đã nhập nodeFocused vào formula)
-  const slugs = findChildNodesV2(_listNOdeChange, nodeFocused.data.slug)
+  const slugNodeFocused = typeof nodeFocused === 'string' ? nodeFocused : nodeFocused.data.slug
+  const slugs = findChildNodesV2(_listNOdeChange, slugNodeFocused)
   slugs.forEach((slug) => {
     const node = _listNOdeChange.find((e) => e.data.slug === slug && e.data.is_formula)
     if (!node) return
 
     if (
       !listSlugWithNodeFocused.includes(slug) &&
-      checkIncludeFormulaWithSlugs(listSlugWithNodeFocused, node, nodeFocused.data.slug)
+      checkIncludeFormulaWithSlugs(listSlugWithNodeFocused, node, slugNodeFocused)
     ) {
       //thêm các slug của các node liên quan đến nodeFocused vào listSlugWithNodeFocused
       listSlugWithNodeFocused.push(slug)
