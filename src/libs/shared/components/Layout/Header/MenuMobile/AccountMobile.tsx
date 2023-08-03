@@ -21,8 +21,13 @@ import LogOutIcon from 'public/assets/svgs/log_out.svg'
 import PrivacyIcon from 'public/assets/svgs/privacy.svg'
 import ProfileIcon from 'public/assets/svgs/profile.svg'
 import { useState } from 'react'
+import { ItemMenuMobile, StyleListItemButton } from './ItemMenuMobile'
 
-const AccountMobile = () => {
+type AccountMobileType = {
+  handleCloseMenu: () => void
+}
+
+const AccountMobile: React.FC<AccountMobileType> = ({ handleCloseMenu }) => {
   const { data: sessionData } = useSession()
   const { t } = useTranslation()
   const router = useRouter()
@@ -31,32 +36,24 @@ const AccountMobile = () => {
     {
       title: t('menu.edit'),
       icon: ProfileIcon,
-      handle: () => router.push('/profile'),
+      href: '/profile',
     },
     {
       title: t('menu.change_password'),
       icon: ChangeIcon,
-      handle: () => router.push('/change-password'),
+      href: '/change-password',
     },
     {
       title: t('menu.privacy_policy'),
       icon: PrivacyIcon,
-      handle: () => router.push('/privacy-policy'),
+      href: '/privacy-policy',
       disable: true,
     },
     {
       title: t('menu.terms_of_use'),
       icon: TermsOfUseIcon,
-      handle: () => router.push('/terms-of-use'),
+      href: '/terms-of-use',
       disable: true,
-    },
-    {
-      title: t('menu.log_out'),
-      icon: LogOutIcon,
-      handle: () =>
-        signOut({
-          callbackUrl: '/' + router.locale + '/sign-in',
-        }),
     },
   ]
 
@@ -64,6 +61,14 @@ const AccountMobile = () => {
 
   const handleClick = () => {
     setOpenAccount(!openAccount)
+  }
+
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: '/' + router.locale + '/sign-in',
+    })
+
+    handleCloseMenu()
   }
 
   return (
@@ -93,20 +98,22 @@ const AccountMobile = () => {
 
       <Collapse in={openAccount} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <Stack direction="column" spacing={1} ml={2}>
+          <Stack direction="column" spacing={1} ml={2} mr={2}>
             {menus.map((menu) => (
-              <ListItemButton key={menu.title} onClick={menu.handle} disabled={menu.disable}>
-                <ListItemIcon sx={{ minWidth: 20, mr: 0.5 }}>
-                  <Image src={menu.icon} width={20} height={20} alt="edit icon" />
-                </ListItemIcon>
-
-                <ListItemText>
-                  <Typography color="base.black" variant="body2">
-                    {menu.title}
-                  </Typography>
-                </ListItemText>
-              </ListItemButton>
+              <ItemMenuMobile menu={menu} key={menu.title} handleCloseMenu={handleCloseMenu} />
             ))}
+
+            <StyleListItemButton onClick={handleSignOut}>
+              <ListItemIcon sx={{ minWidth: 20, mr: 0.5 }}>
+                <Image src={LogOutIcon} alt="icon" width={20} height={20} />
+              </ListItemIcon>
+
+              <ListItemText>
+                <Typography color="base.black" variant="body2">
+                  {t('menu.log_out')}
+                </Typography>
+              </ListItemText>
+            </StyleListItemButton>
           </Stack>
         </List>
       </Collapse>
