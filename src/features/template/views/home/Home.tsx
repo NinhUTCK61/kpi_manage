@@ -1,13 +1,12 @@
 import { ThumbnailAction } from '@/features/template/components'
+import { useSearchStore } from '@/features/template/store'
 import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
-import { useClearParam } from '@/libs/hooks/useClearParam'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
 import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import AddIcon from 'public/assets/svgs/plus.svg'
 import { useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
@@ -30,10 +29,7 @@ const Home = () => {
   const mutationRestore = useRestoreTemplate()
   const mutationDelete = useDeleteTemplate()
 
-  const router = useRouter()
-  const searchParam = (router.query.search as string) || ''
-
-  useClearParam()
+  const { searchTemplate } = useSearchStore()
 
   const handleFileAction = (id: string, type: FileAction) => {
     setNodeId(id)
@@ -89,20 +85,26 @@ const Home = () => {
 
   const { data, refetch, isLoading } = api.template.list.useQuery({
     isTrash: isTrash,
-    searchName: searchParam ? searchParam : '',
+    searchName: searchTemplate,
   })
 
   const getMessageNoFile = () => {
     const isEmpty = !data?.length
-    const noFilesMessage = t('no_file', { ns: 'common' })
-    const noFoundFileMessage = t('no_found_file', { ns: 'common' })
-    const noDeletedFilesMessage = t('no_deleted_files', { ns: 'common' })
+    const messages = {
+      noFiles: t('no_file', { ns: 'common' }),
+      noFoundFiles: t('no_found_file', { ns: 'common' }),
+      noDeletedFiles: t('no_deleted_files', { ns: 'common' }),
+    }
+
+    let message = isEmpty ? messages.noFiles : ''
 
     if (isTrash) {
-      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noDeletedFilesMessage
+      message = searchTemplate ? messages.noFoundFiles : messages.noDeletedFiles
     } else {
-      return searchParam ? isEmpty && noFoundFileMessage : isEmpty && noFilesMessage
+      message = searchTemplate ? messages.noFoundFiles : message
     }
+
+    return message
   }
 
   return (

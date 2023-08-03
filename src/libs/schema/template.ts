@@ -26,10 +26,6 @@ export const ListTemplateInputSchema = z.object({
   searchName: z.string().optional(),
 })
 
-export const FavoriteTemplateSchema = z.object({
-  searchName: z.string().optional(),
-})
-
 export const TemplateDataSchema = z.object({
   template_id: z.string(),
   root_note_id: z.string(),

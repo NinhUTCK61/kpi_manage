@@ -1,44 +1,43 @@
-import { Button, Stack, styled } from '@mui/material'
+import { useSearchStore } from '@/features/template/store'
+import { Button, InputBase, Stack, styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { InputSearch } from '../../Form/Input'
-
-type SearchType = {
-  search: string
-}
+import { KeyboardEvent, useEffect } from 'react'
+import { shallow } from 'zustand/shallow'
 
 const Search = () => {
-  const { control } = useForm<SearchType>({
-    defaultValues: {
-      search: '',
-    },
-  })
-
   const router = useRouter()
+  const { setSearchTemplate, searchInput, setSearchInput } = useSearchStore(
+    (state) => ({
+      setSearchTemplate: state.setSearchTemplate,
+      searchInput: state.searchInput,
+      setSearchInput: state.setSearchInput,
+    }),
+    shallow,
+  )
 
-  const searchParam = (router.query.search as string) || ''
+  useEffect(() => {
+    const handleRouteChangeComplete = (url: string) => {
+      if (url === '/' || url === '/en') {
+        return
+      }
 
-  const [searchValue, setSearchValue] = useState<string>('')
-
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }
+      setSearchTemplate('')
+      setSearchInput('')
+    }
+    router.events.on('routeChangeComplete', handleRouteChangeComplete)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete)
+    }
+  }, [router.events, setSearchInput, setSearchTemplate])
 
   const handleSearchClick = () => {
-    if (searchParam !== searchValue) {
-      setSearchValue(searchValue.trim())
-
-      router.push(
-        {
-          query: { search: searchValue.trim() },
-        },
-        undefined,
-        { shallow: true },
-      )
+    setSearchTemplate(searchInput)
+    if (router.pathname === '/' || router.pathname === '/en') {
+      return
     }
+    router.push('/')
   }
 
   const handleKeySubmit = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -51,10 +50,9 @@ const Search = () => {
     <SectionSearch>
       <InputSearch
         name="search"
-        control={control}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Search..."
-        value={searchValue}
-        onChange={handleSearchChange}
         onKeyUp={handleKeySubmit}
       />
       <ButtonSearch variant="contained" onClick={handleSearchClick}>
@@ -81,5 +79,25 @@ const SectionSearch = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
     display: 'none',
+  },
+}))
+
+const InputSearch = styled(InputBase)(({ theme }) => ({
+  marginRight: theme.spacing(1.75),
+  borderRadius: theme.spacing(1),
+  color: theme.palette.common.black,
+  gap: 8,
+  backgroundColor: theme.palette.greyScale[100],
+  '& .MuiOutlinedInput-input': {
+    padding: theme.spacing(1, 1.75, 1, 0),
+  },
+  height: 38,
+  width: 465,
+  '& .MuiInputAdornment-positionStart': {
+    marginRight: 0,
+  },
+  fontSize: 15,
+  [theme.breakpoints.down('lg')]: {
+    width: 400,
   },
 }))
