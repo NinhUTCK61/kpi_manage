@@ -1,5 +1,5 @@
 import createEmotionCache from '@/libs/config/createEmotionCache'
-import { defaultTheme, notoSan } from '@/libs/config/theme'
+import { notoSan } from '@/libs/config/theme'
 import createEmotionServer from '@emotion/server/create-instance'
 import { AppType } from 'next/app'
 import Document, {
@@ -22,8 +22,9 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
     <Html lang="en" className={notoSan.className}>
       <Head>
         {/* PWA primary color */}
-        <meta name="theme-color" content={defaultTheme.palette.primary.main} />
+        <meta name="theme-color" content="#ffffff" />
         <link rel="shortcut icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>
