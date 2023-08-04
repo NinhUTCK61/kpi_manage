@@ -63,7 +63,7 @@ const Account = () => {
   ]
 
   return (
-    <Box display={{ xs: 'none', lg: 'block' }}>
+    <Box display={{ xs: 'none', md: 'block' }}>
       {/* <Image
         src={NotificationIcon}
         alt="notification-icon"
