@@ -28,7 +28,7 @@ const FormSignUp: React.FC<FormSignUpTypes> = ({ handleSubmit, isLoading }) => {
   const [isAccept, setIsAccept] = useState<boolean>(false)
 
   return (
-    <Stack justifyContent="center" alignItems="center">
+    <Stack justifyContent="center" alignItems="center" mt={2}>
       <Stack
         sx={{
           width: { xs: '100%', sm: 'auto' },

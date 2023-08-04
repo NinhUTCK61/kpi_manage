@@ -1,7 +1,7 @@
-import { Stack, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { HEADER_HEIGHT, HeaderUnAuth } from './Header'
+import { HeaderUnAuth } from './Header'
 
 type LayoutType = {
   title?: string | null
@@ -17,9 +17,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
         <meta name="description" content={description} />
       </Head>
       <HeaderUnAuth />
-      <Stack direction="row">
-        <ContentPage>{children}</ContentPage>
-      </Stack>
+      <ContentPage>{children}</ContentPage>
     </>
   )
 }
@@ -27,8 +25,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
 export { LayoutUnAuth }
 
 const ContentPage = styled('div')(({ theme }) => ({
-  marginTop: HEADER_HEIGHT,
-  minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  // marginTop: HEADER_HEIGHT,
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',

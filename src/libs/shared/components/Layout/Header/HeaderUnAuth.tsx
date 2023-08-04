@@ -1,4 +1,4 @@
-import { Stack, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
@@ -14,19 +14,16 @@ const HeaderUnAuth = () => {
   const router = useRouter()
 
   return (
-    <AppBar elevation={0}>
+    <AppBar elevation={0} position="relative">
       <StackContainer>
-        <Stack direction="row" spacing={19.75} alignItems="center">
-          <MuiImage
-            src={LogoHeader}
-            alt="logo-header"
-            priority
-            onClick={() => router.push('/sign-in')}
-          />
-        </Stack>
-        <Stack direction="row" alignItems="center">
-          <Language />
-        </Stack>
+        <MuiImage
+          src={LogoHeader}
+          alt="logo-header"
+          priority
+          onClick={() => router.push('/sign-in')}
+        />
+
+        <Language />
       </StackContainer>
     </AppBar>
   )
