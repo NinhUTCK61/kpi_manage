@@ -140,17 +140,12 @@ const Login: FC = () => {
                 </TextColor>
               </Stack>
 
-              <Stack
-                py={1.5}
-                spacing={0.5}
-                justifyContent="center"
-                direction="row"
-                onClick={redirectSignUp}
-              >
+              <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
                 <Typography variant="body2" color="greyScale.600" fontWeight={400}>
                   {t('not_have_account')}
                 </Typography>
-                <TextColor>{t('sign_up')}</TextColor>
+
+                <TextColor onClick={redirectSignUp}>{t('sign_up')}</TextColor>
               </Stack>
             </Stack>
           </Stack>
