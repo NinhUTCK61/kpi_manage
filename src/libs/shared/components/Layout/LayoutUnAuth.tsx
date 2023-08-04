@@ -25,7 +25,6 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
 export { LayoutUnAuth }
 
 const ContentPage = styled('div')(({ theme }) => ({
-  // marginTop: HEADER_HEIGHT,
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',

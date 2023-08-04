@@ -16,6 +16,7 @@ import { SearchMobileButton } from './MenuMobile/SearchMobileButton'
 import { Search } from './Search'
 
 const HEADER_HEIGHT = 60
+const HEADER_MOBILE_HEIGHT = 48
 
 const displaySearchHref = [menuHref.home, menuHref.favorite]
 
@@ -71,11 +72,10 @@ const Header = () => {
       ) : (
         <StackContainer>
           <Stack direction="row" spacing={18.75} alignItems="center">
-            <Image
+            <MuiImage
               src={LogoHeader}
               alt="logo-header"
               onClick={() => router.push('/')}
-              style={{ cursor: 'pointer' }}
               priority
             />
 
@@ -103,7 +103,7 @@ const Header = () => {
   )
 }
 
-export { HEADER_HEIGHT, Header }
+export { HEADER_HEIGHT, HEADER_MOBILE_HEIGHT, Header }
 
 const StackSearch = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -125,3 +125,11 @@ const ButtonCloseSearch = styled(Button)({
 const SearchBar = styled(Box)({
   width: 'calc(100% - 28px)', // 100% - widthButtonCloseSearch
 })
+
+const MuiImage = styled(Image)(({ theme }) => ({
+  cursor: 'pointer',
+  [theme.breakpoints.down('sm')]: {
+    width: 70,
+    height: 24,
+  },
+}))
