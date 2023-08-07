@@ -212,15 +212,9 @@ const CardHeader = styled(MuiCardHeader)({
   padding: 0,
 })
 
-const CardContent = styled(MuiCardContent)(({ theme }) => ({
+const CardContent = styled(MuiCardContent)({
   padding: '0 !important',
   height: 240,
-  [theme.breakpoints.down('xl')]: {
-    height: 220,
-  },
-  [theme.breakpoints.down('lg')]: {
-    height: 200,
-  },
-}))
+})
 
 export { TemplateItem }
