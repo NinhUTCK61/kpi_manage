@@ -2,7 +2,7 @@ import { useLikeTemplate, useRenameTemplate } from '@/features/template/hooks'
 import { api } from '@/libs/api'
 import { black } from '@/libs/config/theme'
 import { useRFStore } from '@/libs/react-flow'
-import { Menu, MenuItem } from '@/libs/shared/components'
+import { CustomLink, Menu, MenuItem } from '@/libs/shared/components'
 import { Account } from '@/libs/shared/components/Layout/Header/Account'
 import { AppBar } from '@/libs/shared/components/Layout/Header/AppBar'
 import { Language } from '@/libs/shared/components/Layout/Header/Language'
@@ -10,7 +10,6 @@ import { StackContainer } from '@/libs/shared/components/Layout/StackContainer'
 import { Button, InputBase, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
 import ArrowDownIcon from 'public/assets/svgs/arrow_down.svg'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
@@ -18,7 +17,6 @@ import LogoHeader from 'public/assets/svgs/logo_header.svg'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 
 const HeaderTemplate: React.FC = () => {
-  const router = useRouter()
   const { t } = useTranslation(['file', 'home'])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
@@ -113,12 +111,9 @@ const HeaderTemplate: React.FC = () => {
     <AppBar elevation={0}>
       <StackContainer>
         <Stack direction="row" spacing={19.75} alignItems="center">
-          <Image
-            src={LogoHeader}
-            alt="logo-header"
-            onClick={() => router.push('/')}
-            style={{ cursor: 'pointer' }}
-          />
+          <CustomLink href={'/'}>
+            <Image src={LogoHeader} alt="logo-header" />
+          </CustomLink>
         </Stack>
 
         {name !== null ? (
