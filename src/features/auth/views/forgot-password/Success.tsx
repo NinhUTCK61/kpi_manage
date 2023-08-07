@@ -27,7 +27,7 @@ const Success: FC = () => {
           <Image src={Email} alt="email" />
 
           <SubTitle mt={1.5} mb={{ xs: 1, sm: 2 }}>
-            {t('title') as string}
+            {t('title_success') as string}
           </SubTitle>
 
           <DescriptionTitle textAlign="center">{t('title_send_mail_success')}</DescriptionTitle>

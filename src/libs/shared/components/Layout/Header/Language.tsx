@@ -62,7 +62,7 @@ const Language: React.FC = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <Image src={languages.find((e) => e.id === language)?.icon} alt="english" />
+        <LanguageImage src={languages.find((e) => e.id === language)?.icon} alt="english" />
 
         <TextLanguage>{languages.find((e) => e.id === language)?.title}</TextLanguage>
 
@@ -129,5 +129,11 @@ const StyleMenuItem = styled(MenuItem, {
   lineHeight: '22px',
   color: theme.palette.common.black,
 }))
+
+const LanguageImage = styled(Image)({
+  cursor: 'pointer',
+  width: 25,
+  height: 25,
+})
 
 export { Language }
