@@ -90,13 +90,7 @@ export const Favorite = () => {
           <CircularProgress size="2rem" />
         </Stack>
       ) : favoriteData && favoriteData.length > 0 ? (
-        <Grid
-          container
-          rowSpacing={4}
-          spacing={2}
-          columns={{ xs: 2, sm: 4, md: 6, lg: 8, xl: 10 }}
-          justifyContent={{ xs: 'center', md: 'flex-start' }}
-        >
+        <Grid container rowSpacing={4} spacing={2} columns={{ xs: 2, sm: 4, md: 6, lg: 8, xl: 10 }}>
           {favoriteData?.map((template, index) => (
             <Grid item xs={2} key={index}>
               <TemplateItem
