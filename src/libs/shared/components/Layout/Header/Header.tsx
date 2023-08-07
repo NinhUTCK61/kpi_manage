@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import ArrowLeftIcon from 'public/assets/svgs/arrow_left_search.svg'
 import LogoHeader from 'public/assets/svgs/logo_header.svg'
 import { useEffect, useState } from 'react'
+import { CustomLink } from '../../CustomLink'
 import { menuHref } from '../Sidebar'
 import { StackContainer } from '../StackContainer'
 import { Account } from './Account'
@@ -71,12 +72,9 @@ const Header = () => {
       ) : (
         <StackContainer>
           <Stack direction="row" spacing={18.75} alignItems="center">
-            <MuiImage
-              src={LogoHeader}
-              alt="logo-header"
-              onClick={() => router.push('/')}
-              priority
-            />
+            <CustomLink href={'/'}>
+              <MuiImage src={LogoHeader} alt="logo-header" priority />
+            </CustomLink>
 
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
               {displaySearchHref.includes(router.pathname) && <Search />}
