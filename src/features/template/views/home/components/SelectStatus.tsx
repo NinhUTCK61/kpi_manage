@@ -41,7 +41,6 @@ const SelectStatus: React.FC<SelectStatusTypes> = ({ isTrash, setIsTrash }) => {
       justifyContent="space-between"
       alignItems="center"
       mb={{ xs: 2, sm: 1.5 }}
-      order={1}
     >
       <Title sx={{ mb: '0 !important' }}>{isTrash ? t('deleted_file_title') : t('my_files')}</Title>
 

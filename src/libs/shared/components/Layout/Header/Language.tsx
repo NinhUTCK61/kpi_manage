@@ -1,5 +1,5 @@
-import { Menu, MenuItem } from '@/libs/shared/components/Menu'
-import { IconButton, Stack, Typography, styled } from '@mui/material'
+import { Menu } from '@/libs/shared/components/Menu'
+import { IconButton, MenuItem, Stack, Typography, styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -8,6 +8,10 @@ import ArrowLeftIcon from 'public/assets/svgs/arrow_left_account.svg'
 import EnglishIcon from 'public/assets/svgs/english.svg'
 import JapanIcon from 'public/assets/svgs/japanese.svg'
 import { useState } from 'react'
+
+type StyleMenuItemType = {
+  active?: boolean
+}
 
 const Language: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -44,6 +48,10 @@ const Language: React.FC = () => {
     },
   ]
 
+  const checkLangActive = (href: string) => {
+    return router.locale === href
+  }
+
   return (
     <>
       <Item
@@ -73,15 +81,21 @@ const Language: React.FC = () => {
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        disableAutoFocusItem
       >
         {languages.map((e) => (
-          <MenuItem key={e.id} onClick={() => changLanguage(e.id)}>
+          <StyleMenuItem
+            key={e.id}
+            onClick={() => changLanguage(e.id)}
+            active={checkLangActive(e.id)}
+            disableRipple
+          >
             <Image src={e.icon} alt={e.title} height={20} width={20} />
 
             <Typography ml={0.75} variant="body2">
               {e.title}
             </Typography>
-          </MenuItem>
+          </StyleMenuItem>
         ))}
       </Menu>
     </>
@@ -103,6 +117,17 @@ const TextLanguage = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down('lg')]: {
     display: 'none',
   },
+}))
+
+const StyleMenuItem = styled(MenuItem, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<StyleMenuItemType>(({ theme, active }) => ({
+  backgroundColor: active ? theme.palette.customPrimary[0] : theme.palette.common.white,
+  height: theme.spacing(6.75),
+  borderBottom: `1px solid ${theme.palette.greyScale[200]}`,
+  fontSize: 15,
+  lineHeight: '22px',
+  color: theme.palette.common.black,
 }))
 
 export { Language }

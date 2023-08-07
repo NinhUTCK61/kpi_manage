@@ -6,19 +6,19 @@ import HandDragIcon from 'public/assets/svgs/cursor/hand_drag.svg'
 import MoveIcon from 'public/assets/svgs/cursor/move.svg'
 import AddSpeechIcon from 'public/assets/svgs/cursor/speech.svg'
 import { ReactFlow } from 'reactflow'
-
+const DEFAUlT_CURSOR = '0 4'
+const SPEECH_CURSOR = '0 8'
 const cursorIconMap = {
-  [ViewPortAction.Move]: MoveIcon.src,
-  [ViewPortAction.Pan]: HandIcon.src,
-  [ViewPortAction.Comment]: CommentIcon.src,
-  [ViewPortAction.SpeechBallon]: AddSpeechIcon.src,
+  [ViewPortAction.Move]: { cursor: MoveIcon.src, custom: DEFAUlT_CURSOR },
+  [ViewPortAction.Pan]: { cursor: HandIcon.src, custom: DEFAUlT_CURSOR },
+  [ViewPortAction.Comment]: { cursor: CommentIcon.src, custom: DEFAUlT_CURSOR },
+  [ViewPortAction.SpeechBallon]: { cursor: AddSpeechIcon.src, custom: SPEECH_CURSOR },
 }
-
 const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) => {
   const cursorIcon = cursorIconMap[action]
   return {
     '& .react-flow__pane': {
-      cursor: `url(${cursorIcon}) 0 8,auto`,
+      cursor: `url(${cursorIcon.cursor}) ${cursorIcon.custom},auto`,
     },
     ...(action === ViewPortAction.Pan && {
       '& .react-flow__pane.dragging': {
@@ -39,5 +39,4 @@ const KpiReactFlow = styled(ReactFlow)<{ action: ViewPortAction }>(({ action }) 
     }),
   }
 })
-
 export { KpiReactFlow }
