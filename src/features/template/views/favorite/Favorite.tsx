@@ -3,7 +3,7 @@ import { api } from '@/libs/api'
 import { useModalState } from '@/libs/hooks'
 import { DialogAction, Layout } from '@/libs/shared/components'
 import { DialogActionType } from '@/libs/shared/types/utils'
-import { Box, CircularProgress, Grid, Stack } from '@mui/material'
+import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -116,6 +116,10 @@ export const Favorite = () => {
               alt={t('no_file', { ns: 'common' })}
             />
           </Box>
+
+          <Typography variant="body2" mt={2}>
+            {t('no_file', { ns: 'common' })}
+          </Typography>
         </Stack>
       )}
 

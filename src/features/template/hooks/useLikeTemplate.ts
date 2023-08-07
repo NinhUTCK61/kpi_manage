@@ -1,6 +1,7 @@
 import { api } from '@/libs/api'
 import { useTranslateError } from '@/libs/hooks'
 import { useTranslation } from 'next-i18next'
+import { enqueueSnackbar } from 'notistack'
 
 const useLikeTemplate = () => {
   const { t } = useTranslation('home')
@@ -40,6 +41,14 @@ const useLikeTemplate = () => {
       showError(err, t('like_failed'))
       utils.template.list.setData({ isTrash: false, searchName: '' }, ctx?.prevData)
       utils.template.favorite.setData(undefined, ctx?.prevFavData)
+    },
+    onSuccess: (data) => {
+      if (data.is_favorite) {
+        enqueueSnackbar(t('favorite_template'), { variant: 'success' })
+        return
+      }
+
+      enqueueSnackbar(t('remove_favorite_template'), { variant: 'success' })
     },
     onSettled: () => {
       utils.template.list.invalidate()
