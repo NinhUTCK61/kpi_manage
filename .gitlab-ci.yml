@@ -38,12 +38,13 @@ variables:
   
 build-stg:
   stage: build
-  image: docker:latest
+  # image: docker:latest
   environment: staging
   tags:
-    - docker-runner
-  services:
-    - name: docker:dind
+    # - docker-runner
+    - shell
+  # services:
+  #   - name: docker:dind
   before_script:
     - !reference [.generate-env, before_script]
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
