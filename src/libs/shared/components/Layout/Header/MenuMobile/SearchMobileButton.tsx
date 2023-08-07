@@ -14,7 +14,7 @@ const SearchMobileButton: React.FC<SearchMobileButtonType> = ({ handleOpenSearch
         src={SearchMobileIcon}
         alt="menu-header"
         onClick={handleOpenSearch}
-        style={{ cursor: 'pointer', marginRight: '8px' }}
+        style={{ cursor: 'pointer', marginRight: '16px' }}
         priority
       />
     </ButtonAction>

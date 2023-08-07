@@ -6,13 +6,9 @@ import { StackContainer } from '../StackContainer'
 import { AppBar } from './AppBar'
 import { Language } from './Language'
 
-const MuiImage = styled(Image)(({ theme }) => ({
+const MuiImage = styled(Image)({
   cursor: 'pointer',
-  [theme.breakpoints.down('sm')]: {
-    width: 70,
-    height: 24,
-  },
-}))
+})
 
 const HeaderUnAuth = () => {
   const router = useRouter()

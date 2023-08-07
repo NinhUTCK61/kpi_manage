@@ -14,7 +14,7 @@ const MenuMobileButton: React.FC<MenuMobileButtonType> = ({ handleOpenMenu }) =>
         src={MenuMobileIcon}
         alt="menu-header"
         onClick={handleOpenMenu}
-        style={{ cursor: 'pointer', marginLeft: '8px' }}
+        style={{ cursor: 'pointer', marginLeft: '16px' }}
         priority
       />
     </ButtonAction>

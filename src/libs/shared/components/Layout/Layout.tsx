@@ -1,7 +1,7 @@
 import { Box, BoxProps, Stack, styled } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
-import { HEADER_HEIGHT, HEADER_MOBILE_HEIGHT, Header } from './Header'
+import { HEADER_HEIGHT, Header } from './Header'
 import { Sidebar } from './Sidebar'
 
 type LayoutType = BoxProps<
@@ -50,7 +50,5 @@ const ContentPage = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 4),
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(2),
-    marginTop: HEADER_MOBILE_HEIGHT,
-    minHeight: `calc(100vh - ${HEADER_MOBILE_HEIGHT}px)`,
   },
 }))
