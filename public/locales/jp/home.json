@@ -47,5 +47,8 @@
   "incorrect_upload_image": "画像形式が正しくありません。",
   "error_size_image_upload": "この画像の容量は3MBを超えています。3MB未満の容量の画像に変更してください。",
   "favorite_template": "お気に入りに追加しました。",
-  "remove_favorite_template": "お気に入りを解除しました。"
+  "remove_favorite_template": "お気に入りを解除しました。",
+  "dialog_warning": {
+    "description": "ツリーの作成はスマホ対応しておりません"
+  }
 }

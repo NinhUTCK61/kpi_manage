@@ -1,3 +1,4 @@
+import { useMatchesSize } from '@/libs/hooks'
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
 import {
   CommentForm,
@@ -10,7 +11,8 @@ import {
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
-import { useLayoutEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
@@ -18,6 +20,7 @@ import { ViewPortAction } from '../../constant'
 import { useReactFlowHandler } from '../hooks'
 import { KpiReactFlow, TOOLBAR_HEIGHT, Toolbar } from './components'
 import { DialogDeleteNode } from './components/DialogDeleteNode'
+import { DialogWarning } from './components/DialogWarning'
 import { HeaderTemplate } from './components/Header'
 
 const nodeTypes = {
@@ -58,6 +61,8 @@ export const CreateView: React.FC = () => {
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
+  const { isDownLarge } = useMatchesSize()
+  const router = useRouter()
 
   useLayoutEffect(() => {
     if (container) {
@@ -79,6 +84,17 @@ export const CreateView: React.FC = () => {
       firstFocus.current = true
     }
   }, [setNodeFocused, nodes, nodeFocused])
+
+  const [modal, setOpenModal] = useState(false)
+
+  useEffect(() => {
+    setOpenModal(isDownLarge)
+  }, [isDownLarge])
+
+  const handleClose = () => {
+    setOpenModal(false)
+    // router.push('/')
+  }
 
   return (
     <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
@@ -120,6 +136,7 @@ export const CreateView: React.FC = () => {
       </Container>
 
       <DialogDeleteNode />
+      <DialogWarning open={modal} handleClose={handleClose} />
     </Layout>
   )
 }
