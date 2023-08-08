@@ -22,7 +22,6 @@ export function generateNextIdByAdd(
 ): string {
   const { data, children } = parentNode
   const parentSlug = data.data.slug
-  const _d3Root = d3Root.find((node) => node.data.data.slug === convertSlugToString(parentSlug))
 
   if (parentSlug === 'root') {
     if (!children || children.length === 0) {
@@ -33,6 +32,7 @@ export function generateNextIdByAdd(
       return numberToLetters(maxChildNumber + 1)
     }
   } else {
+    const _d3Root = d3Root.find((node) => node.data.data.slug === convertSlugToString(parentSlug))
     if (children?.length) {
       const maxCurrentSlug = children[children.length - 1]?.data.data.slug as string
       const newSlug = nextSlug(maxCurrentSlug)
