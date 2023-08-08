@@ -15,11 +15,6 @@ import { enqueueSnackbar } from 'notistack'
 import { useCallback } from 'react'
 import { filterKpiNodes } from '../utils'
 
-const MESSAGE = {
-  jp: 'ルートノードを削除できません。',
-  en: "Can't delete root node",
-}
-
 const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
   const removeKPINode = useRFStore((state) => state.removeKPINode)
   const templateId = useRFStore((state) => state.templateId)
@@ -27,10 +22,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const handleToggleDialogDelete = useRFStore((state) => state.handleToggleDialogDelete)
   const utils = api.useContext()
-  const {
-    t,
-    i18n: { language },
-  } = useTranslation('common')
+  const { t } = useTranslation('common')
 
   const { bulkUpdate } = useNodeUpdateMutation(
     updateStateReason ?? UpdateStateReason.BulkUpdateNodeInternal,
@@ -85,7 +77,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
         ?.nodes.find((n) => n.id === id)
       if (!node || node.type !== 'kpi') return
       if (node.data.slug === 'root') {
-        enqueueSnackbar(MESSAGE[language as keyof typeof MESSAGE], {
+        enqueueSnackbar(t('error.delete_root'), {
           variant: 'error',
         })
         return
@@ -103,7 +95,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
       mutation.mutate({ id })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getKpiNodes, handleToggleDialogDelete, templateId, language],
+    [getKpiNodes, handleToggleDialogDelete, templateId, t],
   )
 
   return { handleDelete, ...mutation }

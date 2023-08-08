@@ -91,6 +91,7 @@
     "delete_node_has_formula_1": "このボックスは「",
     "delete_node_has_formula_2": "」の数式に使用されています。それでも削除しますか？",
     "formula_repetition": "エラー（循環参照）です。",
+    "delete_root": "ルートノードを削除できません。",
 
     "create_comment": "コメントの作成に失敗しました。",
     "create_comment_reply": "返信の作成に失敗しました。",
