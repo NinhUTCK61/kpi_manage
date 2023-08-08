@@ -91,6 +91,7 @@
     "delete_node_has_formula_1": "This box exists in the formula of [",
     "delete_node_has_formula_2": "]. Are you sure to delete?",
     "formula_repetition": "Circular dependency detected.",
+    "delete_root": "Can't delete root node",
 
     "create_comment": "Failed to create comment.",
     "create_comment_reply": "Failed to create reply.",

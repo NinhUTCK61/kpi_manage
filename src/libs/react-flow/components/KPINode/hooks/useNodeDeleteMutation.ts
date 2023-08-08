@@ -76,6 +76,12 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
         .getData({ template_id: templateId })
         ?.nodes.find((n) => n.id === id)
       if (!node || node.type !== 'kpi') return
+      if (node.data.slug === 'root') {
+        enqueueSnackbar(t('error.delete_root'), {
+          variant: 'error',
+        })
+        return
+      }
       const nodes = getKpiNodes()
       const slugs = getNodeIncludeSlug(node, nodes)
       if (slugs.length) {
@@ -89,7 +95,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
       mutation.mutate({ id })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getKpiNodes, handleToggleDialogDelete, templateId],
+    [getKpiNodes, handleToggleDialogDelete, templateId, t],
   )
 
   return { handleDelete, ...mutation }
