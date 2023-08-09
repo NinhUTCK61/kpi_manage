@@ -13,6 +13,7 @@ const useSpeechBallonCreateMutation = (updateReason?: UpdateStateReason) => {
 
   const mutation = api.speechBallon.create.useMutation({
     onSuccess(data) {
+      if (updateReason === UpdateStateReason.OnUndoRedo) return
       const dataConvert = convertToReactFlowSpeechBallonSingle(data)
       addSpeechBallon(dataConvert, true, updateReason)
     },
