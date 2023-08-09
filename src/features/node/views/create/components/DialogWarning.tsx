@@ -1,14 +1,25 @@
 import { greyScale } from '@/libs/config/theme'
-import { DialogBaseProps } from '@/libs/shared/types/utils'
+import { useMatchesSize } from '@/libs/hooks'
 import { Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
+import { useEffect, useState } from 'react'
 
-const DialogWarning: React.FC<DialogBaseProps> = ({ open, handleClose }) => {
+const DialogWarning = () => {
   const { t } = useTranslation('file')
+  const [openDialog, setOpenDialog] = useState(false)
+  const { isDownLarge } = useMatchesSize()
+
+  useEffect(() => {
+    setOpenDialog(isDownLarge)
+  }, [isDownLarge])
+
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
 
   return (
     <Dialog
-      open={open}
+      open={openDialog}
       onClose={handleClose}
       PaperProps={{
         elevation: 2,
@@ -24,7 +35,9 @@ const DialogWarning: React.FC<DialogBaseProps> = ({ open, handleClose }) => {
           mb: 2,
         }}
       >
-        <Typography color={greyScale[900]}>{t('dialog_warning.description')}</Typography>
+        <Typography color={greyScale[900]} textAlign="center" fontWeight="bold">
+          {t('dialog_warning.description')}
+        </Typography>
       </DialogContent>
 
       <DialogActions sx={{ p: 0, mb: 1 }}>

@@ -1,4 +1,3 @@
-import { useMatchesSize } from '@/libs/hooks'
 import { NODE_HEIGHT_TEMPLATE, RFStore, ReactFlowNode, useRFStore } from '@/libs/react-flow'
 import {
   CommentForm,
@@ -11,7 +10,7 @@ import {
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
@@ -64,7 +63,6 @@ export const CreateView: React.FC = () => {
   } = useReactFlowHandler()
 
   const { setViewport } = useReactFlow()
-  const { isDownLarge } = useMatchesSize()
 
   useLayoutEffect(() => {
     if (container) {
@@ -86,16 +84,6 @@ export const CreateView: React.FC = () => {
       firstFocus.current = true
     }
   }, [setNodeFocused, nodes, nodeFocused])
-
-  const [openDialog, setOpenDialog] = useState(false)
-
-  useEffect(() => {
-    setOpenDialog(isDownLarge)
-  }, [isDownLarge])
-
-  const handleClose = () => {
-    setOpenDialog(false)
-  }
 
   return (
     <Layout disableSidebar sx={{ p: '0 !important' }} HeaderComponent={<HeaderTemplate />}>
@@ -137,7 +125,7 @@ export const CreateView: React.FC = () => {
       </Container>
 
       <DialogDeleteNode />
-      <DialogWarning open={openDialog} handleClose={handleClose} />
+      <DialogWarning />
     </Layout>
   )
 }
