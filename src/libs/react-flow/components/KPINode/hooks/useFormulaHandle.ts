@@ -14,7 +14,7 @@ const useFormularHanlder = () => {
   ) => {
     let list: string[] = []
     let errorMessage = ''
-
+    // kiểm tra nếu nhập dạng =A.2 sẽ bị lỗi
     if (inputValue.includes('.')) {
       const arr = inputValue
         .replace(/[=+\-*/]/g, ' ')
@@ -47,7 +47,6 @@ const useFormularHanlder = () => {
     }
 
     const _inputValue = inputValue.trim().replace('=', '')
-    if (!_inputValue) return errorMessage
     const findChild = findChildNodes(listNode, nodeFocused.data.slug, [], [])
 
     //Convert "A1+B1" to [A1,B1]
@@ -55,24 +54,22 @@ const useFormularHanlder = () => {
       .replace(/[^a-zA-Z0-9]/g, ' ')
       .split(' ')
       .forEach((slug) => {
-        if (slug === '' || isNumeric(slug)) return errorMessage
+        if (slug === '' || isNumeric(slug)) return
         if (slug === nodeFocused.data.slug) {
           list.push(slug)
           return
         }
-
         if (findChild.includes(slug)) {
           errorMessage = t('error.formula_repetition')
-          return errorMessage
+          return
         }
-
+        // kiểm tra xem node có tồn tại không
         if (!listNode.find((e) => e.data.slug === slug)) list.push(slug)
       })
     if (list.length === 0) return errorMessage
 
     if (list.includes(nodeFocused.data.slug)) {
       errorMessage = t('error.formula_repetition')
-      list = [nodeFocused.data.slug]
     } else {
       errorMessage = list.join(',') + t('error.node_not_found')
     }

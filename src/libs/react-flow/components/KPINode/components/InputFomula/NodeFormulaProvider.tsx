@@ -87,6 +87,8 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         setSuggestState(defaultValueState)
         setFocus('input_value')
         e.preventDefault()
+        e.stopPropagation()
+        return
       }
     },
     [getValues, nodeSearch, setFocus, setValue, suggestState],

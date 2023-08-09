@@ -3,6 +3,7 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
+import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import {
   useFormularHanlder,
@@ -29,6 +30,7 @@ const useNodeHandler = () => {
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
   const { nodeInputValidate } = useFormularHanlder()
   const { data, form } = useKPINodeContext()
+  const { t } = useTranslation('common')
 
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
@@ -46,7 +48,7 @@ const useNodeHandler = () => {
         data.value2number = null
         form &&
           form.setError('input_value', {
-            message: 'invalid_formula',
+            message: t('error.invalid_formula') as string,
           })
         return
       }

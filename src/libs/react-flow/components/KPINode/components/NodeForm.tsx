@@ -27,8 +27,8 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
-  const { validateBeforeSubmit } = useFormularHanlder()
-  const { t } = useTranslation('file')
+  const { nodeInputValidate } = useFormularHanlder()
+  const { t } = useTranslation(['file', 'common'])
 
   const saveValue = () => {
     if (error) {
@@ -41,7 +41,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     const inputValue = nodeData.input_value
     //TODO: thi thoảng khi nhập xong node nó sẽ set error về rỗng nên cần check để đề phòng spam submit
     if (inputValue && inputValue.startsWith('=')) {
-      const errorMessage = validateBeforeSubmit(inputValue, nodes, nodeFocused)
+      const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
       if (errorMessage) {
         setError('input_value', { message: errorMessage })
         return
@@ -56,6 +56,13 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     changeFormFocusState(true)
   }
 
+  const UnFocusForm = () => {
+    changeFormFocusState(false)
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
+  }
+
   const style = JSON.parse(data.node_style || '{}')
 
   const handleKeyDown = (e: KeyboardEventReact<HTMLFormElement>) => {
@@ -67,13 +74,17 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       const nextIndex = currentIndex === inputArr.length - 1 ? 0 : currentIndex + 1
       setFocus(inputArr[nextIndex] as keyof NodeFormProps)
     }
-
+    if (e.key === 'Escape') {
+      method.reset()
+      UnFocusForm()
+    }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
-      changeFormFocusState(false)
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur()
+      if ((e.target as HTMLInputElement).value === '=') {
+        setError('input_value', { message: t('error.invalid_formula', { ns: 'common' }) as string })
+        return
       }
+      UnFocusForm()
       saveValue()
     }
   }
@@ -88,7 +99,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     if (e.target instanceof HTMLInputElement) return
     if (formFocus) return
     if (e.shiftKey && e.altKey && e.ctrlKey && e.metaKey) return
-    if (e.key == 'Enter') {
+    if (e.key == 'Enter' || e.key == 'Escape') {
       setNodeFocused(null)
     }
   }
@@ -122,7 +133,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             control={control}
             name="input_title"
             required
-            label={t('kpi_node.label') as string}
+            label={t('kpi_node.label', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
           />
@@ -132,7 +143,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
           <InputNode
             control={control}
             name="unit"
-            label={t('kpi_node.unit') as string}
+            label={t('kpi_node.unit', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
           />
