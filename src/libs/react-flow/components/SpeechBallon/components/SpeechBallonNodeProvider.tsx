@@ -1,5 +1,5 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { SpeechBallonNodeType } from '@/libs/react-flow/types'
+import { ReactFlowSpeechBallonNode, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { PropsWithChildren, useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { SpeechBallonContext } from '../context'
 
@@ -17,19 +17,22 @@ export const SpeechBallonNodeProvider: React.FC<
 > = ({ children, data, xPos, yPos }) => {
   const toggleDraggable = useRFStore((state) => state.toggleDraggable)
   const [isEditing, setEditing] = useState<boolean>(false)
+  const [nodeResizing, setNodeResizing] = useState<ReactFlowSpeechBallonNode | null>(null)
+  const [isResizeEnabled, setResizeEnabled] = useState(false)
+
   const handleSetEditing = useCallback((value: boolean) => {
     setEditing(value)
   }, [])
 
-  const [isResizing, setResizing] = useState(false)
-  const [isResizeEnabled, setResizeEnabled] = useState(false)
-  const handleResize = useCallback((value: boolean) => {
+  const handleSetResize = useCallback((value: boolean) => {
     setResizeEnabled(value)
   }, [])
 
-  const handleResizing = useCallback((value: boolean) => {
-    setResizing(value)
+  const handleSetResizing = useCallback((value: ReactFlowSpeechBallonNode | null) => {
+    setNodeResizing(value)
   }, [])
+
+  const isResizing = nodeResizing?.id === data.id
 
   // disable draggable when editing
   useLayoutEffect(() => {
@@ -44,20 +47,22 @@ export const SpeechBallonNodeProvider: React.FC<
       isEditing,
       handleSetEditing,
       isResizeEnabled,
-      handleResize,
+      handleSetResize,
+      nodeResizing,
+      handleSetResizing,
       isResizing,
-      handleResizing,
     }),
     [
       data,
+      handleSetEditing,
+      handleSetResize,
+      handleSetResizing,
+      isEditing,
+      isResizeEnabled,
+      nodeResizing,
       xPos,
       yPos,
-      isEditing,
-      handleSetEditing,
-      isResizeEnabled,
-      handleResize,
       isResizing,
-      handleResizing,
     ],
   )
 

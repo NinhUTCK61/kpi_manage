@@ -144,6 +144,7 @@ export const validateDiffNodeState = (
     case UpdateStateReason.AddSpeechBallonNode:
     case UpdateStateReason.UpdateSpeechBallonNodePosition:
     case UpdateStateReason.UpdateSpeechBallonNodeData:
+    case UpdateStateReason.UpdateSpeechBallonNodeSize:
     case UpdateStateReason.DeleteSpeechBallonNode:
       isValid = true
       break

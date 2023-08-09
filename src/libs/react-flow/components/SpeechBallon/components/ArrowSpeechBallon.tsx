@@ -1,28 +1,22 @@
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { Box, styled } from '@mui/material'
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import Moveable, { DIRECTIONS, OnRender, OnRotate, OnWarpEnd } from 'react-moveable'
 import { useSpeechBallonContext } from '../context'
 import { DEFAULT_DEG_ARROW, HEIGHT_ARROW, WIDTH_ARROW, useShapeStyle } from '../helper'
 
 function ArrowSpeechBallon() {
   const { updateReactFlowNode } = useNodeUpdateHandler()
-  const { data, isResizeEnabled } = useSpeechBallonContext()
-  const style = JSON.parse(data.node_style || '{}')
-
+  const { data, isResizeEnabled, nodeResizing, isResizing } = useSpeechBallonContext()
   const { getArrowStyles, insideArrow, getArrowBox } = useShapeStyle()
 
-  const widthArrow = useMemo(() => {
-    return style.widthArrow || WIDTH_ARROW
-  }, [style.widthArrow])
+  const style = isResizing
+    ? JSON.parse(nodeResizing?.data.node_style || '{}')
+    : JSON.parse(data.node_style || '{}')
 
-  const heightArrow = useMemo(() => {
-    return style.heightArrow || HEIGHT_ARROW
-  }, [style.heightArrow])
-
-  const transformArrow = useMemo(() => {
-    return style.transformArrow || DEFAULT_DEG_ARROW
-  }, [style.transformArrow])
+  const widthArrow = style.widthArrow || WIDTH_ARROW
+  const heightArrow = style.heightArrow || HEIGHT_ARROW
+  const transformArrow = style.transformArrow || DEFAULT_DEG_ARROW
 
   useLayoutEffect(() => {
     if (targetRef.current) {

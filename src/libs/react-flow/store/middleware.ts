@@ -6,6 +6,7 @@ import {
   RFStore,
   ReactFlowKPINode,
   ReactFlowNode,
+  SpeechBallonNodeType,
   TemporalState,
   Write,
   _TemporalState,
@@ -53,6 +54,7 @@ export enum UpdateStateReason {
   DeleteSpeechBallonNode = 'DeleteSpeechBallonNode',
   UpdateSpeechBallonNodeData = 'UpdateSpeechBallonNodeData',
   UpdateSpeechBallonNodePosition = 'UpdateSpeechBallonNodePosition',
+  UpdateSpeechBallonNodeResizing = 'UpdateSpeechBallonNodeResizing',
   UpdateSpeechBallonNodeSize = 'UpdateSpeechBallonNodeSize',
 
   AddCommentNode = 'AddCommentNode',
@@ -126,7 +128,7 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
         const { isValid, oldDiff, newDiff } = validateDiffNodeState(
           pastNodes,
           newState.nodes as ReactFlowNode[],
-          updateBy as RFStore['updateBy'],
+          updateBy,
         )
 
         if (isValid) {
@@ -151,6 +153,21 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
                     ;(draft[nodeIdx] as ReactFlowNode).positionAbsolute = rightPos
                   }
                 })
+              })
+              break
+            case UpdateStateReason.UpdateSpeechBallonNodeSize:
+              pastNodes = produce(pastNodes, (draft) => {
+                const nodeIdx = draft.findIndex(
+                  (n) => n.id === (updateBy.payload as SpeechBallonNodeType).id,
+                )
+                draft[nodeIdx] = {
+                  ...draft[nodeIdx],
+                  ...(
+                    updateBy.payload as SpeechBallonNodeType & {
+                      defaultDimensions: Partial<ReactFlowNode>
+                    }
+                  ).defaultDimensions,
+                } as ReactFlowNode
               })
               break
             default:
