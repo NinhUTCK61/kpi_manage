@@ -1,5 +1,6 @@
 import { calculatorValue2number, getDiffValue2Number } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
@@ -112,10 +113,14 @@ const useNodeHandler = () => {
     form.setValue('input_value', nodeCopy.data.input_value)
     form.setValue('unit', nodeCopy.data.unit)
 
-    updateKPINode({
-      id: data.id,
-      node_style: nodeCopy.data.node_style,
-    })
+    updateKPINode(
+      {
+        id: data.id,
+        node_style: nodeCopy.data.node_style,
+      },
+      false,
+      UpdateStateReason.UpdateKPINodeWhenPaste,
+    )
   }
 
   const isBulkUpdate = (newData: KPINodeType) => {

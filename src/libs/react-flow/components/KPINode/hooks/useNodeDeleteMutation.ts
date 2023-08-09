@@ -20,6 +20,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
   const templateId = useRFStore((state) => state.templateId)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
+  const getNodeById = useRFStore((state) => state.getNodeById)
   const handleToggleDialogDelete = useRFStore((state) => state.handleToggleDialogDelete)
   const utils = api.useContext()
   const { t } = useTranslation('common')
@@ -72,10 +73,8 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
 
   const handleDelete = useCallback(
     (id: string) => {
-      const node = utils.node.list
-        .getData({ template_id: templateId })
-        ?.nodes.find((n) => n.id === id)
-      if (!node || node.type !== 'kpi') return
+      const node = getNodeById(id)
+      if (!node || node.type !== 'kpi' || !node.data.is_saved) return
       if (node.data.slug === 'root') {
         enqueueSnackbar(t('error.delete_root'), {
           variant: 'error',
@@ -84,6 +83,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
       }
       const nodes = getKpiNodes()
       const slugs = getNodeIncludeSlug(node, nodes)
+
       if (slugs.length) {
         handleToggleDialogDelete({
           open: true,
@@ -92,6 +92,7 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
         })
         return
       }
+
       mutation.mutate({ id })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
