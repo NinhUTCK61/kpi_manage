@@ -17,7 +17,7 @@ import ImageFile from 'public/assets/imgs/image_template_default.png'
 import MenuIcon from 'public/assets/svgs/more.svg'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
-import { TemplateAction } from './TemplateAction'
+import { HEIGHT_TEMPLATE_ACTION, TemplateAction } from './TemplateAction'
 
 type TemplateItemTypes = {
   handleFileAction(id: string, type: FileAction): void
@@ -197,11 +197,12 @@ const MenuItemFileDelete = styled(MenuItem)(({ theme }) => ({
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: 12,
   position: 'relative',
-  height: '100%',
   maxWidth: '100% !important',
   border: `1px solid ${theme.palette.greyScale[300]}`,
-  [theme.breakpoints.up('sm')]: {
-    maxWidth: 268,
+  ':before': {
+    content: '""',
+    display: 'block',
+    paddingTop: '100%',
   },
 }))
 
@@ -210,11 +211,17 @@ const CardHeader = styled(MuiCardHeader)({
   right: 5,
   top: 5,
   padding: 0,
+  zIndex: 3,
 })
 
 const CardContent = styled(MuiCardContent)({
   padding: '0 !important',
-  height: 240,
+  position: 'absolute',
+  zIndex: 2,
+  top: 0,
+  bottom: HEIGHT_TEMPLATE_ACTION,
+  right: 0,
+  left: 0,
 })
 
 export { TemplateItem }
