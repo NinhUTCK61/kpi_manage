@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { SpeechBallonNodeType } from '../../types'
+import { ReactFlowSpeechBallonNode, SpeechBallonNodeType } from '../../types'
 
 type SpeechBallonContextType = {
   data: SpeechBallonNodeType
@@ -8,9 +8,10 @@ type SpeechBallonContextType = {
   isEditing: boolean
   handleSetEditing: (isEditing: boolean) => void
   isResizeEnabled: boolean
-  handleResize: (isResizeEnabled: boolean) => void
+  handleSetResize: (isResizeEnabled: boolean) => void
+  nodeResizing: ReactFlowSpeechBallonNode | null
   isResizing: boolean
-  handleResizing: (isResizeEnabled: boolean) => void
+  handleSetResizing: (nodeResizing: ReactFlowSpeechBallonNode | null) => void
 }
 
 export const SpeechBallonContext = createContext<SpeechBallonContextType | null>(null)

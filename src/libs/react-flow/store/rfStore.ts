@@ -69,10 +69,16 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           return
         }
 
+        const reason = UpdateStateReason.NodesChangeByReactFlow
+        // if (changes[0]?.type === 'dimensions' && changes[0]?.resizing) {
+        //   reason = UpdateStateReason.UpdateSpeechBallonNodeSize
+        // }
+
         set({
           nodes: applyNodeChanges<ReactFlowNode['data']>(changes, get().nodes) as ReactFlowNode[],
           updateBy: {
-            updateStateReason: UpdateStateReason.NodesChangeByReactFlow,
+            updateStateReason: reason,
+            payload: changes,
           },
         })
 

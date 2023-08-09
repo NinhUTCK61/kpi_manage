@@ -1,7 +1,6 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { Stack } from '@mui/material'
 import { useMemo, useRef } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
@@ -29,13 +28,26 @@ export const minSizeResize = {
 }
 
 const SpeechBallonResizer = () => {
-  const { data, handleResizing, isResizeEnabled, handleResize } = useSpeechBallonContext()
+  const { data, handleSetResizing, isResizeEnabled, handleSetResize, isResizing } =
+    useSpeechBallonContext()
+
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
   const { updateReactFlowNode } = useNodeUpdateHandler()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const updateSpeechBallon = useRFStore((state) => state.updateSpeechBallon)
+  const getNodeById = useRFStore((state) => state.getNodeById)
+
   const minSizeStyle = minSizeResize[shapeType]
   const resizeRef = useRef(null)
+
+  const node = useMemo(() => getNodeById(data.id), [data.id, getNodeById])
+
+  const defaultDimensions = useRef({
+    position: { ...node?.position },
+    positionAbsolute: { ...node?.positionAbsolute },
+    style: node?.style,
+    width: node?.width,
+    height: node?.height,
+  })
 
   const handleCloseResize = (event: MouseEvent) => {
     const styleArea = document.getElementById(`menu-speech-ballon-${data.id}`)
@@ -44,7 +56,7 @@ const SpeechBallonResizer = () => {
       !styleArea?.contains(event.target as HTMLElement) &&
       !styleArrow?.contains(event.target as HTMLElement)
     ) {
-      handleResize(false)
+      handleSetResize(false)
     }
   }
 
@@ -54,9 +66,8 @@ const SpeechBallonResizer = () => {
     if (nodeFocused?.type === 'speech_ballon') return nodeFocused
   }, [nodeFocused])
 
-  const onUpdateResize = (_: ResizeDragEvent, params: ResizeParams) => {
+  const onResizeEnd = (_: ResizeDragEvent, params: ResizeParams) => {
     if (!nodeFocusedMemo) return
-
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
 
     const newNodeStyle = JSON.stringify({
@@ -74,28 +85,46 @@ const SpeechBallonResizer = () => {
       x: params.x,
       y: params.y,
       is_saved: nodeFocusedMemo.data.is_saved,
+      defaultDimensions: defaultDimensions.current,
     }
 
-    updateReactFlowNode(dataUpdate, 'speech_ballon')
-    handleResizing(false)
+    updateReactFlowNode(dataUpdate, 'speech_ballon', () => {
+      const node = getNodeById(data.id)
+      defaultDimensions.current = {
+        style: {
+          width: params.width,
+          height: params.height,
+        },
+        width: params.width,
+        height: params.height,
+        position: { ...node?.position },
+        positionAbsolute: { ...node?.positionAbsolute },
+      }
+    })
+
+    handleSetResizing(null)
   }
 
   const onResizing = (_: ResizeDragEvent, params: ResizeParams) => {
-    handleResizing(true)
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
 
+    if (!isResizing) {
+      handleSetResizing(nodeFocusedMemo ?? null)
+    }
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
       widthArrow: handleArrowCalculate(params).widthArrow,
       heightArrow: handleArrowCalculate(params).heightArrow,
     })
 
-    updateSpeechBallon(
-      { ...nodeFocusedMemo.data, node_style: newNodeStyle },
-      false,
-      UpdateStateReason.UpdateSpeechBallonNodeSize,
-    )
+    handleSetResizing({
+      ...nodeFocusedMemo,
+      data: {
+        ...nodeFocusedMemo.data,
+        node_style: newNodeStyle,
+      },
+    })
   }
 
   const handleArrowCalculate = (params: ResizeParams) => {
@@ -114,7 +143,7 @@ const SpeechBallonResizer = () => {
         handleStyle={{ width: 18, height: 18, zIndex: 100 }}
         lineStyle={{ padding: 2, zIndex: -1 }}
         isVisible={isResizeEnabled}
-        onResizeEnd={onUpdateResize}
+        onResizeEnd={onResizeEnd}
         onResize={onResizing}
       />
     </Stack>

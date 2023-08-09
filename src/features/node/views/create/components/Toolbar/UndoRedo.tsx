@@ -7,6 +7,7 @@ import {
   useNodeCreateMutation,
   useNodeDeleteMutation,
   useNodeUpdateMutation,
+  useRFStore,
   useSpeechBallonCreateMutation,
   useSpeechBallonDeleteMutation,
   useTemporalStore,
@@ -27,6 +28,8 @@ import { shallow } from 'zustand/shallow'
 declare global {
   interface Window {
     logPastState: () => void
+    logNodesState: () => void
+    logFeatureState: () => void
   }
 }
 
@@ -35,6 +38,8 @@ const UndoRedo: FC = () => {
     (state) => state,
     shallow,
   )
+
+  const { nodes } = useRFStore((state) => ({ nodes: state.nodes }), shallow)
 
   const { mutate: createKPI } = useNodeCreateMutation(UpdateStateReason.OnUndoRedo)
   const { handleDelete: delKPI } = useNodeDeleteMutation(UpdateStateReason.OnUndoRedo)
@@ -49,7 +54,9 @@ const UndoRedo: FC = () => {
 
   useEffect(() => {
     window.logPastState = () => console.log(pastStates)
-  }, [pastStates])
+    window.logNodesState = () => console.log(nodes)
+    window.logFeatureState = () => console.log(futureStates)
+  }, [futureStates, nodes, pastStates])
 
   const onStateChange: onStateChange = useCallback(
     (stateToApply, type) => {
@@ -116,6 +123,7 @@ const UndoRedo: FC = () => {
           break
         case UpdateStateReason.UpdateSpeechBallonNodeData:
         case UpdateStateReason.UpdateSpeechBallonNodePosition:
+        case UpdateStateReason.UpdateSpeechBallonNodeSize:
           {
             const newNodeData = updateBy.payload as KPINodeType
             const oldNodeData = nodes?.find((node) => node.id === newNodeData.id)?.data

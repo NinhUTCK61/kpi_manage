@@ -16,19 +16,24 @@ const useUpdateSpeechBallonMutation = (updateReason?: UpdateStateReason) => {
   const mutation = api.speechBallon.update.useMutation({
     onMutate(variables) {
       const prevData = getNodeById(variables.id)
-
-      console.log(11111, prevData)
       const hasPositionChanged = variables.x || variables.y
+
+      let reason = updateReason ?? UpdateStateReason.UpdateSpeechBallonNodeData
+      const isUpdateSize = (variables as Record<string, unknown>).defaultDimensions
       const isUpdatePosition =
         hasPositionChanged && (variables.x !== prevData?.data.x || variables.y !== prevData?.data.y)
+      const isUndoRedo = updateReason === UpdateStateReason.OnUndoRedo
 
-      console.log(22222, isUpdatePosition)
+      if (isUpdateSize) {
+        reason = UpdateStateReason.UpdateSpeechBallonNodeSize
+      } else if (isUpdatePosition) {
+        reason = UpdateStateReason.UpdateSpeechBallonNodePosition
+      }
 
-      const defaultReason = updateReason ?? UpdateStateReason.UpdateSpeechBallonNodeData
       updateSpeechBallon(
         variables,
         !!nodeFocused,
-        isUpdatePosition ? UpdateStateReason.UpdateSpeechBallonNodePosition : defaultReason,
+        isUndoRedo ? UpdateStateReason.OnUndoRedo : reason,
       )
       return { prevData }
     },
