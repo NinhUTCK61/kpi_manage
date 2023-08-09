@@ -97,6 +97,8 @@ export const SpeechBallonForm: React.FC = () => {
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
     if (isPaneClick(event)) {
       handleSubmit()
+    } else if (data.is_saved) {
+      handleSubmit()
     }
 
     handleSetEditing(false)

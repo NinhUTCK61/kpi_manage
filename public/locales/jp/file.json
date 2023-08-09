@@ -37,5 +37,8 @@
     "label": "ラベル",
     "unit": "単位"
   },
-  "choose_layout_title": "背景の塗りつぶし"
+  "choose_layout_title": "背景の塗りつぶし",
+  "dialog_warning": {
+    "description": "ツリーの作成はスマホ対応しておりません"
+  }
 }

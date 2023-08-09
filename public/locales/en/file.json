@@ -37,5 +37,8 @@
     "label": "Label",
     "unit": "Unit"
   },
-  "choose_layout_title": "Background fill"
+  "choose_layout_title": "Background fill",
+  "dialog_warning": {
+    "description": "KPI Tree creation is not smartphone compatible"
+  }
 }

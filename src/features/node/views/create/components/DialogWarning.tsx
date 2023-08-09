@@ -9,6 +9,7 @@ const DialogWarning: React.FC<DialogBaseProps> = ({ open, handleClose }) => {
   return (
     <Dialog
       open={open}
+      onClose={handleClose}
       PaperProps={{
         elevation: 2,
         sx: {

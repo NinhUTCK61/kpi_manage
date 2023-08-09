@@ -1,7 +1,5 @@
-import { DialogWarning } from '@/features/node/views/create/components/DialogWarning'
 import { useRenameTemplate } from '@/features/template/hooks'
 import { FileAction } from '@/features/template/types/template'
-import { useMatchesSize } from '@/libs/hooks'
 import { TemplateDataSchema } from '@/libs/schema'
 import { CustomLink, Menu, MenuItem } from '@/libs/shared/components'
 import { getImageUrl } from '@/libs/utils/misc'
@@ -35,17 +33,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
   const inputNameRef = useRef<HTMLElement>(null)
   const [name, setName] = useState<string | null>(null)
   const { mutation: mutationRename } = useRenameTemplate()
-  const { isDownLarge } = useMatchesSize()
-
-  const [openModal, setOpenModal] = useState(false)
-
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -64,12 +51,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
       inputNameRef.current.focus()
     }
   }, [name])
-
-  useEffect(() => {
-    if (!isDownLarge && openModal) {
-      handleCloseModal()
-    }
-  }, [openModal, isDownLarge])
 
   const onSaveName = (event?: FormEvent<HTMLFormElement>) => {
     event && event.preventDefault()
@@ -101,21 +82,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     handleClose()
   }
 
-  const handleOpenCreate = () => {
-    if (isDownLarge) {
-      handleOpenModal()
-      return
-    }
-
-    router.push('file/' + template.template_id)
-  }
-
-  const handleClickImage = () => {
-    if (isDownLarge) {
-      handleOpenModal()
-    }
-  }
-
   const menuItem = template.deleted_at
     ? [
         {
@@ -130,7 +96,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
     : [
         {
           title: t('open'),
-          action: handleOpenCreate,
+          action: () => router.push('file/' + template.template_id),
         },
         {
           title: t('thumbnail'),
@@ -159,11 +125,7 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
         />
 
         <CardContent>
-          <CustomLink
-            disabled={!!template.deleted_at || isDownLarge}
-            href={'file/' + template.template_id}
-            handleOpenModal={handleOpenModal}
-          >
+          <CustomLink disabled={!!template.deleted_at} href={'file/' + template.template_id}>
             <Image
               src={template.image_url ? getImageUrl(template.image_url) : ImageFile}
               alt="file"
@@ -219,8 +181,6 @@ const TemplateItem: React.FC<TemplateItemTypes> = ({ handleFileAction, template 
           ),
         )}
       </Menu>
-
-      <DialogWarning handleClose={handleCloseModal} open={openModal} />
     </>
   )
 }

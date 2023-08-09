@@ -11,17 +11,20 @@ import {
 } from '@/libs/react-flow/components'
 import { HEADER_HEIGHT, Layout } from '@/libs/shared/components'
 import { Box, styled } from '@mui/material'
-import { useRouter } from 'next/router'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useKeyPress, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
 import { useReactFlowHandler } from '../hooks'
-import { KpiReactFlow, TOOLBAR_HEIGHT, Toolbar } from './components'
-import { DialogDeleteNode } from './components/DialogDeleteNode'
-import { DialogWarning } from './components/DialogWarning'
-import { HeaderTemplate } from './components/Header'
+import {
+  DialogDeleteNode,
+  DialogWarning,
+  HeaderTemplate,
+  KpiReactFlow,
+  TOOLBAR_HEIGHT,
+  Toolbar,
+} from './components'
 
 const nodeTypes = {
   kpi: KpiNode,
@@ -62,7 +65,6 @@ export const CreateView: React.FC = () => {
 
   const { setViewport } = useReactFlow()
   const { isDownLarge } = useMatchesSize()
-  const router = useRouter()
 
   useLayoutEffect(() => {
     if (container) {
@@ -85,19 +87,18 @@ export const CreateView: React.FC = () => {
     }
   }, [setNodeFocused, nodes, nodeFocused])
 
-  const [modal, setOpenModal] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false)
 
   useEffect(() => {
-    setOpenModal(isDownLarge)
+    setOpenDialog(isDownLarge)
   }, [isDownLarge])
 
   const handleClose = () => {
-    setOpenModal(false)
-    // router.push('/')
+    setOpenDialog(false)
   }
 
   return (
-    <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
+    <Layout disableSidebar sx={{ p: '0 !important' }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
 
       <Container display="flex" flex={1} ref={setContainer}>
@@ -136,7 +137,7 @@ export const CreateView: React.FC = () => {
       </Container>
 
       <DialogDeleteNode />
-      <DialogWarning open={modal} handleClose={handleClose} />
+      <DialogWarning open={openDialog} handleClose={handleClose} />
     </Layout>
   )
 }

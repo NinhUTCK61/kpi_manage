@@ -74,10 +74,12 @@ export const ToolbarInner: FC = () => {
 const Container = styled(Stack)(({ theme }) => ({
   height: TOOLBAR_HEIGHT,
   backgroundColor: theme.palette.greyScale[100],
-  padding: theme.spacing(2.5),
+  padding: theme.spacing(1, 2),
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+  width: '100%',
+  overflow: 'auto',
 }))
 
 const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
