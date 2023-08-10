@@ -48,7 +48,6 @@ const useNodeHandler = () => {
         form.setError('input_value', {
           message: t('error.invalid_formula') as string,
         })
-        form.setFocus('input_value')
         return
       }
 
@@ -73,7 +72,7 @@ const useNodeHandler = () => {
       case 'UPDATE':
         if (isBulkUpdate(newData)) {
           const bulkUpdateData = getBulkUpdateData(newData)
-          if (!bulkUpdateData) return
+          if (!bulkUpdateData) break
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data)]
           // nếu chưa có node trong bulkUpdateData thì thêm vào (Ví dụ: trường hợp tạo mới hoặc thêm input_value mới )
           const nodeUpdate = _bulkUpdateData.find((e) => e.id === newData.id)
@@ -81,7 +80,7 @@ const useNodeHandler = () => {
             _bulkUpdateData.unshift({ ...newData })
           }
           bulkUpdate.mutate(_bulkUpdateData)
-          return
+          break
         }
         update.mutate({ ...newData })
         setNodeFocused(null)
