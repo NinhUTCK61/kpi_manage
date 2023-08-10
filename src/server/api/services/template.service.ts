@@ -11,11 +11,16 @@ import { TemplateHelper } from './helper/template.helper'
 export class TemplateService extends TemplateHelper {
   async list(userId: string, isTrash: boolean, searchName: string) {
     const deletedOpt = isTrash ? { not: null } : null
+    const oneWord = searchName.trim().length === 1 ? searchName : ''
 
     const userTemplate = await prisma.userTemplate.findMany({
       where: {
         user_id: userId,
         template: {
+          name: {
+            contains: oneWord,
+            mode: 'insensitive',
+          },
           deleted_at: deletedOpt,
         },
       },
@@ -29,10 +34,12 @@ export class TemplateService extends TemplateHelper {
       },
     })
 
-    const listTemplate = searchName
-      ? await this.handleSearchTemplate(searchName, userId, isTrash)
-      : this.transformTemplateOutput(userTemplate)
+    const listTemplate =
+      searchName && !oneWord
+        ? await this.handleSearchTemplate(searchName, userId, isTrash)
+        : this.transformTemplateOutput(userTemplate)
 
+    console.log(userTemplate, oneWord)
     return listTemplate
   }
 
