@@ -81,6 +81,7 @@ const Container = styled(Stack)(({ theme }) => ({
   width: '100%',
   overflow: 'auto',
   '&::-webkit-scrollbar': {
+    width: 0,
     height: 5,
   },
   '&::-webkit-scrollbar-track': {
@@ -89,6 +90,7 @@ const Container = styled(Stack)(({ theme }) => ({
   '&::-webkit-scrollbar-thumb': {
     background: theme.palette.greyScale[700],
   },
+  position: 'sticky',
 }))
 
 const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
