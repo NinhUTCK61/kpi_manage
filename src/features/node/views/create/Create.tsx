@@ -16,9 +16,14 @@ import 'reactflow/dist/style.css'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
 import { useReactFlowHandler } from '../hooks'
-import { KpiReactFlow, TOOLBAR_HEIGHT, Toolbar } from './components'
-import { DialogDeleteNode } from './components/DialogDeleteNode'
-import { HeaderTemplate } from './components/Header'
+import {
+  DialogDeleteNode,
+  DialogWarning,
+  HeaderTemplate,
+  KpiReactFlow,
+  TOOLBAR_HEIGHT,
+  Toolbar,
+} from './components'
 
 const nodeTypes = {
   kpi: KpiNode,
@@ -81,7 +86,7 @@ export const CreateView: React.FC = () => {
   }, [setNodeFocused, nodes, nodeFocused])
 
   return (
-    <Layout disableSidebar sx={{ p: 0 }} HeaderComponent={<HeaderTemplate />}>
+    <Layout disableSidebar sx={{ p: '0 !important' }} HeaderComponent={<HeaderTemplate />}>
       <Toolbar />
 
       <Container display="flex" flex={1} ref={setContainer}>
@@ -120,6 +125,7 @@ export const CreateView: React.FC = () => {
       </Container>
 
       <DialogDeleteNode />
+      <DialogWarning />
     </Layout>
   )
 }

@@ -51,7 +51,7 @@ const ViewportAction: React.FC = () => {
   ]
 
   return (
-    <Stack spacing={1} direction="row" alignItems="center">
+    <Stack spacing={1} direction="row" alignItems="center" ml={2}>
       {actions.map((action) => (
         <Tooltip title={action.title} arrow key={action.key} placement="bottom-start">
           <ImageCursor

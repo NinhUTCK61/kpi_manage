@@ -74,10 +74,21 @@ export const ToolbarInner: FC = () => {
 const Container = styled(Stack)(({ theme }) => ({
   height: TOOLBAR_HEIGHT,
   backgroundColor: theme.palette.greyScale[100],
-  padding: theme.spacing(2.5),
+  padding: theme.spacing(0, 2),
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
+  width: '100%',
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    height: 5,
+  },
+  '&::-webkit-scrollbar-track': {
+    background: theme.palette.greyScale[300],
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: theme.palette.greyScale[700],
+  },
 }))
 
 const Toolbar = memo(ToolbarInner) as typeof ToolbarInner
