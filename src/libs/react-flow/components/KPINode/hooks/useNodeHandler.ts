@@ -4,6 +4,7 @@ import { UpdateStateReason } from '@/libs/react-flow/store'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'
+import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
 import {
   useFormularHanlder,
@@ -30,6 +31,7 @@ const useNodeHandler = () => {
   const { handleDelete: deleteMutate } = useNodeDeleteMutation()
   const { nodeInputValidate } = useFormularHanlder()
   const { data, form } = useKPINodeContext()
+  const { t } = useTranslation('common')
 
   const handleData = (data: KPINodeType) => {
     // TODO: write function handle node data
@@ -44,11 +46,9 @@ const useNodeHandler = () => {
       const { value2Number, error } = calculatorValue2number(input_value, nodes)
 
       if (error) {
-        data.value2number = null
-        form &&
-          form.setError('input_value', {
-            message: 'invalid_formula',
-          })
+        form.setError('input_value', {
+          message: t('error.invalid_formula') as string,
+        })
         return
       }
 
@@ -73,7 +73,7 @@ const useNodeHandler = () => {
       case 'UPDATE':
         if (isBulkUpdate(newData)) {
           const bulkUpdateData = getBulkUpdateData(newData)
-          if (!bulkUpdateData) return
+          if (!bulkUpdateData) break
           const _bulkUpdateData = [...bulkUpdateData.map((e) => e.data)]
           // nếu chưa có node trong bulkUpdateData thì thêm vào (Ví dụ: trường hợp tạo mới hoặc thêm input_value mới )
           const nodeUpdate = _bulkUpdateData.find((e) => e.id === newData.id)
@@ -81,7 +81,7 @@ const useNodeHandler = () => {
             _bulkUpdateData.unshift({ ...newData })
           }
           bulkUpdate.mutate(_bulkUpdateData)
-          return
+          break
         }
         update.mutate({ ...newData })
         setNodeFocused(null)
@@ -92,6 +92,7 @@ const useNodeHandler = () => {
       case 'CANCEL':
         break
     }
+    return newData
   }
 
   const handlePaste = () => {

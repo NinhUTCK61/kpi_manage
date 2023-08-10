@@ -28,7 +28,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { validateBeforeSubmit } = useFormularHanlder()
-  const { t } = useTranslation('file')
+  const { t } = useTranslation(['file', 'common'])
 
   const saveValue = () => {
     if (error) {
@@ -48,12 +48,19 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       }
     }
 
-    saveHandler(nodeData)
-    changeFormFocusState(false)
+    const _data = saveHandler(nodeData)
+    _data && UnFocusForm()
   }
 
   const handleFocus = () => {
     changeFormFocusState(true)
+  }
+
+  const UnFocusForm = () => {
+    changeFormFocusState(false)
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
   }
 
   const style = JSON.parse(data.node_style || '{}')
@@ -67,13 +74,12 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
       const nextIndex = currentIndex === inputArr.length - 1 ? 0 : currentIndex + 1
       setFocus(inputArr[nextIndex] as keyof NodeFormProps)
     }
-
+    if (e.key === 'Escape') {
+      method.reset()
+      UnFocusForm()
+    }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
-      changeFormFocusState(false)
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur()
-      }
       saveValue()
     }
   }
@@ -88,7 +94,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     if (e.target instanceof HTMLInputElement) return
     if (formFocus) return
     if (e.shiftKey && e.altKey && e.ctrlKey && e.metaKey) return
-    if (e.key == 'Enter') {
+    if (e.key == 'Enter' || e.key == 'Escape') {
       setNodeFocused(null)
     }
   }
@@ -122,7 +128,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             control={control}
             name="input_title"
             required
-            label={t('kpi_node.label') as string}
+            label={t('kpi_node.label', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
           />
@@ -132,7 +138,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
           <InputNode
             control={control}
             name="unit"
-            label={t('kpi_node.unit') as string}
+            label={t('kpi_node.unit', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
           />
