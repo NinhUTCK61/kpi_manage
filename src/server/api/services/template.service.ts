@@ -39,7 +39,6 @@ export class TemplateService extends TemplateHelper {
         ? await this.handleSearchTemplate(searchName, userId, isTrash)
         : this.transformTemplateOutput(userTemplate)
 
-    console.log(userTemplate, oneWord)
     return listTemplate
   }
 
