@@ -33,13 +33,24 @@ export const temporalStateCreator = (
           const statesToApply = get().pastStates.splice(-steps, steps)
           const stateToApply = statesToApply.shift() as TemporalRFStoreState
 
+          // current comment nodes
+          const commentNodes =
+            currentState.nodes?.filter((node: ReactFlowNode) => node.type === 'comment') || []
+
+          // remove all comment on stateToApply.nodes and replace with commentNodes
+          const nodeToApply = stateToApply?.nodes
+            ?.filter((n) => n.type !== 'comment')
+            .concat(commentNodes)
+
           const rfStoreState: Partial<RFStore> = {
-            nodes: stateToApply?.nodes || [],
+            nodes: nodeToApply,
             edges: stateToApply?.edges || [],
             // nodeFocused: stateToApply?.nodeFocused,
             viewportAction: stateToApply?.viewportAction || ViewPortAction.Move,
           }
 
+          // Khi update node không focus vào node đó
+          // để tránh tình trạng node active với form rỗng
           if (
             stateToApply?.updatedReason?.updateBy.updateStateReason !==
               UpdateStateReason.UpdateKPINode &&
@@ -69,13 +80,24 @@ export const temporalStateCreator = (
           const statesToApply = get().futureStates.splice(-steps, steps)
           const stateToApply = statesToApply.shift() as TemporalRFStoreState
 
+          // current comment nodes
+          const commentNodes =
+            currentState.nodes?.filter((node: ReactFlowNode) => node.type === 'comment') || []
+
+          // remove all comment on stateToApply.nodes and replace with commentNodes
+          const nodeToApply = stateToApply?.nodes
+            ?.filter((n) => n.type !== 'comment')
+            .concat(commentNodes)
+
           const rfStoreState: Partial<RFStore> = {
-            nodes: stateToApply?.nodes || [],
+            nodes: nodeToApply,
             edges: stateToApply?.edges || [],
             // nodeFocused: stateToApply?.nodeFocused,
             viewportAction: stateToApply?.viewportAction || ViewPortAction.Move,
           }
 
+          // Khi update node không focus vào node đó
+          // để tránh tình trạng node active với form rỗng
           if (
             stateToApply?.updatedReason?.updateBy.updateStateReason !==
               UpdateStateReason.UpdateKPINode &&
