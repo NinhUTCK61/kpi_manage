@@ -1,3 +1,4 @@
+import { env } from '@/env.mjs'
 import { consola } from 'consola'
 import { produce } from 'immer'
 import { Mutate, StateCreator, StoreApi, StoreMutatorIdentifier, createStore } from 'zustand'
@@ -19,6 +20,8 @@ declare module 'zustand/vanilla' {
     temporal: Write<S, { temporal: A }>
   }
 }
+
+const debug = env.NEXT_PUBLIC_STORE_MIDDLEWARE_DEBUG
 
 type KPIMiddleware = <
   RFStore,
@@ -59,17 +62,21 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
       const pastEdges = get().edges
       const pastNodeFocused = get().nodeFocused
       const viewPort = get().viewportAction
-      if (
-        typeof newState === 'object' &&
-        newState.updateBy?.updateStateReason &&
-        newState.updateBy.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow &&
-        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyNode &&
-        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyKPINode &&
-        newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptySpeechBallonNode
-      ) {
-        consola.log('----------------------------START--------------------------------')
-        consola.log('newState', newState)
+
+      if (debug) {
+        if (
+          typeof newState === 'object' &&
+          newState.updateBy?.updateStateReason &&
+          newState.updateBy.updateStateReason !== UpdateStateReason.NodesChangeByReactFlow &&
+          newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyNode &&
+          newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptyKPINode &&
+          newState.updateBy.updateStateReason !== UpdateStateReason.RemoveEmptySpeechBallonNode
+        ) {
+          consola.log('----------------------------START--------------------------------')
+          consola.log('newState', newState)
+        }
       }
+
       // Gọi hàm set gốc
       set(...args)
       if ('nodes' in newState) {
@@ -82,7 +89,7 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
           updateBy,
         )
 
-        if (isValid) {
+        if (debug && isValid) {
           consola.withTag('VALID').success('reason : ', updateReason)
           consola.withTag('VALID').info('oldDiff', oldDiff)
           consola.withTag('VALID').info('newDiff', newDiff)

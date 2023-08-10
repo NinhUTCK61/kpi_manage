@@ -123,9 +123,6 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
 
         return _newNode
       },
-      deleteNodes(nodes) {
-        console.log('onNodesDelete', nodes)
-      },
       getNodeById(id) {
         return get().nodes.find((n) => n.id === id) || null
       },

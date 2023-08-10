@@ -9,8 +9,8 @@ import { UpdateNodeInputType } from '@/libs/schema/node'
 import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { DialogDeleteNodeProps } from '@/libs/shared/types/utils'
 import React from 'react'
-import { Edge, OnConnect, OnEdgesChange, OnNodesChange, OnNodesDelete, XYPosition } from 'reactflow'
-import { UpdateStateReason } from '../store/middleware'
+import { Edge, OnConnect, OnEdgesChange, OnNodesChange, XYPosition } from 'reactflow'
+import { UpdateStateReason } from '../store/constants'
 import {
   HierarchyFlowNode,
   ReactFlowCommentNode,
@@ -26,7 +26,6 @@ export type RFStore = {
   d3Root: HierarchyFlowNode
   handleNodesChange: OnNodesChange
   handleEdgesChange: OnEdgesChange
-  deleteNodes: OnNodesDelete
   onConnect: OnConnect
   addKPINode: (parentId: string) => ReactFlowKPINode
   onNodeClick: (e: React.MouseEvent, n: ReactFlowNode) => void
