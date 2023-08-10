@@ -45,11 +45,10 @@ const useNodeHandler = () => {
       const { value2Number, error } = calculatorValue2number(input_value, nodes)
 
       if (error) {
-        data.value2number = null
-        form &&
-          form.setError('input_value', {
-            message: t('error.invalid_formula') as string,
-          })
+        form.setError('input_value', {
+          message: t('error.invalid_formula') as string,
+        })
+        form.setFocus('input_value')
         return
       }
 
@@ -93,6 +92,7 @@ const useNodeHandler = () => {
       case 'CANCEL':
         break
     }
+    return newData
   }
 
   const handlePaste = () => {

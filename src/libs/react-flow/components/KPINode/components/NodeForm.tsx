@@ -27,7 +27,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
-  const { nodeInputValidate } = useFormularHanlder()
+  const { validateBeforeSubmit } = useFormularHanlder()
   const { t } = useTranslation(['file', 'common'])
 
   const saveValue = () => {
@@ -41,15 +41,15 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     const inputValue = nodeData.input_value
     //TODO: thi thoảng khi nhập xong node nó sẽ set error về rỗng nên cần check để đề phòng spam submit
     if (inputValue && inputValue.startsWith('=')) {
-      const errorMessage = nodeInputValidate(inputValue, nodes, nodeFocused)
+      const errorMessage = validateBeforeSubmit(inputValue, nodes, nodeFocused)
       if (errorMessage) {
         setError('input_value', { message: errorMessage })
         return
       }
     }
 
-    saveHandler(nodeData)
-    changeFormFocusState(false)
+    const _data = saveHandler(nodeData)
+    _data && UnFocusForm()
   }
 
   const handleFocus = () => {
@@ -80,11 +80,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
-      if ((e.target as HTMLInputElement).value === '=') {
-        setError('input_value', { message: t('error.invalid_formula', { ns: 'common' }) as string })
-        return
-      }
-      UnFocusForm()
       saveValue()
     }
   }
