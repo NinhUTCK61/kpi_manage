@@ -1,7 +1,7 @@
 import { api } from '@/libs/api'
 import { convertToReactFlowSpeechBallonSingle } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'

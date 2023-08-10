@@ -1,7 +1,7 @@
 import { api } from '@/libs/api'
 import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { ReactFlowKPINodeOutputType } from '@/libs/schema/node'
 import { produce } from 'immer'
 import { useTranslation } from 'next-i18next'

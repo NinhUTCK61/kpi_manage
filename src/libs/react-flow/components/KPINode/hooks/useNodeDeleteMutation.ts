@@ -2,7 +2,7 @@ import { api } from '@/libs/api'
 import { getDifferenceNodesByPosition, useNodeUpdateMutation } from '@/libs/react-flow'
 import { getNodeIncludeSlug } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { ReactFlowKPINode } from '@/libs/react-flow/types'
 import {
   ReactFlowKPINodeOutputType,

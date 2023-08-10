@@ -1,6 +1,6 @@
 import { calculatorValue2number, getDiffValue2Number } from '@/libs/react-flow/helper/expression'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { KPINodeType } from '@/libs/react-flow/types'
 import { consola } from 'consola'
 import { produce } from 'immer'

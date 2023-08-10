@@ -13,7 +13,7 @@ import {
   useTemporalStore,
   useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { Stack } from '@mui/material'
 import { consola } from 'consola'
 import Image from 'next/image'

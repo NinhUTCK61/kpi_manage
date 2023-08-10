@@ -22,7 +22,8 @@ import {
   removeEdgeByNodeId as rmEdges,
 } from '../helper'
 import { RFStore, ReactFlowCommentNode, ReactFlowKPINode } from '../types'
-import { UpdateStateReason, kpiMiddleware } from './middleware'
+import { UpdateStateReason } from './constants'
+import { kpiMiddleware } from './middleware'
 
 setAutoFreeze(false)
 

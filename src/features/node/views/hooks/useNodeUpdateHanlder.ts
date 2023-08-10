@@ -1,6 +1,6 @@
 import { NodeType, useNodeUpdateMutation, useRFStore } from '@/libs/react-flow'
 import { useUpdateSpeechBallonMutation } from '@/libs/react-flow/components/SpeechBallon/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { UpdateNodeInputType } from '@/libs/schema/node'
 import { UpdateSpeechBallonInputType } from '@/libs/schema/speechballon'
 import { MutateOptions } from '@tanstack/react-query'

@@ -1,7 +1,7 @@
 import { ShapeType, ViewPortAction } from '@/features/node'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
+import { UpdateStateReason } from '@/libs/react-flow/store'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
 import { FocusEvent, FormEvent, useEffect, useState } from 'react'

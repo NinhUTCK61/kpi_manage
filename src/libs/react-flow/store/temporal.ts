@@ -8,7 +8,7 @@ import {
   TemporalRFStoreState,
   _TemporalState,
 } from '../types'
-import { UpdateStateReason } from './middleware'
+import { UpdateStateReason } from './constants'
 
 export const temporalStateCreator = (
   userSet: StoreApi<RFStore>['setState'],
