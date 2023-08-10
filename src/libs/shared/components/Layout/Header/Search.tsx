@@ -1,5 +1,6 @@
 import { useSearchStore } from '@/features/template/store'
 import { Button, InputBase, Stack, styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import SearchIcon from 'public/assets/svgs/icon_search.svg'
@@ -8,6 +9,7 @@ import { KeyboardEvent, useEffect } from 'react'
 import { shallow } from 'zustand/shallow'
 
 const Search = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { setSearchTemplate, searchInput, setSearchInput } = useSearchStore(
     (state) => ({
@@ -53,7 +55,7 @@ const Search = () => {
         name="search"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
-        placeholder="Search..."
+        placeholder={`${t('search_placeholder')}`}
         onKeyUp={handleKeySubmit}
         type="search"
       />
