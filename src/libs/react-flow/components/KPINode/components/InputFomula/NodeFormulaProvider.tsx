@@ -78,12 +78,11 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       if (e.key === 'Enter') {
         // Thay đổi value tại vị trí của con trỏ
         const data = charFullNearCursor(e)
-        if (
-          data?.resultStringFull !== (nodeSearch[suggestState.indexSuggest]?.data?.slug as string)
-        ) {
+        const valueNodeSuggest = nodeSearch[suggestState.indexSuggest]?.data?.slug as string
+        if (data?.resultStringFull !== valueNodeSuggest) {
           const newValue = convertFormula(
             getValues('input_value') as string,
-            nodeSearch[suggestState.indexSuggest]?.data?.slug as string,
+            valueNodeSuggest,
             suggestState.startIndexText,
             suggestState.endIndexText,
           )
