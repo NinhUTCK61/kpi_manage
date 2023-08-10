@@ -1,13 +1,11 @@
 import { type GetServerSidePropsContext } from 'next'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
 
-import { env } from '@/env.mjs'
 import { LoginSchema } from '@/libs/schema'
 import { prisma } from '@/server/db'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { verify } from 'argon2'
 import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/credentials'
-import GitHubProvider from 'next-auth/providers/github'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -111,10 +109,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error('incorrect')
         }
       }) as CredentialsConfig['authorize'],
-    }),
-    GitHubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_SECRET,
     }),
     /**
      * ...add more providers here.
