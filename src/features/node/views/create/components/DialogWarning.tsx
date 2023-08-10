@@ -7,11 +7,15 @@ import { useEffect, useState } from 'react'
 const DialogWarning = () => {
   const { t } = useTranslation('file')
   const [openDialog, setOpenDialog] = useState(false)
-  const { isDownLarge } = useMatchesSize()
+  const { isLargeDown } = useMatchesSize()
 
   useEffect(() => {
-    setOpenDialog(isDownLarge)
-  }, [isDownLarge])
+    if (isLargeDown) {
+      setOpenDialog(true)
+    } else {
+      setOpenDialog(false)
+    }
+  }, [isLargeDown])
 
   const handleClose = () => {
     setOpenDialog(false)

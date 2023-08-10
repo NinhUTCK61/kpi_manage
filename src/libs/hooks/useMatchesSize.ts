@@ -6,9 +6,9 @@ const useMatchesSize = () => {
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   const isMedium = useMediaQuery(theme.breakpoints.between('sm', 'md'))
   const isLarge = useMediaQuery(theme.breakpoints.up('md'))
-  const isDownLarge = useMediaQuery('(max-width: 960px)')
+  const isLargeDown = useMediaQuery('(max-width: 960px)')
 
-  return { isSmall, isMedium, isLarge, isDownLarge }
+  return { isSmall, isMedium, isLarge, isLargeDown }
 }
 
 export { useMatchesSize }
