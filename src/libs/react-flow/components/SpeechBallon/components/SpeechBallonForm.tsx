@@ -1,6 +1,7 @@
 import { ShapeType, ViewPortAction } from '@/features/node'
 import { isPaneClick } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { UpdateStateReason } from '@/libs/react-flow/store/middleware'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
 import { FocusEvent, FormEvent, useEffect, useState } from 'react'
@@ -62,7 +63,12 @@ export const SpeechBallonForm: React.FC = () => {
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
     if (!getValues().text) {
-      removeSpeechBallon(data.id)
+      removeSpeechBallon(
+        data.id,
+        data.is_saved
+          ? UpdateStateReason.DeleteSpeechBallonNode
+          : UpdateStateReason.DeleteUnSavedSpeechBallonNode,
+      )
       return
     }
 
@@ -95,12 +101,10 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
-    if (isPaneClick(event)) {
-      handleSubmit()
-    } else if (data.is_saved) {
+    const shouldSubmit = isPaneClick(event) || data.is_saved
+    if (shouldSubmit) {
       handleSubmit()
     }
-
     handleSetEditing(false)
   }
 
