@@ -78,6 +78,7 @@ export const Profile = () => {
       })
       return false
     }
+
     if (_acceptedFiles[0]?.size && Math.floor(_acceptedFiles[0]?.size / (1024 * 1024)) > 3) {
       enqueueSnackbar(t('error_size_image_upload'), {
         variant: 'error',
