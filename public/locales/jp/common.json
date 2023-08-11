@@ -140,5 +140,6 @@
   "verify_resend": "再送信",
   "no_deleted_files": "削除されたファイルがありません。",
   "no_found_file": "ファイルが見つかりませんでした。",
-  "no_file": "ファイルがありません 。"
+  "no_file": "ファイルがありません 。",
+  "search_placeholder": "検索"
 }
