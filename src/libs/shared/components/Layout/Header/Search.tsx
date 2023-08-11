@@ -35,6 +35,7 @@ const Search = () => {
 
   const handleSearchClick = () => {
     setSearchTemplate(searchInput)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     if (router.pathname === '/' || router.pathname === '/en') {
       return
     }
