@@ -37,15 +37,21 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
       }
-      if (trigger === 'update') {
-        // Note, that `session` can be any arbitrary object, remember to validate it!
-        token.picture = session?.image || token.picture
-        token.name = session?.name || token.name
+
+      if (!session) {
+        const data = await prisma.user.findUnique({ where: { id: token.id as string } })
+
+        token.picture = data?.image || token.picture
+        token.name = data?.name || token.name
+      } else if (trigger === 'update') {
+        token.picture = session.image || token.picture
+        token.name = session.name || token.name
       }
+
       return token
     },
     session({ session, token, trigger }) {
