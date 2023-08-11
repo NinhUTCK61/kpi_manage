@@ -17,10 +17,7 @@ const useFormularHanlder = () => {
   ) => {
     // kiểm tra nếu nhập dạng =A.2 sẽ bị lỗi
     if (inputValue.includes('.')) {
-      const arr = inputValue
-        .replace(/[=+\-*/]/g, ' ')
-        .replace(/\s+/g, ' ')
-        .split(' ')
+      const arr = inputValue.replace(/[=+\-*/]/g, ' ').split(' ')
       let error = false
       for (let i = 0; i < arr.length; i++) {
         if (arr[i]?.includes('.') && !isNumeric(arr[i]?.replace('.', '') || '')) {
