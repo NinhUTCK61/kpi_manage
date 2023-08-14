@@ -507,7 +507,11 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
             }
           })
 
-          const updateStateReason = reason ?? UpdateStateReason.UpdateSpeechBallonNodeData
+          const defaultUpdateReason = speechBallonData.is_saved
+            ? UpdateStateReason.UpdateSpeechBallonNodeData
+            : UpdateStateReason.UpdateUnSavedSpeechBallonNode
+
+          const updateStateReason = reason ?? defaultUpdateReason
           const updateBy = {
             updateStateReason,
             payload: speechBallonData,

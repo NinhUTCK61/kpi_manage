@@ -63,7 +63,7 @@ export type RFStore = {
   removeSpeechBallon: (speechBallonId: string, reason?: UpdateStateReason) => void
   removeEmptySpeechBallon: () => void
   updateSpeechBallon: (
-    node: UpdateSpeechBallonInputType,
+    node: UpdateSpeechBallonInputType & { is_saved?: boolean },
     shouldFocus?: boolean,
     reason?: UpdateStateReason,
   ) => void
