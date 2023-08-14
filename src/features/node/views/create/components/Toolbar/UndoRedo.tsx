@@ -1,5 +1,6 @@
 import {
   KPINodeType,
+  NAME_INPUT_COMMENT,
   ReactFlowSpeechBallonNode,
   SpeechBallonNodeType,
   UpdatedReason,
@@ -21,7 +22,7 @@ import RedoInactive from 'public/assets/svgs/redo.svg'
 import RedoActive from 'public/assets/svgs/redo_active.svg'
 import UndoInactive from 'public/assets/svgs/undo.svg'
 import UndoActive from 'public/assets/svgs/undo_active.svg'
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useIsomorphicLayoutEffect } from 'usehooks-ts'
 import { shallow } from 'zustand/shallow'
 
@@ -40,7 +41,7 @@ const UndoRedo: FC = () => {
   )
 
   const { nodes } = useRFStore((state) => ({ nodes: state.nodes }), shallow)
-
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { mutate: createKPI } = useNodeCreateMutation(UpdateStateReason.OnUndoRedo)
   const { handleDelete: delKPI } = useNodeDeleteMutation(UpdateStateReason.OnUndoRedo)
   const {
@@ -156,23 +157,48 @@ const UndoRedo: FC = () => {
     setOnStateChange(onStateChange)
   }, [setOnStateChange, onStateChange])
 
-  const canRedo = futureStates.length > 0
-  const canUndo = pastStates.length > 0
+  let focusInput = false
+
+  if (document.activeElement instanceof HTMLElement) {
+    const element = document.activeElement as HTMLInputElement
+    console.log(document.activeElement)
+    if (
+      (element.type === 'text' || element.type === 'textarea') &&
+      element.name !== NAME_INPUT_COMMENT
+    ) {
+      focusInput = true
+    }
+  }
+
+  const isNodeSaved = useMemo(() => {
+    if (!nodeFocused || (nodeFocused && nodeFocused.type === 'comment')) return true
+    return (
+      (nodeFocused.type === 'kpi' || nodeFocused.type === 'speech_ballon') &&
+      nodeFocused.data.is_saved
+    )
+  }, [nodeFocused])
+
+  const canRedo = isNodeSaved && !focusInput && futureStates.length > 0
+  const canUndo = isNodeSaved && !focusInput && pastStates.length > 0
 
   return (
     <Stack direction="row" spacing={2} mr={3}>
       <Image
         src={canUndo ? UndoActive : UndoInactive}
-        onClick={() => undo()}
+        onClick={() => canUndo && undo()}
         alt="undo"
-        style={{ cursor: canUndo ? 'pointer' : 'auto' }}
+        style={{
+          cursor: canUndo ? 'pointer' : 'auto',
+        }}
       />
 
       <Image
         src={canRedo ? RedoActive : RedoInactive}
-        onClick={() => redo()}
+        onClick={() => canRedo && redo()}
         alt="redo"
-        style={{ cursor: canRedo ? 'pointer' : 'auto' }}
+        style={{
+          cursor: canRedo ? 'pointer' : 'auto',
+        }}
       />
     </Stack>
   )
