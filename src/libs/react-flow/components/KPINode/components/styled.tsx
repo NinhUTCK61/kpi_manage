@@ -27,7 +27,7 @@ const LeftHandler = styled(Handle)({
     width: 0,
     minWidth: 0,
     minHeight: 0,
-    pointerEvents: 'none',
+    pointerEvents: 'none !important',
     cursor: 'unset',
   },
 })
