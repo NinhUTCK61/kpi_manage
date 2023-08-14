@@ -11,8 +11,8 @@ export const UpdateProfileInputSchema = UserSchema.partial().required({
 export type UpdateProfileType = z.infer<typeof UpdateProfileInputSchema>
 
 export const UserProfile = z.object({
-  first_name: z.string().max(255).trim().min(1).nullable().optional(),
-  name: z.string().max(255).trim().min(1).nullable().optional(),
+  first_name: z.string().max(30).trim().min(1).nullable().optional(),
+  name: z.string().max(30).trim().min(1).nullable().optional(),
   company_name: z.string().trim().min(1).nullable().optional(),
   role_in_company: z.string().trim().min(1).nullable().optional(),
   email: z.string().min(1, { message: 'error.message_email' }).email().nullable().optional(),
