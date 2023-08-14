@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from '@/libs/shared/components/Menu'
 import { getImageUrl } from '@/libs/utils/misc'
-import { Box, IconButton, ListItemIcon, Typography } from '@mui/material'
+import { Box, IconButton, ListItemIcon, Tooltip, Typography, styled } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -80,7 +80,9 @@ const Account = () => {
           style={{ borderRadius: '100%' }}
         />
 
-        <Typography variant="body2">{sessionData?.user?.name}</Typography>
+        <Tooltip title={sessionData?.user?.name} arrow>
+          <TextUserName variant="body2">{sessionData?.user?.name}</TextUserName>
+        </Tooltip>
 
         <IconButton
           size="small"
@@ -116,3 +118,11 @@ const Account = () => {
 }
 
 export { Account }
+
+const TextUserName = styled(Typography)(({ theme }) => ({
+  ...theme.typography.body2,
+  maxWidth: 90,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}))

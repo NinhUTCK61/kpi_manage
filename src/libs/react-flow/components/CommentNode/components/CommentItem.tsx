@@ -1,8 +1,8 @@
-import { base, greyScale } from '@/libs/config/theme'
+import { greyScale } from '@/libs/config/theme'
 import { isCommentNode } from '@/libs/react-flow/helper'
 import { CommentOutputType, CommentReplyOutputType } from '@/libs/schema/comment'
 import { getImageUrl } from '@/libs/utils/misc'
-import { ClickAwayListener, Popper, Stack, Typography } from '@mui/material'
+import { ClickAwayListener, Popper, Stack, Tooltip, Typography, styled } from '@mui/material'
 import { formatDistance } from 'date-fns'
 import { enAU, ja } from 'date-fns/locale'
 import { useSession } from 'next-auth/react'
@@ -88,7 +88,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
 
   return (
     <Stack p={2} bgcolor="base.white" sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}>
-      <Stack direction="row" justifyContent="space-between" mb={1}>
+      <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
         <Stack direction="row" spacing={1}>
           <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
             <Image
@@ -100,18 +100,18 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
             />
           </Stack>
 
-          <Typography variant="body2" color={base.black} fontWeight={600}>
-            {data.author.name}
-          </Typography>
+          <Tooltip title={data.author.name} arrow>
+            <TextUserName>{data.author.name}</TextUserName>
+          </Tooltip>
         </Stack>
 
         <Stack direction="row" spacing={1}>
-          <Typography variant="caption" fontWeight={400} color={greyScale[500]}>
+          <TextTimeSendComment>
             {formatDistance(data.created_at, new Date(), {
               addSuffix: true,
               locale: language === 'en' ? enAU : ja,
             })}
-          </Typography>
+          </TextTimeSendComment>
 
           {session?.user.id === data.author_id && (
             <Stack>
@@ -150,3 +150,22 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
 }
 
 export { CommentItem }
+
+const TextUserName = styled(Typography)(({ theme }) => ({
+  ...theme.typography.body2,
+  color: theme.palette.base.black,
+  fontWeight: 600,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: 120,
+  whiteSpace: 'nowrap',
+  cursor: 'pointer',
+}))
+
+const TextTimeSendComment = styled(Typography)(({ theme }) => ({
+  ...theme.typography.caption,
+  fontWeight: 400,
+  color: theme.palette.greyScale[500],
+  maxWidth: 100,
+  textAlign: 'center',
+}))

@@ -37,8 +37,8 @@ export const passwordPolicySchema = z
 
 export const SignUpInputSchema = z
   .object({
-    first_name: z.string().max(255).trim().min(1),
-    last_name: z.string().max(255).trim().min(1),
+    first_name: z.string().max(30).trim().min(1),
+    last_name: z.string().max(30).trim().min(1),
     email: emailPolicySchema,
     password: passwordPolicySchema,
     company_name: z.string().min(1),
