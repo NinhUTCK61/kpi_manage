@@ -39,6 +39,7 @@
   },
   "choose_layout_title": "Background fill",
   "dialog_warning": {
-    "description": "KPI Tree creation is not smartphone compatible"
+    "title": "KPI Tree creation is",
+    "description": " not smartphone compatible"
   }
 }

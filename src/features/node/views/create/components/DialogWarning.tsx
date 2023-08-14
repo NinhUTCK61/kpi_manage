@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 
 const DialogWarning = () => {
-  const { t } = useTranslation('file')
+  const { t, i18n } = useTranslation('file')
   const [openDialog, setOpenDialog] = useState(false)
   const { isLargeDown } = useMatchesSize()
 
@@ -40,6 +40,10 @@ const DialogWarning = () => {
         }}
       >
         <Typography color={greyScale[900]} textAlign="center" fontWeight="bold">
+          {t('dialog_warning.title')}
+
+          {i18n.language === 'jp' && <br />}
+
           {t('dialog_warning.description')}
         </Typography>
       </DialogContent>
