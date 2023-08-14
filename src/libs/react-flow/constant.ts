@@ -24,6 +24,7 @@ export const NODE_HEIGHT_TEMPLATE = 79
 
 export const PANE_CLASS_NAME = 'react-flow__pane'
 export const NODE_CLASS_NAME = '.react-flow__node'
+export const NAME_INPUT_COMMENT = 'content'
 
 export const SUGGEST_ITEM_HEIGHT = 54
 

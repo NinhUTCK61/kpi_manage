@@ -77,6 +77,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     if (e.key === 'Escape') {
       method.reset()
       UnFocusForm()
+      setNodeFocused(null)
     }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
