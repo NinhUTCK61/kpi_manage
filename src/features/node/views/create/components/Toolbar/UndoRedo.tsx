@@ -161,7 +161,6 @@ const UndoRedo: FC = () => {
 
   if (document.activeElement instanceof HTMLElement) {
     const element = document.activeElement as HTMLInputElement
-    console.log(document.activeElement)
     if (
       (element.type === 'text' || element.type === 'textarea') &&
       element.name !== NAME_INPUT_COMMENT

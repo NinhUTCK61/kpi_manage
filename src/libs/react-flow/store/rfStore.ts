@@ -141,7 +141,10 @@ const createRFStore = (initialState?: Partial<RFStore>) =>
           })
 
           const nodes = reLayout(nodesUpdated)
-          const updateStateReason = reason || UpdateStateReason.UpdateKPINode
+          const defaultReason = kpiNodeData.is_saved
+            ? UpdateStateReason.UpdateKPINode
+            : UpdateStateReason.UpdateUnSavedKPINode
+          const updateStateReason = reason || defaultReason
 
           const updateBy = {
             updateStateReason,

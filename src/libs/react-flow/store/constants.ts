@@ -13,6 +13,7 @@ export enum UpdateStateReason {
   AddKPINode = 'AddNewKPINode',
   DeleteKPINode = 'DeleteKPINode',
   UpdateKPINode = 'UpdateKPINode',
+  UpdateUnSavedKPINode = 'UpdateUnSavedKPINode',
   UpdateKPINodeWhenPaste = 'UpdateKPINodeWhenPaste',
 
   UpdateNodeFocused = 'UpdateNodeFocused',
