@@ -24,6 +24,8 @@ const storeSelector = (state: RFStore) => ({
   updateSpeechBallon: state.updateSpeechBallon,
 })
 
+const CLASS_DEFAULT_RESIZE_CONTROL = 'react-flow__resize-control'
+
 export const SpeechBallonForm: React.FC = () => {
   const {
     data,
@@ -102,9 +104,16 @@ export const SpeechBallonForm: React.FC = () => {
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
     const shouldSubmit = isPaneClick(event) || data.is_saved
+
+    if (event.target instanceof HTMLElement) {
+      const className = event.target.className
+      if (className.includes(CLASS_DEFAULT_RESIZE_CONTROL)) return
+    }
+
     if (shouldSubmit) {
       handleSubmit()
     }
+
     handleSetEditing(false)
   }
 
