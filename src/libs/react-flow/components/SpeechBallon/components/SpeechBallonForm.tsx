@@ -10,6 +10,7 @@ import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
 import { sizeStyleMapping } from '../helper'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
+import { CtxMenuType } from './ContextMenu'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
@@ -34,6 +35,7 @@ export const SpeechBallonForm: React.FC = () => {
     isEditing: editable,
     handleSetEditing,
     isResizing,
+    handleSetResize,
   } = useSpeechBallonContext()
 
   const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
@@ -141,6 +143,23 @@ export const SpeechBallonForm: React.FC = () => {
     e.target.setSelectionRange(length, length)
   }
 
+  const handleClickAwayCloseResize = (event: MouseEvent | TouchEvent) => {
+    if (event.target instanceof HTMLElement) {
+      const className = event.target.className
+      if (className.includes(CLASS_DEFAULT_RESIZE_CONTROL)) return
+    }
+
+    const styleContextMenu = document.getElementById(`menu-speech-ballon-${data.id}`)
+    const styleMenuResizeItem = document.getElementById(`${CtxMenuType.Resize}-${data.id}`)
+    if (
+      styleMenuResizeItem?.contains(event.target as HTMLElement) ||
+      styleContextMenu?.contains(event.target as HTMLElement)
+    )
+      return
+
+    handleSetResize(false)
+  }
+
   const widthWhenResize = isResizing ? '100%' : style.width
   const isShapeCircular = data.shape === ShapeType.CIRCULAR
 
@@ -190,19 +209,21 @@ export const SpeechBallonForm: React.FC = () => {
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer
-      sx={{ ...positionShape, maxWidth: widthWhenResize }}
-      onClick={handleSingleClick}
-      onDoubleClick={handleDoubleClick}
-    >
-      <TextSpeechBallon
-        sx={{
-          ...style,
-          ...styleShape,
-        }}
+    <ClickAwayListener mouseEvent="onPointerDown" onClickAway={handleClickAwayCloseResize}>
+      <SpeechBallonContainer
+        sx={{ ...positionShape, maxWidth: widthWhenResize }}
+        onClick={handleSingleClick}
+        onDoubleClick={handleDoubleClick}
       >
-        {data.text}
-      </TextSpeechBallon>
-    </SpeechBallonContainer>
+        <TextSpeechBallon
+          sx={{
+            ...style,
+            ...styleShape,
+          }}
+        >
+          {data.text}
+        </TextSpeechBallon>
+      </SpeechBallonContainer>
+    </ClickAwayListener>
   )
 }

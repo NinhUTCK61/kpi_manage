@@ -154,6 +154,7 @@ const ContextMenu: React.FC<CtxMenuProps> = ({ open, onClose, anchorPosition }) 
           disabled={getDisabled(menu.type)}
           isDelete={menu.type === CtxMenuType.Delete}
           onClick={() => handleMenuSelect(menu.type)}
+          id={`${menu.type}-${data.id}`}
         >
           {menu.title}
         </MenuItem>
