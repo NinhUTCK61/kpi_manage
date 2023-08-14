@@ -71,7 +71,7 @@ const UndoRedo: FC = () => {
             if (type === 'undo') {
               createKPI(nodeData)
             } else {
-              delKPI(nodeId)
+              delKPI(nodeId, true)
             }
           }
           break
@@ -79,7 +79,7 @@ const UndoRedo: FC = () => {
           {
             const nodeData = updateBy.payload as KPINodeType
             if (type === 'undo') {
-              delKPI(nodeData.id)
+              delKPI(nodeData.id, true)
             } else {
               createKPI(nodeData)
             }
