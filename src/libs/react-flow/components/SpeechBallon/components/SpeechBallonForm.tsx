@@ -26,6 +26,7 @@ const storeSelector = (state: RFStore) => ({
 })
 
 const CLASS_DEFAULT_RESIZE_CONTROL = 'react-flow__resize-control'
+const CLASS_MOVEABLE_DEFAULT = 'moveable-s'
 
 export const SpeechBallonForm: React.FC = () => {
   const {
@@ -36,6 +37,7 @@ export const SpeechBallonForm: React.FC = () => {
     handleSetEditing,
     isResizing,
     handleSetResize,
+    isResizeEnabled,
   } = useSpeechBallonContext()
 
   const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
@@ -109,7 +111,12 @@ export const SpeechBallonForm: React.FC = () => {
 
     if (event.target instanceof HTMLElement) {
       const className = event.target.className
-      if (className.includes(CLASS_DEFAULT_RESIZE_CONTROL)) return
+
+      if (
+        className.includes(CLASS_DEFAULT_RESIZE_CONTROL) ||
+        className.includes(CLASS_MOVEABLE_DEFAULT)
+      )
+        return
     }
 
     if (shouldSubmit) {
@@ -144,9 +151,15 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAwayCloseResize = (event: MouseEvent | TouchEvent) => {
+    if (!isResizeEnabled) return
+
     if (event.target instanceof HTMLElement) {
       const className = event.target.className
-      if (className.includes(CLASS_DEFAULT_RESIZE_CONTROL)) return
+      if (
+        className.includes(CLASS_DEFAULT_RESIZE_CONTROL) ||
+        className.includes(CLASS_MOVEABLE_DEFAULT)
+      )
+        return
     }
 
     const styleContextMenu = document.getElementById(`menu-speech-ballon-${data.id}`)
