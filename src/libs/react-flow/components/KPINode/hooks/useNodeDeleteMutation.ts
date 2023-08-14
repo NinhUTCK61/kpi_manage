@@ -72,7 +72,11 @@ const useNodeDeleteMutation = (updateStateReason?: UpdateStateReason) => {
   })
 
   const handleDelete = useCallback(
-    (id: string) => {
+    (id: string, unCheckRelated?: boolean) => {
+      if (unCheckRelated) {
+        mutation.mutate({ id })
+        return
+      }
       const node = getNodeById(id)
       if (!node || node.type !== 'kpi' || !node.data.is_saved) return
       if (node.data.slug === 'root') {
