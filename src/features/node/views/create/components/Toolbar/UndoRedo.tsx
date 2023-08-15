@@ -165,6 +165,7 @@ const UndoRedo: FC = () => {
       (element.type === 'text' || element.type === 'textarea') &&
       element.name !== NAME_INPUT_COMMENT
     ) {
+      console.log(element)
       focusInput = true
     }
   }
@@ -176,6 +177,9 @@ const UndoRedo: FC = () => {
       nodeFocused.data.is_saved
     )
   }, [nodeFocused])
+
+  console.log('isNodeSaved', isNodeSaved)
+  console.log('focusInput', focusInput)
 
   const canRedo = isNodeSaved && !focusInput && futureStates.length > 0
   const canUndo = isNodeSaved && !focusInput && pastStates.length > 0
