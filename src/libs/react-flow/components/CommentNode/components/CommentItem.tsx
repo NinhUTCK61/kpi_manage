@@ -1,4 +1,4 @@
-import { greyScale } from '@/libs/config/theme'
+import { greyScale, trueGrey } from '@/libs/config/theme'
 import { isCommentNode } from '@/libs/react-flow/helper'
 import { CommentOutputType, CommentReplyOutputType } from '@/libs/schema/comment'
 import { getImageUrl } from '@/libs/utils/misc'
@@ -87,7 +87,11 @@ const CommentItem: React.FC<CommentItemProps> = ({ data }) => {
   }
 
   return (
-    <Stack p={2} bgcolor="base.white" sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}>
+    <Stack
+      p={2}
+      bgcolor={trueGrey[50]}
+      sx={{ borderTop: content && `1px solid ${greyScale[300]}` }}
+    >
       <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
         <Stack direction="row" spacing={1}>
           <Stack width={24} height={24} borderRadius="100%" direction="row" alignItems="center">
