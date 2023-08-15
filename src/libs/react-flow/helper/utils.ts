@@ -91,3 +91,9 @@ export function isPaneClick(e: MouseEvent | TouchEvent) {
   if (!isString(targetClass)) return
   return targetClass === PANE_CLASS_NAME || targetClassKpiNode
 }
+
+export const unFocusInputActive = () => {
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur()
+  }
+}

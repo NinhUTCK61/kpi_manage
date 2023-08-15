@@ -1,5 +1,5 @@
 import { ShapeType, ViewPortAction } from '@/features/node'
-import { isPaneClick } from '@/libs/react-flow/helper'
+import { isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { UpdateStateReason } from '@/libs/react-flow/store'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -79,7 +79,7 @@ export const SpeechBallonForm: React.FC = () => {
       } else {
         removeSpeechBallon(data.id, UpdateStateReason.DeleteUnSavedSpeechBallonNode)
       }
-
+      unFocusInputActive()
       return
     }
 
@@ -96,6 +96,7 @@ export const SpeechBallonForm: React.FC = () => {
     }
 
     create(mutateData)
+    unFocusInputActive()
     handleSetEditing(false)
   }
 
