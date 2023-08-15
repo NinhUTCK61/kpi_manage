@@ -1,5 +1,5 @@
 import { blue, red } from '@/libs/config/theme'
-import { isPaneClick } from '@/libs/react-flow/helper'
+import { isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -58,9 +58,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
 
   const UnFocusForm = () => {
     changeFormFocusState(false)
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur()
-    }
+    unFocusInputActive()
   }
 
   const style = JSON.parse(data.node_style || '{}')
