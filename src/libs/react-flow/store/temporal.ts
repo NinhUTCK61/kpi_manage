@@ -10,6 +10,12 @@ import {
 } from '../types'
 import { UpdateStateReason } from './constants'
 
+const ignoreUpdateNodeFocused = [
+  UpdateStateReason.UpdateKPINode,
+  UpdateStateReason.BulkUpdateKpiNodes,
+  UpdateStateReason.AddKPINode,
+]
+
 export const temporalStateCreator = (
   userSet: StoreApi<RFStore>['setState'],
   userGet: StoreApi<RFStore>['getState'],
@@ -51,12 +57,8 @@ export const temporalStateCreator = (
 
           // Khi update node không focus vào node đó
           // để tránh tình trạng node active với form rỗng
-          if (
-            stateToApply?.updatedReason?.updateBy.updateStateReason !==
-              UpdateStateReason.UpdateKPINode &&
-            stateToApply?.updatedReason?.updateBy.updateStateReason !==
-              UpdateStateReason.BulkUpdateKpiNodes
-          ) {
+          const updateReason = stateToApply?.updatedReason?.updateBy.updateStateReason
+          if (updateReason && !ignoreUpdateNodeFocused.includes(updateReason)) {
             rfStoreState.nodeFocused = stateToApply?.nodeFocused
           }
 
@@ -98,12 +100,8 @@ export const temporalStateCreator = (
 
           // Khi update node không focus vào node đó
           // để tránh tình trạng node active với form rỗng
-          if (
-            stateToApply?.updatedReason?.updateBy.updateStateReason !==
-              UpdateStateReason.UpdateKPINode &&
-            stateToApply?.updatedReason?.updateBy.updateStateReason !==
-              UpdateStateReason.BulkUpdateKpiNodes
-          ) {
+          const updateReason = stateToApply?.updatedReason?.updateBy.updateStateReason
+          if (updateReason && !ignoreUpdateNodeFocused.includes(updateReason)) {
             rfStoreState.nodeFocused = stateToApply?.nodeFocused
           }
 

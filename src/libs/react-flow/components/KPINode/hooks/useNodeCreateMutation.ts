@@ -19,7 +19,7 @@ const useNodeCreateMutation = (reason?: UpdateStateReason) => {
 
   const mutation = api.node.create.useMutation({
     async onMutate(variables) {
-      updateNode({ ...variables, is_saved: true }, false, reason ?? UpdateStateReason.AddKPINode)
+      updateNode({ ...variables, is_saved: true }, true, reason ?? UpdateStateReason.AddKPINode)
     },
     onError(_, variables) {
       enqueueSnackbar(t('error.create_node'), {

@@ -9,7 +9,11 @@ import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
 import { sizeStyleMapping } from '../helper'
-import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
+import {
+  useSpeechBallonCreateMutation,
+  useSpeechBallonDeleteMutation,
+  useUpdateSpeechBallonMutation,
+} from '../hooks'
 import { CtxMenuType } from './ContextMenu'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
@@ -54,6 +58,7 @@ export const SpeechBallonForm: React.FC = () => {
 
   const { mutate: create } = useSpeechBallonCreateMutation()
   const { mutate: update } = useUpdateSpeechBallonMutation()
+  const { mutate: deleteSB } = useSpeechBallonDeleteMutation()
 
   const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
 
@@ -69,12 +74,12 @@ export const SpeechBallonForm: React.FC = () => {
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
     if (!getValues().text) {
-      removeSpeechBallon(
-        data.id,
-        data.is_saved
-          ? UpdateStateReason.DeleteSpeechBallonNode
-          : UpdateStateReason.DeleteUnSavedSpeechBallonNode,
-      )
+      if (data.is_saved) {
+        deleteSB({ id: data.id })
+      } else {
+        removeSpeechBallon(data.id, UpdateStateReason.DeleteUnSavedSpeechBallonNode)
+      }
+
       return
     }
 
