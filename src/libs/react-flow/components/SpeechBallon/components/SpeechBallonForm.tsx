@@ -10,6 +10,7 @@ import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
 import { sizeStyleMapping } from '../helper'
 import { useSpeechBallonCreateMutation, useUpdateSpeechBallonMutation } from '../hooks'
+import { CtxMenuType } from './ContextMenu'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
@@ -25,6 +26,7 @@ const storeSelector = (state: RFStore) => ({
 })
 
 const CLASS_DEFAULT_RESIZE_CONTROL = 'react-flow__resize-control'
+const CLASS_MOVEABLE_DEFAULT = 'moveable-s'
 
 export const SpeechBallonForm: React.FC = () => {
   const {
@@ -34,6 +36,8 @@ export const SpeechBallonForm: React.FC = () => {
     isEditing: editable,
     handleSetEditing,
     isResizing,
+    handleSetResize,
+    isResizeEnabled,
   } = useSpeechBallonContext()
 
   const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
@@ -107,7 +111,12 @@ export const SpeechBallonForm: React.FC = () => {
 
     if (event.target instanceof HTMLElement) {
       const className = event.target.className
-      if (className.includes(CLASS_DEFAULT_RESIZE_CONTROL)) return
+
+      if (
+        className.includes(CLASS_DEFAULT_RESIZE_CONTROL) ||
+        className.includes(CLASS_MOVEABLE_DEFAULT)
+      )
+        return
     }
 
     if (shouldSubmit) {
@@ -139,6 +148,29 @@ export const SpeechBallonForm: React.FC = () => {
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     const length = e.target.value.length
     e.target.setSelectionRange(length, length)
+  }
+
+  const handleClickAwayCloseResize = (event: MouseEvent | TouchEvent) => {
+    if (!isResizeEnabled) return
+
+    if (event.target instanceof HTMLElement) {
+      const className = event.target.className
+      if (
+        className.includes(CLASS_DEFAULT_RESIZE_CONTROL) ||
+        className.includes(CLASS_MOVEABLE_DEFAULT)
+      )
+        return
+    }
+
+    const styleContextMenu = document.getElementById(`menu-speech-ballon-${data.id}`)
+    const styleMenuResizeItem = document.getElementById(`${CtxMenuType.Resize}-${data.id}`)
+    if (
+      styleMenuResizeItem?.contains(event.target as HTMLElement) ||
+      styleContextMenu?.contains(event.target as HTMLElement)
+    )
+      return
+
+    handleSetResize(false)
   }
 
   const widthWhenResize = isResizing ? '100%' : style.width
@@ -190,19 +222,21 @@ export const SpeechBallonForm: React.FC = () => {
       </SpeechBallonContainer>
     </ClickAwayListener>
   ) : (
-    <SpeechBallonContainer
-      sx={{ ...positionShape, maxWidth: widthWhenResize }}
-      onClick={handleSingleClick}
-      onDoubleClick={handleDoubleClick}
-    >
-      <TextSpeechBallon
-        sx={{
-          ...style,
-          ...styleShape,
-        }}
+    <ClickAwayListener mouseEvent="onPointerDown" onClickAway={handleClickAwayCloseResize}>
+      <SpeechBallonContainer
+        sx={{ ...positionShape, maxWidth: widthWhenResize }}
+        onClick={handleSingleClick}
+        onDoubleClick={handleDoubleClick}
       >
-        {data.text}
-      </TextSpeechBallon>
-    </SpeechBallonContainer>
+        <TextSpeechBallon
+          sx={{
+            ...style,
+            ...styleShape,
+          }}
+        >
+          {data.text}
+        </TextSpeechBallon>
+      </SpeechBallonContainer>
+    </ClickAwayListener>
   )
 }

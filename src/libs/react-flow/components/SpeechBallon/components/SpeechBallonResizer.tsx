@@ -1,10 +1,8 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { Stack } from '@mui/material'
 import { useMemo, useRef } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
-import { useOnClickOutside } from 'usehooks-ts'
 import { useSpeechBallonContext } from '../context'
 import { HEIGHT_ARROW, WIDTH_ARROW } from '../helper'
 
@@ -28,8 +26,7 @@ export const minSizeResize = {
 }
 
 const SpeechBallonResizer = () => {
-  const { data, handleSetResizing, isResizeEnabled, handleSetResize, isResizing } =
-    useSpeechBallonContext()
+  const { data, handleSetResizing, isResizeEnabled, isResizing } = useSpeechBallonContext()
 
   const shapeType = (data.shape as ShapeType) || ShapeType.ROUND_SQUARE
   const { updateReactFlowNode } = useNodeUpdateHandler()
@@ -37,7 +34,6 @@ const SpeechBallonResizer = () => {
   const getNodeById = useRFStore((state) => state.getNodeById)
 
   const minSizeStyle = minSizeResize[shapeType]
-  const resizeRef = useRef(null)
 
   const node = useMemo(() => getNodeById(data.id), [data.id, getNodeById])
 
@@ -48,19 +44,6 @@ const SpeechBallonResizer = () => {
     width: node?.width,
     height: node?.height,
   })
-
-  const handleCloseResize = (event: MouseEvent) => {
-    const styleArea = document.getElementById(`menu-speech-ballon-${data.id}`)
-    const styleArrow = document.getElementById(`arrow-${data.id}`)
-    if (
-      !styleArea?.contains(event.target as HTMLElement) &&
-      !styleArrow?.contains(event.target as HTMLElement)
-    ) {
-      handleSetResize(false)
-    }
-  }
-
-  useOnClickOutside(resizeRef, handleCloseResize)
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type === 'speech_ballon') return nodeFocused
@@ -136,17 +119,15 @@ const SpeechBallonResizer = () => {
   }
 
   return (
-    <Stack ref={resizeRef}>
-      <NodeResizer
-        minWidth={minSizeStyle.minWidth}
-        minHeight={minSizeStyle.minHeight}
-        handleStyle={{ width: 18, height: 18, zIndex: 100 }}
-        lineStyle={{ padding: 2, zIndex: -1 }}
-        isVisible={isResizeEnabled}
-        onResizeEnd={onResizeEnd}
-        onResize={onResizing}
-      />
-    </Stack>
+    <NodeResizer
+      minWidth={minSizeStyle.minWidth}
+      minHeight={minSizeStyle.minHeight}
+      handleStyle={{ width: 18, height: 18, zIndex: 100 }}
+      lineStyle={{ padding: 2, zIndex: -1 }}
+      isVisible={isResizeEnabled}
+      onResizeEnd={onResizeEnd}
+      onResize={onResizing}
+    />
   )
 }
 
