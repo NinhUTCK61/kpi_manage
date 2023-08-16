@@ -59,6 +59,7 @@ export const Profile = () => {
       },
       onSettled() {
         utils.profile.me.invalidate()
+        utils.node.list.reset()
       },
     })
   }

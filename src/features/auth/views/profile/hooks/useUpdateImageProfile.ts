@@ -21,6 +21,7 @@ const useUpdateImageProfile = () => {
     },
     onSettled() {
       utils.profile.me.invalidate()
+      utils.node.list.reset()
     },
   })
 
