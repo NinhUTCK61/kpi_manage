@@ -9,12 +9,12 @@ type SearchMobileButtonType = {
 
 const SearchMobileButton: React.FC<SearchMobileButtonType> = ({ handleOpenSearch }) => {
   return (
-    <ButtonAction>
+    <ButtonAction sx={{ mr: 2 }}>
       <Image
         src={SearchMobileIcon}
         alt="menu-header"
         onClick={handleOpenSearch}
-        style={{ cursor: 'pointer', marginRight: '16px' }}
+        style={{ cursor: 'pointer' }}
         priority
       />
     </ButtonAction>

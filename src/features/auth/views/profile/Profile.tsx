@@ -25,11 +25,11 @@ export const Profile = () => {
 
   const { control, handleSubmit, reset } = useForm<UserProfileType>({
     defaultValues: {
-      name: '',
-      first_name: '',
-      email: '',
-      company_name: '',
-      role_in_company: '',
+      name: data?.name,
+      first_name: data?.first_name,
+      email: data?.email,
+      company_name: data?.company_name,
+      role_in_company: data?.role_in_company,
     },
     values: data,
     resolver: zodResolver(UserProfile),
