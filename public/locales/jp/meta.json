@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "ホーム"
+  },
+  "favorite": {
+    "title": "お気に入り"
+  },
+  "profile": {
+    "title": "プロフィール"
+  },
+  "reset_password": {
+    "title": "パスワード再設定"
+  },
+  "change_password": {
+    "title": "パスワード変更"
+  },
+  "forgot_password": {
+    "title": "パスワードを忘れた"
+  },
+  "sign_in": {
+    "title": "ログイン"
+  },
+  "sign_up": {
+    "title": "アカウント登録"
+  }
+}

@@ -1,4 +1,5 @@
 import { styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import React from 'react'
 import { HeaderUnAuth } from './Header'
@@ -10,10 +11,12 @@ type LayoutType = {
 }
 
 const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) => {
+  const { t } = useTranslation('meta')
+
   return (
     <>
       <Head>
-        <title>{title || 'KPI master'}</title>
+        <title>{title ? t(title) : 'KPI master'}</title>
         <meta name="description" content={description} />
       </Head>
       <HeaderUnAuth />

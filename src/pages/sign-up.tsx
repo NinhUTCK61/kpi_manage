@@ -33,7 +33,7 @@ export async function getServerSideProps({ locale, req, res }: GetServerSideProp
 
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common', 'sign_up'])),
+      ...(await serverSideTranslations(locale as string, ['common', 'sign_up', 'meta'])),
       trpcState: helpers.dehydrate(),
     },
   }

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Title } from '../styled'
 import { BackgroundProfile } from './BackgroundProfile'
@@ -14,7 +14,7 @@ import { FormProfile } from './FormProfile'
 import { ModalUploadImage } from './ModalUploadImage'
 
 export const Profile = () => {
-  const { t } = useTranslation('profile')
+  const { t } = useTranslation(['profile', 'meta'])
   const { mutate, isLoading } = api.profile.update.useMutation()
   const { data } = api.profile.me.useQuery()
   const utils = api.useContext()
@@ -75,8 +75,8 @@ export const Profile = () => {
   }
 
   return (
-    <Layout title={t('seo_title')}>
-      <Title>{t('seo_title')}</Title>
+    <>
+      <Title>{t('profile.title', { ns: 'meta' })}</Title>
 
       <BackgroundProfile onDrop={onSelectImage} />
 
@@ -90,6 +90,8 @@ export const Profile = () => {
         handleCancelEdit={handleCancelEdit}
         isEdit={isEdit}
       />
-    </Layout>
+    </>
   )
 }
+
+Profile.getLayout = (page: ReactElement) => <Layout title="profile.title">{page}</Layout>

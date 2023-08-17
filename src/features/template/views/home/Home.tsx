@@ -8,7 +8,7 @@ import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import AddIcon from 'public/assets/svgs/plus.svg'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { useCreateTemplate, useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
 import { ButtonCreate, SelectStatus, TemplateItem } from './components'
@@ -108,7 +108,7 @@ const Home = () => {
   }
 
   return (
-    <Layout title={t('seo_title')}>
+    <>
       <ButtonCreate
         variant="contained"
         startIcon={<Image src={AddIcon} alt="add" />}
@@ -173,8 +173,10 @@ const Home = () => {
         onOpen={openDialogThumbnail}
         idTemplate={String(nodeId)}
       />
-    </Layout>
+    </>
   )
 }
+
+Home.getLayout = (page: ReactElement) => <Layout title="home.title">{page}</Layout>
 
 export { Home }

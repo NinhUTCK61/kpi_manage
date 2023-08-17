@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Box } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
-import { FC } from 'react'
+import { ReactElement } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Title } from '../styled'
 import { FormChangePassword } from './FormChangePassword'
 
-const ChangePassword: FC = () => {
+const ChangePassword = () => {
   const { t } = useTranslation(['change_password', 'common'])
   const { mutate, isLoading } = api.auth.changePassword.useMutation()
 
@@ -38,18 +38,20 @@ const ChangePassword: FC = () => {
   }
 
   return (
-    <Layout title={t('seo_title')}>
-      <Box width={{ xs: '100%', sm: 450 }}>
-        <Title>{t('title')}</Title>
+    <Box width={{ xs: '100%', sm: 450 }}>
+      <Title>{t('title')}</Title>
 
-        <FormChangePassword
-          isLoading={isLoading}
-          control={control}
-          handleSubmit={handleSubmit(onSubmit)}
-        />
-      </Box>
-    </Layout>
+      <FormChangePassword
+        isLoading={isLoading}
+        control={control}
+        handleSubmit={handleSubmit(onSubmit)}
+      />
+    </Box>
   )
 }
+
+ChangePassword.getLayout = (page: ReactElement) => (
+  <Layout title="change_password.title">{page}</Layout>
+)
 
 export { ChangePassword }
