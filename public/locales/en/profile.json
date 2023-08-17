@@ -13,7 +13,5 @@
     "title_2": "Are you sure to upload this photo?",
     "upload_success": "Successfully set avatar！",
     "upload_fail": "Failed to set avatar. "
-  },
-  "incorrect_upload_image": "Incorrect image format.",
-  "error_size_image_upload": "The size of the image is larger than 3Mb, please change another image."
+  }
 }

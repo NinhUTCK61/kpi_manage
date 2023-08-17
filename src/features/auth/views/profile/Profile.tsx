@@ -1,4 +1,5 @@
 import { api } from '@/libs/api'
+import { useValidateImage } from '@/libs/hooks'
 import { UserProfile, UserProfileType } from '@/libs/schema/profile'
 import { Layout } from '@/libs/shared/components'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,6 +21,7 @@ export const Profile = () => {
   const { update } = useSession()
   const [isEdit, setEdit] = useState(false)
   const [image, setImage] = useState<File[] | null>()
+  const { handleValidateFormatImage } = useValidateImage()
 
   const { control, handleSubmit, reset } = useForm<UserProfileType>({
     defaultValues: {
@@ -70,23 +72,6 @@ export const Profile = () => {
 
   const onCloseModal = () => {
     setImage(null)
-  }
-
-  function handleValidateFormatImage(_acceptedFiles: File[]) {
-    if (!_acceptedFiles.length) {
-      enqueueSnackbar(t('incorrect_upload_image'), {
-        variant: 'error',
-      })
-      return false
-    }
-
-    if (_acceptedFiles[0]?.size && Math.floor(_acceptedFiles[0]?.size / (1024 * 1024)) > 3) {
-      enqueueSnackbar(t('error_size_image_upload'), {
-        variant: 'error',
-      })
-      return false
-    }
-    return true
   }
 
   return (
