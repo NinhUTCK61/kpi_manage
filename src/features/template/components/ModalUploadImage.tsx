@@ -1,5 +1,5 @@
 import { api } from '@/libs/api'
-import { ModalUpload } from '@/libs/shared/components'
+import { ModalUpload } from '@/libs/shared'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'next-i18next'
 import { enqueueSnackbar } from 'notistack'
