@@ -9,12 +9,12 @@ type MenuMobileButtonType = {
 
 const MenuMobileButton: React.FC<MenuMobileButtonType> = ({ handleOpenMenu }) => {
   return (
-    <ButtonAction>
+    <ButtonAction sx={{ ml: 2 }}>
       <Image
         src={MenuMobileIcon}
         alt="menu-header"
         onClick={handleOpenMenu}
-        style={{ cursor: 'pointer', marginLeft: '16px' }}
+        style={{ cursor: 'pointer' }}
         priority
       />
     </ButtonAction>

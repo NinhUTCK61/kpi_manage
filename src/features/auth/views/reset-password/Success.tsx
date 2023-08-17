@@ -1,5 +1,4 @@
-import { Button, Fade, Slide } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Button, Fade, Slide, Stack } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Logo from 'public/assets/svgs/logo.svg'

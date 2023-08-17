@@ -142,5 +142,9 @@
   "no_deleted_files": "You don't have any deleted files",
   "no_found_file": "File not found!",
   "no_file": "There are no files",
-  "search_placeholder": "Search"
+  "search_placeholder": "Search",
+  "modal_upload_image": {
+    "incorrect_upload_image": "Incorrect image format.",
+    "error_size_image_upload": "This image is over 3MB. Please change to an image with a capacity of less than 3MB."
+  }
 }
