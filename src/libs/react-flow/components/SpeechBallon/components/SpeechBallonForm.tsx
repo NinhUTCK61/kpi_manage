@@ -60,16 +60,12 @@ export const SpeechBallonForm: React.FC = () => {
   const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
-    if (isEditing) {
-      if (data.is_saved) {
-        setFocus('text')
-        return
-      }
-      setTimeout(() => {
+    setTimeout(() => {
+      if (isEditing) {
         setFocus('text')
         handleSetEditing(true)
-      }, 0)
-    }
+      }
+    }, 0)
   }, [data.is_saved, handleSetEditing, isEditing, setFocus])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
