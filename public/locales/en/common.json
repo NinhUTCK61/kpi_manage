@@ -146,5 +146,9 @@
   "modal_upload_image": {
     "incorrect_upload_image": "Incorrect image format.",
     "error_size_image_upload": "This image is over 3MB. Please change to an image with a capacity of less than 3MB."
+  },
+  "verify": {
+    "title_verify": "You need to verified your email to continue.",
+    "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
   }
 }

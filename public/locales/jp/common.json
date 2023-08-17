@@ -145,5 +145,9 @@
   "modal_upload_image": {
     "incorrect_upload_image": "画像形式が正しくありません。",
     "error_size_image_upload": "この画像の容量は3MBを超えています。3MB未満の容量の画像に変更してください。"
+  },
+  "verify": {
+    "title_verify": "ログインするには、メールアドレスを認証する必要があります。",
+    "desc_verify": "認証メールが届かない場合、「再送信」ボタンを押してください。"
   }
 }

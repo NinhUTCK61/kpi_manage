@@ -27,6 +27,7 @@ declare module 'notistack' {
     error: {
       description?: string
       verifyEmail?: string
+      textIsKey?: boolean
     }
   }
 }
@@ -34,6 +35,7 @@ declare module 'notistack' {
 interface CustomSnackbarProps extends CustomContentProps {
   description: string
   verifyEmail: string
+  textIsKey?: boolean
 }
 
 export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
@@ -45,6 +47,7 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
       message,
       description,
       verifyEmail,
+      textIsKey,
       persist: _persist,
       anchorOrigin: _anchorOrigin,
       iconVariant: _iconVariant,
@@ -69,8 +72,11 @@ export const SnackbarCustom = forwardRef<HTMLDivElement, CustomSnackbarProps>(
           onClose={onClose}
           severity={other.variant}
         >
-          <AlertTitle>{message}</AlertTitle>
-          {description && <Typography variant="body2">{description}</Typography>}
+          <AlertTitle>{textIsKey ? t(message as string) : message}</AlertTitle>
+
+          {description && (
+            <Typography variant="body2">{textIsKey ? t(description) : description}</Typography>
+          )}
           {verifyEmail && (
             <ButtonStyle
               variant="contained"

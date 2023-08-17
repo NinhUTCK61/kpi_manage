@@ -12,7 +12,5 @@
   "enter_password": "Enter your password",
   "email": "Email",
   "password": "Password",
-  "seo_title": "Sign In",
-  "title_verify": "You need to verified your email to continue.",
-  "desc_verify": "If you have not received our email, please click Resend email to continue verify email."
+  "seo_title": "Sign In"
 }
