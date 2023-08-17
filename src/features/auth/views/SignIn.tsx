@@ -58,9 +58,10 @@ const Login: FC = () => {
       event?.preventDefault()
       const description = t(error)
       error === 'verify'
-        ? enqueueSnackbar(t('title_verify'), {
+        ? enqueueSnackbar('verify.title_verify', {
             variant: 'error',
-            description: t('desc_verify') as string,
+            description: 'verify.desc_verify',
+            textIsKey: true,
             verifyEmail: email,
             persist: true,
           })
