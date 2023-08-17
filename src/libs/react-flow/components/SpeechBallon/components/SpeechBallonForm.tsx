@@ -66,7 +66,7 @@ export const SpeechBallonForm: React.FC = () => {
         handleSetEditing(true)
       }
     }, 0)
-  }, [isEditing, setFocus, handleSetEditing])
+  }, [data.is_saved, handleSetEditing, isEditing, setFocus])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement>) {
     e?.preventDefault()
@@ -127,6 +127,7 @@ export const SpeechBallonForm: React.FC = () => {
     }
 
     handleSetEditing(false)
+    event.preventDefault()
   }
 
   const [isDoubleClick, setIsDoubleClick] = useState(false)
