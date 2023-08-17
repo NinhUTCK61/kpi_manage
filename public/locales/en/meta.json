@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "favorite": {
+    "title": "Favorite"
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "reset_password": {
+    "title": "Reset password"
+  },
+  "change_password": {
+    "title": "Change password"
+  },
+  "forgot_password": {
+    "title": "Forgot password"
+  },
+  "sign_in": {
+    "title": "Sign In"
+  },
+  "sign_up": {
+    "title": "Sign Up"
+  }
+}

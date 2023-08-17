@@ -24,7 +24,7 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
 }) => {
   const router = useRouter()
   const password = useWatch({ control, name: 'password' })
-  const { t } = useTranslation('reset_password')
+  const { t } = useTranslation(['reset_password', 'meta'])
 
   const redirectSignIn = () => {
     router.push('/sign-in')
@@ -43,7 +43,7 @@ const FormResetPassword: React.FC<FormResetPasswordTypes> = ({
       <Stack alignItems="center" mb={{ xs: 3, sm: 4 }}>
         <Image src={Logo} alt="logo" />
 
-        <SubTitle mt={1.5}>{t('seo_title')}</SubTitle>
+        <SubTitle mt={1.5}>{t('reset_password.title', { ns: 'meta' })}</SubTitle>
 
         <DescriptionTitle textAlign="center" width={{ xs: '100%', sm: 512 }}>
           {t('title')}

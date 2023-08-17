@@ -1,4 +1,5 @@
 import { Box, BoxProps, Stack, styled } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import React from 'react'
 import { HEADER_HEIGHT, Header } from './Header'
@@ -23,10 +24,12 @@ const Layout: React.FC<LayoutType> = ({
   disableSidebar = false,
   ...contentProps
 }) => {
+  const { t } = useTranslation('meta')
+
   return (
     <>
       <Head>
-        <title>{title || 'KPI master'}</title>
+        <title>{title ? t(title) : 'KPI master'}</title>
         <meta name="description" content={description} />
       </Head>
       {HeaderComponent ? HeaderComponent : <Header />}

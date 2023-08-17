@@ -5,13 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
-import { FC } from 'react'
+import { ReactElement } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { LanguageEmail } from '../../constant'
 import { FormForgotPassword } from './FormForgotPassword'
 import { Success } from './Success'
 
-const ForgotPassword: FC = () => {
+const ForgotPassword = () => {
   const { t } = useTranslation('forgot_password')
   const { mutate, isLoading, isSuccess } = api.auth.forgotPassword.useMutation()
   const router = useRouter()
@@ -43,7 +43,7 @@ const ForgotPassword: FC = () => {
   }
 
   return (
-    <LayoutUnAuth title={t('seo_title')}>
+    <>
       {!isSuccess && (
         <FormForgotPassword
           isLoading={isLoading}
@@ -53,8 +53,12 @@ const ForgotPassword: FC = () => {
       )}
 
       {isSuccess && <Success />}
-    </LayoutUnAuth>
+    </>
   )
 }
+
+ForgotPassword.getLayout = (page: ReactElement) => (
+  <LayoutUnAuth title="forgot_password.title">{page}</LayoutUnAuth>
+)
 
 export { ForgotPassword }

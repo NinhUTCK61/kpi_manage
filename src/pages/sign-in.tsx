@@ -1,6 +1,6 @@
 import { Login } from '@/features/auth'
 import { authOptions } from '@/server/auth'
-import type { GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -18,13 +18,9 @@ export async function getServerSideProps({ locale, req, res }: GetServerSideProp
 
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common', 'sign_in'])),
+      ...(await serverSideTranslations(locale as string, ['common', 'sign_in', 'meta'])),
     },
   }
 }
 
-const PageLogin: NextPage = () => {
-  return <Login />
-}
-
-export default PageLogin
+export default Login

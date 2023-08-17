@@ -5,14 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { enqueueSnackbar } from 'notistack'
-import { FC, useCallback } from 'react'
+import { ReactElement, useCallback } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { LanguageEmail } from '../../constant'
 import { createSignUpFormSchema } from '../../hepler'
 import { FormSignUp } from './FormSignUp'
 import { Success } from './Success'
 
-const SignUp: FC = () => {
+const SignUp = () => {
   const { mutate, isLoading, isSuccess, data } = api.auth.signUp.useMutation()
   const { data: reasons } = api.reason.list.useQuery()
   const router = useRouter()
@@ -50,7 +50,7 @@ const SignUp: FC = () => {
   )
 
   return (
-    <LayoutUnAuth title={t('seo_title')}>
+    <>
       {!isSuccess && (
         <FormProvider {...methods}>
           <FormSignUp handleSubmit={methods.handleSubmit(onSubmit)} isLoading={isLoading} />
@@ -58,8 +58,10 @@ const SignUp: FC = () => {
       )}
 
       {isSuccess && <Success email={data.email as string} />}
-    </LayoutUnAuth>
+    </>
   )
 }
+
+SignUp.getLayout = (page: ReactElement) => <LayoutUnAuth title="sign_up.title">{page}</LayoutUnAuth>
 
 export { SignUp }

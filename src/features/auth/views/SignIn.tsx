@@ -12,12 +12,12 @@ import Hand1 from 'public/assets/svgs/hand1.svg'
 import Hand2 from 'public/assets/svgs/hand2.svg'
 import Hand3 from 'public/assets/svgs/hand3.svg'
 import Logo from 'public/assets/svgs/logo.svg'
-import { FC } from 'react'
+import { ReactElement } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CustomImage } from '../components'
 import { DescriptionTitle, SubTitle } from './styled'
 
-const Login: FC = () => {
+const Login = () => {
   const router = useRouter()
   const { callbackUrl = '/' } = router.query
 
@@ -74,86 +74,86 @@ const Login: FC = () => {
 
   return (
     <>
-      <LayoutUnAuth title={t('seo_title')}>
-        <Stack direction="row" justifyContent="center" pt={{ xs: 2, sm: 10 }}>
-          <Stack
-            alignItems="center"
-            sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', lg: 'flex' } }}
-            spacing={5.25}
-            justifyContent="center"
-          >
-            <video autoPlay loop muted height={362} width={635}>
-              <source src="/assets/videos/banner.mp4" type="video/mp4" />
-            </video>
+      <Stack direction="row" justifyContent="center" pt={{ xs: 2, sm: 10 }}>
+        <Stack
+          alignItems="center"
+          sx={{ mr: { md: 8, xl: 19.375 }, display: { xs: 'none', lg: 'flex' } }}
+          spacing={5.25}
+          justifyContent="center"
+        >
+          <video autoPlay loop muted height={362} width={635}>
+            <source src="/assets/videos/banner.mp4" type="video/mp4" />
+          </video>
 
-            <Stack direction="row" spacing={5}>
-              <Image src={Hand1} alt="hand 1" />
-              <Image src={Hand2} alt="hand 2" />
-              <Image src={Hand3} alt="hand 3" />
-            </Stack>
+          <Stack direction="row" spacing={5}>
+            <Image src={Hand1} alt="hand 1" />
+            <Image src={Hand2} alt="hand 2" />
+            <Image src={Hand3} alt="hand 3" />
+          </Stack>
+        </Stack>
+
+        <Stack
+          sx={{
+            width: { xs: '100%', sm: 450 },
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <Stack alignItems="center" mb={4}>
+            <CustomImage src={Logo} priority alt="logo" />
+
+            <SubTitle align="center">{t('title')}</SubTitle>
+
+            <DescriptionTitle align="center" width={{ xs: '100%', sm: 460 }}>
+              {t('child_title')}
+            </DescriptionTitle>
           </Stack>
 
-          <Stack
-            sx={{
-              width: { xs: '100%', sm: 450 },
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Stack alignItems="center" mb={4}>
-              <CustomImage src={Logo} priority alt="logo" />
+          <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              control={control}
+              name="email"
+              label={t('email') as string}
+              fullWidth
+              placeholder={t('enter_email') as string}
+            />
 
-              <SubTitle align="center">{t('title')}</SubTitle>
+            <Input
+              control={control}
+              name="password"
+              label={t('password') as string}
+              type="password"
+              fullWidth
+              placeholder={t('enter_password') as string}
+            />
 
-              <DescriptionTitle align="center" width={{ xs: '100%', sm: 460 }}>
-                {t('child_title')}
-              </DescriptionTitle>
+            <Button fullWidth variant="contained" type="submit">
+              {t('login')}
+            </Button>
+          </Stack>
+
+          <Stack width={{ xs: '100%', sm: 450 }} mt={1} spacing={1}>
+            <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
+              <TextColor onClick={redirectForgot} mr={1.75}>
+                {t('forgot')}
+              </TextColor>
             </Stack>
 
-            <Stack width="100%" spacing={2} component="form" onSubmit={handleSubmit(onSubmit)}>
-              <Input
-                control={control}
-                name="email"
-                label={t('email') as string}
-                fullWidth
-                placeholder={t('enter_email') as string}
-              />
+            <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
+              <Typography variant="body2" color="greyScale.600" fontWeight={400}>
+                {t('not_have_account')}
+              </Typography>
 
-              <Input
-                control={control}
-                name="password"
-                label={t('password') as string}
-                type="password"
-                fullWidth
-                placeholder={t('enter_password') as string}
-              />
-
-              <Button fullWidth variant="contained" type="submit">
-                {t('login')}
-              </Button>
-            </Stack>
-
-            <Stack width={{ xs: '100%', sm: 450 }} mt={1} spacing={1}>
-              <Stack direction="row" justifyContent="end" alignItems="center" height={46}>
-                <TextColor onClick={redirectForgot} mr={1.75}>
-                  {t('forgot')}
-                </TextColor>
-              </Stack>
-
-              <Stack py={1.5} spacing={0.5} justifyContent="center" direction="row">
-                <Typography variant="body2" color="greyScale.600" fontWeight={400}>
-                  {t('not_have_account')}
-                </Typography>
-
-                <TextColor onClick={redirectSignUp}>{t('sign_up')}</TextColor>
-              </Stack>
+              <TextColor onClick={redirectSignUp}>{t('sign_up')}</TextColor>
             </Stack>
           </Stack>
         </Stack>
-      </LayoutUnAuth>
+      </Stack>
     </>
   )
 }
+
+Login.getLayout = (page: ReactElement) => <LayoutUnAuth title="sign_in.title">{page}</LayoutUnAuth>
 
 export { Login }

@@ -6,7 +6,7 @@ import { DialogActionType } from '@/libs/shared/types/utils'
 import { Box, CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { ThumbnailAction } from '../../components'
 import { useDeleteTemplate, useRestoreTemplate } from '../../hooks'
 import { FileAction } from '../../types/template'
@@ -82,7 +82,7 @@ export const Favorite = () => {
   const { data: favoriteData, refetch, isLoading } = api.template.favorite.useQuery()
 
   return (
-    <Layout title={t('seo_title_favorite', { ns: 'favorite' })}>
+    <>
       <Title>{t('favorite_files', { ns: 'favorite' })}</Title>
 
       {isLoading ? (
@@ -135,6 +135,8 @@ export const Favorite = () => {
         onOpen={openDialogThumbnail}
         idTemplate={String(nodeId)}
       />
-    </Layout>
+    </>
   )
 }
+
+Favorite.getLayout = (page: ReactElement) => <Layout title="favorite.title">{page}</Layout>
