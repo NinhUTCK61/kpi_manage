@@ -154,6 +154,13 @@ const Login = () => {
   )
 }
 
-Login.getLayout = (page: ReactElement) => <LayoutUnAuth title="sign_in.title">{page}</LayoutUnAuth>
+Login.getLayout = (page: ReactElement) => (
+  <LayoutUnAuth
+    title="sign_in.title"
+    description="Please let me know if you need a different type of example or if there's something else you're looking for!"
+  >
+    {page}
+  </LayoutUnAuth>
+)
 
 export { Login }
