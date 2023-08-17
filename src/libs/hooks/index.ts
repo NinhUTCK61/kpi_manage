@@ -1,3 +1,4 @@
+export * from './useActiveElement'
 export * from './useDebounce'
 export * from './useMatchesSize'
 export * from './useModalState'

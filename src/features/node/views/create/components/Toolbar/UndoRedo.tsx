@@ -1,3 +1,4 @@
+import { useActiveElement } from '@/libs/hooks'
 import {
   KPINodeType,
   NAME_INPUT_COMMENT,
@@ -22,7 +23,7 @@ import RedoInactive from 'public/assets/svgs/redo.svg'
 import RedoActive from 'public/assets/svgs/redo_active.svg'
 import UndoInactive from 'public/assets/svgs/undo.svg'
 import UndoActive from 'public/assets/svgs/undo_active.svg'
-import { FC, useCallback, useEffect, useMemo } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { useIsomorphicLayoutEffect } from 'usehooks-ts'
 import { shallow } from 'zustand/shallow'
 
@@ -157,28 +158,21 @@ const UndoRedo: FC = () => {
     setOnStateChange(onStateChange)
   }, [setOnStateChange, onStateChange])
 
-  let focusInput = false
+  // check if focus input speech ballon or node
+  const activeElement = useActiveElement()
 
-  if (document.activeElement instanceof HTMLElement) {
-    const element = document.activeElement as HTMLInputElement
+  let focusInput = false
+  if (activeElement) {
     if (
-      (element.type === 'text' || element.type === 'textarea') &&
-      element.name !== NAME_INPUT_COMMENT
+      (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') &&
+      (activeElement as HTMLInputElement).name !== NAME_INPUT_COMMENT
     ) {
       focusInput = true
     }
   }
 
-  const isNodeSaved = useMemo(() => {
-    if (!nodeFocused || (nodeFocused && nodeFocused.type === 'comment')) return true
-    return (
-      (nodeFocused.type === 'kpi' || nodeFocused.type === 'speech_ballon') &&
-      nodeFocused.data.is_saved
-    )
-  }, [nodeFocused])
-
-  const canRedo = isNodeSaved && !focusInput && futureStates.length > 0
-  const canUndo = isNodeSaved && !focusInput && pastStates.length > 0
+  const canRedo = !focusInput && futureStates.length > 0
+  const canUndo = !focusInput && pastStates.length > 0
 
   return (
     <Stack direction="row" spacing={2} mr={3}>
