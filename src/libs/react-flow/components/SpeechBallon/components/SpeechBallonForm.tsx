@@ -131,6 +131,7 @@ export const SpeechBallonForm: React.FC = () => {
     }
 
     handleSetEditing(false)
+    event.preventDefault()
   }
 
   const [isDoubleClick, setIsDoubleClick] = useState(false)

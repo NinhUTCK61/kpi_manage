@@ -178,21 +178,19 @@ const UndoRedo: FC = () => {
     <Stack direction="row" spacing={2} mr={3}>
       <Image
         src={canUndo ? UndoActive : UndoInactive}
-        onClick={() => undo()}
+        onMouseDown={() => canUndo && undo()}
         alt="undo"
         style={{
           cursor: canUndo ? 'pointer' : 'auto',
-          pointerEvents: canUndo ? 'auto' : 'none',
         }}
       />
 
       <Image
         src={canRedo ? RedoActive : RedoInactive}
-        onClick={() => redo()}
+        onMouseDown={() => canRedo && redo()}
         alt="redo"
         style={{
           cursor: canRedo ? 'pointer' : 'auto',
-          pointerEvents: canRedo ? 'auto' : 'none',
         }}
       />
     </Stack>
