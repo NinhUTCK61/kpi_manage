@@ -128,6 +128,17 @@ const _KPIMiddleware = (configStore: StateCreator<RFStore, [], []>) => {
                 } as ReactFlowNode
               })
               break
+            case UpdateStateReason.UpdateSpeechBallonNodeData:
+              pastNodes = produce(pastNodes, (draft) => {
+                const nodeIdx = draft.findIndex(
+                  (n) => n.id === (updateBy.payload as SpeechBallonNodeType).id,
+                )
+                draft[nodeIdx] = {
+                  ...draft[nodeIdx],
+                  draggable: true,
+                } as ReactFlowNode
+              })
+              break
             default:
               break
           }

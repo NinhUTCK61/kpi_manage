@@ -10,6 +10,7 @@ import {
   useNodeDeleteMutation,
   useRFStore,
   useSpeechBallonDeleteMutation,
+  useTemporalStore,
   useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
 import { UpdateStateReason } from '@/libs/react-flow/store'
@@ -54,6 +55,8 @@ export const useReactFlowHandler = () => {
     getNodeById,
     removeSpeechBallonNode,
   } = useRFStore(storeSelector, shallow)
+
+  const pastsState = useTemporalStore((state) => state.pastStates)
 
   const { handleDelete: deleteKPINode } = useNodeDeleteMutation()
   const { mutate: deleteSpeechBallonNode } = useSpeechBallonDeleteMutation()
@@ -119,11 +122,24 @@ export const useReactFlowHandler = () => {
         })
       }
 
-      if (viewportAction === ViewPortAction.SpeechBallon && !nodeFocused) {
+      if (
+        viewportAction === ViewPortAction.SpeechBallon &&
+        !nodeFocused &&
+        // fix trường hợp khi xoá hết text -> xoá node -> click vào pane -> sẽ không tạo speechBallon
+        pastsState[pastsState.length - 1]?.updatedReason?.updateBy?.updateStateReason !==
+          UpdateStateReason.DeleteSpeechBallonNode
+      ) {
         addTempSpeechBallon(e.clientX, e.clientY)
       }
     },
-    [setNodeFocused, viewportAction, nodeFocused, setActivePosition, addTempSpeechBallon],
+    [
+      setNodeFocused,
+      viewportAction,
+      nodeFocused,
+      pastsState,
+      setActivePosition,
+      addTempSpeechBallon,
+    ],
   )
 
   const handleNodesDelete = useCallback(
