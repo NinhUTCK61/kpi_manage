@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { NAME_INPUT_COMMENT } from '../react-flow'
 
 export const useActiveElement = () => {
   const [activeElement, setActiveElement] = useState(document.activeElement)
@@ -21,5 +22,15 @@ export const useActiveElement = () => {
     }
   }, [])
 
-  return activeElement
+  let isFocusInput = false
+  if (activeElement) {
+    if (
+      (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') &&
+      (activeElement as HTMLInputElement).name !== NAME_INPUT_COMMENT
+    ) {
+      isFocusInput = true
+    }
+  }
+
+  return { activeElement, isFocusInput }
 }
