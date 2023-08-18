@@ -120,6 +120,10 @@ export const SpeechBallonForm: React.FC = () => {
         className.includes(CLASS_MOVEABLE_DEFAULT)
       )
         return
+      if (event.target.tagName !== 'IMG') return
+      const alt = event.target.getAttribute('alt')
+      const isUndoRedo = alt === 'undo' || alt === 'redo'
+      if (isUndoRedo) event.preventDefault()
     }
 
     if (shouldSubmit) {
@@ -127,7 +131,6 @@ export const SpeechBallonForm: React.FC = () => {
     }
 
     handleSetEditing(false)
-    event.preventDefault()
   }
 
   const [isDoubleClick, setIsDoubleClick] = useState(false)
