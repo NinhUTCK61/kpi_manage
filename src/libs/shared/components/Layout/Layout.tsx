@@ -30,21 +30,14 @@ const Layout: React.FC<LayoutType> = ({
     <>
       <Head>
         <title>{title ? t(title) : 'KPI master'}</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={description} data-id="main" />
         <meta charSet="UTF-8" />
         <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
 
         <meta name="og:site_name" content="KPI Master the best team" />
         <meta property="og:title" content="Sign in | KPI Master" />
 
-        <meta
-          name="description"
-          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo porro sed doloribus quidem? Aliquam cum omnis eligendi laboriosam mollitia rerum quos, ab magni suscipit fugit odit natus beatae cumque earum?"
-          data-id="main"
-        />
-
         <meta property="og:image" content="https://i.imgur.com/l9pWgUw.png" />
-        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="100" />
         <meta property="og:image:height" content="100" />
 
