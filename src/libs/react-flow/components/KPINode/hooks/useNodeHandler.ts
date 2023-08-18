@@ -44,10 +44,11 @@ const useNodeHandler = () => {
     } else {
       // TODO: handler calculate formula here
       const { value2Number, error } = calculatorValue2number(input_value, nodes)
-
-      if (error) {
+      const isInfinity = value2Number === Infinity
+      if (isInfinity || error) {
+        const errorMessage = isInfinity ? t('error.infinity') : t('error.invalid_formula')
         form.setError('input_value', {
-          message: t('error.invalid_formula') as string,
+          message: errorMessage,
         })
         return
       }
