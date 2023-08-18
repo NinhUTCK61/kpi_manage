@@ -16,6 +16,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
   return (
     <>
       <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
         <title>{title ? t(title) : 'KPI master'}</title>
         <meta name="description" content={description} data-id="main" />
         <meta charSet="UTF-8" />
