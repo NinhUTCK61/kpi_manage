@@ -1,7 +1,6 @@
 import { useActiveElement } from '@/libs/hooks'
 import {
   KPINodeType,
-  NAME_INPUT_COMMENT,
   ReactFlowSpeechBallonNode,
   SpeechBallonNodeType,
   UpdatedReason,
@@ -159,20 +158,10 @@ const UndoRedo: FC = () => {
   }, [setOnStateChange, onStateChange])
 
   // check if focus input speech ballon or node
-  const activeElement = useActiveElement()
+  const { isFocusInput } = useActiveElement()
 
-  let focusInput = false
-  if (activeElement) {
-    if (
-      (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') &&
-      (activeElement as HTMLInputElement).name !== NAME_INPUT_COMMENT
-    ) {
-      focusInput = true
-    }
-  }
-
-  const canRedo = !focusInput && futureStates.length > 0
-  const canUndo = !focusInput && pastStates.length > 0
+  const canRedo = !isFocusInput && futureStates.length > 0
+  const canUndo = !isFocusInput && pastStates.length > 0
 
   return (
     <Stack direction="row" spacing={2} mr={3}>

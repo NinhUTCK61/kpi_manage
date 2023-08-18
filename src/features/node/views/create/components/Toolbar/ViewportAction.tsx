@@ -11,6 +11,7 @@ import MoveActiveIcon from 'public/assets/svgs/viewportAction/move_tools_active.
 import { shallow } from 'zustand/shallow'
 
 import { ViewPortAction } from '@/features/node/constant'
+import { useActiveElement } from '@/libs/hooks'
 import { RFStore, useRFStore } from '@/libs/react-flow'
 import { useTranslation } from 'next-i18next'
 
@@ -21,6 +22,7 @@ const selector = (state: RFStore) => ({
 
 const ViewportAction: React.FC = () => {
   const { t } = useTranslation('file')
+  const { isFocusInput } = useActiveElement()
   const { viewportAction, changeViewportAction } = useRFStore(selector, shallow)
 
   const actions = [
@@ -51,7 +53,18 @@ const ViewportAction: React.FC = () => {
   ]
 
   return (
-    <Stack spacing={1} direction="row" alignItems="center" ml={2}>
+    <Stack
+      spacing={1}
+      direction="row"
+      alignItems="center"
+      ml={2}
+      sx={{
+        ...(isFocusInput && {
+          opacity: 0.3,
+          pointerEvents: 'none',
+        }),
+      }}
+    >
       {actions.map((action) => (
         <Tooltip title={action.title} arrow key={action.key} placement="bottom-start">
           <ImageCursor
