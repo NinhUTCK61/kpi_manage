@@ -36,6 +36,9 @@ const Layout: React.FC<LayoutType> = ({
         <meta property="og:title" content="Sign in" />
         <meta property="og:description" content="Please Sign in" />
         <meta property="og:image" content="https://i.imgur.com/l9pWgUw.png" />
+        <meta property="og:image:width" content="367" />
+        <meta property="og:image:height" content="128" />
+        <meta property="og:image:alt" content="A shiny red apple with a bite taken out" />
         <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
         <meta property="og:site_name" content="KPI Master" />
       </Head>
