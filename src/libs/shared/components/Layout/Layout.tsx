@@ -32,16 +32,24 @@ const Layout: React.FC<LayoutType> = ({
         <title>{title ? t(title) : 'KPI master'}</title>
         <meta name="description" content={description} />
         <meta charSet="UTF-8" />
-        <link rel="icon" type="image/png" href="/favicon.ico" />
-        <meta name="keywords" content="Sign in to Kpi master" />
-        <meta property="og:title" content="Sign in" />
-        <meta property="og:description" content="Please Sign in" />
+        <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
+
+        <meta name="og:site_name" content="KPI Master the best team" />
+        <meta property="og:title" content="Sign in | KPI Master" />
+
+        <meta
+          name="description"
+          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo porro sed doloribus quidem? Aliquam cum omnis eligendi laboriosam mollitia rerum quos, ab magni suscipit fugit odit natus beatae cumque earum?"
+          data-id="main"
+        />
+
         <meta property="og:image" content="https://i.imgur.com/l9pWgUw.png" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="100" />
         <meta property="og:image:height" content="100" />
-        <meta property="og:image:alt" content="KPI Master image" />
-        <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
+
+        <meta property="imdb:pageType" content="title" />
+        <meta property="imdb:subPageType" content="main" />
       </Head>
       {HeaderComponent ? HeaderComponent : <Header />}
       <Stack direction="row">
