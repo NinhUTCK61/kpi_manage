@@ -17,7 +17,19 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
     <>
       <Head>
         <title>{title ? t(title) : 'KPI master'}</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={description} data-id="main" />
+        <meta charSet="UTF-8" />
+        <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
+
+        <meta name="og:site_name" content="KPI Master the best team" />
+        <meta property="og:title" content="Sign in | KPI Master" />
+
+        <meta property="og:image" content="https://i.imgur.com/l9pWgUw.png" />
+        <meta property="og:image:width" content="100" />
+        <meta property="og:image:height" content="100" />
+
+        <meta property="imdb:pageType" content="title" />
+        <meta property="imdb:subPageType" content="main" />
       </Head>
       <HeaderUnAuth />
       <ContentPage>{children}</ContentPage>
