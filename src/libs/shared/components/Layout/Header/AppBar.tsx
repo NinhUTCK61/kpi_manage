@@ -1,5 +1,6 @@
 import { AppBar as MuiAppBar, styled } from '@mui/material'
-import { HEADER_HEIGHT } from './Header'
+
+export const HEADER_HEIGHT = 60
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   height: HEADER_HEIGHT,

@@ -44,6 +44,7 @@ const Layout: React.FC<LayoutType> = ({
 
         <meta property="imdb:pageType" content="title" />
         <meta property="imdb:subPageType" content="main" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       {HeaderComponent ? HeaderComponent : <Header />}
       <Stack direction="row">

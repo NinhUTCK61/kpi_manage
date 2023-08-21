@@ -129,8 +129,17 @@ const ChooseShape: React.FC = () => {
         value={shape}
         onChange={handleShapeChange}
         input={
-          <CustomInput
-            sx={{ '& svg': { fill: svgColor.fill }, '& svg rect': { stroke: svgColor.stroke } }}
+          <InputStyled
+            sx={{
+              '& svg': { fill: svgColor.fill },
+              '& svg rect': { stroke: svgColor.stroke },
+              '& fieldset': {
+                border: 'none',
+              },
+              '& .MuiOutlinedInput-input': {
+                display: 'flex',
+              },
+            }}
           />
         }
         IconComponent={(props) => <Image src={ArrowDown} alt="arrow" {...props} />}
@@ -170,14 +179,5 @@ const Select = styled(MuiSelect)(({ theme }) => ({
     top: 'auto',
   },
 }))
-
-const CustomInput = styled(InputStyled)({
-  '& fieldset': {
-    border: 'none',
-  },
-  '& .MuiOutlinedInput-input': {
-    display: 'flex',
-  },
-})
 
 export { ChooseShape }

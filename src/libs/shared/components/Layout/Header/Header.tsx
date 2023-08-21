@@ -9,14 +9,12 @@ import { CustomLink } from '../../CustomLink'
 import { menuHref } from '../Sidebar'
 import { StackContainer } from '../StackContainer'
 import { Account } from './Account'
-import { AppBar } from './AppBar'
+import { AppBar, HEADER_HEIGHT } from './AppBar'
 import { Language } from './Language'
 import { MenuMobile } from './MenuMobile'
 import { MenuMobileButton } from './MenuMobile/MenuMobileIcon'
 import { SearchMobileButton } from './MenuMobile/SearchMobileButton'
 import { Search } from './Search'
-
-const HEADER_HEIGHT = 60
 
 const displaySearchHref = [menuHref.home, menuHref.favorite]
 
