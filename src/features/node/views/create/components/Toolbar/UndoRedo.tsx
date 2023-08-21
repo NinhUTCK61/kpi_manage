@@ -41,7 +41,6 @@ const UndoRedo: FC = () => {
   )
 
   const { nodes } = useRFStore((state) => ({ nodes: state.nodes }), shallow)
-  const nodeFocused = useRFStore((state) => state.nodeFocused)
   const { mutate: createKPI } = useNodeCreateMutation(UpdateStateReason.OnUndoRedo)
   const { handleDelete: delKPI } = useNodeDeleteMutation(UpdateStateReason.OnUndoRedo)
   const {

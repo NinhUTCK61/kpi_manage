@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { NAME_INPUT_COMMENT } from '../react-flow'
+
+const NAME_INPUT_COMMENT = 'content'
 
 export const useActiveElement = () => {
   const [activeElement, setActiveElement] = useState(document.activeElement)

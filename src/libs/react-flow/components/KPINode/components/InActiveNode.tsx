@@ -1,7 +1,6 @@
 import { ViewPortAction } from '@/features/node/constant'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { formatNumber } from '@/libs/utils/format'
-import { useTranslation } from 'next-i18next'
 import { Position } from 'reactflow'
 import { useKPINodeContext } from '../context'
 import { useErrorState } from '../hooks'
@@ -21,7 +20,6 @@ const InActive: React.FC = () => {
   const d3Root = useRFStore((state) => state.d3Root)
   const { data, isConnectable } = useKPINodeContext()
   const style = JSON.parse(data.node_style || '{}')
-  const { t } = useTranslation('common')
   const d3Node = d3Root.find((node) => node.data.id === data.id)
   const hasChild = d3Node?.children && d3Node.children.length > 0
   const { error, message } = useErrorState()
