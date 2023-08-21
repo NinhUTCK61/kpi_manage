@@ -97,3 +97,13 @@ export const unFocusInputActive = () => {
     document.activeElement.blur()
   }
 }
+
+export const isUndoRedoClick = (e: MouseEvent | TouchEvent) => {
+  const element = e.target as HTMLElement
+  let isUndoRedo = false
+  if (element.tagName === 'IMG') {
+    const alt = element.getAttribute('alt')
+    if (alt === 'undo' || alt === 'redo') isUndoRedo = true
+  }
+  return isUndoRedo
+}

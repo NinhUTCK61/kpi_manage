@@ -1,5 +1,5 @@
 import { ShapeType, ViewPortAction } from '@/features/node'
-import { isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
+import { isPaneClick, isUndoRedoClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { UpdateStateReason } from '@/libs/react-flow/store'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -120,10 +120,7 @@ export const SpeechBallonForm: React.FC = () => {
         className.includes(CLASS_MOVEABLE_DEFAULT)
       )
         return
-      if (event.target.tagName === 'IMG') {
-        const alt = event.target.getAttribute('alt')
-        !!(alt === 'undo' || alt === 'redo') && event.preventDefault()
-      }
+      isUndoRedoClick(event) && event.preventDefault()
     }
 
     if (shouldSubmit) {
