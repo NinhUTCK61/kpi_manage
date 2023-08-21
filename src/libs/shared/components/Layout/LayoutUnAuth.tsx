@@ -22,11 +22,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
         <title>{title ? t(title) : 'KPI master'}</title>
         <meta
           name="description"
-          content={`${
-            description
-              ? t(description)
-              : 'Experience Seamless Account Management with Our Platform!'
-          }`}
+          content={`${description ? t(description) : t('title_website')}`}
           data-id="main"
         />
         <meta charSet="UTF-8" />
@@ -35,8 +31,8 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
           content={`https://staging.kpi-master.com/${router.locale}${router.asPath}`}
         />
 
-        <meta name="og:site_name" content="KPI Master the best team" />
-        <meta property="og:title" content={`${title ? t(title) : 'KPI Master the best team'}`} />
+        <meta name="og:site_name" content="KPI Master" />
+        <meta property="og:title" content={`${title ? t(title) : t('content')}`} />
 
         <meta
           property="og:image"
@@ -47,7 +43,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@thinhtr14243689" />
-        <meta name="twitter:title" content={`${title ? t(title) : 'KPI Master the best team'}`} />
+        <meta name="twitter:title" content={`${title ? t(title) : t('content')}`} />
         <meta
           name="twitter:image"
           content="https://res.cloudinary.com/dtcbs7ule/image/upload/v1692602694/images/kpi-master.png"
