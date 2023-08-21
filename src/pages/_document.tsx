@@ -23,7 +23,7 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
       <Head>
         {/* PWA primary color */}
         <meta name="theme-color" content="#ffffff" />
-        
+
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>

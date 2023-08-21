@@ -17,7 +17,7 @@ export const CLASS_SPEECH_BALLON = 'speechBallonNode'
 export const OptionShape: React.FC = () => {
   const { getShapeStyles, getShapeContainer } = useShapeStyle()
   const nodeFocused = useRFStore((state) => state.nodeFocused)
-  const { isResizeEnabled, handleSetResize } = useSpeechBallonContext()
+  const { isResizeEnabled, handleSetResize, data } = useSpeechBallonContext()
 
   const handleClickAwayCloseResize = (event: MouseEvent | TouchEvent) => {
     if (!isResizeEnabled) return
@@ -46,6 +46,7 @@ export const OptionShape: React.FC = () => {
         <MuiOptionShapeType
           sx={{ ...getShapeStyles, zIndex: 1000, width: '100%', height: '100%' }}
           className={CLASS_SPEECH_BALLON}
+          id={data.id}
         >
           <SpeechBallonForm />
         </MuiOptionShapeType>
