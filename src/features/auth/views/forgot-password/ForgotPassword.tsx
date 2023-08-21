@@ -58,7 +58,9 @@ const ForgotPassword = () => {
 }
 
 ForgotPassword.getLayout = (page: ReactElement) => (
-  <LayoutUnAuth title="forgot_password.title">{page}</LayoutUnAuth>
+  <LayoutUnAuth title="forgot_password.title" description="forgot_password.description">
+    {page}
+  </LayoutUnAuth>
 )
 
 export { ForgotPassword }

@@ -1,6 +1,7 @@
 import { styled } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { HeaderUnAuth } from './Header'
 
@@ -12,18 +13,30 @@ type LayoutType = {
 
 const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) => {
   const { t } = useTranslation('meta')
+  const router = useRouter()
 
   return (
     <>
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
         <title>{title ? t(title) : 'KPI master'}</title>
-        <meta name="description" content={description} data-id="main" />
+        <meta
+          name="description"
+          content={`${
+            description
+              ? t(description)
+              : 'Experience Seamless Account Management with Our Platform!'
+          }`}
+          data-id="main"
+        />
         <meta charSet="UTF-8" />
-        <meta property="og:url" content="https://staging.kpi-master.com/en/sign-in" />
+        <meta
+          property="og:url"
+          content={`https://staging.kpi-master.com/${router.locale}/${router.asPath}`}
+        />
 
         <meta name="og:site_name" content="KPI Master the best team" />
-        <meta property="og:title" content="Sign in | KPI Master" />
+        <meta property="og:title" content={`${title ? t(title) : 'KPI Master the best team'}`} />
 
         <meta
           property="og:image"
@@ -34,7 +47,7 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@thinhtr14243689" />
-        <meta name="twitter:title" content="KPI Master | The best team" />
+        <meta name="twitter:title" content={`${title ? t(title) : 'KPI Master the best team'}`} />
         <meta
           name="twitter:image"
           content="https://res.cloudinary.com/dtcbs7ule/image/upload/v1692602694/images/kpi-master.png"
