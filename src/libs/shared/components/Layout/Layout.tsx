@@ -45,7 +45,7 @@ const Layout: React.FC<LayoutType> = ({
         <meta charSet="UTF-8" />
         <meta
           property="og:url"
-          content={`https://staging.kpi-master.com/${router.locale}/${router.asPath}`}
+          content={`https://staging.kpi-master.com/${router.locale}${router.asPath}`}
         />
 
         <meta name="og:site_name" content="KPI Master the best team" />
