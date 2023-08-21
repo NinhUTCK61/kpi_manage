@@ -62,6 +62,10 @@ const SignUp = () => {
   )
 }
 
-SignUp.getLayout = (page: ReactElement) => <LayoutUnAuth title="sign_up.title">{page}</LayoutUnAuth>
+SignUp.getLayout = (page: ReactElement) => (
+  <LayoutUnAuth title="sign_up.title" description="sign_up.description">
+    {page}
+  </LayoutUnAuth>
+)
 
 export { SignUp }

@@ -1,6 +1,7 @@
 {
   "home": {
-    "title": "Home"
+    "title": "Home",
+    "description": "Welcome to KPI-Master! Explore a world of possibilities as we bring you the latest insights, products, and services. Navigate through our user-friendly interface and discover the essence of convenience and innovation. Join us on KPI-Master's homepage to embark on an exciting journey!"
   },
   "favorite": {
     "title": "Favorite"
@@ -9,18 +10,23 @@
     "title": "Profile"
   },
   "reset_password": {
-    "title": "Reset password"
+    "title": "Reset password",
+    "description": "Welcome to our password reset page. If you've forgotten your password or need to create a new one, you're in the right place. We've designed a hassle-free process to help you regain access to your account. Follow the steps and set up a new password securely. Regain control of your account today with ease!"
   },
   "change_password": {
-    "title": "Change password"
+    "title": "Change password",
+    "description": "Welcome to our password update page. Ensuring your online security is our priority. By changing your password regularly, you add an extra layer of protection to your account. Our user-friendly interface makes it simple to modify your password. Take control of your account's safety today and update your password with ease!"
   },
   "forgot_password": {
-    "title": "Forgot password"
+    "title": "Forgot password",
+    "description": "Recover your password with our page! We're here to assist you in regaining access by providing the necessary information. Reset your password effortlessly and conveniently through our secure interface. Initiate the recovery process today! "
   },
   "sign_in": {
-    "title": "Sign In"
+    "title": "Sign In",
+    "description": "Experience the best service with our login page! Log in to manage personal information, conduct online transactions, and receive exclusive offers. Secure your information with a safe login interface. Sign in now!"
   },
   "sign_up": {
-    "title": "Sign Up"
+    "title": "Sign Up",
+    "description": "Welcome to our sign-up page! Join our vibrant community and unlock a world of possibilities. Creating an account is quick and easy. Get started by providing your details and access exclusive features, updates, and more. Don't miss out—sign up today and become part of our growing community!"
   }
 }

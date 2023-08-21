@@ -51,7 +51,9 @@ const ChangePassword = () => {
 }
 
 ChangePassword.getLayout = (page: ReactElement) => (
-  <Layout title="change_password.title">{page}</Layout>
+  <Layout title="change_password.title" description="change_password.description">
+    {page}
+  </Layout>
 )
 
 export { ChangePassword }

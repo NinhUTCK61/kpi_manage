@@ -177,6 +177,10 @@ const Home = () => {
   )
 }
 
-Home.getLayout = (page: ReactElement) => <Layout title="home.title">{page}</Layout>
+Home.getLayout = (page: ReactElement) => (
+  <Layout title="home.title" description="home.description">
+    {page}
+  </Layout>
+)
 
 export { Home }

@@ -155,10 +155,7 @@ const Login = () => {
 }
 
 Login.getLayout = (page: ReactElement) => (
-  <LayoutUnAuth
-    title="sign_in.title"
-    description="Please let me know if you need a different type of example or if there's something else you're looking for!"
-  >
+  <LayoutUnAuth title="sign_in.title" description="sign_in.description">
     {page}
   </LayoutUnAuth>
 )
