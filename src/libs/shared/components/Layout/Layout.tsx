@@ -54,14 +54,6 @@ const Layout: React.FC<LayoutType> = ({
         <meta property="og:image:width" content="100" />
         <meta property="og:image:height" content="100" />
 
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@thinhtr14243689" />
-        <meta name="twitter:title" content={`${title ? t(title) : t('content')}`} />
-        <meta
-          name="twitter:image"
-          content="https://res.cloudinary.com/dtcbs7ule/image/upload/v1692602694/images/kpi-master.png"
-        />
-
         <meta property="imdb:pageType" content="title" />
         <meta property="imdb:subPageType" content="main" />
       </Head>
