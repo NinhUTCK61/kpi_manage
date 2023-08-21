@@ -1,5 +1,5 @@
 import { blue, red } from '@/libs/config/theme'
-import { isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
+import { isPaneClick, isUndoRedoClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -84,8 +84,14 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
-    if (isPaneClick(event)) {
-      saveValue()
+    if (!formFocus) return
+    if (event.target instanceof HTMLElement) {
+      const shouldSubmit = isUndoRedoClick(event)
+
+      if (isPaneClick(event) || shouldSubmit) {
+        saveValue()
+        event.preventDefault()
+      }
     }
   }
 
