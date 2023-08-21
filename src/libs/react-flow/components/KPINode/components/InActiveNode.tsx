@@ -59,7 +59,8 @@ const InActive: React.FC = () => {
         {data.slug !== 'root' && hasChild && (
           <NodeIcon
             sx={{
-              transform: 'translate(-50%,-25%)',
+              transform: 'translate(-95%,-50%)',
+              fontSize: '1.1rem',
               stroke: edgeColor,
             }}
           />
