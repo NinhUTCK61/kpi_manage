@@ -25,9 +25,20 @@ const LayoutUnAuth: React.FC<LayoutType> = ({ title, description, children }) =>
         <meta name="og:site_name" content="KPI Master the best team" />
         <meta property="og:title" content="Sign in | KPI Master" />
 
-        <meta property="og:image" content="https://i.imgur.com/l9pWgUw.png" />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/dtcbs7ule/image/upload/v1692602694/images/kpi-master.png"
+        />
         <meta property="og:image:width" content="100" />
         <meta property="og:image:height" content="100" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@thinhtr14243689" />
+        <meta name="twitter:title" content="KPI Master | The best team" />
+        <meta
+          name="twitter:image"
+          content="https://res.cloudinary.com/dtcbs7ule/image/upload/v1692602694/images/kpi-master.png"
+        />
 
         <meta property="imdb:pageType" content="title" />
         <meta property="imdb:subPageType" content="main" />
