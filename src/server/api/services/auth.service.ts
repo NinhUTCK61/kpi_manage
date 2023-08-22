@@ -1,7 +1,6 @@
 import { SignUpInputSchema } from '@/libs/schema'
 import MailUtils from '@/libs/utils/mail'
 import { prisma } from '@/server/db'
-import { Prisma } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import * as argon2 from 'argon2'
 import { nanoid } from 'nanoid'
@@ -10,14 +9,8 @@ import { z } from 'zod'
 const ONE_DAY = 24 * 60 * 60 * 1000
 
 class AuthService {
-  model: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
-
-  constructor() {
-    this.model = prisma.user
-  }
-
   async forgotPassword(email: string, language: string) {
-    const user = await this.model.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -134,7 +127,7 @@ class AuthService {
     const hashPassword = await argon2.hash(password)
     try {
       await prisma.$transaction([
-        this.model.update({
+        prisma.user.update({
           where: {
             id: checkToken.user_id,
           },
@@ -214,7 +207,7 @@ class AuthService {
 
     try {
       await prisma.$transaction([
-        this.model.update({
+        prisma.user.update({
           where: {
             email: checkToken.identifier,
           },
