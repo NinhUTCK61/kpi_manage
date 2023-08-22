@@ -110,6 +110,7 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
+    if (!isEditing) return
     const shouldSubmit = isPaneClick(event) || data.is_saved
 
     if (event.target instanceof HTMLElement) {
@@ -120,10 +121,11 @@ export const SpeechBallonForm: React.FC = () => {
         className.includes(CLASS_MOVEABLE_DEFAULT)
       )
         return
-      isUndoRedoClick(event) && event.preventDefault()
     }
 
-    if (shouldSubmit) {
+    isUndoRedoClick(event) && event.preventDefault()
+
+    if (shouldSubmit || isUndoRedoClick(event)) {
       handleSubmit()
     }
 
