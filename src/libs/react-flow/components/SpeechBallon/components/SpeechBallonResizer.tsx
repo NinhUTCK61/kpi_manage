@@ -1,7 +1,7 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
-import { useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
 import { useSpeechBallonContext } from '../context'
 import { HEIGHT_ARROW, WIDTH_ARROW } from '../helper'
@@ -35,15 +35,14 @@ const SpeechBallonResizer = () => {
 
   const minSizeStyle = minSizeResize[shapeType]
 
-  const node = useMemo(() => getNodeById(data.id), [data.id, getNodeById])
-
-  const defaultDimensions = useRef({
+  const node = getNodeById(data.id)
+  const defaultDimensions = {
     position: { ...node?.position },
     positionAbsolute: { ...node?.positionAbsolute },
     style: node?.style,
     width: node?.width,
     height: node?.height,
-  })
+  }
 
   const nodeFocusedMemo = useMemo(() => {
     if (nodeFocused?.type === 'speech_ballon') return nodeFocused
@@ -68,23 +67,10 @@ const SpeechBallonResizer = () => {
       x: params.x,
       y: params.y,
       is_saved: nodeFocusedMemo.data.is_saved,
-      defaultDimensions: defaultDimensions.current,
+      defaultDimensions,
     }
 
-    updateReactFlowNode(dataUpdate, 'speech_ballon', () => {
-      const node = getNodeById(data.id)
-      defaultDimensions.current = {
-        style: {
-          width: params.width,
-          height: params.height,
-        },
-        width: params.width,
-        height: params.height,
-        position: { ...node?.position },
-        positionAbsolute: { ...node?.positionAbsolute },
-      }
-    })
-
+    updateReactFlowNode(dataUpdate, 'speech_ballon')
     handleSetResizing(null)
   }
 
