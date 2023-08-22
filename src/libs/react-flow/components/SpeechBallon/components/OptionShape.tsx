@@ -56,6 +56,7 @@ export const OptionShape: React.FC = () => {
   )
 }
 
-const MuiOptionShapeType = styled('div')({
+const MuiOptionShapeType = styled('div')(({ theme }) => ({
   position: 'relative',
-})
+  padding: theme.spacing(1, 1.5),
+}))
