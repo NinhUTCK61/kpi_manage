@@ -30,7 +30,7 @@ const InputStyled = styled(InputBase)(({ readOnly, theme }) => ({
   fontSize: 15,
   fontWeight: 400,
   lineHeight: '22px',
-  padding: theme.spacing(1, 1.5),
+  padding: 0,
   ...(readOnly && {
     cursor: 'grab !important',
   }),

@@ -15,6 +15,7 @@ import {
   useUpdateSpeechBallonMutation,
 } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
+import { CLASS_SPEECH_BALLON } from './OptionShape'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
 type SpeechBallonFormProps = {
@@ -121,6 +122,15 @@ export const SpeechBallonForm: React.FC = () => {
         className.includes(CLASS_MOVEABLE_DEFAULT)
       )
         return
+      if (className.includes(CLASS_SPEECH_BALLON)) {
+        const nodeId = event.target.getAttribute('id')
+        if (nodeId === data.id) {
+          setTimeout(() => {
+            setFocus('text')
+          }, 0)
+          return
+        }
+      }
     }
 
     isUndoRedoClick(event) && event.preventDefault()
