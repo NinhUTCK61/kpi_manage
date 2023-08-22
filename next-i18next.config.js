@@ -11,7 +11,6 @@ module.exports = {
   },
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   /** To avoid issues when deploying to some paas (vercel...) */
-
   /**
    * @link https://github.com/i18next/next-i18next#6-advanced-configuration
    */
