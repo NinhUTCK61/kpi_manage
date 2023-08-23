@@ -91,8 +91,8 @@ const ChooseShape: React.FC = () => {
         ...style,
         height,
         width,
-        arrowHeight: (pxToNumber(ARROW_HEIGHT) + pxToNumber(height)) / 2,
-        arrowWidth: Math.min(pxToNumber(ARROW_WIDTH) * percentResize, pxToNumber(height)),
+        arrowHeight: (pxToNumber(ARROW_HEIGHT) + pxToNumber(height)) / 2 + 'px',
+        arrowWidth: Math.min(pxToNumber(ARROW_WIDTH) * percentResize, pxToNumber(height)) + 'px',
         arrowTransform: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
@@ -108,8 +108,8 @@ const ChooseShape: React.FC = () => {
         sizeStyleMapping[value].height / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
       const newNodeStyle = JSON.stringify({
         ...style,
-        arrowHeight: (pxToNumber(ARROW_HEIGHT) + sizeStyleMapping[value].height) / 2,
-        arrowWidth: pxToNumber(ARROW_WIDTH) * percentResize,
+        arrowHeight: (pxToNumber(ARROW_HEIGHT) + sizeStyleMapping[value].height) / 2 + 'px',
+        arrowWidth: pxToNumber(ARROW_WIDTH) * percentResize + 'px',
         arrowTransform: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
