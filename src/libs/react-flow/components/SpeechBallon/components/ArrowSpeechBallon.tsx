@@ -3,41 +3,42 @@ import { Box, styled } from '@mui/material'
 import { useLayoutEffect, useRef } from 'react'
 import Moveable, { DIRECTIONS, OnRender, OnRotate, OnWarpEnd } from 'react-moveable'
 import { useSpeechBallonContext } from '../context'
-import { DEFAULT_DEG_ARROW, HEIGHT_ARROW, WIDTH_ARROW, useShapeStyle } from '../helper'
+import { ARROW_HEIGHT, ARROW_WIDTH, DEFAULT_ARROW_TRANSFORM, useShapeStyle } from '../helper'
 
 function ArrowSpeechBallon() {
   const { updateReactFlowNode } = useNodeUpdateHandler()
   const { data, isResizeEnabled, nodeResizing, isResizing } = useSpeechBallonContext()
-  const { getArrowStyles, insideArrow, getArrowBox } = useShapeStyle()
+  const { getArrowStyles, insideArrow, getArrowBoxStyles } = useShapeStyle()
 
   const style = isResizing
     ? JSON.parse(nodeResizing?.data.node_style || '{}')
     : JSON.parse(data.node_style || '{}')
 
-  const widthArrow = style.widthArrow || WIDTH_ARROW
-  const heightArrow = style.heightArrow || HEIGHT_ARROW
-  const transformArrow = style.transformArrow || DEFAULT_DEG_ARROW
+  const arrowWidth = style.arrowWidth || ARROW_WIDTH
+  const arrowHeight = style.arrowHeight || ARROW_HEIGHT
+  const arrowTransform = style.arrowTransform || DEFAULT_ARROW_TRANSFORM
 
   useLayoutEffect(() => {
     if (targetRef.current) {
-      targetRef.current.style.width = widthArrow + 'px'
-      targetRef.current.style.maxWidth = widthArrow + 'px'
-      targetRef.current.style.height = heightArrow + 'px'
-      targetRef.current.style.transform = transformArrow
+      targetRef.current.style.width = arrowWidth
+      targetRef.current.style.maxWidth = arrowWidth
+      targetRef.current.style.height = arrowHeight
+      targetRef.current.style.transform = arrowTransform
+
       if (moveableRef.current) {
         moveableRef.current.moveable.updateRect()
       }
     }
-  }, [heightArrow, widthArrow, transformArrow])
+  }, [arrowHeight, arrowWidth, arrowTransform])
 
   const targetRef = useRef<HTMLDivElement | null>(null)
 
   const onRotateEnd = (e: OnWarpEnd) => {
     const nodeStyle = JSON.stringify({
       ...style,
-      transformArrow: e.target.style.transform,
-      widthArrow: getArrowStyles.maxWidth,
-      heightArrow: e.target.style.height,
+      arrowTransform: e.target.style.transform,
+      arrowWidth: getArrowStyles.maxWidth,
+      arrowHeight: e.target.style.height,
     })
 
     const dataConfig = {
@@ -61,7 +62,7 @@ function ArrowSpeechBallon() {
 
   return (
     <>
-      <Box sx={getArrowBox}>
+      <Box sx={getArrowBoxStyles}>
         <Box sx={getArrowStyles} ref={targetRef}>
           <Box sx={insideArrow} />
         </Box>

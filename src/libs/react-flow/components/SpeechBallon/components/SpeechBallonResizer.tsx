@@ -1,10 +1,11 @@
 import { ShapeType } from '@/features/node'
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { useRFStore } from '@/libs/react-flow/hooks'
+import { pxToNumber, toPx } from '@/libs/utils/misc'
 import { useMemo } from 'react'
 import { NodeResizer, ResizeDragEvent, ResizeParams } from 'reactflow'
 import { useSpeechBallonContext } from '../context'
-import { HEIGHT_ARROW, WIDTH_ARROW } from '../helper'
+import { ARROW_HEIGHT, ARROW_WIDTH } from '../helper'
 
 export const minSizeResize = {
   [ShapeType.SQUARE]: {
@@ -56,9 +57,9 @@ const SpeechBallonResizer = () => {
       ...nodeStyle,
       width: `${params.width}px`,
       height: `${params.height}px`,
-      widthArrow: handleArrowCalculate(params).widthArrow,
-      heightArrow: handleArrowCalculate(params).heightArrow,
-      transformArrow: nodeStyle.transformArrow,
+      arrowWidth: handleArrowCalculate(params).arrowWidth,
+      arrowHeight: handleArrowCalculate(params).arrowHeight,
+      arrowTransform: nodeStyle.arrowTransform,
     })
 
     const dataUpdate = {
@@ -83,8 +84,8 @@ const SpeechBallonResizer = () => {
     }
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
-      widthArrow: handleArrowCalculate(params).widthArrow,
-      heightArrow: handleArrowCalculate(params).heightArrow,
+      arrowWidth: handleArrowCalculate(params).arrowWidth,
+      arrowHeight: handleArrowCalculate(params).arrowHeight,
     })
 
     handleSetResizing({
@@ -99,8 +100,8 @@ const SpeechBallonResizer = () => {
   const handleArrowCalculate = (params: ResizeParams) => {
     const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
     return {
-      widthArrow: Math.min(WIDTH_ARROW * percentResize, params.width - 20),
-      heightArrow: HEIGHT_ARROW * percentResize,
+      arrowWidth: toPx(Math.min(pxToNumber(ARROW_WIDTH) * percentResize, params.width - 20)),
+      arrowHeight: toPx(pxToNumber(ARROW_HEIGHT) * percentResize),
     }
   }
 

@@ -1,6 +1,6 @@
 import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
-import { HEIGHT_ARROW, WIDTH_ARROW, sizeStyleMapping, useRFStore } from '@/libs/react-flow'
+import { ARROW_HEIGHT, ARROW_WIDTH, sizeStyleMapping, useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
 import { pxToNumber } from '@/libs/utils/misc'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
@@ -91,9 +91,9 @@ const ChooseShape: React.FC = () => {
         ...style,
         height,
         width,
-        heightArrow: (HEIGHT_ARROW + pxToNumber(height)) / 2,
-        widthArrow: Math.min(WIDTH_ARROW * percentResize, pxToNumber(height)),
-        transformArrow: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
+        arrowHeight: (pxToNumber(ARROW_HEIGHT) + pxToNumber(height)) / 2,
+        arrowWidth: Math.min(pxToNumber(ARROW_WIDTH) * percentResize, pxToNumber(height)),
+        arrowTransform: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
       updateReactFlowNode(
@@ -108,9 +108,9 @@ const ChooseShape: React.FC = () => {
         sizeStyleMapping[value].height / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
       const newNodeStyle = JSON.stringify({
         ...style,
-        heightArrow: (HEIGHT_ARROW + sizeStyleMapping[value].height) / 2,
-        widthArrow: WIDTH_ARROW * percentResize,
-        transformArrow: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
+        arrowHeight: (pxToNumber(ARROW_HEIGHT) + sizeStyleMapping[value].height) / 2,
+        arrowWidth: pxToNumber(ARROW_WIDTH) * percentResize,
+        arrowTransform: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 
       updateReactFlowNode({ ...dataUpdate, node_style: newNodeStyle }, 'speech_ballon')

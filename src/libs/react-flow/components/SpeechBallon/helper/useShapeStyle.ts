@@ -28,9 +28,9 @@ export const sizeStyleMapping = {
   },
 }
 
-export const WIDTH_ARROW = 30
-export const HEIGHT_ARROW = 41
-export const DEFAULT_DEG_ARROW = 'rotate(-21.15397deg) '
+export const ARROW_WIDTH = '30px'
+export const ARROW_HEIGHT = '41px'
+export const DEFAULT_ARROW_TRANSFORM = 'rotate(-21.15397deg) '
 
 export const useShapeStyle = () => {
   const { data, isResizing } = useSpeechBallonContext()
@@ -52,9 +52,9 @@ export const useShapeStyle = () => {
     ...(borderStyle && { borderRadius: borderStyle }),
   }
 
-  const transformArrow = style.transformArrow
-    ? style.transformArrow.slice(style.transformArrow.indexOf(')') + 1)
-    : DEFAULT_DEG_ARROW
+  const arrowTransform = style.arrowTransform
+    ? style.arrowTransform.slice(style.arrowTransform.indexOf(')') + 1)
+    : DEFAULT_ARROW_TRANSFORM
 
   const getShapeContainer = {
     ...sizeStyle,
@@ -64,7 +64,7 @@ export const useShapeStyle = () => {
     // transition: 'all 0.2s',
   }
 
-  const getArrowBox = {
+  const getArrowBoxStyles = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -73,13 +73,13 @@ export const useShapeStyle = () => {
   }
 
   const getArrowStyles = {
-    maxWidth: style.widthArrow || WIDTH_ARROW,
-    height: style.heightArrow || HEIGHT_ARROW,
+    maxWidth: style.arrowWidth || ARROW_WIDTH,
+    height: style.arrowHeight || ARROW_HEIGHT,
     width: '100%',
     background: conventionBg,
     clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
     transformOrigin: 'top center',
-    transform: transformArrow,
+    transform: arrowTransform,
   }
 
   const insideArrow = {
@@ -96,7 +96,7 @@ export const useShapeStyle = () => {
     getShapeStyles,
     getArrowStyles,
     getShapeContainer,
-    getArrowBox,
+    getArrowBoxStyles,
     insideArrow,
   }
 }

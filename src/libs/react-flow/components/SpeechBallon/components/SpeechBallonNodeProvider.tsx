@@ -4,8 +4,8 @@ import { PropsWithChildren, useCallback, useLayoutEffect, useMemo, useState } fr
 import { SpeechBallonContext } from '../context'
 
 export type ArrowResizeType = {
-  widthArrow: number | null
-  heightArrow: number | null
+  arrowWidth: number | null
+  arrowHeight: number | null
 }
 
 export const SpeechBallonNodeProvider: React.FC<
