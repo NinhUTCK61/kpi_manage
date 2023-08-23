@@ -19,7 +19,7 @@ const HelperFormula = () => {
         </Stack>
       }
     >
-      <Image src={HelpIcon} alt="undo" />
+      <Image src={HelpIcon} alt="helper" style={{ marginLeft: 8 }} />
     </CustomToolTip>
   )
 }
