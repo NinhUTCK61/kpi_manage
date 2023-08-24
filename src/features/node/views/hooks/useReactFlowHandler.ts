@@ -110,6 +110,7 @@ export const useReactFlowHandler = () => {
 
   const handlePaneClick = useCallback(
     (e: MouseEvent<Element>) => {
+      if (e.detail === 2) return
       e.stopPropagation()
       setNodeFocused(null)
 
@@ -226,19 +227,6 @@ export const useReactFlowHandler = () => {
     [setActivePosition, viewportAction],
   )
 
-  const handlePaneClicked = useCallback(
-    (e: MouseEvent<Element>) => {
-      if (isClickHandled.current) return
-
-      isClickHandled.current = true
-      handlePaneClick(e)
-      setTimeout(() => {
-        isClickHandled.current = false
-      }, 300)
-    },
-    [handlePaneClick],
-  )
-
   return {
     handleWheel,
     handleNodesChange,
@@ -249,6 +237,5 @@ export const useReactFlowHandler = () => {
     handleNodeDragStart,
     handleNodeDragStop,
     handleContextMenu,
-    handlePaneClicked,
   }
 }
