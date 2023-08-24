@@ -1,5 +1,5 @@
 import { ShapeType, ViewPortAction } from '@/features/node'
-import { isPaneClick, isUndoRedoClick, unFocusInputActive } from '@/libs/react-flow/helper'
+import { isItemClick, isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { UpdateStateReason } from '@/libs/react-flow/store'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
@@ -15,7 +15,6 @@ import {
   useUpdateSpeechBallonMutation,
 } from '../hooks'
 import { InputSpeechBalloon } from './InputSpeechBalloon'
-import { CLASS_SPEECH_BALLON } from './OptionShape'
 import { SpeechBallonContainer, TextSpeechBallon } from './style'
 
 type SpeechBallonFormProps = {
@@ -122,20 +121,18 @@ export const SpeechBallonForm: React.FC = () => {
         className.includes(CLASS_MOVEABLE_DEFAULT)
       )
         return
-      if (className.includes(CLASS_SPEECH_BALLON)) {
-        const nodeId = event.target.getAttribute('id')
-        if (nodeId === data.id) {
-          setTimeout(() => {
-            setFocus('text')
-          }, 0)
-          return
-        }
+      const nodeId = event.target.getAttribute('id')
+      if (nodeId && nodeId === data.id) {
+        setTimeout(() => {
+          setFocus('text')
+        }, 0)
+        return
       }
     }
 
-    isUndoRedoClick(event) && event.preventDefault()
+    isItemClick(event) && event.preventDefault()
 
-    if (shouldSubmit || isUndoRedoClick(event)) {
+    if (shouldSubmit || isItemClick(event)) {
       handleSubmit()
     }
 

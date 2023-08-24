@@ -98,12 +98,13 @@ export const unFocusInputActive = () => {
   }
 }
 
-export const isUndoRedoClick = (e: MouseEvent | TouchEvent) => {
+export const isItemClick = (e: MouseEvent | TouchEvent) => {
   const element = e.target as HTMLElement
-  let isUndoRedo = false
+  let isItem = false
   if (element.tagName === 'IMG') {
+    const alts = ['undo', 'redo', 'move', 'comment', 'pan', 'speechBallon']
     const alt = element.getAttribute('alt')
-    if (alt === 'undo' || alt === 'redo') isUndoRedo = true
+    if (alt && alts.includes(alt)) isItem = true
   }
-  return isUndoRedo
+  return isItem
 }
