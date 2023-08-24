@@ -14,7 +14,7 @@ import {
 } from '@/libs/react-flow'
 import { UpdateStateReason } from '@/libs/react-flow/store'
 import { nanoid } from 'nanoid'
-import React, { MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback, useRef } from 'react'
 import { Node as RFNode, useReactFlow } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import { ViewPortAction } from '../../constant'
@@ -60,6 +60,7 @@ export const useReactFlowHandler = () => {
   const { mutate: updateCommentNode } = useCommentUpdateMutation()
   const { mutate: updateSpeechBallonNode } = useUpdateSpeechBallonMutation()
   const { project } = useReactFlow()
+  const isClickHandled = useRef(false)
 
   const handleWheel = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
@@ -225,6 +226,19 @@ export const useReactFlowHandler = () => {
     [setActivePosition, viewportAction],
   )
 
+  const handlePaneClicked = useCallback(
+    (e: MouseEvent<Element>) => {
+      if (isClickHandled.current) return
+
+      isClickHandled.current = true
+      handlePaneClick(e)
+      setTimeout(() => {
+        isClickHandled.current = false
+      }, 300)
+    },
+    [handlePaneClick],
+  )
+
   return {
     handleWheel,
     handleNodesChange,
@@ -235,5 +249,6 @@ export const useReactFlowHandler = () => {
     handleNodeDragStart,
     handleNodeDragStop,
     handleContextMenu,
+    handlePaneClicked,
   }
 }
