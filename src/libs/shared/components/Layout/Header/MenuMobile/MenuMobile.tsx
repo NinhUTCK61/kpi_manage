@@ -1,10 +1,6 @@
 import { CustomImage } from '@/features/auth/components'
 import { Button, Drawer, List, Stack, styled } from '@mui/material'
-import { useTranslation } from 'next-i18next'
-import KnowledgeIcon from 'public/assets/svgs/blog.svg'
-import ConsultationIcon from 'public/assets/svgs/consulation.svg'
-import HomeIcon from 'public/assets/svgs/home.svg'
-import FavoriteIcon from 'public/assets/svgs/unlike_star.svg'
+import { useMenuList } from '../../hooks'
 import { AccountMobile } from './AccountMobile'
 import { ItemMenuMobile } from './ItemMenuMobile'
 import CloseIcon from '/public/assets/svgs/close.svg'
@@ -15,34 +11,7 @@ type MenuProps = {
 }
 
 const MenuMobile: React.FC<MenuProps> = ({ openMenu, handleCloseMenu }) => {
-  const { t } = useTranslation('common')
-
-  const menus = [
-    {
-      title: t('sidebar.home'),
-      icon: HomeIcon,
-      href: '/',
-    },
-    {
-      title: t('sidebar.favorite'),
-      icon: FavoriteIcon,
-      href: '/favorite',
-    },
-    {
-      title: t('sidebar.consultation'),
-      icon: ConsultationIcon,
-      href: '/consultation',
-      disable: true,
-    },
-    {
-      title: t('sidebar.knowledge_blog'),
-      icon: KnowledgeIcon,
-      href: '/knowledge-blog',
-      disable: true,
-    },
-    // { title: t('sidebar.faq'), icon: FAQIcon, href: '/faq' },
-    // { title: t('sidebar.use_case'), icon: UseCase, href: '/use_case' },
-  ]
+  const { menus } = useMenuList()
 
   return (
     <MenuMobileContainer anchor="right" open={openMenu}>
