@@ -25,15 +25,12 @@ const ItemMenuMobile: React.FC<ListItemButtonType> = ({ menu, handleCloseMenu })
   const router = useRouter()
 
   const checkHref = (href: string) => {
-    return router.pathname === href
+    return router.asPath === href
   }
 
   const handleDirection = () => {
     router.push(menu.href)
-
-    if (menu.href === router.pathname) {
-      handleCloseMenu()
-    }
+    handleCloseMenu()
   }
 
   return (
