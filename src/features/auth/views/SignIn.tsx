@@ -105,7 +105,7 @@ const Login = () => {
 
             <SubTitle align="center">{t('title')}</SubTitle>
 
-            <DescriptionTitle align="center" width={{ xs: '100%', sm: 460 }}>
+            <DescriptionTitle align="center" width={{ xs: '100%', sm: 500 }}>
               {t('child_title')}
             </DescriptionTitle>
           </Stack>

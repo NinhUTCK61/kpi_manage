@@ -127,7 +127,7 @@
     "cancel": "キャンセル"
   },
   "email_verified": "メールアドレスの認証が完了しました。",
-  "verify_title": "確認する。",
+  "verify_title": "メール確認",
   "verify_success": "確認済み！",
   "description_verify_success": "あなたのメールが正常に確認されました。これで、ログインして私たちと始めることができます。",
   "verify_fail": "確認に失敗しました！",
