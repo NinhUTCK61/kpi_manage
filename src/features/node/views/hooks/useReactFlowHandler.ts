@@ -109,7 +109,6 @@ export const useReactFlowHandler = () => {
 
   const handlePaneClick = useCallback(
     (e: MouseEvent<Element>) => {
-      console.log(e.detail)
       if (e.detail !== 1) return
       e.stopPropagation()
       setNodeFocused(null)
