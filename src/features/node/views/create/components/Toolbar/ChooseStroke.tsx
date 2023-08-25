@@ -8,14 +8,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNodeUpdateHandler } from '../../../hooks'
 
 const strokes = [
-  { value: 1, label: '1px' },
-  { value: 2, label: '2px' },
-  { value: 3, label: '3px' },
-  { value: 4, label: '4px' },
-  { value: 5, label: '5px' },
+  { value: 2, label: '1px' },
+  { value: 3, label: '2px' },
+  { value: 4, label: '3px' },
+  { value: 5, label: '4px' },
+  { value: 6, label: '5px' },
 ]
 
-const DEFAULT_STROKE_SIZE = 1
+export const DEFAULT_STROKE_SIZE = 2
 
 const ChooseStroke: React.FC = () => {
   const { t } = useTranslation('file')
@@ -29,16 +29,16 @@ const ChooseStroke: React.FC = () => {
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const [value, setValue] = useState(1)
+  const [value, setValue] = useState(DEFAULT_STROKE_SIZE)
 
   const handleChangeValueStoke = (isUp?: boolean) => {
     if (!nodeFocusedMemo) return
     let count = value
-    if (isUp && value < 5) {
+    if (isUp && value < 6) {
       count += 1
     }
 
-    if (!isUp && value > 1) {
+    if (!isUp && value > 2) {
       count -= 1
     }
 

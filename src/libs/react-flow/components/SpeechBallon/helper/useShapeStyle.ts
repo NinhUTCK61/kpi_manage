@@ -1,4 +1,5 @@
 import { ShapeType } from '@/features/node/constant'
+import { DEFAULT_STROKE_SIZE } from '@/features/node/views/create/components/Toolbar/ChooseStroke'
 import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '../context'
 
@@ -35,7 +36,7 @@ export const DEFAULT_ARROW_TRANSFORM = 'rotate(-21.15397deg) '
 export const useShapeStyle = () => {
   const { data, isResizing } = useSpeechBallonContext()
   const style = JSON.parse(data.node_style || '{}')
-  const stroke = style.stroke || 1
+  const stroke = style.stroke || DEFAULT_STROKE_SIZE
   const isFill = data.layout === 'FILL'
   const conventionBg = style.background || customPrimary[700]
   const color = style.color || base.white
@@ -83,8 +84,8 @@ export const useShapeStyle = () => {
   }
 
   const insideArrow = {
-    height: `calc(100% - ${stroke * 3}px)`,
-    width: `calc(100% - ${stroke * 2}px)`,
+    height: `calc(100% - ${stroke * 2}px)`,
+    width: `calc(100% - ${stroke * 1.5}px)`,
     background: isFill ? conventionBg : base.white,
     position: 'absolute',
     top: 0,
