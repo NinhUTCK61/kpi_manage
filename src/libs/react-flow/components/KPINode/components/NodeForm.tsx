@@ -145,6 +145,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             label={t('kpi_node.unit', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
+            onChangeCapture={() => !getValues('input_title') && setFocus('input_title')}
           />
         </FormProvider>
       </Stack>
