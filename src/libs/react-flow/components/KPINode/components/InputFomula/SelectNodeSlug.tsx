@@ -1,11 +1,18 @@
+import { useRFStore } from '@/libs/react-flow/hooks'
 import { Box, ListItemButton, Stack, styled, Typography } from '@mui/material'
 import { IconTop, List, ListItem, Paper } from '../styled'
 import { useNodeFormulaContext } from './context'
 
 const SelectNodeSlug: React.FC = () => {
   const { suggestState, nodeSearch, elementRef, handleSelect } = useNodeFormulaContext()
-
-  if (!suggestState.textSelected || !nodeSearch?.length) return null
+  const nodeFocused = useRFStore((state) => state.nodeFocused)
+  if (
+    !suggestState.textSelected ||
+    !nodeSearch?.length ||
+    !nodeFocused ||
+    (nodeFocused && nodeFocused.type !== 'kpi')
+  )
+    return null
 
   return (
     <Paper>
@@ -18,13 +25,12 @@ const SelectNodeSlug: React.FC = () => {
           }}
         >
           {nodeSearch.map((node, index) => (
-            <ListItem
-              active={index === suggestState.indexSuggest}
-              disablePadding
-              key={index}
-              onClick={() => handleSelect(node.data.slug)}
-            >
-              <ListItemButton sx={{ padding: 2 }}>
+            <ListItem active={index === suggestState.indexSuggest} disablePadding key={index}>
+              <ListItemButton
+                sx={{ padding: 2 }}
+                disabled={node.data.slug === nodeFocused.data.slug}
+                onClick={() => handleSelect(node.data.slug)}
+              >
                 <Stack direction="row" spacing={2}>
                   <Typography width={100} variant="body2" color="base.black">
                     {node.data.slug}

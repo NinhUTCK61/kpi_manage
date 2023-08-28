@@ -7,11 +7,13 @@ import React, {
   MouseEvent,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useActiveElement } from '../../../../../hooks/useActiveElement'
 import { NodeFormProps, useFormularHanlder } from '../../hooks'
 import { NodeFormulaContext } from './context'
 
@@ -31,6 +33,8 @@ export type SuggestStateProps = {
   indexSuggest: number
 }
 
+const inputDisable = ['input_value', 'unit']
+
 export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [suggestState, setSuggestState] = useState<SuggestStateProps>(defaultValueState)
   const { setError, getValues, setValue, setFocus } = useFormContext<NodeFormProps>()
@@ -39,6 +43,13 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
   const elementRef = useRef<HTMLUListElement>(null)
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const { nodeInputValidate } = useFormularHanlder()
+  const { activeElement } = useActiveElement()
+
+  useEffect(() => {
+    if (!activeElement) return
+    if (inputDisable.includes(activeElement.getAttribute('name') as string))
+      setSuggestState(defaultValueState)
+  }, [activeElement])
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
