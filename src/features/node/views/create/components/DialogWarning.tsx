@@ -1,5 +1,5 @@
 import { greyScale } from '@/libs/config/theme'
-import { useMatchesSize } from '@/libs/hooks'
+import { isMobile } from '@/libs/react-flow'
 import { Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
@@ -7,15 +7,14 @@ import { useEffect, useState } from 'react'
 const DialogWarning = () => {
   const { t, i18n } = useTranslation('file')
   const [openDialog, setOpenDialog] = useState(false)
-  const { isLargeDown } = useMatchesSize()
-
+  const _isMobile = isMobile()
   useEffect(() => {
-    if (isLargeDown) {
+    if (_isMobile) {
       setOpenDialog(true)
-    } else {
-      setOpenDialog(false)
+      return
     }
-  }, [isLargeDown])
+    setOpenDialog(false)
+  }, [_isMobile])
 
   const handleClose = () => {
     setOpenDialog(false)
