@@ -15,7 +15,7 @@ const strokes = [
   { value: 5, label: '5px' },
 ]
 
-const DEFAULT_STROKE_SIZE = 1
+export const DEFAULT_STROKE_SIZE = 1
 
 const ChooseStroke: React.FC = () => {
   const { t } = useTranslation('file')
@@ -29,7 +29,7 @@ const ChooseStroke: React.FC = () => {
 
   const { updateReactFlowNode } = useNodeUpdateHandler()
 
-  const [value, setValue] = useState(1)
+  const [value, setValue] = useState(DEFAULT_STROKE_SIZE)
 
   const handleChangeValueStoke = (isUp?: boolean) => {
     if (!nodeFocusedMemo) return
