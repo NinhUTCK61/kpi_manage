@@ -4,7 +4,7 @@ import { base, customPrimary } from '@/libs/config/theme'
 import { useSpeechBallonContext } from '../context'
 
 const borderStyleMapping = {
-  [ShapeType.SQUARE]: 0,
+  [ShapeType.SQUARE]: 0.1,
   [ShapeType.CIRCULAR]: '100%',
   [ShapeType.MEDIUM_ROUND_SQUARE]: '10px',
   [ShapeType.ROUND_SQUARE]: '16px',
@@ -62,7 +62,6 @@ export const useShapeStyle = () => {
     ...getShapeStyles,
     ...(isResizing && { width: '100%', height: '100%' }),
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
-    // transition: 'all 0.2s',
   }
 
   const getArrowBoxStyles = {
