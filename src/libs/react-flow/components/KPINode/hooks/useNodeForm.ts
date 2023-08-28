@@ -40,12 +40,10 @@ export const useNodeForm = (data: KPINodeType) => {
   }, [errorState, form.formState, handleError, message])
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!data.input_title) {
-        setFocus('input_title')
-      }
-    }, 0)
-  }, [data.input_title, setFocus])
+    if (!data.input_title) {
+      setFocus('input_title')
+    }
+  })
 
   return { ...form, error }
 }
