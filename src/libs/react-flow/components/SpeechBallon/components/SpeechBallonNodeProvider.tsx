@@ -1,6 +1,6 @@
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ReactFlowSpeechBallonNode, SpeechBallonNodeType } from '@/libs/react-flow/types'
-import { PropsWithChildren, useCallback, useLayoutEffect, useMemo, useState } from 'react'
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react'
 import { SpeechBallonContext } from '../context'
 
 export type ArrowResizeType = {
@@ -20,9 +20,14 @@ export const SpeechBallonNodeProvider: React.FC<
   const [nodeResizing, setNodeResizing] = useState<ReactFlowSpeechBallonNode | null>(null)
   const [isResizeEnabled, setResizeEnabled] = useState(false)
 
-  const handleSetEditing = useCallback((value: boolean) => {
-    setEditing(value)
-  }, [])
+  const handleSetEditing = useCallback(
+    (value: boolean) => {
+      setEditing(value)
+      // disable draggable when editing
+      toggleDraggable(data.id, !value)
+    },
+    [data.id, toggleDraggable],
+  )
 
   const handleSetResize = useCallback((value: boolean) => {
     setResizeEnabled(value)
@@ -33,11 +38,6 @@ export const SpeechBallonNodeProvider: React.FC<
   }, [])
 
   const isResizing = nodeResizing?.id === data.id
-
-  // disable draggable when editing
-  useLayoutEffect(() => {
-    toggleDraggable(data.id, !isEditing)
-  }, [data.id, isEditing, toggleDraggable, isResizeEnabled])
 
   const contextValue = useMemo(
     () => ({

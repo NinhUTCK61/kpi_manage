@@ -4,7 +4,7 @@ import { useRFStore } from '@/libs/react-flow/hooks'
 import { UpdateStateReason } from '@/libs/react-flow/store'
 import { RFStore, SpeechBallonNodeType } from '@/libs/react-flow/types'
 import { ClickAwayListener } from '@mui/material'
-import { FocusEvent, FormEvent, useEffect, useState } from 'react'
+import { FocusEvent, FormEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { shallow } from 'zustand/shallow'
 import { useSpeechBallonContext } from '../context'
@@ -26,6 +26,7 @@ const storeSelector = (state: RFStore) => ({
   nodeFocused: state.nodeFocused,
   viewPortAction: state.viewportAction,
   updateSpeechBallon: state.updateSpeechBallon,
+  setNodeFocused: state.setNodeFocused,
 })
 
 export const CLASS_DEFAULT_RESIZE_CONTROL = 'react-flow__resize-control'
@@ -41,7 +42,10 @@ export const SpeechBallonForm: React.FC = () => {
     isResizing,
   } = useSpeechBallonContext()
 
-  const { removeSpeechBallon, nodeFocused, viewPortAction } = useRFStore(storeSelector, shallow)
+  const { removeSpeechBallon, nodeFocused, viewPortAction, setNodeFocused } = useRFStore(
+    storeSelector,
+    shallow,
+  )
 
   const { control, getValues, setFocus } = useForm<SpeechBallonFormProps>({
     defaultValues: {
@@ -57,7 +61,7 @@ export const SpeechBallonForm: React.FC = () => {
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: deleteSB } = useSpeechBallonDeleteMutation()
 
-  const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
+  const isEditing = (!getValues('text') && !data.text) || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
     if (isEditing) {
@@ -65,7 +69,7 @@ export const SpeechBallonForm: React.FC = () => {
     }
   })
 
-  function handleSubmit(e?: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e?: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) {
     e?.preventDefault()
     if (!getValues().text) {
       if (data.is_saved) {
@@ -73,6 +77,7 @@ export const SpeechBallonForm: React.FC = () => {
       } else {
         removeSpeechBallon(data.id, UpdateStateReason.DeleteUnSavedSpeechBallonNode)
       }
+      e && setNodeFocused(null)
       unFocusInputActive()
       return
     }
@@ -102,7 +107,7 @@ export const SpeechBallonForm: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSubmit()
+      handleSubmit(e)
     }
   }
 
@@ -220,7 +225,7 @@ export const SpeechBallonForm: React.FC = () => {
           ...styleShape,
         }}
       >
-        {data.text}
+        {data.text || getValues('text')}
       </TextSpeechBallon>
     </SpeechBallonContainer>
   )
