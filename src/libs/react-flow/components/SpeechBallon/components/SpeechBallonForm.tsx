@@ -62,7 +62,6 @@ export const SpeechBallonForm: React.FC = () => {
   useEffect(() => {
     if (isEditing) {
       setFocus('text')
-      handleSetEditing(true)
     }
   })
 
