@@ -41,7 +41,7 @@ export const OptionShape: React.FC = () => {
   useOnClickOutside(speechBallonRef, handleClickAwayCloseResize)
 
   return (
-    <ClickAwayListener onClickAway={handleClickAwayCloseResize}>
+    <ClickAwayListener mouseEvent="onPointerDown" onClickAway={handleClickAwayCloseResize}>
       <Box sx={getShapeContainer} ref={speechBallonRef}>
         <MuiOptionShapeType
           sx={{ ...getShapeStyles, zIndex: 1000, width: '100%', height: '100%' }}
