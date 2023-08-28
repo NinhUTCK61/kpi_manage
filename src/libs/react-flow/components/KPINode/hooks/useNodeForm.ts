@@ -41,7 +41,9 @@ export const useNodeForm = (data: KPINodeType) => {
 
   useEffect(() => {
     if (!data.input_title && !form.getValues('input_title')) {
-      setFocus('input_title')
+      setTimeout(() => {
+        setFocus('input_title')
+      }, 0)
     }
   })
 
