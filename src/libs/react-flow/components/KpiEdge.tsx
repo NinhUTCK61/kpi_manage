@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react'
 import { EdgeProps, getBezierPath } from 'reactflow'
 import { useRFStore } from '../hooks'
 import { convertSlugToString, generateColors } from './KPINode/utils'
@@ -32,7 +33,8 @@ function KpiEdge({
     ...style,
     strokeWidth: 4,
     stroke: generateColors(slug[String(slug).length - 1] as string),
-  }
+    pointerEvents: 'none',
+  } as CSSProperties
 
   return (
     <>
