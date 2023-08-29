@@ -2,7 +2,7 @@ import { ShapeType } from '@/features/node/constant'
 import { base, customPrimary } from '@/libs/config/theme'
 import { ARROW_HEIGHT, ARROW_WIDTH, sizeStyleMapping, useRFStore } from '@/libs/react-flow'
 import { InputStyled, MenuItem } from '@/libs/shared/components'
-import { pxToNumber } from '@/libs/utils/misc'
+import { pxToNumber, toPx } from '@/libs/utils/misc'
 import { Select as MuiSelect, SelectChangeEvent, Stack, styled } from '@mui/material'
 import { LayoutType } from '@prisma/client'
 import Image from 'next/image'
@@ -108,8 +108,8 @@ const ChooseShape: React.FC = () => {
         sizeStyleMapping[value].height / sizeStyleMapping[ShapeType.ROUND_SQUARE].height
       const newNodeStyle = JSON.stringify({
         ...style,
-        arrowHeight: (pxToNumber(ARROW_HEIGHT) + sizeStyleMapping[value].height) / 2 + 'px',
-        arrowWidth: pxToNumber(ARROW_WIDTH) * percentResize + 'px',
+        arrowHeight: toPx((pxToNumber(ARROW_HEIGHT) + sizeStyleMapping[value].height) / 2),
+        arrowWidth: toPx(pxToNumber(ARROW_WIDTH) * percentResize),
         arrowTransform: value !== ShapeType.ROUND_SQUARE ? DEFAULT_DEGREE_CHANGE : style.transform,
       })
 

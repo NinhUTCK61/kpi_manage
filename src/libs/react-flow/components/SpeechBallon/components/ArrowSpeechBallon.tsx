@@ -51,11 +51,12 @@ function ArrowSpeechBallon() {
   }
 
   const onRenderButtonControl = (e: OnRender) => {
-    e.target.style.cssText += e.cssText
+    const cssText = e.cssText
+    e.target.style.cssText += `transform: ${cssText.slice(cssText.indexOf('rotate'))}`
   }
 
   const onRotate = (e: OnRotate) => {
-    e.target.style.transform = e.transform
+    e.target.style.transform = `rotate(${e.rotation}deg)`
   }
 
   const moveableRef = useRef<Moveable>(null)
