@@ -43,7 +43,7 @@ export const useNodeForm = (data: KPINodeType) => {
       if (!data.input_title) {
         setFocus('input_title')
       }
-    }, 0)
+    }, 10)
   }, [data.input_title, setFocus])
 
   return { ...form, error }

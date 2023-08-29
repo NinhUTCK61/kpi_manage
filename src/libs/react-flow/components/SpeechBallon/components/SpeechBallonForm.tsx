@@ -67,7 +67,7 @@ export const SpeechBallonForm: React.FC = () => {
     if (isEditing) {
       setTimeout(() => {
         setFocus('text')
-      }, 0)
+      }, 10)
     }
   })
 
