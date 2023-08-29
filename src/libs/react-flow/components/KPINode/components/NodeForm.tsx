@@ -23,7 +23,7 @@ type NodeFormMemoTypes = {
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, formFocus }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
-  const { control, getValues, error, setFocus, setError, reset } = method
+  const { control, getValues, error, setFocus, setError } = method
   const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -34,9 +34,11 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
   const inputTitle = getValues('input_title')
 
   useEffect(() => {
-    if (!activeElement || activeElement.tagName !== 'Input') return
-    if (activeElement.getAttribute('name') !== 'input_title' && !inputTitle) reset()
-  }, [activeElement, inputTitle, reset])
+    if (!activeElement || activeElement.tagName !== 'INPUT') return
+    if (activeElement.getAttribute('name') !== 'input_title' && !inputTitle && !data.is_saved) {
+      setFocus('input_title')
+    }
+  }, [activeElement, data.is_saved, inputTitle, setFocus])
 
   const saveValue = () => {
     if (error) {
