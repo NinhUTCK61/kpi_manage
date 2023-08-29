@@ -13,10 +13,9 @@ export type NodeFormProps = {
 
 export const useNodeForm = (data: KPINodeType) => {
   const { form } = useKPINodeContext()
-  const { setFocus, watch, getValues } = form
+  const { setFocus, watch } = form
   const { handleError } = useTranslateError()
   const [error, setError] = useState('')
-  const inputTitle = getValues('input_title')
   const { error: errorState, message } = useErrorState(true, watch('input_value') as string)
 
   useEffect(() => {
@@ -40,12 +39,12 @@ export const useNodeForm = (data: KPINodeType) => {
   }, [errorState, form.formState, handleError, message])
 
   useEffect(() => {
-    if (!data.input_title && !inputTitle) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (!data.input_title) {
         setFocus('input_title')
-      }, 0)
-    }
-  })
+      }
+    }, 0)
+  }, [data.input_title, setFocus])
 
   return { ...form, error }
 }

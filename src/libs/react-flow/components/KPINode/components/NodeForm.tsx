@@ -1,12 +1,11 @@
 import { blue, red } from '@/libs/config/theme'
-import { useActiveElement } from '@/libs/hooks'
 import { isItemClick, isPaneClick, unFocusInputActive } from '@/libs/react-flow/helper'
 import { useRFStore } from '@/libs/react-flow/hooks'
 import { ClickAwayListener, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import AlertIcon from 'public/assets/svgs/alert_error.svg'
-import React, { KeyboardEvent as KeyboardEventReact, memo, useEffect } from 'react'
+import React, { KeyboardEvent as KeyboardEventReact, memo } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { useEventListener } from 'usehooks-ts'
 import { useKPINodeContext } from '../context'
@@ -23,22 +22,13 @@ type NodeFormMemoTypes = {
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, formFocus }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
-  const { control, getValues, error, setFocus, setError } = method
+  const { control, getValues, error, setFocus, setError, handleSubmit } = method
   const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
   const setNodeFocused = useRFStore((state) => state.setNodeFocused)
   const { validateBeforeSubmit } = useFormularHanlder()
   const { t } = useTranslation(['file', 'common'])
-  const { activeElement } = useActiveElement()
-  const inputTitle = getValues('input_title')
-
-  useEffect(() => {
-    if (!activeElement || activeElement.tagName !== 'INPUT') return
-    if (activeElement.getAttribute('name') !== 'input_title' && !inputTitle && !data.is_saved) {
-      setFocus('input_title')
-    }
-  }, [activeElement, data.is_saved, inputTitle, setFocus])
 
   const saveValue = () => {
     if (error) {
@@ -89,7 +79,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
-      saveValue()
+      handleSubmit(saveValue)()
     }
   }
 
