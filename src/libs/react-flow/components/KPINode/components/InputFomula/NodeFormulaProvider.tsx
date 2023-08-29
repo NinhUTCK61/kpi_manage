@@ -88,23 +88,19 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
 
       if (e.key === 'Enter') {
         // Thay đổi value tại vị trí của con trỏ
-        const data = charFullNearCursor(e)
         const valueNodeSuggest = nodeSearch[suggestState.indexSuggest]?.data?.slug as string
-        if (data?.resultStringFull !== valueNodeSuggest) {
-          const newValue = convertFormula(
-            getValues('input_value') as string,
-            valueNodeSuggest,
-            suggestState.startIndexText,
-            suggestState.endIndexText,
-          )
-          setValue('input_value', newValue)
-          setSuggestState(defaultValueState)
-          setFocus('input_value')
-          e.preventDefault()
-          e.stopPropagation()
-          return
-        }
-        setNodeSearch([])
+        const newValue = convertFormula(
+          getValues('input_value') as string,
+          valueNodeSuggest,
+          suggestState.startIndexText,
+          suggestState.endIndexText,
+        )
+        setValue('input_value', newValue)
+        setSuggestState(defaultValueState)
+        setFocus('input_value')
+        e.preventDefault()
+        e.stopPropagation()
+        return
       }
     },
     [getValues, nodeSearch, setFocus, setValue, suggestState],

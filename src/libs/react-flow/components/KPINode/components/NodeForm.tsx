@@ -22,7 +22,7 @@ type NodeFormMemoTypes = {
 const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, formFocus }) => {
   const { data } = useKPINodeContext()
   const method = useNodeForm(data)
-  const { control, getValues, error, setFocus, setError } = method
+  const { control, getValues, error, setFocus, setError, handleSubmit } = method
   const { saveHandler } = useNodeHandler()
   const getKpiNodes = useRFStore((state) => state.getKpiNodes)
   const nodeFocused = useRFStore((state) => state.nodeFocused)
@@ -79,7 +79,7 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
     }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (error) return
-      saveValue()
+      handleSubmit(saveValue)()
     }
   }
 
@@ -145,7 +145,6 @@ const NodeFormInner: React.FC<NodeFormMemoTypes> = ({ changeFormFocusState, form
             label={t('kpi_node.unit', { ns: 'file' }) as string}
             inputProps={{ style }}
             autoComplete="off"
-            onChangeCapture={() => !getValues('input_title') && setFocus('input_title')}
           />
         </FormProvider>
       </Stack>

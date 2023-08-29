@@ -61,13 +61,13 @@ export const SpeechBallonForm: React.FC = () => {
   const { mutate: update } = useUpdateSpeechBallonMutation()
   const { mutate: deleteSB } = useSpeechBallonDeleteMutation()
 
-  const isEditing = (!getValues('text') && !data.text) || (editable && nodeFocused?.id === data.id)
+  const isEditing = !data.text || (editable && nodeFocused?.id === data.id)
 
   useEffect(() => {
     if (isEditing) {
       setTimeout(() => {
         setFocus('text')
-      }, 0)
+      }, 10)
     }
   })
 
