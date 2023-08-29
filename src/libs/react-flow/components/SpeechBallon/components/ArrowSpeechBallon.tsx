@@ -66,29 +66,29 @@ function ArrowSpeechBallon() {
         <Box sx={getArrowStyles} ref={targetRef}>
           <Box sx={insideArrow} />
         </Box>
+        {isResizeEnabled && (
+          <MoveableContainer
+            target={targetRef}
+            keepRatio={false}
+            renderDirections={['s']}
+            onRotate={onRotate}
+            onRotateEnd={onRotateEnd}
+            rotatable={{
+              renderDirections: DIRECTIONS,
+            }}
+            resolveAblesWithRotatable={{
+              resizable: ['s'],
+            }}
+            resizable={{
+              renderDirections: false,
+            }}
+            rotateAroundControls={true}
+            onRender={onRenderButtonControl}
+            ref={moveableRef}
+            scalable={false}
+          />
+        )}
       </Box>
-      {isResizeEnabled && (
-        <MoveableContainer
-          target={targetRef}
-          keepRatio={false}
-          renderDirections={['s']}
-          onRotate={onRotate}
-          onRotateEnd={onRotateEnd}
-          rotatable={{
-            renderDirections: DIRECTIONS,
-          }}
-          resolveAblesWithRotatable={{
-            resizable: ['s'],
-          }}
-          resizable={{
-            renderDirections: false,
-          }}
-          rotateAroundControls={true}
-          onRender={onRenderButtonControl}
-          ref={moveableRef}
-          scalable={false}
-        />
-      )}
     </>
   )
 }
