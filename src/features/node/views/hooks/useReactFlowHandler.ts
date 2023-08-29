@@ -1,3 +1,4 @@
+import { api } from '@/libs/api'
 import {
   DEFAULT_SPEECH_BALLON_ATTRIBUTES,
   PANE_CLASS_NAME,
@@ -13,6 +14,8 @@ import {
   useUpdateSpeechBallonMutation,
 } from '@/libs/react-flow'
 import { UpdateStateReason } from '@/libs/react-flow/store'
+import { useIsMutating } from '@tanstack/react-query'
+import { getQueryKey } from '@trpc/react-query'
 import { nanoid } from 'nanoid'
 import React, { MouseEvent, useCallback } from 'react'
 import { Node as RFNode, useReactFlow } from 'reactflow'
@@ -60,6 +63,9 @@ export const useReactFlowHandler = () => {
   const { mutate: updateCommentNode } = useCommentUpdateMutation()
   const { mutate: updateSpeechBallonNode } = useUpdateSpeechBallonMutation()
   const { project } = useReactFlow()
+
+  const createSbKey = getQueryKey(api.speechBallon.create)
+  const isSbMutating = useIsMutating(createSbKey)
 
   const handleWheel = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
@@ -111,7 +117,10 @@ export const useReactFlowHandler = () => {
     (e: MouseEvent<Element>) => {
       if (e.detail !== 1) return
       e.stopPropagation()
-      setNodeFocused(null)
+
+      if (!isSbMutating) {
+        setNodeFocused(null)
+      }
 
       if (viewportAction === ViewPortAction.Comment) {
         setActivePosition({
@@ -124,7 +133,14 @@ export const useReactFlowHandler = () => {
         addTempSpeechBallon(e.clientX, e.clientY)
       }
     },
-    [setNodeFocused, viewportAction, nodeFocused, setActivePosition, addTempSpeechBallon],
+    [
+      isSbMutating,
+      viewportAction,
+      nodeFocused,
+      setNodeFocused,
+      setActivePosition,
+      addTempSpeechBallon,
+    ],
   )
 
   const handleNodesDelete = useCallback(
