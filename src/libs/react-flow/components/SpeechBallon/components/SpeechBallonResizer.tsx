@@ -50,6 +50,8 @@ const SpeechBallonResizer = () => {
   }, [nodeFocused])
 
   const onResizeEnd = (_: ResizeDragEvent, params: ResizeParams) => {
+    if (node?.width === params.width && node?.height === params.height) return
+
     if (!nodeFocusedMemo) return
     const nodeStyle = JSON.parse(nodeFocusedMemo.data.node_style || '{}')
 
@@ -98,10 +100,14 @@ const SpeechBallonResizer = () => {
   }
 
   const handleArrowCalculate = (params: ResizeParams) => {
-    const percentResize = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
+    const percentResizeWidth = params.height / minSizeResize[ShapeType.ROUND_SQUARE].minHeight
+    const percentResizeHeight = params.height / minSizeStyle.minHeight
+
     return {
-      arrowWidth: toPx(Math.min(pxToNumber(ARROW_WIDTH) * percentResize, params.width - 20)),
-      arrowHeight: toPx(pxToNumber(ARROW_HEIGHT) * percentResize),
+      arrowWidth: toPx(Math.min(pxToNumber(ARROW_WIDTH) * percentResizeWidth, params.width - 20)),
+      arrowHeight: toPx(
+        ((pxToNumber(ARROW_HEIGHT) + minSizeStyle.minHeight) / 2) * percentResizeHeight,
+      ),
     }
   }
 
