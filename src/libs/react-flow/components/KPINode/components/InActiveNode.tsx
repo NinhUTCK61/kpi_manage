@@ -62,6 +62,7 @@ const InActive: React.FC = () => {
               transform: 'translate(-95%,-50%)',
               fontSize: '1.1rem',
               stroke: edgeColor,
+              pointerEvents: 'none',
             }}
           />
         )}
