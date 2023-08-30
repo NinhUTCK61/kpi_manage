@@ -31,7 +31,7 @@ export const sizeStyleMapping = {
 
 export const ARROW_WIDTH = '30px'
 export const ARROW_HEIGHT = '41px'
-export const DEFAULT_ARROW_TRANSFORM = 'rotate(-21.15397deg) '
+export const DEFAULT_ARROW_TRANSFORM = 'rotate(-21.15397deg) translateX(-50%)'
 
 export const useShapeStyle = () => {
   const { data, isResizing } = useSpeechBallonContext()
@@ -64,21 +64,16 @@ export const useShapeStyle = () => {
     border: `${!isFill ? stroke : 0}px solid ${conventionBg}`,
   }
 
-  const getArrowBoxStyles = {
+  const getArrowStyles = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transformOrigin: 'top center',
-    transform: 'translate(-50%)',
-  }
-
-  const getArrowStyles = {
     maxWidth: style.arrowWidth || ARROW_WIDTH,
     height: style.arrowHeight || ARROW_HEIGHT,
     width: '100%',
     background: conventionBg,
     clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-    transformOrigin: 'top center',
+    transformOrigin: 'top left',
     transform: arrowTransform,
   }
 
@@ -96,7 +91,6 @@ export const useShapeStyle = () => {
     getShapeStyles,
     getArrowStyles,
     getShapeContainer,
-    getArrowBoxStyles,
     insideArrow,
   }
 }

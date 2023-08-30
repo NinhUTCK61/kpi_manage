@@ -86,6 +86,7 @@ const SpeechBallonResizer = () => {
     }
     const newNodeStyle = JSON.stringify({
       ...nodeStyle,
+      width: `${params.width}px`,
       arrowWidth: handleArrowCalculate(params).arrowWidth,
       arrowHeight: handleArrowCalculate(params).arrowHeight,
     })
