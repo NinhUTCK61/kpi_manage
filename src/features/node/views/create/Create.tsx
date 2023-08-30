@@ -67,11 +67,16 @@ export const CreateView: React.FC = () => {
   useLayoutEffect(() => {
     if (container) {
       // set viewport to center like design
-      setViewport({
-        x: 30,
-        y: (container.clientHeight - NODE_HEIGHT_TEMPLATE) * 0.5,
-        zoom: 0.75,
-      })
+      setViewport(
+        {
+          x: 30,
+          y: (container.clientHeight - NODE_HEIGHT_TEMPLATE) * 0.5,
+          zoom: 0.75,
+        },
+        {
+          duration: 100,
+        },
+      )
     }
   }, [container, setViewport])
 
