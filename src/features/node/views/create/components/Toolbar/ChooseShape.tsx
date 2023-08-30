@@ -18,7 +18,7 @@ const shapes = [
   { el: RoundSquare, type: ShapeType.ROUND_SQUARE },
 ]
 
-const DEFAULT_DEGREE_CHANGE = 'rotate(-2.15397deg)'
+const DEFAULT_DEGREE_CHANGE = 'rotate(-2.15397deg) translateX(-50%)'
 
 const ChooseShape: React.FC = () => {
   const [shape, setShape] = useState<ShapeType>(ShapeType.ROUND_SQUARE)
