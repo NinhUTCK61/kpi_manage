@@ -1,6 +1,6 @@
 import { useNodeUpdateHandler } from '@/features/node/views/hooks'
 import { Box, styled } from '@mui/material'
-import { useLayoutEffect, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import Moveable, { DIRECTIONS, OnRender, OnRotate, OnWarpEnd } from 'react-moveable'
 import { useSpeechBallonContext } from '../context'
 import { ARROW_HEIGHT, ARROW_WIDTH, DEFAULT_ARROW_TRANSFORM, useShapeStyle } from '../helper'
@@ -8,7 +8,7 @@ import { ARROW_HEIGHT, ARROW_WIDTH, DEFAULT_ARROW_TRANSFORM, useShapeStyle } fro
 function ArrowSpeechBallon() {
   const { updateReactFlowNode } = useNodeUpdateHandler()
   const { data, isResizeEnabled, nodeResizing, isResizing } = useSpeechBallonContext()
-  const { getArrowStyles, insideArrow, getArrowBoxStyles } = useShapeStyle()
+  const { getArrowStyles, insideArrow } = useShapeStyle()
 
   const style = isResizing
     ? JSON.parse(nodeResizing?.data.node_style || '{}')
@@ -30,6 +30,12 @@ function ArrowSpeechBallon() {
       }
     }
   }, [arrowHeight, arrowWidth, arrowTransform])
+
+  useEffect(() => {
+    if (moveableRef.current) {
+      moveableRef.current.moveable.updateRect()
+    }
+  }, [style.width])
 
   const targetRef = useRef<HTMLDivElement | null>(null)
 
@@ -56,41 +62,39 @@ function ArrowSpeechBallon() {
   }
 
   const onRotate = (e: OnRotate) => {
-    e.target.style.transform = `rotate(${e.rotation}deg)`
+    e.target.style.transform = `rotate(${e.rotation}deg) translateX(-50%)`
   }
 
   const moveableRef = useRef<Moveable>(null)
 
   return (
-    <>
-      <Box sx={getArrowBoxStyles}>
-        <Box sx={getArrowStyles} ref={targetRef}>
-          <Box sx={insideArrow} />
-        </Box>
-        {isResizeEnabled && (
-          <MoveableContainer
-            target={targetRef}
-            keepRatio={false}
-            renderDirections={['s']}
-            onRotate={onRotate}
-            onRotateEnd={onRotateEnd}
-            rotatable={{
-              renderDirections: DIRECTIONS,
-            }}
-            resolveAblesWithRotatable={{
-              resizable: ['s'],
-            }}
-            resizable={{
-              renderDirections: false,
-            }}
-            rotateAroundControls={true}
-            onRender={onRenderButtonControl}
-            ref={moveableRef}
-            scalable={false}
-          />
-        )}
+    <React.Fragment>
+      <Box sx={getArrowStyles} ref={targetRef}>
+        <Box sx={insideArrow} />
       </Box>
-    </>
+      {isResizeEnabled && (
+        <MoveableContainer
+          target={targetRef}
+          keepRatio={false}
+          renderDirections={['s']}
+          onRotate={onRotate}
+          onRotateEnd={onRotateEnd}
+          rotatable={{
+            renderDirections: DIRECTIONS,
+          }}
+          resolveAblesWithRotatable={{
+            resizable: ['s'],
+          }}
+          resizable={{
+            renderDirections: false,
+          }}
+          rotateAroundControls={true}
+          onRender={onRenderButtonControl}
+          ref={moveableRef}
+          scalable={false}
+        />
+      )}
+    </React.Fragment>
   )
 }
 
