@@ -31,7 +31,7 @@ function KpiControls() {
           zoom,
         },
         {
-          duration: 300,
+          duration: 100,
         },
       )
     }
