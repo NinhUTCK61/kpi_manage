@@ -55,6 +55,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (!suggestState.textSelected) return
       if (nodeSearch.length === 0) return
+      if (!nodeFocused || nodeFocused.type !== 'kpi') return
       if (e.key === 'Escape') {
         setNodeSearch([])
         e.stopPropagation()
@@ -89,6 +90,10 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
       if (e.key === 'Enter') {
         // Thay đổi value tại vị trí của con trỏ
         const valueNodeSuggest = nodeSearch[suggestState.indexSuggest]?.data?.slug as string
+        if (valueNodeSuggest === nodeFocused.data.slug) {
+          e.stopPropagation()
+          return
+        }
         const newValue = convertFormula(
           getValues('input_value') as string,
           valueNodeSuggest,
@@ -103,7 +108,7 @@ export const NodeFormulaProvider: React.FC<PropsWithChildren> = ({ children }) =
         return
       }
     },
-    [getValues, nodeSearch, setFocus, setValue, suggestState],
+    [getValues, nodeFocused, nodeSearch, setFocus, setValue, suggestState],
   )
 
   const handlingData = useCallback(
