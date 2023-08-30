@@ -24,11 +24,16 @@ function KpiControls() {
     if (zoom) {
       const { x, y } = getViewport()
       // get current x y to set viewport after zoom
-      setViewport({
-        x,
-        y,
-        zoom,
-      })
+      setViewport(
+        {
+          x,
+          y,
+          zoom,
+        },
+        {
+          duration: 300,
+        },
+      )
     }
   }, [getViewport, setViewport, zoom])
 
