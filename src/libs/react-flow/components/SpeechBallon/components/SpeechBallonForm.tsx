@@ -93,6 +93,7 @@ export const SpeechBallonForm: React.FC = () => {
 
     if (data.is_saved) {
       handleUpdate(mutateData)
+      unFocusInputActive()
       return
     }
 
