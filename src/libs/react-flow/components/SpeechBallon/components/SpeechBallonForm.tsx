@@ -114,8 +114,6 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
     if (!isEditing) return
     const shouldSubmit = isPaneClick(event) || data.is_saved
 
