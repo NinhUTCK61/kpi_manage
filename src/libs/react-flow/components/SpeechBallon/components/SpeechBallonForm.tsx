@@ -69,7 +69,7 @@ export const SpeechBallonForm: React.FC = () => {
         setFocus('text')
       }, 10)
     }
-  })
+  }, [isEditing, setFocus])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) {
     e?.preventDefault()
@@ -93,6 +93,7 @@ export const SpeechBallonForm: React.FC = () => {
 
     if (data.is_saved) {
       handleUpdate(mutateData)
+      unFocusInputActive()
       return
     }
 
