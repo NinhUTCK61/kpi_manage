@@ -69,7 +69,7 @@ export const SpeechBallonForm: React.FC = () => {
         setFocus('text')
       }, 10)
     }
-  })
+  }, [isEditing, setFocus])
 
   function handleSubmit(e?: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) {
     e?.preventDefault()
@@ -114,6 +114,8 @@ export const SpeechBallonForm: React.FC = () => {
   }
 
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
     if (!isEditing) return
     const shouldSubmit = isPaneClick(event) || data.is_saved
 
